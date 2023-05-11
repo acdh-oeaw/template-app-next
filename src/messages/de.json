@@ -1,0 +1,54 @@
+{
+	"AppFooter": {
+		"links": {
+			"imprint": "Impressum"
+		},
+		"navigation-secondary": "Sekundär"
+	},
+	"AppHeader": {
+		"links": {
+			"home": "Startseite"
+		},
+		"navigation-primary": "Primär"
+	},
+	"Error": {
+		"something-went-wrong": "Etwas ist schief gelaufen!",
+		"try-again": "Erneut versuchen"
+	},
+	"ImprintPage": {
+		"meta": {
+			"title": "Impressum"
+		},
+		"title": "Impressum"
+	},
+	"IndexPage": {
+		"title": "Startseite"
+	},
+	"Loading": {
+		"loading": "Laden"
+	},
+	"LocaleLayout": {
+		"meta": {
+			"title": "ACDH-CH App",
+			"description": "",
+			"twitter": {
+				"site": "@acdh_oeaw"
+			}
+		},
+		"skip-to-main-content": "Zum Hauptinhalt springen"
+	},
+	"LocaleSwitcher": {
+		"locales": {
+			"en": "Englisch",
+			"de": "Deutsch"
+		},
+		"current-locale": "Aktuelle Sprache: {locale}",
+		"switch-locale": "Zu {locale} wechseln"
+	},
+	"NotFoundPage": {
+		"meta": {
+			"title": "Seite nicht gefunden"
+		},
+		"title": "Seite nicht gefunden"
+	}
+}

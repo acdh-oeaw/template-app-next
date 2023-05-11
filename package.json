@@ -1,0 +1,142 @@
+{
+	"name": "@acdh-oeaw/app",
+	"private": true,
+	"license": "MIT",
+	"type": "module",
+	"engines": {
+		"node": "18.x",
+		"pnpm": "8.x"
+	},
+	"packageManager": "pnpm@8.6.7",
+	"scripts": {
+		"analyze": "BUNDLE_ANALYZER=\"enabled\" next build --no-lint",
+		"build": "next build",
+		"dev": "next dev",
+		"format:check": "prettier . \"!./content/**\" --cache --check --ignore-path ./.gitignore",
+		"format:fix": "pnpm run format:check --write",
+		"lint:check": "run-p --continue-on-error \"lint:*:check\"",
+		"lint:fix": "run-p --continue-on-error \"lint:*:fix\"",
+		"lint:code:check": "eslint . --cache --ignore-path ./.gitignore",
+		"lint:code:fix": "pnpm run lint:code:check --fix",
+		"lint:styles:check": "stylelint \"./**/*.css\" --cache --ignore-path ./.gitignore",
+		"lint:styles:fix": "pnpm run lint:styles:check --fix",
+		"prepare": "run-s setup",
+		"setup": "simple-git-hooks || exit 0",
+		"start": "next start",
+		"test": "exit 0",
+		"test:e2e": "playwright test",
+		"test:e2e:codegen": "playwright codegen",
+		"test:e2e:debug": "playwright test --debug",
+		"test:e2e:ui": "playwright test --ui",
+		"types:check": "tsc --noEmit",
+		"validate": "run-p format:check lint:check types:check test test:e2e"
+	},
+	"dependencies": {
+		"@acdh-oeaw/lib": "^0.1.4",
+		"@next/bundle-analyzer": "^13.4.9",
+		"@next/mdx": "^13.4.9",
+		"@t3-oss/env-nextjs": "^0.6.0",
+		"clsx": "^1.2.1",
+		"next": "^13.4.9",
+		"next-intl": "^3.0.0-beta.8",
+		"react": "^18.2.0",
+		"react-dom": "^18.2.0",
+		"react-schemaorg": "^2.0.0",
+		"remark-frontmatter": "^4.0.1",
+		"remark-gfm": "^3.0.1",
+		"remark-mdx-frontmatter": "^3.0.0",
+		"schema-dts": "^1.1.2",
+		"sharp": "^0.32.2",
+		"zod": "^3.21.4"
+	},
+	"devDependencies": {
+		"@acdh-oeaw/commitlint-config": "^1.0.0",
+		"@acdh-oeaw/eslint-config": "^1.0.0",
+		"@acdh-oeaw/eslint-config-next": "^1.0.1",
+		"@acdh-oeaw/eslint-config-react": "^1.0.0",
+		"@acdh-oeaw/prettier-config": "^1.0.1",
+		"@acdh-oeaw/stylelint-config": "^1.0.5",
+		"@acdh-oeaw/tsconfig": "^1.0.1",
+		"@axe-core/playwright": "^4.7.3",
+		"@commitlint/cli": "^17.6.6",
+		"@mdx-js/loader": "^2.3.0",
+		"@next/eslint-plugin-next": "^13.4.9",
+		"@playwright/test": "^1.36.0",
+		"@tailwindcss/typography": "^0.5.9",
+		"@types/mdx": "^2.0.5",
+		"@types/node": "^18.16.19",
+		"@types/react": "^18.2.14",
+		"@types/react-dom": "^18.2.6",
+		"autoprefixer": "^10.4.14",
+		"eslint": "^8.44.0",
+		"eslint-plugin-tailwindcss": "^3.13.0",
+		"lint-staged": "^13.2.3",
+		"npm-run-all2": "^6.0.6",
+		"postcss": "^8.4.25",
+		"postcss-nesting": "^12.0.0",
+		"prettier": "^3.0.0",
+		"simple-git-hooks": "^2.8.1",
+		"stylelint": "^15.10.1",
+		"tailwindcss": "^3.3.2",
+		"tailwindcss-animate": "^1.0.6",
+		"ts-essentials": "^9.3.2",
+		"typescript": "^5.1.6"
+	},
+	"browserslist": {
+		"development": [
+			"last 1 chrome version",
+			"last 1 firefox version",
+			"last 1 safari version"
+		],
+		"production": [
+			">=0.75%",
+			"not dead",
+			"not op_mini all"
+		]
+	},
+	"commitlint": {
+		"extends": "@acdh-oeaw/commitlint-config"
+	},
+	"eslintConfig": {
+		"extends": [
+			"@acdh-oeaw/eslint-config",
+			"@acdh-oeaw/eslint-config-react",
+			"@acdh-oeaw/eslint-config-next",
+			"plugin:eslint-plugin-tailwindcss/recommended"
+		],
+		"settings": {
+			"tailwindcss": {
+				"callees": [
+					"cn"
+				]
+			}
+		}
+	},
+	"lint-staged": {
+		"*.@(js|ts|tsx)": [
+			"eslint --cache --fix",
+			"prettier --cache --write"
+		],
+		"*.@(css)": [
+			"stylelint --cache --fix",
+			"prettier --cache --write"
+		],
+		"*.!(css|js|ts|tsx),!./content/**": "prettier --cache --ignore-unknown --write"
+	},
+	"postcss": {
+		"plugins": {
+			"tailwindcss/nesting": "postcss-nesting",
+			"tailwindcss": {},
+			"autoprefixer": {}
+		}
+	},
+	"prettier": "@acdh-oeaw/prettier-config",
+	"simple-git-hooks": {
+		"commit-msg": "pnpm exec commitlint --edit",
+		"pre-commit": "pnpm exec lint-staged",
+		"pre-push": "pnpm run validate"
+	},
+	"stylelint": {
+		"extends": "@acdh-oeaw/stylelint-config"
+	}
+}

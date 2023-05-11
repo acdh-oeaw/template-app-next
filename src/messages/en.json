@@ -1,0 +1,54 @@
+{
+	"AppFooter": {
+		"links": {
+			"imprint": "Imprint"
+		},
+		"navigation-secondary": "Secondary"
+	},
+	"AppHeader": {
+		"links": {
+			"home": "Home"
+		},
+		"navigation-primary": "Primary"
+	},
+	"Error": {
+		"something-went-wrong": "Something went wrong!",
+		"try-again": "Try again"
+	},
+	"ImprintPage": {
+		"meta": {
+			"title": "Imprint"
+		},
+		"title": "Imprint"
+	},
+	"IndexPage": {
+		"title": "Home"
+	},
+	"Loading": {
+		"loading": "Loading"
+	},
+	"LocaleSwitcher": {
+		"locales": {
+			"en": "English",
+			"de": "German"
+		},
+		"current-locale": "Current language: {locale}",
+		"switch-locale": "Switch to {locale}"
+	},
+	"LocaleLayout": {
+		"meta": {
+			"title": "ACDH-CH App",
+			"description": "",
+			"twitter": {
+				"site": "@acdh_oeaw"
+			}
+		},
+		"skip-to-main-content": "Skip to main content"
+	},
+	"NotFoundPage": {
+		"meta": {
+			"title": "Page not found"
+		},
+		"title": "Page not found"
+	}
+}

@@ -1,0 +1,109 @@
+*,
+*::before,
+*::after {
+	box-sizing: border-box;
+	margin: 0;
+	padding: 0;
+	border-color: theme(colors.border);
+}
+
+:root {
+	/** Border radius. */
+	--radius-small: ;
+	--radius-medium: ;
+	--radius-large: ;
+
+	/** Colors. */
+	--color-neutral-0: ;
+	--color-neutral-50: ;
+	--color-neutral-100: ;
+	--color-neutral-200: ;
+	--color-neutral-300: ;
+	--color-neutral-400: ;
+	--color-neutral-500: ;
+	--color-neutral-600: ;
+	--color-neutral-700: ;
+	--color-neutral-800: ;
+	--color-neutral-900: ;
+	--color-neutral-950: ;
+	--color-neutral-1000: ;
+
+	/** Named colors. */
+	--color-foreground: 0deg 0% 0%;
+	--color-background: 0deg 0% 100%;
+	--color-surface-foreground: 0deg 0% 0%;
+	--color-surface-background: 0deg 0% 100%;
+	--color-primary-foreground: ;
+	--color-primary-background: ;
+	--color-secondary-foreground: ;
+	--color-secondary-background: ;
+	--color-muted-foreground: ;
+	--color-muted-background: ;
+	--color-accent-foreground: ;
+	--color-accent-background: ;
+	--color-negative-foreground: ;
+	--color-negative-background: ;
+	--color-positive-foreground: ;
+	--color-positive-background: ;
+	--color-border: ;
+	--color-input: ;
+	--color-focus-ring: 0deg 100% 50%;
+
+	/** Typography. */
+	--font-body: var(--font-sans), ui-sans-serif, system-ui, sans-serif;
+
+	overflow: hidden;
+	background-color: theme(colors.background);
+	color: theme(colors.foreground);
+	font-family: theme(fontFamily.body);
+	overflow-wrap: break-word;
+	tab-size: 4;
+	block-size: 100%;
+	font-synthesis: none;
+	text-size-adjust: none;
+	text-rendering: optimizeLegibility;
+	-webkit-tap-highlight-color: transparent;
+}
+
+body {
+	overflow-y: auto;
+	block-size: 100%;
+}
+
+blockquote,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+	text-wrap: balance;
+}
+
+:focus {
+	outline: none;
+}
+
+:focus-visible {
+	outline: 2px solid theme(colors.focus-ring);
+	outline-offset: 0;
+}
+
+iframe {
+	border: 0;
+}
+
+[id] {
+	scroll-margin-block-start: 2ex;
+}
+
+@media (prefers-reduced-motion: reduce) {
+	*,
+	*::before,
+	*::after {
+		transition-duration: 0.01ms !important;
+		animation-duration: 0.01ms !important;
+		animation-iteration-count: 1 !important;
+		scroll-behavior: auto !important;
+	}
+}
