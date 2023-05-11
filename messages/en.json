@@ -1,0 +1,67 @@
+{
+	"AppFooter": {
+		"links": {
+			"imprint": "Imprint"
+		},
+		"navigation-secondary": "Secondary"
+	},
+	"AppHeader": {
+		"links": {
+			"home": "Home"
+		},
+		"navigation-primary": "Primary"
+	},
+	"ColorSchemeSwitcher": {
+		"change-color-scheme": "Change color scheme",
+		"color-schemes": {
+			"dark": "Dark",
+			"light": "Light",
+			"system": "System"
+		}
+	},
+	"Error": {
+		"something-went-wrong": "Something went wrong!",
+		"try-again": "Try again"
+	},
+	"ImprintPage": {
+		"meta": {
+			"title": "Imprint"
+		},
+		"title": "Imprint"
+	},
+	"IndexPage": {
+		"badge": "ACDH-CH frontend team",
+		"lead-in": "This is a starter template built with Next.js 14. It includes internationalisation, end-to-end testing, and a GitHub-based CMS for writing documentation.",
+		"title": "Application template"
+	},
+	"Loading": {
+		"loading": "Loading"
+	},
+	"LocaleLayout": {
+		"meta": {
+			"description": "ACDH-CH Application template",
+			"title": "ACDH-CH App",
+			"twitter": {
+				"creator": "@acdh_oeaw",
+				"site": "@acdh_oeaw"
+			}
+		},
+		"skip-to-main-content": "Skip to main content"
+	},
+	"LocaleSwitcher": {
+		"current-locale": "Current language: {locale}",
+		"switch-locale": "Switch locale",
+		"switch-locale-to": "Switch to {locale}"
+	},
+	"Manifest": {
+		"description": "ACDH-CH Application template",
+		"name": "ACDH-CH App",
+		"short-name": "ACDH-CH App"
+	},
+	"NotFoundPage": {
+		"meta": {
+			"title": "Page not found"
+		},
+		"title": "Page not found"
+	}
+}
