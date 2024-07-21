@@ -50,12 +50,12 @@ test.describe("app", () => {
 			].join("\n"),
 		);
 
-		for (const locale of locales) {
-			for (const url of ["/", "/imprint"]) {
+		for (const _locale of locales) {
+			for (const pathname of ["/", "/imprint"]) {
 				const loc = String(
 					createUrl({
 						baseUrl: env.NEXT_PUBLIC_APP_BASE_URL,
-						pathname: ["/", locale, url].join(""),
+						pathname,
 					}),
 				);
 
