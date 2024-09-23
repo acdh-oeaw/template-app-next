@@ -1,4 +1,4 @@
-import { Inter } from "next/font/google";
+import { Fira_Code, Inter } from "next/font/google";
 
 export const body = Inter({
 	axes: ["opsz"],
@@ -14,4 +14,12 @@ export const heading = Inter({
 	style: ["normal", "italic"],
 	subsets: ["latin", "latin-ext"],
 	variable: "--font-heading",
+});
+
+export const mono = Fira_Code({
+	display: "swap",
+	preload: false,
+	style: ["normal"],
+	subsets: ["latin", "latin-ext"],
+	variable: "--font-mono",
 });
