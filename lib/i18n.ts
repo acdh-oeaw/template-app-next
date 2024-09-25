@@ -1,12 +1,11 @@
 import "server-only";
 
-import { notFound } from "next/navigation";
 import { getRequestConfig } from "next-intl/server";
 
-import { isValidLocale } from "@/config/i18n.config";
+import { defaultLocale } from "@/config/i18n.config";
 
-export default getRequestConfig(async ({ locale }) => {
-	if (!isValidLocale(locale)) notFound();
+export default getRequestConfig(async () => {
+	const locale = defaultLocale;
 
 	// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
 	const _messages = await import(`@/messages/${locale}.json`);
@@ -20,6 +19,7 @@ export default getRequestConfig(async ({ locale }) => {
 	const timeZone = "UTC";
 
 	return {
+		locale,
 		messages,
 		timeZone,
 	};
