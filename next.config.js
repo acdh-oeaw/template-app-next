@@ -12,6 +12,9 @@ const config = {
 		dirs: [process.cwd()],
 		ignoreDuringBuilds: true,
 	},
+	experimental: {
+		instrumentationHook: true,
+	},
 	logging: {
 		fetches: {
 			fullUrl: true,
