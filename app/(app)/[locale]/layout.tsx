@@ -7,7 +7,7 @@ import type { ReactNode } from "react";
 import { LocalizedStringProvider as Translations } from "react-aria-components/i18n";
 import { jsonLdScriptProps } from "react-schemaorg";
 
-import { Providers } from "@/app/[locale]/providers";
+import { Providers } from "@/app/(app)/[locale]/providers";
 import { AppFooter } from "@/components/app-footer";
 import { AppHeader } from "@/components/app-header";
 import { AppLayout } from "@/components/app-layout";

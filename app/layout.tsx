@@ -1,5 +1,6 @@
 import "tailwindcss/tailwind.css";
 import "@/styles/index.css";
+import "@/styles/content.css";
 
 import type { Metadata, Viewport } from "next";
 import type { ReactNode } from "react";

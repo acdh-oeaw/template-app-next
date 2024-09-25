@@ -1,4 +1,8 @@
 {
+	"mdx": {
+		"footnote-back-label": "Zurück zu Verweis {reference}",
+		"footnotes": "Fußnoten"
+	},
 	"AppFooter": {
 		"links": {
 			"imprint": "Impressum"

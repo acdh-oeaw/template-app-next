@@ -27,6 +27,7 @@
 	"i18n-ally.sortKeys": true,
 	"i18n-ally.tabStyle": "tab",
 	"less.validate": false,
+	"mdx.server.enable": true,
 	"prettier.ignorePath": ".gitignore",
 	"scss.validate": false,
 	"stylelint.enable": true,
