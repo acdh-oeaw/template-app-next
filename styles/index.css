@@ -1,9 +1,11 @@
+@import url("@/styles/tokens.css");
+
 *,
 *::after,
 *::before {
 	margin: 0;
 	padding: 0;
-	border-color: theme("colors.border");
+	border-color: var(--color-stroke-weak);
 }
 
 :root,
@@ -12,75 +14,16 @@ body {
 }
 
 :root {
-	background-color: theme("colors.background");
-	color: theme("colors.on-background");
-	font-family: theme("fontFamily.body");
+	background-color: var(--color-background-base);
+	color: var(--color-text-strong);
+	font-family: var(--font-family-body);
 	overflow-wrap: break-word;
 	font-synthesis: none;
 	text-rendering: optimizeLegibility;
 	text-size-adjust: none;
 	-webkit-tap-highlight-color: transparent;
-}
-
-/* stylelint-disable-next-line no-duplicate-selectors */
-:root {
-	--color-background: theme("colors.neutral.0");
-	--color-on-background: theme("colors.neutral.950");
-	--color-surface: theme("colors.neutral.0");
-	--color-on-surface: theme("colors.neutral.950");
-	--color-overlay: theme("colors.neutral.0");
-	--color-on-overlay: theme("colors.neutral.950");
-	--color-primary: theme("colors.neutral.900");
-	--color-on-primary: theme("colors.neutral.50");
-	--color-secondary: theme("colors.neutral.100");
-	--color-on-secondary: theme("colors.neutral.900");
-	--color-muted: theme("colors.neutral.100");
-	--color-on-muted: theme("colors.neutral.500");
-	--color-accent: theme("colors.neutral.100");
-	--color-on-accent: theme("colors.neutral.900");
-	--color-negative: theme("colors.red.500");
-	--color-on-negative: theme("colors.neutral.50");
-	--color-positive: theme("colors.green.500");
-	--color-on-positive: theme("colors.neutral.50");
-	--color-notice: theme("colors.orange.500");
-	--color-on-notice: theme("colors.neutral.50");
-	--color-informative: theme("colors.sky.500");
-	--color-on-informative: theme("colors.neutral.50");
-	--color-border: theme("colors.neutral.200");
-	--color-input: theme("colors.neutral.200");
-	--color-focus-ring: theme("colors.neutral.950");
-
-	color-scheme: light;
-}
-
-:root[data-ui-color-scheme="dark"] {
-	--color-background: theme("colors.neutral.950");
-	--color-on-background: theme("colors.neutral.50");
-	--color-surface: theme("colors.neutral.950");
-	--color-on-surface: theme("colors.neutral.50");
-	--color-overlay: theme("colors.neutral.950");
-	--color-on-overlay: theme("colors.neutral.50");
-	--color-primary: theme("colors.neutral.50");
-	--color-on-primary: theme("colors.neutral.900");
-	--color-secondary: theme("colors.neutral.800");
-	--color-on-secondary: theme("colors.neutral.50");
-	--color-muted: theme("colors.neutral.800");
-	--color-on-muted: theme("colors.neutral.400");
-	--color-accent: theme("colors.neutral.800");
-	--color-on-accent: theme("colors.neutral.50");
-	--color-negative: theme("colors.red.900");
-	--color-on-negative: theme("colors.red.50");
-	--color-positive: theme("colors.green.900");
-	--color-on-positive: theme("colors.green.50");
-	--color-notice: theme("colors.orange.900");
-	--color-on-notice: theme("colors.orange.50");
-	--color-informative: theme("colors.sky.900");
-	--color-on-informative: theme("colors.sky.50");
-	--color-border: theme("colors.neutral.800");
-	--color-input: theme("colors.neutral.800");
-	--color-focus-ring: theme("colors.neutral.300");
-
-	color-scheme: dark;
+	/* stylelint-disable-next-line property-no-unknown */
+	interpolate-size: allow-keywords;
 }
 
 :focus {
@@ -88,7 +31,7 @@ body {
 }
 
 :focus-visible {
-	outline: 2px solid theme("colors.focus-ring");
+	outline: 2px solid var(--color-stroke-focus);
 	outline-offset: 2px;
 }
 
@@ -101,7 +44,7 @@ blockquote {
 }
 
 :where(h1, h2, h3, h4, h5, h6) {
-	font-family: theme("fontFamily.heading");
+	font-family: var(--font-family-heading);
 	text-wrap: balance;
 }
 
@@ -126,15 +69,19 @@ textarea {
 	scroll-margin-block-start: 2ex;
 }
 
+[inert] ::-webkit-scrollbar {
+	display: none;
+}
+
 :where(.container) {
 	width: 100%;
 	max-width: var(--container-width, theme("screens.2xl"));
 	margin-inline: auto;
-	padding-inline: theme("padding.4");
+	padding-inline: var(--spacing-16);
 
 	/* stylelint-disable-next-line media-query-no-invalid */
 	@media screen("md") {
-		padding-inline: theme("padding.8");
+		padding-inline: var(--spacing-32);
 	}
 }
 
@@ -154,6 +101,23 @@ textarea {
 	:root {
 		font-size: 18px;
 	}
+}
+
+/* stylelint-disable-next-line no-duplicate-selectors */
+:root {
+	--color-neutral-0: #fff;
+	--color-neutral-50: #f8fafc;
+	--color-neutral-100: #f1f5f9;
+	--color-neutral-200: #e2e8f0;
+	--color-neutral-300: #cbd5e1;
+	--color-neutral-400: #94a3b8;
+	--color-neutral-500: #64748b;
+	--color-neutral-600: #475569;
+	--color-neutral-700: #334155;
+	--color-neutral-800: #1e293b;
+	--color-neutral-900: #0f172a;
+	--color-neutral-950: #020617;
+	--color-neutral-1000: #000;
 }
 
 .prose {

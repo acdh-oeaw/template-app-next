@@ -34,7 +34,7 @@
 	"stylelint.validate": ["css", "postcss", "tailwindcss"],
 	"tailwindCSS.experimental.classRegex": [
 		["cn\\(([^)]*)\\)", "(?:'|\"|`)([^']*)(?:'|\"|`)"],
-		["variants\\(([^)]*)\\)", "[\"'`]([^\"'`]*).*?[\"'`]"]
+		["styles\\(([^)]*)\\)", "[\"'`]([^\"'`]*).*?[\"'`]"]
 	],
 	"tailwindCSS.validate": true,
 	"terminal.integrated.enablePersistentSessions": false,
@@ -46,6 +46,7 @@
 	],
 	"typescript.preferences.importModuleSpecifier": "non-relative",
 	"typescript.preferences.preferTypeOnlyAutoImports": true,
+	"typescript.referencesCodeLens.enabled": true,
 	"typescript.tsdk": "node_modules/typescript/lib",
 	"workbench.editor.customLabels.patterns": {
 		"**/app/**/page.tsx": "${dirname} - Page",
@@ -54,10 +55,6 @@
 	"workbench.editor.labelFormat": "medium",
 	"workbench.tree.enableStickyScroll": true,
 	"[markdown]": {
-		"editor.wordWrap": "on"
-	},
-	"[mdx]": {
-		"editor.formatOnSave": false,
 		"editor.wordWrap": "on"
 	}
 }
