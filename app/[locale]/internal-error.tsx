@@ -1,10 +1,11 @@
 "use client";
 
 import { useTranslations } from "next-intl";
-import { type ReactNode, useEffect } from "react";
+import { type ReactNode, useEffect, useTransition } from "react";
 
 import { MainContent } from "@/components/main-content";
 import { PageTitle } from "@/components/ui/page-title";
+import { useRouter } from "@/lib/navigation";
 
 interface InternalErrorProps {
 	error: Error & { digest?: string };
@@ -17,6 +18,9 @@ export default function InternalError(props: InternalErrorProps): ReactNode {
 
 	const t = useTranslations("Error");
 
+	const router = useRouter();
+	const [isPending, startTransition] = useTransition();
+
 	useEffect(() => {
 		console.error(error);
 	}, [error]);
@@ -25,8 +29,12 @@ export default function InternalError(props: InternalErrorProps): ReactNode {
 		<MainContent className="container py-8">
 			<PageTitle>{t("something-went-wrong")}</PageTitle>
 			<button
+				disabled={isPending}
 				onClick={() => {
-					reset();
+					startTransition(() => {
+						router.refresh();
+						reset();
+					});
 				}}
 				type="button"
 			>

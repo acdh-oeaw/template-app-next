@@ -6,6 +6,8 @@ import playwrightConfig from "@acdh-oeaw/eslint-config-playwright";
 import reactConfig from "@acdh-oeaw/eslint-config-react";
 import tailwindcssConfig from "@acdh-oeaw/eslint-config-tailwindcss";
 import gitignore from "eslint-config-flat-gitignore";
+// @ts-expect-error Missing type declaration.
+import checkFilePlugin from "eslint-plugin-check-file";
 
 /** @type {Config} */
 const config = [
@@ -16,26 +18,54 @@ const config = [
 	...tailwindcssConfig,
 	...playwrightConfig,
 	{
+		plugins: {
+			// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+			"check-file": checkFilePlugin,
+		},
+		rules: {
+			"check-file/filename-naming-convention": [
+				"error",
+				{
+					"**/*": "KEBAB_CASE",
+				},
+				{ ignoreMiddleExtensions: true },
+			],
+			"check-file/folder-naming-convention": [
+				"error",
+				{
+					"**/": "NEXT_JS_APP_ROUTER_CASE",
+				},
+			],
+		},
+	},
+	{
 		rules: {
 			"arrow-body-style": ["error", "always"],
 			"no-restricted-imports": [
 				"error",
 				{
 					name: "next/image",
-					message: "Please use @/components/image instead.",
+					message: "Please use `@/components/image` instead.",
 				},
 				{
 					name: "next/link",
-					message: "Please use @/components/link instead.",
+					message: "Please use `@/components/link` instead.",
 				},
 				{
 					name: "next/navigation",
 					importNames: ["redirect", "permanentRedirect", "useRouter", "usePathname"],
-					message: "Please use @/lib/navigation instead.",
+					message: "Please use `@/lib/navigation` instead.",
 				},
 				{
 					name: "next/router",
-					message: "Please use @/lib/navigation instead.",
+					message: "Please use `@/lib/navigation` instead.",
+				},
+			],
+			"no-restricted-syntax": [
+				"error",
+				{
+					selector: 'MemberExpression[computed!=true][object.name="process"][property.name="env"]',
+					message: "Please use `@/config/env.config` instead.",
 				},
 			],
 			"prefer-arrow-callback": ["error", { allowNamedFunctions: true }],

@@ -1,3 +1,5 @@
+/* eslint-disable no-restricted-syntax */
+
 import { log } from "@acdh-oeaw/lib";
 import { createEnv } from "@acdh-oeaw/validate-env/next";
 import * as v from "valibot";
