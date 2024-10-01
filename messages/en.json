@@ -9,7 +9,8 @@
 		"links": {
 			"home": "Home"
 		},
-		"navigation-primary": "Primary"
+		"navigation-primary": "Primary",
+		"sign-out": "Sign out"
 	},
 	"ColorSchemeSwitcher": {
 		"change-color-scheme": "Change color scheme",
@@ -50,5 +51,28 @@
 			"title": "Page not found"
 		},
 		"title": "Page not found"
+	},
+	"SignInForm": {
+		"password": "Password",
+		"sign-in": "Sign in",
+		"sign-up": "Sign up",
+		"username": "Username"
+	},
+	"SignInPage": {
+		"meta": {
+			"title": "Sign in"
+		},
+		"title": "Sign in"
+	},
+	"SignUpForm": {
+		"password": "Password",
+		"sign-up": "Sign up",
+		"username": "Username"
+	},
+	"SignUpPage": {
+		"meta": {
+			"title": "Sign up"
+		},
+		"title": "Sign up"
 	}
 }

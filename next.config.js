@@ -12,6 +12,9 @@ const config = {
 		dirs: [process.cwd()],
 		ignoreDuringBuilds: true,
 	},
+	experimental: {
+		serverComponentsExternalPackages: ["@node-rs/argon2"],
+	},
 	logging: {
 		fetches: {
 			fullUrl: true,

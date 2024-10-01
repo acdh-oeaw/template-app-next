@@ -1,10 +1,14 @@
 import { useTranslations } from "next-intl";
+import { getTranslations } from "next-intl/server";
 import type { ReactNode } from "react";
 
 import { AppNavLink } from "@/components/app-nav-link";
 import { ColorSchemeSwitcher } from "@/components/color-scheme-switcher";
+import { Form } from "@/components/form";
 import type { LinkProps } from "@/components/link";
 import { LocaleSwitcher } from "@/components/locale-switcher";
+import { validateRequest } from "@/lib/auth";
+import { signOutAction } from "@/lib/auth/sign-out-action";
 import { createHref } from "@/lib/create-href";
 
 export function AppHeader(): ReactNode {
@@ -32,8 +36,29 @@ export function AppHeader(): ReactNode {
 				<div className="flex items-center gap-4">
 					<ColorSchemeSwitcher />
 					<LocaleSwitcher />
+					{/* @ts-expect-error @see https://github.com/DefinitelyTyped/DefinitelyTyped/pull/69970 */}
+					<AuthMenu />
 				</div>
 			</div>
 		</header>
+	);
+}
+
+async function AuthMenu(): Promise<ReactNode> {
+	const t = await getTranslations("AppHeader");
+
+	const { user } = await validateRequest();
+
+	if (user == null) {
+		return null;
+	}
+
+	return (
+		<div>
+			<div>{user.username}</div>
+			<Form action={signOutAction}>
+				<button type="submit">{t("sign-out")}</button>
+			</Form>
+		</div>
 	);
 }
