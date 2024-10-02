@@ -11,7 +11,13 @@
 	"scripts": {
 		"analyze": "BUNDLE_ANALYZER=\"enabled\" next build --no-lint",
 		"build": "next build",
-		"db:migration:generate": "drizzle-kit generate",
+		"db:clear": "dotenv -c -- tsx ./scripts/db/clear.ts",
+		"db:generate": "drizzle-kit generate --config=./config/drizzle.config.ts",
+		"db:migrate": "dotenv -c -- tsx ./scripts/db/migrate.ts",
+		"db:push": "drizzle-kit push --config=./config/drizzle.config.ts",
+		"db:reset": "run-s db:clear db:migrate db:seed",
+		"db:seed": "dotenv -c -- tsx ./scripts/db/seed.ts",
+		"db:studio": "drizzle-kit studio",
 		"dev": "next dev",
 		"format:check": "prettier . \"!./@(content|public)/**\" --cache --cache-location ./.prettiercache --check --ignore-path ./.gitignore",
 		"format:fix": "pnpm run format:check --write",
@@ -80,6 +86,7 @@
 		"axe-playwright": "^2.0.2",
 		"ci-info": "^4.0.0",
 		"dotenv": "^16.4.5",
+		"dotenv-cli": "^7.4.2",
 		"dotenv-expand": "^11.0.6",
 		"drizzle-kit": "^0.24.2",
 		"eslint": "^9.11.0",
@@ -97,6 +104,7 @@
 		"tailwindcss": "^3.4.12",
 		"tailwindcss-animate": "^1.0.7",
 		"tailwindcss-react-aria-components": "^1.1.5",
+		"tsx": "^4.19.1",
 		"typescript": "^5.6.2"
 	},
 	"browserslist": {

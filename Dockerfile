@@ -50,6 +50,9 @@ COPY --from=build --chown=node:node /app/public ./public
 COPY --from=build --chown=node:node /app/.next/standalone ./
 COPY --from=build --chown=node:node /app/.next/static ./.next/static
 
+COPY --from=build --chown=node:node /app/scripts/db/migrate.js ./scripts/db/migrate.js
+COPY --from=build --chown=node:node /app/drizzle ./drizzle
+
 # Ensure folder is owned by node:node when mounted as volume.
 RUN mkdir -p /app/.next/cache/images
 
@@ -57,4 +60,4 @@ ENV NODE_ENV=production
 
 EXPOSE 3000
 
-CMD ["node", "server.js"]
+CMD node ./scripts/db/migrate.js && node server.js

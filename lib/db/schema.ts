@@ -19,9 +19,12 @@ export const sessions = pgTable("sessions", {
 	id: text("id").primaryKey(),
 	userId: text("user_id")
 		.notNull()
-		.references(() => {
-			return users.id;
-		}),
+		.references(
+			() => {
+				return users.id;
+			},
+			{ onDelete: "cascade" },
+		),
 	expiresAt: timestamp("expires_at", { mode: "date", withTimezone: true }).notNull(),
 });
 
