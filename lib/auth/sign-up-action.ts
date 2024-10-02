@@ -7,9 +7,10 @@ import { generateId } from "lucia";
 import { cookies } from "next/headers";
 import * as v from "valibot";
 
-import { auth } from "@/lib/auth";
 import { argonConfig } from "@/lib/auth/auth.config";
+import { lucia } from "@/lib/auth/lucia";
 import { db } from "@/lib/db";
+import { userTable } from "@/lib/db/schema";
 import { type ActionState, createErrorActionState } from "@/lib/form";
 import { redirect } from "@/lib/navigation";
 
@@ -37,14 +38,14 @@ export async function signUpAction(
 	const userId = generateId(15);
 
 	try {
-		db.prepare("INSERT INTO user (id, username, password_hash) VALUES(?, ?, ?)").run(
-			userId,
+		await db.insert(userTable).values({
+			id: userId,
 			username,
 			passwordHash,
-		);
+		});
 
-		const session = await auth.createSession(userId, {});
-		const sessionCookie = auth.createSessionCookie(session.id);
+		const session = await lucia.createSession(userId, {});
+		const sessionCookie = lucia.createSessionCookie(session.id);
 		cookies().set(sessionCookie.name, sessionCookie.value, sessionCookie.attributes);
 	} catch (error) {
 		if (error instanceof SqliteError && error.code === "SQLITE_CONSTRAINT_UNIQUE") {

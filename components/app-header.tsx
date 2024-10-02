@@ -5,10 +5,10 @@ import type { ReactNode } from "react";
 import { AppNavLink } from "@/components/app-nav-link";
 import { ColorSchemeSwitcher } from "@/components/color-scheme-switcher";
 import { Form } from "@/components/form";
-import type { LinkProps } from "@/components/link";
+import { Link, type LinkProps } from "@/components/link";
 import { LocaleSwitcher } from "@/components/locale-switcher";
-import { validateRequest } from "@/lib/auth";
 import { signOutAction } from "@/lib/auth/sign-out-action";
+import { validateRequest } from "@/lib/auth/validate-request";
 import { createHref } from "@/lib/create-href";
 
 export function AppHeader(): ReactNode {
@@ -50,7 +50,11 @@ async function AuthMenu(): Promise<ReactNode> {
 	const { user } = await validateRequest();
 
 	if (user == null) {
-		return null;
+		return (
+			<div>
+				<Link href="/auth/sign-in">{t("sign-in")}</Link>
+			</div>
+		);
 	}
 
 	return (

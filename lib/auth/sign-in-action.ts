@@ -2,12 +2,14 @@
 
 import { getFormDataValues } from "@acdh-oeaw/lib";
 import { verify } from "@node-rs/argon2";
+import { eq } from "drizzle-orm";
 import { cookies } from "next/headers";
 import * as v from "valibot";
 
-import { auth } from "@/lib/auth";
 import { argonConfig } from "@/lib/auth/auth.config";
+import { lucia } from "@/lib/auth/lucia";
 import { db } from "@/lib/db";
+import { userTable } from "@/lib/db/schema";
 import { type ActionState, createErrorActionState } from "@/lib/form";
 import { redirect } from "@/lib/navigation";
 
@@ -30,13 +32,15 @@ export async function signInAction(
 
 	const { password, username } = result.output;
 
-	const existingUser = db.prepare("SELECT * FROM user WHERE username = ?").get(username);
+	const existingUser = await db.query.userTable.findFirst({
+		where: eq(userTable.username, username),
+	});
 
 	if (!existingUser) {
 		return createErrorActionState("Incorrect username or password");
 	}
 
-	const validPassword = await verify(existingUser.password_hash, password, argonConfig);
+	const validPassword = await verify(existingUser.passwordHash, password, argonConfig);
 
 	if (!validPassword) {
 		// NOTE:
@@ -51,8 +55,8 @@ export async function signInAction(
 		return createErrorActionState("Incorrect username or password");
 	}
 
-	const session = await auth.createSession(existingUser.id, {});
-	const sessionCookie = auth.createSessionCookie(session.id);
+	const session = await lucia.createSession(existingUser.id, {});
+	const sessionCookie = lucia.createSessionCookie(session.id);
 	cookies().set(sessionCookie.name, sessionCookie.value, sessionCookie.attributes);
 
 	return redirect("/");

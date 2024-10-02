@@ -17,9 +17,9 @@ importers:
       '@acdh-oeaw/validate-env':
         specifier: ^0.0.3
         version: 0.0.3
-      '@lucia-auth/adapter-sqlite':
-        specifier: ^3.0.2
-        version: 3.0.2(better-sqlite3@11.3.0)(lucia@3.2.0)
+      '@lucia-auth/adapter-drizzle':
+        specifier: ^1.1.0
+        version: 1.1.0(drizzle-orm@0.33.0(@types/better-sqlite3@7.6.11)(@types/react@18.3.8)(better-sqlite3@11.3.0)(react@18.3.1))(lucia@3.2.0)
       '@node-rs/argon2':
         specifier: ^1.8.3
         version: 1.8.3
@@ -29,6 +29,9 @@ importers:
       client-only:
         specifier: ^0.0.1
         version: 0.0.1
+      drizzle-orm:
+        specifier: ^0.33.0
+        version: 0.33.0(@types/better-sqlite3@7.6.11)(@types/react@18.3.8)(better-sqlite3@11.3.0)(react@18.3.1)
       fast-glob:
         specifier: ^3.3.2
         version: 3.3.2
@@ -606,17 +609,11 @@ packages:
   '@jridgewell/trace-mapping@0.3.25':
     resolution: {integrity: sha512-vNk6aEwybGtawWmy/PzwnGDOjCkLWSD2wqvjGGAgOAwCGWySYXfYoxt00IJkTF+8Lb57DwOb3Aa0o9CApepiYQ==}
 
-  '@lucia-auth/adapter-sqlite@3.0.2':
-    resolution: {integrity: sha512-UlXpF+2UoFEdm1AsriJii5BOARwqko6SX29rQ8T8Za7rnjj9KLXLaRVQUgBhGmggAyvzCtguJ2+XOZDsfWm6Sw==}
+  '@lucia-auth/adapter-drizzle@1.1.0':
+    resolution: {integrity: sha512-iCTnZWvfI5lLZOdUHZYiXA1jaspIFEeo2extLxQ3DjP3uOVys7IPwBi7zezLIRu9dhro4H4Kji+7gSYyjcef2A==}
     peerDependencies:
-      '@libsql/client': ^0.3.0
-      better-sqlite3: 8.x - 11.x
+      drizzle-orm: '>= 0.29 <1'
       lucia: 3.x
-    peerDependenciesMeta:
-      '@libsql/client':
-        optional: true
-      better-sqlite3:
-        optional: true
 
   '@napi-rs/wasm-runtime@0.2.4':
     resolution: {integrity: sha512-9zESzOO5aDByvhIAsOy9TbpZ0Ur2AJbUI7UT73kcUTS2mxAMHOBaa1st/jAymNoCtvrit99kkzT1FZuXVcgfIQ==}
@@ -1993,6 +1990,95 @@ packages:
   dotenv@16.4.5:
     resolution: {integrity: sha512-ZmdL2rui+eB2YwhsWzjInR8LldtZHGDoQ1ugH85ppHKwpUHL7j7rN0Ti9NCnGiQbhaZ11FpR+7ao1dNsmduNUg==}
     engines: {node: '>=12'}
+
+  drizzle-orm@0.33.0:
+    resolution: {integrity: sha512-SHy72R2Rdkz0LEq0PSG/IdvnT3nGiWuRk+2tXZQ90GVq/XQhpCzu/EFT3V2rox+w8MlkBQxifF8pCStNYnERfA==}
+    peerDependencies:
+      '@aws-sdk/client-rds-data': '>=3'
+      '@cloudflare/workers-types': '>=3'
+      '@electric-sql/pglite': '>=0.1.1'
+      '@libsql/client': '*'
+      '@neondatabase/serverless': '>=0.1'
+      '@op-engineering/op-sqlite': '>=2'
+      '@opentelemetry/api': ^1.4.1
+      '@planetscale/database': '>=1'
+      '@prisma/client': '*'
+      '@tidbcloud/serverless': '*'
+      '@types/better-sqlite3': '*'
+      '@types/pg': '*'
+      '@types/react': '>=18'
+      '@types/sql.js': '*'
+      '@vercel/postgres': '>=0.8.0'
+      '@xata.io/client': '*'
+      better-sqlite3: '>=7'
+      bun-types: '*'
+      expo-sqlite: '>=13.2.0'
+      knex: '*'
+      kysely: '*'
+      mysql2: '>=2'
+      pg: '>=8'
+      postgres: '>=3'
+      prisma: '*'
+      react: '>=18'
+      sql.js: '>=1'
+      sqlite3: '>=5'
+    peerDependenciesMeta:
+      '@aws-sdk/client-rds-data':
+        optional: true
+      '@cloudflare/workers-types':
+        optional: true
+      '@electric-sql/pglite':
+        optional: true
+      '@libsql/client':
+        optional: true
+      '@neondatabase/serverless':
+        optional: true
+      '@op-engineering/op-sqlite':
+        optional: true
+      '@opentelemetry/api':
+        optional: true
+      '@planetscale/database':
+        optional: true
+      '@prisma/client':
+        optional: true
+      '@tidbcloud/serverless':
+        optional: true
+      '@types/better-sqlite3':
+        optional: true
+      '@types/pg':
+        optional: true
+      '@types/react':
+        optional: true
+      '@types/sql.js':
+        optional: true
+      '@vercel/postgres':
+        optional: true
+      '@xata.io/client':
+        optional: true
+      better-sqlite3:
+        optional: true
+      bun-types:
+        optional: true
+      expo-sqlite:
+        optional: true
+      knex:
+        optional: true
+      kysely:
+        optional: true
+      mysql2:
+        optional: true
+      pg:
+        optional: true
+      postgres:
+        optional: true
+      prisma:
+        optional: true
+      react:
+        optional: true
+      sql.js:
+        optional: true
+      sqlite3:
+        optional: true
 
   duplexer@0.1.2:
     resolution: {integrity: sha512-jtD6YG370ZCIi/9GTaJKQxWTZD045+4R4hTk/x1UyoqadyJ9x9CgSi1RlVDQF8U2sxLLSnFkCaMihqljHIWgMg==}
@@ -4278,11 +4364,10 @@ snapshots:
       '@jridgewell/resolve-uri': 3.1.2
       '@jridgewell/sourcemap-codec': 1.5.0
 
-  '@lucia-auth/adapter-sqlite@3.0.2(better-sqlite3@11.3.0)(lucia@3.2.0)':
+  '@lucia-auth/adapter-drizzle@1.1.0(drizzle-orm@0.33.0(@types/better-sqlite3@7.6.11)(@types/react@18.3.8)(better-sqlite3@11.3.0)(react@18.3.1))(lucia@3.2.0)':
     dependencies:
+      drizzle-orm: 0.33.0(@types/better-sqlite3@7.6.11)(@types/react@18.3.8)(better-sqlite3@11.3.0)(react@18.3.1)
       lucia: 3.2.0
-    optionalDependencies:
-      better-sqlite3: 11.3.0
 
   '@napi-rs/wasm-runtime@0.2.4':
     dependencies:
@@ -6050,6 +6135,13 @@ snapshots:
       dotenv: 16.4.5
 
   dotenv@16.4.5: {}
+
+  drizzle-orm@0.33.0(@types/better-sqlite3@7.6.11)(@types/react@18.3.8)(better-sqlite3@11.3.0)(react@18.3.1):
+    optionalDependencies:
+      '@types/better-sqlite3': 7.6.11
+      '@types/react': 18.3.8
+      better-sqlite3: 11.3.0
+      react: 18.3.1
 
   duplexer@0.1.2: {}
 
