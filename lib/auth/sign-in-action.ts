@@ -9,7 +9,7 @@ import * as v from "valibot";
 import { argonConfig } from "@/lib/auth/auth.config";
 import { lucia } from "@/lib/auth/lucia";
 import { db } from "@/lib/db";
-import { userTable } from "@/lib/db/schema";
+import { users } from "@/lib/db/schema";
 import { type ActionState, createErrorActionState } from "@/lib/form";
 import { redirect } from "@/lib/navigation";
 
@@ -32,8 +32,8 @@ export async function signInAction(
 
 	const { password, username } = result.output;
 
-	const existingUser = await db.query.userTable.findFirst({
-		where: eq(userTable.username, username),
+	const existingUser = await db.query.users.findFirst({
+		where: eq(users.username, username),
 	});
 
 	if (!existingUser) {

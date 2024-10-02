@@ -6,6 +6,8 @@ import playwrightConfig from "@acdh-oeaw/eslint-config-playwright";
 import reactConfig from "@acdh-oeaw/eslint-config-react";
 import tailwindcssConfig from "@acdh-oeaw/eslint-config-tailwindcss";
 import gitignore from "eslint-config-flat-gitignore";
+// @ts-expect-error Missing type declarations.
+import drizzle from "eslint-plugin-drizzle";
 
 /** @type {Config} */
 const config = [
@@ -45,6 +47,7 @@ const config = [
 			"react/jsx-sort-props": ["error", { reservedFirst: true }],
 		},
 	},
+	drizzle.configs.recommended,
 ];
 
 export default config;
