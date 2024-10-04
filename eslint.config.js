@@ -48,14 +48,13 @@ const config = [
 		},
 	},
 	{
-		files: ["data-access/**/*.ts"],
 		plugins: {
 			// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
 			drizzle,
 		},
 		rules: {
-			"drizzle/enforce-delete-with-where": "error",
-			"drizzle/enforce-update-with-where": "error",
+			"drizzle/enforce-delete-with-where": ["error", { drizzleObjectName: ["db"] }],
+			"drizzle/enforce-update-with-where": ["error", { drizzleObjectName: ["db"] }],
 		},
 	},
 ];
