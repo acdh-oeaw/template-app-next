@@ -47,7 +47,17 @@ const config = [
 			"react/jsx-sort-props": ["error", { reservedFirst: true }],
 		},
 	},
-	drizzle.configs.recommended,
+	{
+		files: ["data-access/**/*.ts"],
+		plugins: {
+			// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+			drizzle,
+		},
+		rules: {
+			"drizzle/enforce-delete-with-where": "error",
+			"drizzle/enforce-update-with-where": "error",
+		},
+	},
 ];
 
 export default config;

@@ -2,15 +2,14 @@
 
 import { getFormDataValues } from "@acdh-oeaw/lib";
 import { hash } from "@node-rs/argon2";
-import { SqliteError } from "better-sqlite3";
 import { generateId } from "lucia";
 import { cookies } from "next/headers";
 import * as v from "valibot";
 
+import { db } from "@/db";
+import { users } from "@/db/schema";
 import { argonConfig } from "@/lib/auth/auth.config";
 import { lucia } from "@/lib/auth/lucia";
-import { db } from "@/lib/db";
-import { users } from "@/lib/db/schema";
 import { type ActionState, createErrorActionState } from "@/lib/form";
 import { redirect } from "@/lib/navigation";
 
@@ -48,7 +47,7 @@ export async function signUpAction(
 		const sessionCookie = lucia.createSessionCookie(session.id);
 		cookies().set(sessionCookie.name, sessionCookie.value, sessionCookie.attributes);
 	} catch (error) {
-		if (error instanceof SqliteError && error.code === "SQLITE_CONSTRAINT_UNIQUE") {
+		if (error instanceof Error && "code" in error && error.code === "23505") {
 			return createErrorActionState("Username already used");
 		}
 

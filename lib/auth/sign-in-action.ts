@@ -6,10 +6,10 @@ import { eq } from "drizzle-orm";
 import { cookies } from "next/headers";
 import * as v from "valibot";
 
+import { db } from "@/db";
+import { users } from "@/db/schema";
 import { argonConfig } from "@/lib/auth/auth.config";
 import { lucia } from "@/lib/auth/lucia";
-import { db } from "@/lib/db";
-import { users } from "@/lib/db/schema";
 import { type ActionState, createErrorActionState } from "@/lib/form";
 import { redirect } from "@/lib/navigation";
 
