@@ -1,6 +1,5 @@
 import { relations, sql } from "drizzle-orm";
 import { pgTable, text, timestamp, uuid } from "drizzle-orm/pg-core";
-import { createInsertSchema, createSelectSchema } from "drizzle-valibot";
 
 export const users = pgTable("users", {
 	id: uuid("id").primaryKey().defaultRandom(),
@@ -23,9 +22,6 @@ export const userRelations = relations(users, ({ many }) => {
 
 export type User = typeof users.$inferSelect;
 export type UserInput = typeof users.$inferInsert;
-
-export const UserSchema = createSelectSchema(users);
-export const UserInputSchema = createInsertSchema(users);
 
 //
 
@@ -50,6 +46,3 @@ export const sessionRelations = relations(sessions, ({ one }) => {
 
 export type Session = typeof sessions.$inferSelect;
 export type SessionInput = typeof sessions.$inferInsert;
-
-export const SessionSchema = createSelectSchema(sessions);
-export const SessionInputSchema = createInsertSchema(sessions);
