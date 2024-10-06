@@ -47,6 +47,9 @@ export async function signUpAction(
 		const sessionCookie = lucia.createSessionCookie(session.id);
 		cookies().set(sessionCookie.name, sessionCookie.value, sessionCookie.attributes);
 	} catch (error) {
+		/**
+		 * FIXME: @see https://github.com/drizzle-team/drizzle-orm/issues/376
+		 */
 		if (error instanceof Error && "code" in error && error.code === "23505") {
 			return createErrorActionState("Username already used");
 		}

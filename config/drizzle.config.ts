@@ -1,6 +1,9 @@
 import { defineConfig } from "drizzle-kit";
 
+import { credentials } from "@/config/db.config";
+
 export default defineConfig({
+	dbCredentials: credentials,
 	dialect: "postgresql",
 	out: "./db/migrations/",
 	schema: "./db/schema.ts",

@@ -1,11 +1,19 @@
 import { log } from "@acdh-oeaw/lib";
 import { migrate } from "drizzle-orm/pglite/migrator";
+import { drizzle } from "drizzle-orm/postgres-js";
+import postgres from "postgres";
 
+import { credentials } from "@/config/db.config";
 import config from "@/config/drizzle.config";
-import { db } from "@/db";
 
 async function main() {
+	const client = postgres({ ...credentials, max: 1 });
+
+	const db = drizzle(client);
+
 	await migrate(db, { migrationsFolder: config.out! });
+
+	await client.end();
 }
 
 main()

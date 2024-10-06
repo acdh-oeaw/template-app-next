@@ -49,7 +49,8 @@ COPY --from=build --chown=node:node /app/next.config.js ./
 COPY --from=build --chown=node:node /app/public ./public
 COPY --from=build --chown=node:node /app/.next/standalone ./
 COPY --from=build --chown=node:node /app/.next/static ./.next/static
-COPY --from=build --chown=node:node /app/db/migrate-docker.js ./db/migrate-docker.js
+
+COPY --from=build --chown=node:node /app/db/migrate.ts ./db/migrate.ts
 
 # Ensure folder is owned by node:node when mounted as volume.
 RUN mkdir -p /app/.next/cache/images
@@ -58,4 +59,4 @@ ENV NODE_ENV=production
 
 EXPOSE 3000
 
-CMD node ./db/migrate-docker.js && node server.js
+CMD node --import tsx ./db/migrate.ts && node server.js

@@ -1,6 +1,8 @@
 import { relations, sql } from "drizzle-orm";
 import { pgTable, text, timestamp, uuid } from "drizzle-orm/pg-core";
 
+/** Users. */
+
 export const users = pgTable("users", {
 	id: uuid("id").primaryKey().defaultRandom(),
 	username: text("username").notNull().unique(),
@@ -23,7 +25,7 @@ export const userRelations = relations(users, ({ many }) => {
 export type User = typeof users.$inferSelect;
 export type UserInput = typeof users.$inferInsert;
 
-//
+/** Sessions. */
 
 export const sessions = pgTable("sessions", {
 	id: text("id").primaryKey(),

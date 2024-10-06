@@ -14,6 +14,12 @@ export const env = createEnv({
 		const Schema = v.object({
 			BUILD_MODE: v.optional(v.picklist(["export", "standalone"])),
 			BUNDLE_ANALYZER: v.optional(v.picklist(["disabled", "enabled"]), "disabled"),
+			DB_HOST: v.pipe(v.string(), v.nonEmpty()),
+			DB_NAME: v.pipe(v.string(), v.nonEmpty()),
+			DB_PASSWORD: v.pipe(v.string(), v.minLength(8)),
+			DB_PORT: v.pipe(v.string(), v.transform(Number), v.number(), v.integer(), v.minValue(1000)),
+			DB_URL: v.pipe(v.string(), v.url()),
+			DB_USER: v.pipe(v.string(), v.nonEmpty()),
 		});
 
 		return v.parse(Schema, input);
@@ -41,6 +47,12 @@ export const env = createEnv({
 	environment: {
 		BUILD_MODE: process.env.BUILD_MODE,
 		BUNDLE_ANALYZER: process.env.BUNDLE_ANALYZER,
+		DB_HOST: process.env.DB_HOST,
+		DB_NAME: process.env.DB_NAME,
+		DB_PASSWORD: process.env.DB_PASSWORD,
+		DB_PORT: process.env.DB_PORT,
+		DB_URL: process.env.DB_URL,
+		DB_USER: process.env.DB_USER,
 		NEXT_PUBLIC_APP_BASE_URL: process.env.NEXT_PUBLIC_APP_BASE_URL,
 		NEXT_PUBLIC_BOTS: process.env.NEXT_PUBLIC_BOTS,
 		NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION,
