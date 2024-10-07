@@ -54,10 +54,11 @@
 		"title": "Page not found"
 	},
 	"SignInForm": {
+		"email": "Email",
+		"no-account": "Don't yet have an account?",
 		"password": "Password",
 		"sign-in": "Sign in",
-		"sign-up": "Sign up",
-		"username": "Username"
+		"sign-up": "Sign up"
 	},
 	"SignInPage": {
 		"meta": {
@@ -66,9 +67,11 @@
 		"title": "Sign in"
 	},
 	"SignUpForm": {
+		"email": "Email",
+		"has-account": "Already have an account?",
 		"password": "Password",
-		"sign-up": "Sign up",
-		"username": "Username"
+		"sign-in": "Sign in",
+		"sign-up": "Sign up"
 	},
 	"SignUpPage": {
 		"meta": {

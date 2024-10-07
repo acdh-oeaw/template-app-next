@@ -2,12 +2,12 @@ import { useTranslations } from "next-intl";
 import { getTranslations } from "next-intl/server";
 import type { ReactNode } from "react";
 
+import { signOutAction } from "@/app/[locale]/_actions/sign-out-action";
 import { AppNavLink } from "@/components/app-nav-link";
 import { ColorSchemeSwitcher } from "@/components/color-scheme-switcher";
 import { Form } from "@/components/form";
 import { Link, type LinkProps } from "@/components/link";
 import { LocaleSwitcher } from "@/components/locale-switcher";
-import { signOutAction } from "@/lib/auth/sign-out-action";
 import { validateRequest } from "@/lib/auth/validate-request";
 import { createHref } from "@/lib/create-href";
 
@@ -59,7 +59,7 @@ async function AuthMenu(): Promise<ReactNode> {
 
 	return (
 		<div>
-			<div>{user.username}</div>
+			<div>{user.email}</div>
 			<Form action={signOutAction}>
 				<button type="submit">{t("sign-out")}</button>
 			</Form>

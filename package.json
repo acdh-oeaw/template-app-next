@@ -11,9 +11,12 @@
 	"scripts": {
 		"analyze": "BUNDLE_ANALYZER=\"enabled\" next build --no-lint",
 		"build": "next build",
+		"db:check": "NODE_OPTIONS=\"--env-file ./.env.local\" drizzle-kit check --config=./config/drizzle.config.ts",
 		"db:clear": "NODE_OPTIONS=\"--env-file ./.env.local\" tsx ./db/clear.ts",
+		"db:drop": "NODE_OPTIONS=\"--env-file ./.env.local\" drizzle-kit drop --config=./config/drizzle.config.ts",
 		"db:generate": "NODE_OPTIONS=\"--env-file ./.env.local\" drizzle-kit generate --config=./config/drizzle.config.ts",
 		"db:migrate": "NODE_OPTIONS=\"--env-file ./.env.local\" drizzle-kit migrate --config=./config/drizzle.config.ts",
+		"db:pull": "NODE_OPTIONS=\"--env-file ./.env.local\" drizzle-kit introspect --config=./config/drizzle.config.ts",
 		"db:push": "NODE_OPTIONS=\"--env-file ./.env.local\" drizzle-kit push --config=./config/drizzle.config.ts",
 		"db:reset": "run-s db:clear db:migrate db:seed",
 		"db:seed": "NODE_OPTIONS=\"--env-file ./.env.local\" tsx ./db/seed.ts",

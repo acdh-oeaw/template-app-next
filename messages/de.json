@@ -54,10 +54,11 @@
 		"title": "Seite nicht gefunden"
 	},
 	"SignInForm": {
+		"email": "Email",
+		"no-account": "Sie sind noch nicht registriert?",
 		"password": "Passwort",
 		"sign-in": "Anmelden",
-		"sign-up": "Registrieren",
-		"username": "Username"
+		"sign-up": "Registrieren"
 	},
 	"SignInPage": {
 		"meta": {
@@ -66,9 +67,11 @@
 		"title": "Anmelden"
 	},
 	"SignUpForm": {
+		"email": "Email",
+		"has-account": "Sie sind bereits registriert?",
 		"password": "Passwort",
-		"sign-up": "Registrieren",
-		"username": "Username"
+		"sign-in": "Anmelden",
+		"sign-up": "Registrieren"
 	},
 	"SignUpPage": {
 		"meta": {

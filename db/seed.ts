@@ -20,7 +20,7 @@ async function main() {
 
 	const users = times(10).map(() => {
 		const user: schema.UserInput = {
-			username: faker.internet.userName(),
+			email: faker.internet.email(),
 			passwordHash: faker.internet.password({ memorable: true }),
 		};
 
