@@ -16,7 +16,7 @@ async function main() {
 
 	await migrate(db, { migrationsFolder: config.out! });
 
-	await client.end();
+	await db.$client.end();
 }
 
 main()

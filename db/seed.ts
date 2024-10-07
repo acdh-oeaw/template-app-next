@@ -36,7 +36,7 @@ async function main() {
 	// eslint-disable-next-line no-console
 	console.table(users);
 
-	await client.end();
+	await db.$client.end();
 }
 
 main()

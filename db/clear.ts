@@ -18,7 +18,7 @@ async function main() {
 		await db.delete(table);
 	}
 
-	await client.end();
+	await db.$client.end();
 }
 
 main()
