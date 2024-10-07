@@ -14,22 +14,22 @@ import { type ForwardedRef, forwardRef } from "@/lib/forward-ref";
 export const buttonStyles = compose(
 	focusRing,
 	styles({
-		base: "inline-flex cursor-default items-center justify-center whitespace-nowrap rounded-md font-medium transition",
+		base: "rounded-md font-medium inline-flex cursor-default items-center justify-center whitespace-nowrap transition",
 		variants: {
 			size: {
-				sm: "h-8 rounded-md px-3 text-xs",
-				md: "h-9 px-4 py-2 text-sm",
-				lg: "h-10 rounded-md px-8 text-sm",
+				sm: "rounded-md text-xs h-8 px-3",
+				md: "h-9 text-sm px-4 py-2",
+				lg: "rounded-md text-sm h-10 px-8",
 				icon: "size-9",
 			},
 			variant: {
-				primary: "bg-primary text-on-primary shadow-sm hover:bg-primary/90 pressed:bg-primary/80",
+				primary: "bg-primary text-on-primary hover:bg-primary/90 pressed:bg-primary/80 shadow-sm",
 				secondary:
-					"bg-secondary text-on-secondary shadow-sm hover:bg-secondary/80 pressed:bg-secondary/70",
+					"bg-secondary text-on-secondary hover:bg-secondary/80 pressed:bg-secondary/70 shadow-sm",
 				negative:
-					"bg-negative text-on-negative shadow-sm hover:bg-negative/90 pressed:bg-negative/80",
+					"bg-negative text-on-negative hover:bg-negative/90 pressed:bg-negative/80 shadow-sm",
 				outline:
-					"border border-input bg-background shadow-sm hover:bg-accent hover:text-on-accent pressed:bg-accent/90",
+					"border-input bg-background hover:bg-accent hover:text-on-accent pressed:bg-accent/90 border shadow-sm",
 				ghost: "hover:bg-accent hover:text-on-accent pressed:bg-accent/90",
 				// link: "text-primary underline-offset-4 hover:underline",
 			},

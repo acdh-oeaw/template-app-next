@@ -50,7 +50,7 @@ export function SelectTrigger({ className, children, ...props }: AriaButtonProps
 		<AriaButton
 			className={(values) => {
 				return cn(
-					"flex h-9 w-full items-center justify-between rounded-md border border-input bg-transparent px-3 py-2 text-sm shadow-sm ring-offset-background placeholder:text-on-muted focus:outline-none focus:ring-1 focus:ring-focus-ring disabled:cursor-not-allowed disabled:opacity-50",
+					"h-9 rounded-md border-input text-sm ring-offset-background placeholder:text-on-muted focus:ring-focus-ring flex w-full items-center justify-between border bg-transparent px-3 py-2 shadow-sm focus:outline-none focus:ring-1 disabled:cursor-not-allowed disabled:opacity-50",
 					typeof className === "function" ? className(values) : className,
 				);
 			}}
@@ -73,7 +73,7 @@ export function SelectPopover({ className, offset = 0, ...props }: AriaPopoverPr
 		<AriaPopover
 			className={(values) => {
 				return cn(
-					"relative z-50 w-[--trigger-width] min-w-32 overflow-y-auto rounded-md border bg-overlay text-on-overlay shadow-md data-[entering]:animate-in data-[exiting]:animate-out data-[entering]:fade-in-0 data-[exiting]:fade-out-0 data-[exiting]:zoom-out-95 data-[placement=bottom]:slide-in-from-top-2 data-[placement=left]:slide-in-from-right-2 data-[placement=right]:slide-in-from-left-2 data-[placement=top]:slide-in-from-bottom-2",
+					"rounded-md bg-overlay text-on-overlay relative z-50 w-[--trigger-width] min-w-32 overflow-y-auto border shadow-md data-[entering]:animate-in data-[exiting]:animate-out data-[entering]:fade-in-0 data-[exiting]:fade-out-0 data-[exiting]:zoom-out-95 data-[placement=bottom]:slide-in-from-top-2 data-[placement=left]:slide-in-from-right-2 data-[placement=right]:slide-in-from-left-2 data-[placement=top]:slide-in-from-bottom-2",
 					"data-[placement=bottom]:translate-y-1 data-[placement=left]:-translate-x-1 data-[placement=right]:translate-x-1 data-[placement=top]:-translate-y-1",
 					typeof className === "function" ? className(values) : className,
 				);
@@ -95,7 +95,7 @@ export function SelectHeader({
 	className,
 	...props
 }: ComponentPropsWithoutRef<typeof AriaHeader>): ReactNode {
-	return <AriaHeader className={cn("px-2 py-1.5 text-sm font-semibold", className)} {...props} />;
+	return <AriaHeader className={cn("py-1.5 text-sm font-semibold px-2", className)} {...props} />;
 }
 
 export function SelectItem({ className, children, ...props }: AriaListBoxItemProps): ReactNode {
@@ -103,7 +103,7 @@ export function SelectItem({ className, children, ...props }: AriaListBoxItemPro
 		<AriaListBoxItem
 			className={(values) => {
 				return cn(
-					"relative flex w-full cursor-default select-none items-center rounded-sm py-1.5 pl-2 pr-8 text-sm outline-none data-[disabled]:pointer-events-none data-[disabled]:opacity-50 focus:bg-accent focus:text-on-accent",
+					"rounded-sm py-1.5 text-sm focus:bg-accent focus:text-on-accent relative flex w-full cursor-default select-none items-center pl-2 pr-8 outline-none data-[disabled]:pointer-events-none data-[disabled]:opacity-50",
 					typeof className === "function" ? className(values) : className,
 				);
 			}}
@@ -126,7 +126,7 @@ export function SelectItem({ className, children, ...props }: AriaListBoxItemPro
 }
 
 export function SelectSeparator({ className, ...props }: AriaSeparatorProps): ReactNode {
-	return <AriaSeparator className={cn("-mx-1 my-1 h-px bg-muted", className)} {...props} />;
+	return <AriaSeparator className={cn("h-px bg-muted -mx-1 my-1", className)} {...props} />;
 }
 
 export type { AriaPopoverProps as SelectPopoverProps };

@@ -1,7 +1,7 @@
 import { styles } from "@acdh-oeaw/style-variants";
 
 export const focusRing = styles({
-	base: "outline outline-offset-2 outline-focus-ring forced-colors:outline-[Highlight]",
+	base: "outline-focus-ring outline outline-offset-2 forced-colors:outline-[Highlight]",
 	variants: {
 		isFocusVisible: {
 			false: "outline-0",

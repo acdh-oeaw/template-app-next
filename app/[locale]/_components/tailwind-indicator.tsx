@@ -1,10 +1,12 @@
 import type { ReactNode } from "react";
 
+import { env } from "@/config/env.config";
+
 export function TailwindIndicator(): ReactNode {
-	if (process.env.NODE_ENV !== "development") return null;
+	if (env.NODE_ENV !== "development") return null;
 
 	return (
-		<div className="fixed bottom-1 left-1 z-10 grid size-8 cursor-default select-none place-content-center rounded-full bg-on-background p-2 font-mono text-xs font-medium text-background">
+		<div className="bg-on-background text-xs font-medium text-background fixed bottom-1 left-1 z-10 grid size-8 cursor-default select-none place-content-center rounded-full p-2 font-mono">
 			<span className="xs:hidden">2xs</span>
 			<span className="max-xs:hidden sm:hidden">xs</span>
 			<span className="max-sm:hidden md:hidden">sm</span>

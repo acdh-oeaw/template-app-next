@@ -1,7 +1,10 @@
 import { useLocale, useTranslations } from "next-intl";
 import { Fragment, type ReactNode, Suspense, useMemo } from "react";
 
-import { LocaleSwitcherLink, LocaleSwitcherLinkFallback } from "@/components/locale-switcher-link";
+import {
+	LocaleSwitcherLink,
+	LocaleSwitcherLinkFallback,
+} from "@/app/[locale]/_components/locale-switcher-link";
 import { type Locale, locales } from "@/config/i18n.config";
 
 export function LocaleSwitcher(): ReactNode {
@@ -19,7 +22,7 @@ export function LocaleSwitcher(): ReactNode {
 	}, [currentLocale]);
 
 	return (
-		<div className="flex items-center gap-2 text-sm">
+		<div className="text-sm flex items-center gap-2">
 			{locales.map((locale, index) => {
 				const label = items[locale];
 
@@ -31,7 +34,7 @@ export function LocaleSwitcher(): ReactNode {
 							{separator}
 
 							<span className="sr-only">{t("current-locale", { locale: label })}</span>
-							<span aria-hidden={true} className="cursor-default font-medium">
+							<span aria-hidden={true} className="font-medium cursor-default">
 								{locale.toUpperCase()}
 							</span>
 						</Fragment>

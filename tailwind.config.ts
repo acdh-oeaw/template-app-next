@@ -36,10 +36,11 @@ const config = {
 			"background-overlay": "var(--color-background-overlay)",
 			"background-raised": "var(--color-background-raised)",
 			"background-sunken": "var(--color-background-sunken)",
-			"fill-disabled": "var(--color-fill-disabled)",
-			"fill-hover": "var(--color-fill-hover)",
-			"fill-press": "var(--color-fill-press)",
-			"fill-selected": "var(--color-fill-selected)",
+
+			// "fill-disabled": "var(--color-fill-disabled)",
+			// "fill-hover": "var(--color-fill-hover)",
+			// "fill-press": "var(--color-fill-press)",
+			// "fill-selected": "var(--color-fill-selected)",
 			"fill-brand-strong": "var(--color-fill-brand-strong)",
 			"fill-brand-weak": "var(--color-fill-brand-weak)",
 			"fill-error-strong": "var(--color-fill-error-strong)",
@@ -61,6 +62,7 @@ const config = {
 			"fill-weaker": "var(--color-fill-weaker)",
 			"fill-white": "var(--color-fill-white)",
 			"fill-yellow": "var(--color-fill-yellow)",
+
 			"icon-brand": "var(--color-icon-brand)",
 			"icon-disabled": "var(--color-icon-disabled)",
 			"icon-error": "var(--color-icon-error)",
@@ -71,6 +73,7 @@ const config = {
 			"icon-neutral": "var(--color-icon-neutral)",
 			"icon-success": "var(--color-icon-success)",
 			"icon-warning": "var(--color-icon-warning)",
+
 			"stroke-brand-strong": "var(--color-stroke-brand-strong)",
 			"stroke-brand-weak": "var(--color-stroke-brand-weak)",
 			"stroke-disabled": "var(--color-stroke-disabled)",
@@ -89,6 +92,7 @@ const config = {
 			"stroke-warning-strong": "var(--color-stroke-warning-strong)",
 			"stroke-warning-weak": "var(--color-stroke-warning-weak)",
 			"stroke-weak": "var(--color-stroke-weak)",
+
 			"text-brand": "var(--color-text-brand)",
 			"text-disabled": "var(--color-text-disabled)",
 			"text-error": "var(--color-text-error)",

@@ -68,7 +68,6 @@ const config = [
 					message: "Please use `@/config/env.config` instead.",
 				},
 			],
-			"prefer-arrow-callback": ["error", { allowNamedFunctions: true }],
 			// "@typescript-eslint/explicit-module-boundary-types": "error",
 			"@typescript-eslint/require-array-sort-compare": "error",
 			// "@typescript-eslint/strict-boolean-expressions": "error",
