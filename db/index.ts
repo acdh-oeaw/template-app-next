@@ -1,7 +1,6 @@
 import "server-only";
 
-import { drizzle } from "drizzle-orm/postgres-js";
-import postgres from "postgres";
+import { drizzle } from "drizzle-orm/connect";
 
 import { credentials } from "@/config/db.config";
 import { env } from "@/config/env.config";
@@ -9,26 +8,21 @@ import * as schema from "@/db/schema";
 
 declare global {
 	// eslint-disable-next-line no-var
-	var __db: postgres.Sql | undefined;
+	var __db: Awaited<ReturnType<typeof createDatabaseClient>> | undefined;
 }
 
-/** Avoid re-creating database connection on every HMR update. */
-export const client = globalThis.__db ?? postgres(credentials);
+function createDatabaseClient() {
+	return drizzle("postgres-js", {
+		casing: "snake_case",
+		connection: credentials,
+		logger: process.env.NODE_ENV === "development",
+		schema,
+	});
+}
 
+export const db = globalThis.__db ?? (await createDatabaseClient());
+
+/** Avoid re-creating database client on every HMR update. */
 if (env.NODE_ENV !== "production") {
-	globalThis.__db = client;
+	globalThis.__db = db;
 }
-
-export const db = drizzle(client, {
-	casing: "snake_case",
-	logger: process.env.NODE_ENV === "development",
-	schema,
-});
-
-// function createSingleton<TValue>(name: string, getValue: () => TValue) {
-// 	globalThis.__singletons ??= new Map()
-// 	if (!globalThis.__singletons.has(name)) {
-// 		globalThis.__singletons.set(name, getValue())
-// 	}
-// 	return globalThis.__singletons.get(name)
-// }

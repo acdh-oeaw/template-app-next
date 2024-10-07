@@ -1,16 +1,13 @@
 import { log } from "@acdh-oeaw/lib";
-import { drizzle } from "drizzle-orm/postgres-js";
-import { migrate } from "drizzle-orm/postgres-js/migrator";
-import postgres from "postgres";
+import { drizzle, migrate } from "drizzle-orm/connect";
 
 import { credentials } from "@/config/db.config";
 import config from "@/config/drizzle.config";
 
 async function main() {
-	const client = postgres({ ...credentials, max: 1 });
-
-	const db = drizzle(client, {
+	const db = await drizzle("postgres-js", {
 		casing: "snake_case",
+		connection: { ...credentials, max: 1 },
 		logger: true,
 	});
 
