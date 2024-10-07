@@ -8,7 +8,10 @@ import * as schema from "@/db/schema";
 async function main() {
 	const client = postgres({ ...credentials, max: 1 });
 
-	const db = drizzle(client, { schema });
+	const db = drizzle(client, {
+		casing: "snake_case",
+		logger: true,
+	});
 
 	for (const table of [schema.sessions, schema.users]) {
 		// eslint-disable-next-line drizzle/enforce-delete-with-where

@@ -26,7 +26,11 @@ if (env.NODE_ENV !== "production") {
 	globalThis.__db = client;
 }
 
-export const db = drizzle(client, { logger: process.env.NODE_ENV === "development", schema });
+export const db = drizzle(client, {
+	casing: "snake_case",
+	logger: process.env.NODE_ENV === "development",
+	schema,
+});
 
 // function createSingleton<TValue>(name: string, getValue: () => TValue) {
 // 	globalThis.__singletons ??= new Map()

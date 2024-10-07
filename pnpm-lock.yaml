@@ -17,12 +17,9 @@ importers:
       '@acdh-oeaw/validate-env':
         specifier: ^0.0.3
         version: 0.0.3
-      '@electric-sql/pglite':
-        specifier: ^0.2.10
-        version: 0.2.10
       '@lucia-auth/adapter-drizzle':
         specifier: ^1.1.0
-        version: 1.1.0(drizzle-orm@0.33.0(@electric-sql/pglite@0.2.10)(@types/better-sqlite3@7.6.11)(@types/react@18.3.8)(better-sqlite3@11.3.0)(react@18.3.1))(lucia@3.2.0)
+        version: 1.1.0(drizzle-orm@0.34.0(@electric-sql/pglite@0.2.10)(@types/better-sqlite3@7.6.11)(@types/react@18.3.8)(better-sqlite3@11.3.0)(postgres@3.4.4)(react@18.3.1))(lucia@3.2.0)
       '@node-rs/argon2':
         specifier: ^1.8.3
         version: 1.8.3
@@ -30,11 +27,11 @@ importers:
         specifier: ^0.0.1
         version: 0.0.1
       drizzle-orm:
-        specifier: ^0.33.0
-        version: 0.33.0(@electric-sql/pglite@0.2.10)(@types/better-sqlite3@7.6.11)(@types/react@18.3.8)(better-sqlite3@11.3.0)(react@18.3.1)
+        specifier: ^0.34.0
+        version: 0.34.0(@electric-sql/pglite@0.2.10)(@types/better-sqlite3@7.6.11)(@types/react@18.3.8)(better-sqlite3@11.3.0)(postgres@3.4.4)(react@18.3.1)
       drizzle-valibot:
         specifier: ^0.2.0
-        version: 0.2.0(drizzle-orm@0.33.0(@electric-sql/pglite@0.2.10)(@types/better-sqlite3@7.6.11)(@types/react@18.3.8)(better-sqlite3@11.3.0)(react@18.3.1))(valibot@0.41.0(typescript@5.6.2))
+        version: 0.2.0(drizzle-orm@0.34.0(@electric-sql/pglite@0.2.10)(@types/better-sqlite3@7.6.11)(@types/react@18.3.8)(better-sqlite3@11.3.0)(postgres@3.4.4)(react@18.3.1))(valibot@0.41.0(typescript@5.6.2))
       fast-glob:
         specifier: ^3.3.2
         version: 3.3.2
@@ -53,6 +50,9 @@ importers:
       next-intl:
         specifier: ^3.19.4
         version: 3.19.4(next@14.2.13(@babel/core@7.25.2)(@playwright/test@1.47.1)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react@18.3.1)
+      postgres:
+        specifier: ^3.4.4
+        version: 3.4.4
       react:
         specifier: ^18.3.1
         version: 18.3.1
@@ -99,6 +99,9 @@ importers:
       '@acdh-oeaw/tsconfig':
         specifier: ^1.2.0
         version: 1.2.0(typescript@5.6.2)
+      '@faker-js/faker':
+        specifier: ^9.0.3
+        version: 9.0.3
       '@next/bundle-analyzer':
         specifier: ^14.2.13
         version: 14.2.13
@@ -138,15 +141,12 @@ importers:
       dotenv:
         specifier: ^16.4.5
         version: 16.4.5
-      dotenv-cli:
-        specifier: ^7.4.2
-        version: 7.4.2
       dotenv-expand:
         specifier: ^11.0.6
         version: 11.0.6
       drizzle-kit:
-        specifier: ^0.24.2
-        version: 0.24.2
+        specifier: ^0.25.0
+        version: 0.25.0
       eslint:
         specifier: ^9.11.0
         version: 9.11.0(jiti@1.21.6)
@@ -433,9 +433,11 @@ packages:
 
   '@esbuild-kit/core-utils@3.3.2':
     resolution: {integrity: sha512-sPRAnw9CdSsRmEtnsl2WXWdyquogVpB3yZ3dgwJfe8zrOzTsV7cJvmwrKVa+0ma5BoiGJ+BoqkMvawbayKUsqQ==}
+    deprecated: 'Merged into tsx: https://tsx.is'
 
   '@esbuild-kit/esm-loader@2.6.5':
     resolution: {integrity: sha512-FxEMIkJKnodyA1OaCUoEvbYRkoZlLZ4d/eXFu9Fh8CbBBgP5EmZxrfTRyN0qpXZ4vOvqnE5YdRdcrmUUXuU+dA==}
+    deprecated: 'Merged into tsx: https://tsx.is'
 
   '@esbuild/aix-ppc64@0.19.12':
     resolution: {integrity: sha512-bmoCYyWdEL3wDQIVbcyzRyeKLgk2WtWLTWz1ZIAZF/EGbNOwSA6ew3PftJ1PqMiOOGu0OyFMzG53L0zqIpPeNA==}
@@ -884,6 +886,10 @@ packages:
   '@eslint/plugin-kit@0.2.0':
     resolution: {integrity: sha512-vH9PiIMMwvhCx31Af3HiGzsVNULDbyVkHXwlemn/B0TFj/00ho3y55efXrUZTfQipxoHC5u4xq6zblww1zm1Ig==}
     engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
+
+  '@faker-js/faker@9.0.3':
+    resolution: {integrity: sha512-lWrrK4QNlFSU+13PL9jMbMKLJYXDFu3tQfayBsMXX7KL/GiQeqfB1CzHkqD5UHBUtPAuPo6XwGbMFNdVMZObRA==}
+    engines: {node: '>=18.0.0', npm: '>=9.0.0'}
 
   '@formatjs/ecma402-abstract@2.0.0':
     resolution: {integrity: sha512-rRqXOqdFmk7RYvj4khklyqzcfQl9vEL/usogncBHRZfZBDOwMGuSRNFl02fu5KGHXdbinju+YXyuR+Nk8xlr/g==}
@@ -2454,14 +2460,6 @@ packages:
   domutils@3.1.0:
     resolution: {integrity: sha512-H78uMmQtI2AhgDJjWeQmHwJJ2bLPD3GMmO7Zja/ZZh84wkm+4ut+IUnUdRa8uCGX88DiVx1j6FRe1XfxEgjEZA==}
 
-  dotenv-cli@7.4.2:
-    resolution: {integrity: sha512-SbUj8l61zIbzyhIbg0FwPJq6+wjbzdn9oEtozQpZ6kW2ihCcapKVZj49oCT3oPM+mgQm+itgvUQcG5szxVrZTA==}
-    hasBin: true
-
-  dotenv-expand@10.0.0:
-    resolution: {integrity: sha512-GopVGCpVS1UKH75VKHGuQFqS1Gusej0z4FyQkPdwjil2gNIv+LNsqBlboOzpJFZKVT95GkCyWJbBSdFEFUWI2A==}
-    engines: {node: '>=12'}
-
   dotenv-expand@11.0.6:
     resolution: {integrity: sha512-8NHi73otpWsZGBSZwwknTXS5pqMOrk9+Ssrna8xCaxkzEpU9OTf9R5ArQGVw03//Zmk9MOwLPng9WwndvpAJ5g==}
     engines: {node: '>=12'}
@@ -2470,17 +2468,17 @@ packages:
     resolution: {integrity: sha512-ZmdL2rui+eB2YwhsWzjInR8LldtZHGDoQ1ugH85ppHKwpUHL7j7rN0Ti9NCnGiQbhaZ11FpR+7ao1dNsmduNUg==}
     engines: {node: '>=12'}
 
-  drizzle-kit@0.24.2:
-    resolution: {integrity: sha512-nXOaTSFiuIaTMhS8WJC2d4EBeIcN9OSt2A2cyFbQYBAZbi7lRsVGJNqDpEwPqYfJz38yxbY/UtbvBBahBfnExQ==}
+  drizzle-kit@0.25.0:
+    resolution: {integrity: sha512-Rcf0nYCAKizwjWQCY+d3zytyuTbDb81NcaPor+8NebESlUz1+9W3uGl0+r9FhU4Qal5Zv9j/7neXCSCe7DHzjA==}
     hasBin: true
 
-  drizzle-orm@0.33.0:
-    resolution: {integrity: sha512-SHy72R2Rdkz0LEq0PSG/IdvnT3nGiWuRk+2tXZQ90GVq/XQhpCzu/EFT3V2rox+w8MlkBQxifF8pCStNYnERfA==}
+  drizzle-orm@0.34.0:
+    resolution: {integrity: sha512-6l9v65YoCr53UOWjyPPNYYQsZYvtzgxMKxljQ5VlJcS3/zM81MXnWeSfqQFlrUHxoTNgyi9BWHysUE8+c0odzA==}
     peerDependencies:
       '@aws-sdk/client-rds-data': '>=3'
       '@cloudflare/workers-types': '>=3'
       '@electric-sql/pglite': '>=0.1.1'
-      '@libsql/client': '*'
+      '@libsql/client': '>=0.10.0'
       '@neondatabase/serverless': '>=0.1'
       '@op-engineering/op-sqlite': '>=2'
       '@opentelemetry/api': ^1.4.1
@@ -3767,6 +3765,10 @@ packages:
     resolution: {integrity: sha512-56rxCq7G/XfB4EkXq9Egn5GCqugWvDFjafDOThIdMBsI15iqPqR5r15TfSr1YPYeEI19YeaXMCbY6u88Y76GLQ==}
     engines: {node: ^10 || ^12 || >=14}
 
+  postgres@3.4.4:
+    resolution: {integrity: sha512-IbyN+9KslkqcXa8AO9fxpk97PA4pzewvpi2B3Dwy9u4zpV32QicaEdgmF3eSQUzdRk7ttDHQejNgAEr4XoeH4A==}
+    engines: {node: '>=12'}
+
   prebuild-install@7.1.2:
     resolution: {integrity: sha512-UnNke3IQb6sgarcZIDU3gbMeTp/9SSU1DAIkil7PrqG1vZlBtY5msYccSKSHDqa3hNg436IXK+SNImReuA1wEQ==}
     engines: {node: '>=10'}
@@ -4687,7 +4689,8 @@ snapshots:
 
   '@dual-bundle/import-meta-resolve@4.1.0': {}
 
-  '@electric-sql/pglite@0.2.10': {}
+  '@electric-sql/pglite@0.2.10':
+    optional: true
 
   '@emnapi/core@0.45.0':
     dependencies:
@@ -4971,6 +4974,8 @@ snapshots:
     dependencies:
       levn: 0.4.1
 
+  '@faker-js/faker@9.0.3': {}
+
   '@formatjs/ecma402-abstract@2.0.0':
     dependencies:
       '@formatjs/intl-localematcher': 0.5.4
@@ -5117,9 +5122,9 @@ snapshots:
       '@jridgewell/resolve-uri': 3.1.2
       '@jridgewell/sourcemap-codec': 1.5.0
 
-  '@lucia-auth/adapter-drizzle@1.1.0(drizzle-orm@0.33.0(@electric-sql/pglite@0.2.10)(@types/better-sqlite3@7.6.11)(@types/react@18.3.8)(better-sqlite3@11.3.0)(react@18.3.1))(lucia@3.2.0)':
+  '@lucia-auth/adapter-drizzle@1.1.0(drizzle-orm@0.34.0(@electric-sql/pglite@0.2.10)(@types/better-sqlite3@7.6.11)(@types/react@18.3.8)(better-sqlite3@11.3.0)(postgres@3.4.4)(react@18.3.1))(lucia@3.2.0)':
     dependencies:
-      drizzle-orm: 0.33.0(@electric-sql/pglite@0.2.10)(@types/better-sqlite3@7.6.11)(@types/react@18.3.8)(better-sqlite3@11.3.0)(react@18.3.1)
+      drizzle-orm: 0.34.0(@electric-sql/pglite@0.2.10)(@types/better-sqlite3@7.6.11)(@types/react@18.3.8)(better-sqlite3@11.3.0)(postgres@3.4.4)(react@18.3.1)
       lucia: 3.2.0
 
   '@napi-rs/wasm-runtime@0.2.4':
@@ -6937,22 +6942,13 @@ snapshots:
       domelementtype: 2.3.0
       domhandler: 5.0.3
 
-  dotenv-cli@7.4.2:
-    dependencies:
-      cross-spawn: 7.0.3
-      dotenv: 16.4.5
-      dotenv-expand: 10.0.0
-      minimist: 1.2.8
-
-  dotenv-expand@10.0.0: {}
-
   dotenv-expand@11.0.6:
     dependencies:
       dotenv: 16.4.5
 
   dotenv@16.4.5: {}
 
-  drizzle-kit@0.24.2:
+  drizzle-kit@0.25.0:
     dependencies:
       '@drizzle-team/brocli': 0.10.1
       '@esbuild-kit/esm-loader': 2.6.5
@@ -6961,17 +6957,18 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  drizzle-orm@0.33.0(@electric-sql/pglite@0.2.10)(@types/better-sqlite3@7.6.11)(@types/react@18.3.8)(better-sqlite3@11.3.0)(react@18.3.1):
+  drizzle-orm@0.34.0(@electric-sql/pglite@0.2.10)(@types/better-sqlite3@7.6.11)(@types/react@18.3.8)(better-sqlite3@11.3.0)(postgres@3.4.4)(react@18.3.1):
     optionalDependencies:
       '@electric-sql/pglite': 0.2.10
       '@types/better-sqlite3': 7.6.11
       '@types/react': 18.3.8
       better-sqlite3: 11.3.0
+      postgres: 3.4.4
       react: 18.3.1
 
-  drizzle-valibot@0.2.0(drizzle-orm@0.33.0(@electric-sql/pglite@0.2.10)(@types/better-sqlite3@7.6.11)(@types/react@18.3.8)(better-sqlite3@11.3.0)(react@18.3.1))(valibot@0.41.0(typescript@5.6.2)):
+  drizzle-valibot@0.2.0(drizzle-orm@0.34.0(@electric-sql/pglite@0.2.10)(@types/better-sqlite3@7.6.11)(@types/react@18.3.8)(better-sqlite3@11.3.0)(postgres@3.4.4)(react@18.3.1))(valibot@0.41.0(typescript@5.6.2)):
     dependencies:
-      drizzle-orm: 0.33.0(@electric-sql/pglite@0.2.10)(@types/better-sqlite3@7.6.11)(@types/react@18.3.8)(better-sqlite3@11.3.0)(react@18.3.1)
+      drizzle-orm: 0.34.0(@electric-sql/pglite@0.2.10)(@types/better-sqlite3@7.6.11)(@types/react@18.3.8)(better-sqlite3@11.3.0)(postgres@3.4.4)(react@18.3.1)
       valibot: 0.41.0(typescript@5.6.2)
 
   duplexer@0.1.2: {}
@@ -8058,7 +8055,8 @@ snapshots:
     dependencies:
       brace-expansion: 2.0.1
 
-  minimist@1.2.8: {}
+  minimist@1.2.8:
+    optional: true
 
   minipass@7.1.2: {}
 
@@ -8338,6 +8336,8 @@ snapshots:
       nanoid: 3.3.7
       picocolors: 1.1.0
       source-map-js: 1.2.1
+
+  postgres@3.4.4: {}
 
   prebuild-install@7.1.2:
     dependencies:
