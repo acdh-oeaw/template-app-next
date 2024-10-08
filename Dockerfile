@@ -49,7 +49,6 @@ COPY --from=build --chown=node:node /app/next.config.js ./
 COPY --from=build --chown=node:node /app/public ./public
 COPY --from=build --chown=node:node /app/.next/standalone ./
 COPY --from=build --chown=node:node /app/.next/static ./.next/static
-COPY --from=build --chown=node:node /app/db/migrations ./db/migrations
 
 # Ensure folder is owned by node:node when mounted as volume.
 RUN mkdir -p /app/.next/cache/images

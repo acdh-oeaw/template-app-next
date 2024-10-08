@@ -47,13 +47,6 @@ const plugins = [
 	createI18nPlugin("./lib/i18n.ts"),
 ];
 
-export default async function createConfig() {
-	if (env.NODE_ENV === "production") {
-		/** Apply database migrations. */
-		await import("./db/migrate.js");
-	}
-
-	return plugins.reduce((config, plugin) => {
-		return plugin(config);
-	}, config);
-}
+export default plugins.reduce((config, plugin) => {
+	return plugin(config);
+}, config);

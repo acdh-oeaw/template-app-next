@@ -1,8 +1,8 @@
 import { log } from "@acdh-oeaw/lib";
 import { drizzle, migrate } from "drizzle-orm/connect";
 
-import { credentials } from "../config/db.config.js";
-import config from "../config/drizzle.config.js";
+import { credentials } from "@/config/db.config";
+import config from "@/config/drizzle.config";
 
 async function main() {
 	const db = await drizzle("postgres-js", {
@@ -11,7 +11,7 @@ async function main() {
 		logger: true,
 	});
 
-	await migrate(db, { migrationsFolder: /** @type {string} */ (config.out) });
+	await migrate(db, { migrationsFolder: config.out! });
 
 	await db.$client.end();
 }
@@ -20,8 +20,7 @@ main()
 	.then(() => {
 		log.success("Successfully applied database migrations.");
 	})
-	.catch((/** @type {unknown} */ error) => {
+	.catch((error: unknown) => {
 		log.error("Failed to apply database migrations.\n", String(error));
-		// eslint-disable-next-line no-undef
 		process.exitCode = 1;
 	});
