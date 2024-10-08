@@ -33,6 +33,9 @@ const config = {
 			config.plugins.push(localesPlugin.webpack({ locales: [] }));
 		}
 
+		// eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+		config.infrastructureLogging = { level: "error" };
+
 		// eslint-disable-next-line @typescript-eslint/no-unsafe-return
 		return config;
 	},
