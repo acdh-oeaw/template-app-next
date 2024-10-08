@@ -33,9 +33,6 @@ const config = {
 			config.plugins.push(localesPlugin.webpack({ locales: [] }));
 		}
 
-		// eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-		config.infrastructureLogging = { level: "error" };
-
 		// eslint-disable-next-line @typescript-eslint/no-unsafe-return
 		return config;
 	},
@@ -47,6 +44,10 @@ const plugins = [
 	createI18nPlugin("./lib/i18n.ts"),
 ];
 
-export default plugins.reduce((config, plugin) => {
-	return plugin(config);
-}, config);
+export default async function run() {
+	await import("./db/migrate.js");
+
+	return plugins.reduce((config, plugin) => {
+		return plugin(config);
+	}, config);
+}

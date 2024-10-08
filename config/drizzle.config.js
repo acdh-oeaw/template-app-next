@@ -1,6 +1,6 @@
 import { defineConfig } from "drizzle-kit";
 
-import { credentials } from "@/config/db.config";
+import { credentials } from "./db.config.js";
 
 export default defineConfig({
 	casing: "snake_case",

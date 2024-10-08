@@ -1,6 +1,7 @@
 import "server-only";
 
-import { drizzle } from "drizzle-orm/connect";
+import { drizzle } from "drizzle-orm/postgres-js";
+import postgres from "postgres";
 
 import { credentials } from "@/config/db.config";
 import { env } from "@/config/env.config";
@@ -12,15 +13,16 @@ declare global {
 }
 
 function createDatabaseClient() {
-	return drizzle("postgres-js", {
+	const client = postgres(credentials);
+
+	return drizzle(client, {
 		casing: "snake_case",
-		connection: credentials,
 		logger: process.env.NODE_ENV === "development",
 		schema,
 	});
 }
 
-export const db = globalThis.__db ?? (await createDatabaseClient());
+export const db = globalThis.__db ?? createDatabaseClient();
 
 /** Avoid re-creating database client on every HMR update. */
 if (env.NODE_ENV !== "production") {
