@@ -1,8 +1,8 @@
 import { log } from "@acdh-oeaw/lib";
 import { drizzle, migrate } from "drizzle-orm/connect";
 
-import { credentials } from "../config/db.config";
-import config from "../config/drizzle.config";
+import { credentials } from "../config/db.config.js";
+import config from "../config/drizzle.config.js";
 
 async function main() {
 	const db = await drizzle("postgres-js", {
