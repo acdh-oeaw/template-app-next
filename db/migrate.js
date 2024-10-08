@@ -11,7 +11,7 @@ async function main() {
 		logger: true,
 	});
 
-	await migrate(db, { migrationsFolder: config.out! });
+	await migrate(db, { migrationsFolder: /** @type {string} */ (config.out) });
 
 	await db.$client.end();
 }
@@ -20,7 +20,8 @@ main()
 	.then(() => {
 		log.success("Successfully applied database migrations.");
 	})
-	.catch((error: unknown) => {
+	.catch((/** @type {unknown} */ error) => {
 		log.error("Failed to apply database migrations.\n", String(error));
+		// eslint-disable-next-line no-undef
 		process.exitCode = 1;
 	});

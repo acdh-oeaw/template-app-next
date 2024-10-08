@@ -49,12 +49,7 @@ COPY --from=build --chown=node:node /app/next.config.js ./
 COPY --from=build --chown=node:node /app/public ./public
 COPY --from=build --chown=node:node /app/.next/standalone ./
 COPY --from=build --chown=node:node /app/.next/static ./.next/static
-
-# FIXME:
-# - should we apply migrations in next.config.ts when DB_MIGRATE is set?
-# - or should we have a separate package.json in scripts/db which has all deps for migrate.ts script
 COPY --from=build --chown=node:node /app/db/migrations ./db/migrations
-COPY --from=build --chown=node:node /app/db/migrate.ts ./db/migrate.ts
 
 # Ensure folder is owned by node:node when mounted as volume.
 RUN mkdir -p /app/.next/cache/images
@@ -63,4 +58,4 @@ ENV NODE_ENV=production
 
 EXPOSE 3000
 
-CMD node --import tsx ./db/migrate.ts && node server.js
+CMD ["node", "server.js"]
