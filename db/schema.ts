@@ -1,24 +1,41 @@
 import { relations, sql } from "drizzle-orm";
-import { pgTable, text, timestamp, uuid } from "drizzle-orm/pg-core";
+import {
+	pgEnum as createEnum,
+	pgTable as createTable,
+	text,
+	timestamp,
+	uuid,
+} from "drizzle-orm/pg-core";
 
-/** Users. */
+const id = uuid().primaryKey().defaultRandom();
 
-export const users = pgTable("users", {
-	id: uuid("id").primaryKey().defaultRandom(),
-	email: text("email").notNull().unique(),
-	passwordHash: text("password_hash").notNull(),
-	createdAt: timestamp("created_at", { mode: "date", withTimezone: true }).notNull().defaultNow(),
-	updatedAt: timestamp("updated_at", { mode: "date", withTimezone: true })
+const timestamps = {
+	createdAt: timestamp({ mode: "date", withTimezone: true }).notNull().defaultNow(),
+	updatedAt: timestamp({ mode: "date", withTimezone: true })
 		.notNull()
 		.defaultNow()
 		.$onUpdate(() => {
 			return sql`CURRENT_TIMESTAMP`;
 		}),
+};
+
+/** User role. */
+
+export const userRole = createEnum("user_roles", ["admin", "user"]);
+
+/** Users. */
+
+export const users = createTable("users", {
+	id,
+	email: text().notNull().unique(),
+	passwordHash: text().notNull(),
+	role: userRole().default("user"),
+	...timestamps,
 });
 
 export const userRelations = relations(users, ({ many }) => {
 	return {
-		sessions: many(sessions, { relationName: "sessions" }),
+		sessions: many(sessions),
 	};
 });
 
@@ -27,9 +44,9 @@ export type UserInput = typeof users.$inferInsert;
 
 /** Sessions. */
 
-export const sessions = pgTable("sessions", {
-	id: text("id").primaryKey(),
-	userId: uuid("user_id")
+export const sessions = createTable("sessions", {
+	id: text().primaryKey(),
+	userId: uuid()
 		.notNull()
 		.references(
 			() => {
@@ -37,12 +54,12 @@ export const sessions = pgTable("sessions", {
 			},
 			{ onDelete: "cascade" },
 		),
-	expiresAt: timestamp("expires_at", { mode: "date", withTimezone: true }).notNull(),
+	expiresAt: timestamp({ mode: "date", withTimezone: true }).notNull(),
 });
 
 export const sessionRelations = relations(sessions, ({ one }) => {
 	return {
-		user: one(users, { relationName: "user", fields: [sessions.userId], references: [users.id] }),
+		user: one(users, { fields: [sessions.userId], references: [users.id] }),
 	};
 });
 

@@ -19,7 +19,7 @@ importers:
         version: 0.0.3
       '@lucia-auth/adapter-drizzle':
         specifier: ^1.1.0
-        version: 1.1.0(drizzle-orm@0.34.0(@types/react@18.3.8)(postgres@3.4.4)(react@18.3.1))(lucia@3.2.1)
+        version: 1.1.0(drizzle-orm@0.34.1(@types/react@18.3.8)(postgres@3.4.4)(react@18.3.1))(lucia@3.2.1)
       '@node-rs/argon2':
         specifier: ^1.8.3
         version: 1.8.3
@@ -27,11 +27,11 @@ importers:
         specifier: ^0.0.1
         version: 0.0.1
       drizzle-orm:
-        specifier: ^0.34.0
-        version: 0.34.0(@types/react@18.3.8)(postgres@3.4.4)(react@18.3.1)
+        specifier: ^0.34.1
+        version: 0.34.1(@types/react@18.3.8)(postgres@3.4.4)(react@18.3.1)
       drizzle-valibot:
         specifier: ^0.2.0
-        version: 0.2.0(drizzle-orm@0.34.0(@types/react@18.3.8)(postgres@3.4.4)(react@18.3.1))(valibot@0.41.0(typescript@5.6.2))
+        version: 0.2.0(drizzle-orm@0.34.1(@types/react@18.3.8)(postgres@3.4.4)(react@18.3.1))(valibot@0.41.0(typescript@5.6.2))
       fast-glob:
         specifier: ^3.3.2
         version: 3.3.2
@@ -2239,8 +2239,8 @@ packages:
     resolution: {integrity: sha512-Rcf0nYCAKizwjWQCY+d3zytyuTbDb81NcaPor+8NebESlUz1+9W3uGl0+r9FhU4Qal5Zv9j/7neXCSCe7DHzjA==}
     hasBin: true
 
-  drizzle-orm@0.34.0:
-    resolution: {integrity: sha512-6l9v65YoCr53UOWjyPPNYYQsZYvtzgxMKxljQ5VlJcS3/zM81MXnWeSfqQFlrUHxoTNgyi9BWHysUE8+c0odzA==}
+  drizzle-orm@0.34.1:
+    resolution: {integrity: sha512-t+zCwyWWt8xTqtYV4doE/xYmT7hpv1L8pQ66zddEz+3VWyedBBtctjMAp22mAJPfyWurRQXUJ1nrTtqLq+DqNA==}
     peerDependencies:
       '@aws-sdk/client-rds-data': '>=3'
       '@cloudflare/workers-types': '>=3'
@@ -4779,9 +4779,9 @@ snapshots:
       '@jridgewell/resolve-uri': 3.1.2
       '@jridgewell/sourcemap-codec': 1.5.0
 
-  '@lucia-auth/adapter-drizzle@1.1.0(drizzle-orm@0.34.0(@types/react@18.3.8)(postgres@3.4.4)(react@18.3.1))(lucia@3.2.1)':
+  '@lucia-auth/adapter-drizzle@1.1.0(drizzle-orm@0.34.1(@types/react@18.3.8)(postgres@3.4.4)(react@18.3.1))(lucia@3.2.1)':
     dependencies:
-      drizzle-orm: 0.34.0(@types/react@18.3.8)(postgres@3.4.4)(react@18.3.1)
+      drizzle-orm: 0.34.1(@types/react@18.3.8)(postgres@3.4.4)(react@18.3.1)
       lucia: 3.2.1
 
   '@napi-rs/wasm-runtime@0.2.5':
@@ -6408,15 +6408,15 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  drizzle-orm@0.34.0(@types/react@18.3.8)(postgres@3.4.4)(react@18.3.1):
+  drizzle-orm@0.34.1(@types/react@18.3.8)(postgres@3.4.4)(react@18.3.1):
     optionalDependencies:
       '@types/react': 18.3.8
       postgres: 3.4.4
       react: 18.3.1
 
-  drizzle-valibot@0.2.0(drizzle-orm@0.34.0(@types/react@18.3.8)(postgres@3.4.4)(react@18.3.1))(valibot@0.41.0(typescript@5.6.2)):
+  drizzle-valibot@0.2.0(drizzle-orm@0.34.1(@types/react@18.3.8)(postgres@3.4.4)(react@18.3.1))(valibot@0.41.0(typescript@5.6.2)):
     dependencies:
-      drizzle-orm: 0.34.0(@types/react@18.3.8)(postgres@3.4.4)(react@18.3.1)
+      drizzle-orm: 0.34.1(@types/react@18.3.8)(postgres@3.4.4)(react@18.3.1)
       valibot: 0.41.0(typescript@5.6.2)
 
   duplexer@0.1.2: {}
