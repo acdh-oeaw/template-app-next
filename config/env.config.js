@@ -18,7 +18,6 @@ export const env = createEnv({
 			DB_NAME: v.pipe(v.string(), v.nonEmpty()),
 			DB_PASSWORD: v.pipe(v.string(), v.minLength(8)),
 			DB_PORT: v.pipe(v.string(), v.transform(Number), v.number(), v.integer(), v.minValue(1000)),
-			DB_URL: v.pipe(v.string(), v.url()),
 			DB_USER: v.pipe(v.string(), v.nonEmpty()),
 		});
 
@@ -51,7 +50,6 @@ export const env = createEnv({
 		DB_NAME: process.env.DB_NAME,
 		DB_PASSWORD: process.env.DB_PASSWORD,
 		DB_PORT: process.env.DB_PORT,
-		DB_URL: process.env.DB_URL,
 		DB_USER: process.env.DB_USER,
 		NEXT_PUBLIC_APP_BASE_URL: process.env.NEXT_PUBLIC_APP_BASE_URL,
 		NEXT_PUBLIC_BOTS: process.env.NEXT_PUBLIC_BOTS,
