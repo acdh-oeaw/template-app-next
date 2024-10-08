@@ -1,4 +1,4 @@
-import { env } from "@/config/env.config";
+import { env } from "./env.config";
 
 export const credentials = {
 	user: env.DB_USER,
