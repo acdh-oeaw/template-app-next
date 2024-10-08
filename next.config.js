@@ -41,6 +41,8 @@ const plugins = [
 	createI18nPlugin("./lib/i18n.ts"),
 ];
 
-export default plugins.reduce((config, plugin) => {
-	return plugin(config);
-}, config);
+export default function createConfig() {
+	return plugins.reduce((config, plugin) => {
+		return plugin(config);
+	}, config);
+}
