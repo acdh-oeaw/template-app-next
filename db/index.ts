@@ -24,7 +24,7 @@ function createDatabaseClient() {
 
 export const db = globalThis.__db ?? createDatabaseClient();
 
-/** Avoid re-creating database client on every HMR update. */
+/** Avoid re-creating database client on hot-module-reload. */
 if (env.NODE_ENV !== "production") {
 	globalThis.__db = db;
 }
