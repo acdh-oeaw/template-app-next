@@ -16,6 +16,7 @@ export const env = createEnv({
 		const Schema = v.object({
 			BUILD_MODE: v.optional(v.picklist(["export", "standalone"])),
 			BUNDLE_ANALYZER: v.optional(v.picklist(["disabled", "enabled"]), "disabled"),
+			CI: v.optional(v.pipe(v.unknown(), v.transform(Boolean), v.boolean())),
 		});
 
 		return v.parse(Schema, input);
@@ -43,6 +44,7 @@ export const env = createEnv({
 	environment: {
 		BUILD_MODE: process.env.BUILD_MODE,
 		BUNDLE_ANALYZER: process.env.BUNDLE_ANALYZER,
+		CI: process.env.CI,
 		NEXT_PUBLIC_APP_BASE_URL: process.env.NEXT_PUBLIC_APP_BASE_URL,
 		NEXT_PUBLIC_BOTS: process.env.NEXT_PUBLIC_BOTS,
 		NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION,
