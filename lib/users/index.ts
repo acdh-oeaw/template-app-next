@@ -1,7 +1,7 @@
 import { assert } from "@acdh-oeaw/lib";
 
 import type { User } from "@/db/schema";
-import { createPasswordHash, verifyPassword } from "@/lib/auth/password";
+import { createHashedPassword, verifyPassword } from "@/lib/auth/password";
 import { createUser, getUserByEmail } from "@/lib/data-access/users";
 import { EmailInUseError, SignInError } from "@/lib/errors";
 
@@ -28,7 +28,7 @@ export async function signUpUser(email: string, password: string) {
 		throw new EmailInUseError();
 	}
 
-	const passwordHash = await createPasswordHash(password);
+	const passwordHash = await createHashedPassword(password);
 
 	const user = await createUser(email, passwordHash);
 

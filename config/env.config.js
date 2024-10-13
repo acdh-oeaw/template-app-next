@@ -19,6 +19,16 @@ export const env = createEnv({
 			DB_PASSWORD: v.pipe(v.string(), v.minLength(8)),
 			DB_PORT: v.pipe(v.string(), v.transform(Number), v.number(), v.integer(), v.minValue(1000)),
 			DB_USER: v.pipe(v.string(), v.nonEmpty()),
+			EMAIL_SMTP_PASSWORD: v.optional(v.pipe(v.string(), v.minLength(8))),
+			EMAIL_SMTP_PORT: v.pipe(
+				v.string(),
+				v.transform(Number),
+				v.number(),
+				v.integer(),
+				v.minValue(1),
+			),
+			EMAIL_SMTP_SERVER: v.pipe(v.string(), v.nonEmpty()),
+			EMAIL_SMTP_USERNAME: v.optional(v.pipe(v.string(), v.nonEmpty())),
 			ENCRYPTION_KEY: v.pipe(v.string(), v.minLength(24)),
 		});
 
@@ -52,6 +62,10 @@ export const env = createEnv({
 		DB_PASSWORD: process.env.DB_PASSWORD,
 		DB_PORT: process.env.DB_PORT,
 		DB_USER: process.env.DB_USER,
+		EMAIL_SMTP_PASSWORD: process.env.EMAIL_SMTP_PASSWORD,
+		EMAIL_SMTP_PORT: process.env.EMAIL_SMTP_PORT,
+		EMAIL_SMTP_SERVER: process.env.EMAIL_SMTP_SERVER,
+		EMAIL_SMTP_USERNAME: process.env.EMAIL_SMTP_USERNAME,
 		ENCRYPTION_KEY: process.env.ENCRYPTION_KEY,
 		NEXT_PUBLIC_APP_BASE_URL: process.env.NEXT_PUBLIC_APP_BASE_URL,
 		NEXT_PUBLIC_BOTS: process.env.NEXT_PUBLIC_BOTS,

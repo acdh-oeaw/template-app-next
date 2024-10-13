@@ -13,6 +13,7 @@ const config = {
 		ignoreDuringBuilds: true,
 	},
 	experimental: {
+		instrumentationHook: true,
 		serverComponentsExternalPackages: ["@node-rs/argon2"],
 	},
 	logging: {
@@ -44,10 +45,6 @@ const plugins = [
 	createI18nPlugin("./lib/i18n.ts"),
 ];
 
-export default async function run() {
-	await import("./db/migrate.js");
-
-	return plugins.reduce((config, plugin) => {
-		return plugin(config);
-	}, config);
-}
+export default plugins.reduce((config, plugin) => {
+	return plugin(config);
+}, config);
