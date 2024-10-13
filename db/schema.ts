@@ -1,5 +1,6 @@
 import { relations, sql } from "drizzle-orm";
 import {
+	index,
 	pgEnum as createEnum,
 	pgTable as createTable,
 	text,
@@ -19,19 +20,31 @@ const timestamps = {
 		}),
 };
 
-/** User role. */
+/** User roles. */
 
 export const userRole = createEnum("user_roles", ["admin", "user"]);
 
 /** Users. */
 
-export const users = createTable("users", {
-	id,
-	email: text().notNull().unique(),
-	passwordHash: text().notNull(),
-	role: userRole().default("user"),
-	...timestamps,
-});
+export const users = createTable(
+	"users",
+	{
+		id,
+		email: text().notNull().unique(),
+		// emailVerified: timestamp({ mode: "date", withTimezone: true }).notNull().default(new Date(0)),
+		username: text().notNull(),
+		passwordHash: text().notNull(),
+		role: userRole().notNull().default("user"),
+		// totpKey: blob(),
+		// recoveryCode: blob().notNull(),
+		...timestamps,
+	},
+	(table) => {
+		return {
+			emailIdx: index().on(table.email),
+		};
+	},
+);
 
 export const userRelations = relations(users, ({ many }) => {
 	return {
@@ -55,6 +68,7 @@ export const sessions = createTable("sessions", {
 			{ onDelete: "cascade" },
 		),
 	expiresAt: timestamp({ mode: "date", withTimezone: true }).notNull(),
+	// twoFactorVerified: timestamp({ mode: "date", withTimezone: true }).notNull().default(new Date(0)),
 });
 
 export const sessionRelations = relations(sessions, ({ one }) => {
@@ -65,3 +79,57 @@ export const sessionRelations = relations(sessions, ({ one }) => {
 
 export type Session = typeof sessions.$inferSelect;
 export type SessionInput = typeof sessions.$inferInsert;
+
+/** Email verification requests. */
+
+export const emailVerificationRequests = createTable("email_verification_requests", {
+	id,
+	userId: uuid()
+		.notNull()
+		.references(
+			() => {
+				return users.id;
+			},
+			{ onDelete: "cascade" },
+		),
+	email: text().notNull(),
+	code: text().notNull(),
+	expiresAt: timestamp({ mode: "date", withTimezone: true }).notNull(),
+});
+
+export const emailVerificationRequestRelations = relations(emailVerificationRequests, ({ one }) => {
+	return {
+		user: one(users, { fields: [emailVerificationRequests.userId], references: [users.id] }),
+	};
+});
+
+export type EmailVerificationRequest = typeof emailVerificationRequests.$inferSelect;
+export type EmailVerificationRequestInput = typeof emailVerificationRequests.$inferInsert;
+
+/** Password reset sessions. */
+
+export const passwordResetSessions = createTable("password_reset_sessions", {
+	id,
+	userId: uuid()
+		.notNull()
+		.references(
+			() => {
+				return users.id;
+			},
+			{ onDelete: "cascade" },
+		),
+	email: text().notNull(),
+	code: text().notNull(),
+	expiresAt: timestamp({ mode: "date", withTimezone: true }).notNull(),
+	emailVerified: timestamp({ mode: "date", withTimezone: true }).notNull().default(new Date(0)),
+	twoFactorVerified: timestamp({ mode: "date", withTimezone: true }).notNull().default(new Date(0)),
+});
+
+export const passwordResetSessionRelations = relations(passwordResetSessions, ({ one }) => {
+	return {
+		user: one(users, { fields: [passwordResetSessions.userId], references: [users.id] }),
+	};
+});
+
+export type PasswordResetSession = typeof passwordResetSessions.$inferSelect;
+export type PasswordResetSessionInput = typeof passwordResetSessions.$inferInsert;

@@ -15,7 +15,7 @@ async function main() {
 		schema,
 	});
 
-	for (const table of [schema.sessions, schema.users]) {
+	for (const table of [schema.emailVerificationRequests, schema.users]) {
 		// eslint-disable-next-line drizzle/enforce-delete-with-where
 		await db.delete(table);
 	}

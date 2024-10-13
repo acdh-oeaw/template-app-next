@@ -1,16 +1,14 @@
 "use server";
 
 import { getFormDataValues } from "@acdh-oeaw/lib";
-import { verify } from "@node-rs/argon2";
 import { eq } from "drizzle-orm";
-import { cookies } from "next/headers";
 import * as v from "valibot";
 
 import { afterSignInUrl } from "@/config/app.config";
-import { argonConfig } from "@/config/auth.config";
 import { db } from "@/db";
 import { users } from "@/db/schema";
-import { lucia } from "@/lib/auth/lucia";
+import { setSession } from "@/lib/auth";
+import { verifyPassword } from "@/lib/auth/password";
 import { type ActionState, createErrorActionState } from "@/lib/form";
 import { redirect } from "@/lib/navigation";
 
@@ -28,7 +26,7 @@ export async function signInAction(
 	const result = await v.safeParseAsync(SignInActionInput, getFormDataValues(formData));
 
 	if (!result.success) {
-		return createErrorActionState("Incorrect email or password");
+		return createErrorActionState("Incorrect email or password.");
 	}
 
 	const { email, password } = result.output;
@@ -38,18 +36,16 @@ export async function signInAction(
 	});
 
 	if (!existingUser) {
-		return createErrorActionState("Incorrect email or password");
+		return createErrorActionState("Incorrect email or password.");
 	}
 
-	const validPassword = await verify(existingUser.passwordHash, password, argonConfig);
+	const validPassword = await verifyPassword(existingUser.passwordHash, password);
 
 	if (!validPassword) {
-		return createErrorActionState("Incorrect email or password");
+		return createErrorActionState("Incorrect email or password.");
 	}
 
-	const session = await lucia.createSession(existingUser.id, {});
-	const sessionCookie = lucia.createSessionCookie(session.id);
-	cookies().set(sessionCookie.name, sessionCookie.value, sessionCookie.attributes);
+	await setSession(existingUser.id);
 
-	return redirect(afterSignInUrl);
+	redirect(afterSignInUrl);
 }

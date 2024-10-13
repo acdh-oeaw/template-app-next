@@ -26,6 +26,16 @@ export function SignUpForm(): ReactNode {
 					/>
 				</label>
 
+				<label className="grid gap-y-1.5">
+					<span className="text-xs font-medium uppercase tracking-wide">{t("password")}</span>
+					<input
+						className="rounded border px-3 py-1"
+						name="confirmation"
+						required={true}
+						type="password"
+					/>
+				</label>
+
 				<div>
 					<button
 						className="inline-flex rounded bg-primary px-4 py-2 text-sm font-medium text-on-primary"

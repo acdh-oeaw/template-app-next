@@ -8,7 +8,7 @@ import { ColorSchemeSwitcher } from "@/components/color-scheme-switcher";
 import { Form } from "@/components/form";
 import { Link, type LinkProps } from "@/components/link";
 import { LocaleSwitcher } from "@/components/locale-switcher";
-import { validateRequest } from "@/lib/auth/validate-request";
+import { getCurrentUser } from "@/lib/auth";
 import { createHref } from "@/lib/create-href";
 
 export function AppHeader(): ReactNode {
@@ -47,7 +47,7 @@ export function AppHeader(): ReactNode {
 async function AuthMenu(): Promise<ReactNode> {
 	const t = await getTranslations("AppHeader");
 
-	const { user } = await validateRequest();
+	const user = await getCurrentUser();
 
 	if (user == null) {
 		return (

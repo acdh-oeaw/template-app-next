@@ -19,6 +19,7 @@ export const env = createEnv({
 			DB_PASSWORD: v.pipe(v.string(), v.minLength(8)),
 			DB_PORT: v.pipe(v.string(), v.transform(Number), v.number(), v.integer(), v.minValue(1000)),
 			DB_USER: v.pipe(v.string(), v.nonEmpty()),
+			ENCRYPTION_KEY: v.pipe(v.string(), v.minLength(24)),
 		});
 
 		return v.parse(Schema, input);
@@ -51,6 +52,7 @@ export const env = createEnv({
 		DB_PASSWORD: process.env.DB_PASSWORD,
 		DB_PORT: process.env.DB_PORT,
 		DB_USER: process.env.DB_USER,
+		ENCRYPTION_KEY: process.env.ENCRYPTION_KEY,
 		NEXT_PUBLIC_APP_BASE_URL: process.env.NEXT_PUBLIC_APP_BASE_URL,
 		NEXT_PUBLIC_BOTS: process.env.NEXT_PUBLIC_BOTS,
 		NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION,

@@ -1,10 +1,7 @@
 "use server";
 
-import { cookies } from "next/headers";
-
-import { lucia } from "@/lib/auth/lucia";
-import { validateRequest } from "@/lib/auth/validate-request";
-import { type ActionState, createErrorActionState } from "@/lib/form";
+import { invalidateSession, validateRequest } from "@/lib/auth/session";
+import type { ActionState } from "@/lib/form";
 import { redirect } from "@/lib/navigation";
 
 type SignOutActionState = ActionState;
@@ -12,14 +9,11 @@ type SignOutActionState = ActionState;
 export async function signOutAction(): Promise<SignOutActionState> {
 	const { session } = await validateRequest();
 
-	if (!session) {
-		return createErrorActionState("Unauthorized");
+	if (session == null) {
+		redirect("/auth/sign-in");
 	}
 
-	await lucia.invalidateSession(session.id);
+	await invalidateSession(session.id);
 
-	const sessionCookie = lucia.createBlankSessionCookie();
-	cookies().set(sessionCookie.name, sessionCookie.value, sessionCookie.attributes);
-
-	return redirect("/auth/sign-in");
+	redirect("/auth/sign-in");
 }
