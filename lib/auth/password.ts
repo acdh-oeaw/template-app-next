@@ -2,7 +2,7 @@ import { hash, verify } from "@node-rs/argon2";
 
 import { argonConfig } from "@/config/auth.config";
 
-export function createHashedPassword(password: string): Promise<string> {
+export function createPasswordHash(password: string): Promise<string> {
 	return hash(password, argonConfig);
 }
 

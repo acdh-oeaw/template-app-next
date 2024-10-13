@@ -1,18 +1,15 @@
 "use server";
 
 import { getFormDataValues } from "@acdh-oeaw/lib";
-import { eq } from "drizzle-orm";
 import * as v from "valibot";
 
 import { afterSignInUrl } from "@/config/app.config";
-import { db } from "@/db";
-import { users } from "@/db/schema";
 import { setSession } from "@/lib/auth";
-import { verifyPassword } from "@/lib/auth/password";
 import { type ActionState, createErrorActionState } from "@/lib/form";
 import { redirect } from "@/lib/navigation";
+import { signInUser } from "@/lib/users";
 
-const SignInActionInput = v.object({
+const SignInActionInputSchema = v.object({
 	email: v.pipe(v.string(), v.email()),
 	password: v.pipe(v.string(), v.nonEmpty()),
 });
@@ -23,7 +20,7 @@ export async function signInAction(
 	previousState: SignInActionState,
 	formData: FormData,
 ): Promise<SignInActionState> {
-	const result = await v.safeParseAsync(SignInActionInput, getFormDataValues(formData));
+	const result = await v.safeParseAsync(SignInActionInputSchema, getFormDataValues(formData));
 
 	if (!result.success) {
 		return createErrorActionState("Incorrect email or password.");
@@ -31,21 +28,13 @@ export async function signInAction(
 
 	const { email, password } = result.output;
 
-	const existingUser = await db.query.users.findFirst({
-		where: eq(users.email, email),
-	});
+	try {
+		const user = await signInUser(email, password);
 
-	if (!existingUser) {
+		await setSession(user.id);
+	} catch {
 		return createErrorActionState("Incorrect email or password.");
 	}
-
-	const validPassword = await verifyPassword(existingUser.passwordHash, password);
-
-	if (!validPassword) {
-		return createErrorActionState("Incorrect email or password.");
-	}
-
-	await setSession(existingUser.id);
 
 	redirect(afterSignInUrl);
 }

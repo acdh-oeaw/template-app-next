@@ -1,5 +1,6 @@
 "use server";
 
+import { deleteSessionTokenCookie } from "@/lib/auth/cookie";
 import { invalidateSession, validateRequest } from "@/lib/auth/session";
 import type { ActionState } from "@/lib/form";
 import { redirect } from "@/lib/navigation";
@@ -14,6 +15,7 @@ export async function signOutAction(): Promise<SignOutActionState> {
 	}
 
 	await invalidateSession(session.id);
+	deleteSessionTokenCookie();
 
 	redirect("/auth/sign-in");
 }
