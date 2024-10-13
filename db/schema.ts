@@ -31,7 +31,7 @@ export const users = createTable(
 	{
 		id,
 		email: text().notNull().unique(),
-		// emailVerified: timestamp({ mode: "date", withTimezone: true }).notNull().default(new Date(0)),
+		emailVerified: timestamp({ mode: "date", withTimezone: true }).notNull().default(new Date(0)),
 		// username: text().notNull(),
 		passwordHash: text().notNull(),
 		role: userRole().notNull().default("user"),
@@ -82,20 +82,29 @@ export type SessionInput = typeof sessions.$inferInsert;
 
 /** Email verification requests. */
 
-export const emailVerificationRequests = createTable("email_verification_requests", {
-	id,
-	userId: uuid()
-		.notNull()
-		.references(
-			() => {
-				return users.id;
-			},
-			{ onDelete: "cascade" },
-		),
-	email: text().notNull(),
-	code: text().notNull(),
-	expiresAt: timestamp({ mode: "date", withTimezone: true }).notNull(),
-});
+export const emailVerificationRequests = createTable(
+	"email_verification_requests",
+	{
+		id,
+		userId: uuid()
+			.notNull()
+			.references(
+				() => {
+					return users.id;
+				},
+				{ onDelete: "cascade" },
+			),
+		email: text().notNull(),
+		code: text().notNull(),
+		expiresAt: timestamp({ mode: "date", withTimezone: true }).notNull(),
+	},
+
+	(table) => {
+		return {
+			codeIdx: index().on(table.code),
+		};
+	},
+);
 
 export const emailVerificationRequestRelations = relations(emailVerificationRequests, ({ one }) => {
 	return {
@@ -108,22 +117,32 @@ export type EmailVerificationRequestInput = typeof emailVerificationRequests.$in
 
 /** Password reset sessions. */
 
-export const passwordResetSessions = createTable("password_reset_sessions", {
-	id,
-	userId: uuid()
-		.notNull()
-		.references(
-			() => {
-				return users.id;
-			},
-			{ onDelete: "cascade" },
-		),
-	email: text().notNull(),
-	code: text().notNull(),
-	expiresAt: timestamp({ mode: "date", withTimezone: true }).notNull(),
-	emailVerified: timestamp({ mode: "date", withTimezone: true }).notNull().default(new Date(0)),
-	twoFactorVerified: timestamp({ mode: "date", withTimezone: true }).notNull().default(new Date(0)),
-});
+export const passwordResetSessions = createTable(
+	"password_reset_sessions",
+	{
+		id,
+		userId: uuid()
+			.notNull()
+			.references(
+				() => {
+					return users.id;
+				},
+				{ onDelete: "cascade" },
+			),
+		email: text().notNull(),
+		code: text().notNull(),
+		expiresAt: timestamp({ mode: "date", withTimezone: true }).notNull(),
+		emailVerified: timestamp({ mode: "date", withTimezone: true }).notNull().default(new Date(0)),
+		twoFactorVerified: timestamp({ mode: "date", withTimezone: true })
+			.notNull()
+			.default(new Date(0)),
+	},
+	(table) => {
+		return {
+			codeIdx: index().on(table.code),
+		};
+	},
+);
 
 export const passwordResetSessionRelations = relations(passwordResetSessions, ({ one }) => {
 	return {

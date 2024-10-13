@@ -22,3 +22,12 @@ export async function getUserByEmail(email: string): Promise<User | undefined> {
 
 	return user;
 }
+
+// export async function setEmailVerified(userId: string) {
+// 	await db
+// 		.update(users)
+// 		.set({
+// 			emailVerified: new Date(),
+// 		})
+// 		.where(eq(users.id, userId));
+// }

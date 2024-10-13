@@ -3,7 +3,7 @@
 import { getFormDataValues } from "@acdh-oeaw/lib";
 import * as v from "valibot";
 
-import { afterSignInUrl } from "@/config/app.config";
+import { urls } from "@/config/auth.config";
 import { setSession } from "@/lib/auth";
 import { type ActionState, createErrorActionState } from "@/lib/form";
 import { redirect } from "@/lib/navigation";
@@ -29,6 +29,8 @@ export async function signInAction(
 	const { email, password } = result.output;
 
 	try {
+		// TODO: ratelimit
+
 		const user = await signInUser(email, password);
 
 		await setSession(user.id);
@@ -36,5 +38,5 @@ export async function signInAction(
 		return createErrorActionState("Incorrect email or password.");
 	}
 
-	redirect(afterSignInUrl);
+	redirect(urls.afterSignIn);
 }

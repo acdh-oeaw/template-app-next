@@ -3,7 +3,7 @@
 import { getFormDataValues } from "@acdh-oeaw/lib";
 import * as v from "valibot";
 
-import { afterSignInUrl } from "@/config/app.config";
+import { urls } from "@/config/auth.config";
 import { setSession } from "@/lib/auth";
 import { EmailInUseError } from "@/lib/errors";
 import { type ActionState, createErrorActionState } from "@/lib/form";
@@ -39,6 +39,8 @@ export async function signUpAction(
 	const { email, password } = result.output;
 
 	try {
+		// TODO: ratelimit
+
 		const user = await signUpUser(email, password);
 
 		await setSession(user.id);
@@ -50,5 +52,5 @@ export async function signUpAction(
 		return createErrorActionState("An unknown error occurred.");
 	}
 
-	redirect(afterSignInUrl);
+	redirect(urls.afterSignIn);
 }

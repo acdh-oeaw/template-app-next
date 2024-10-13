@@ -10,6 +10,10 @@ export class NotFoundError extends Error {
 	name = "NotFoundError";
 }
 
+export class RateLimitError extends Error {
+	name = "RateLimitError";
+}
+
 export class SignInError extends Error {
 	name = "SignInError";
 }

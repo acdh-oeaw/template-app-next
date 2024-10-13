@@ -4,6 +4,7 @@ import type { ReactNode } from "react";
 import { signUpAction } from "@/app/[locale]/auth/sign-up/_actions/sign-up-action";
 import { Form } from "@/components/form";
 import { Link } from "@/components/link";
+import { urls } from "@/config/auth.config";
 
 export function SignUpForm(): ReactNode {
 	const t = useTranslations("SignUpForm");
@@ -47,7 +48,7 @@ export function SignUpForm(): ReactNode {
 
 				<div>
 					<span>{t("has-account")} </span>
-					<Link href="/auth/sign-up">{t("sign-in")}</Link>
+					<Link href={urls.signIn}>{t("sign-in")}</Link>
 				</div>
 			</div>
 		</Form>

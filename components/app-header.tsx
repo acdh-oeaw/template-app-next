@@ -8,6 +8,7 @@ import { ColorSchemeSwitcher } from "@/components/color-scheme-switcher";
 import { Form } from "@/components/form";
 import { Link, type LinkProps } from "@/components/link";
 import { LocaleSwitcher } from "@/components/locale-switcher";
+import { urls } from "@/config/auth.config";
 import { getCurrentUser } from "@/lib/auth";
 import { createHref } from "@/lib/create-href";
 
@@ -52,7 +53,7 @@ async function AuthMenu(): Promise<ReactNode> {
 	if (user == null) {
 		return (
 			<div>
-				<Link href="/auth/sign-in">{t("sign-in")}</Link>
+				<Link href={urls.signIn}>{t("sign-in")}</Link>
 			</div>
 		);
 	}
