@@ -12,7 +12,7 @@
 		"analyze": "BUNDLE_ANALYZER=\"enabled\" next build --no-lint",
 		"build": "next build",
 		"dev": "next dev",
-		"format:check": "prettier . \"!./@(content|public)/**\" --cache --cache-location ./.prettiercache --check --ignore-path ./.gitignore",
+		"format:check": "prettier . \"!./@(content|public)/**\" --cache --cache-location ./.prettiercache --check",
 		"format:fix": "pnpm run format:check --write",
 		"lint:check": "run-p --continue-on-error \"lint:*:check\"",
 		"lint:fix": "run-p --continue-on-error \"lint:*:fix\"",
