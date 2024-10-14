@@ -1,8 +1,8 @@
 "use server";
 
 import { urls } from "@/config/auth.config";
-import { deleteSessionTokenCookie } from "@/lib/auth/cookie";
-import { invalidateSession, validateRequest } from "@/lib/auth/session";
+import { deleteSessionTokenCookie } from "@/lib/auth/cookies";
+import { invalidateSession, validateRequest } from "@/lib/auth/sessions";
 import type { ActionState } from "@/lib/form";
 import { redirect } from "@/lib/navigation";
 

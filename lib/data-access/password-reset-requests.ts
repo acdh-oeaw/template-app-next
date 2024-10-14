@@ -1,27 +1,12 @@
-import crypto from "node:crypto";
-
 import { eq } from "drizzle-orm";
 
 import { verificationCodeLength, verificationCodeTTL } from "@/config/auth.config";
 import { db } from "@/db";
 import { type PasswordResetSession, passwordResetSessions } from "@/db/schema";
-
-async function generateRandomToken(length: number): Promise<string> {
-	const buf = await new Promise<Buffer>((resolve, reject) => {
-		crypto.randomBytes(Math.ceil(length / 2), (err, buf) => {
-			if (err !== null) {
-				reject(err);
-			} else {
-				resolve(buf);
-			}
-		});
-	});
-
-	return buf.toString("hex").slice(0, length);
-}
+import { generateToken } from "@/lib/auth/tokens";
 
 export async function createPasswordResetSession(userId: string): Promise<string> {
-	const code = await generateRandomToken(verificationCodeLength);
+	const code = generateToken(verificationCodeLength);
 	const expiresAt = new Date(Date.now() + verificationCodeTTL);
 
 	await db

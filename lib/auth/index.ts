@@ -3,8 +3,8 @@ import "server-only";
 import { cache } from "react";
 
 import type { User } from "@/db/schema";
-import { setSessionTokenCookie } from "@/lib/auth/cookie";
-import { createSession, generateSessionToken, validateRequest } from "@/lib/auth/session";
+import { setSessionTokenCookie } from "@/lib/auth/cookies";
+import { createSession, generateSessionToken, validateRequest } from "@/lib/auth/sessions";
 import { AuthenticationError } from "@/lib/errors";
 
 export const getCurrentUser = cache(async function getCurrentUser(): Promise<User | null> {

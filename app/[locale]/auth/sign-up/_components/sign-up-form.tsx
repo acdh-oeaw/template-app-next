@@ -37,6 +37,8 @@ export function SignUpForm(): ReactNode {
 					/>
 				</label>
 
+				{/* TODO: honeypot field */}
+
 				<div>
 					<button
 						className="inline-flex rounded bg-primary px-4 py-2 text-sm font-medium text-on-primary"

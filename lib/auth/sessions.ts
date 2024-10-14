@@ -1,24 +1,21 @@
 import "server-only";
 
 import { sha256 } from "@oslojs/crypto/sha2";
-import { encodeBase32LowerCaseNoPadding, encodeHexLowerCase } from "@oslojs/encoding";
+import { encodeHexLowerCase } from "@oslojs/encoding";
 import { eq } from "drizzle-orm";
 
 import { sessionMaxDurationMs, sessionRefreshIntervalMs } from "@/config/auth.config";
 import { db } from "@/db";
 import { type Session, sessions, type User, users } from "@/db/schema";
-import { getSessionToken } from "@/lib/auth/cookie";
+import { getSessionToken } from "@/lib/auth/cookies";
+import { generateToken } from "@/lib/auth/tokens";
 
 function generateSessionId(token: string) {
 	return encodeHexLowerCase(sha256(new TextEncoder().encode(token)));
 }
 
 export function generateSessionToken(): string {
-	const bytes = new Uint8Array(20);
-	crypto.getRandomValues(bytes);
-	const token = encodeBase32LowerCaseNoPadding(bytes);
-
-	return token;
+	return generateToken(20);
 }
 
 export async function createSession(token: string, userId: string): Promise<Session> {
