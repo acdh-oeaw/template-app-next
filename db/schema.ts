@@ -94,8 +94,8 @@ export const emailVerificationRequests = createTable(
 				},
 				{ onDelete: "cascade" },
 			),
-		email: text().notNull(),
 		code: text().notNull(),
+		// email: text().notNull(),
 		expiresAt: timestamp({ mode: "date", withTimezone: true }).notNull(),
 	},
 
@@ -129,13 +129,13 @@ export const passwordResetSessions = createTable(
 				},
 				{ onDelete: "cascade" },
 			),
-		email: text().notNull(),
 		code: text().notNull(),
+		// email: text().notNull(),
 		expiresAt: timestamp({ mode: "date", withTimezone: true }).notNull(),
-		emailVerified: timestamp({ mode: "date", withTimezone: true }).notNull().default(new Date(0)),
-		twoFactorVerified: timestamp({ mode: "date", withTimezone: true })
-			.notNull()
-			.default(new Date(0)),
+		// emailVerified: timestamp({ mode: "date", withTimezone: true }).notNull().default(new Date(0)),
+		// twoFactorVerified: timestamp({ mode: "date", withTimezone: true })
+		// 	.notNull()
+		// 	.default(new Date(0)),
 	},
 	(table) => {
 		return {

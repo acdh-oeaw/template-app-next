@@ -23,11 +23,20 @@ export async function getUserByEmail(email: string): Promise<User | undefined> {
 	return user;
 }
 
-// export async function setEmailVerified(userId: string) {
-// 	await db
-// 		.update(users)
-// 		.set({
-// 			emailVerified: new Date(),
-// 		})
-// 		.where(eq(users.id, userId));
-// }
+export async function setUserEmailVerified(userId: string): Promise<void> {
+	await db
+		.update(users)
+		.set({
+			emailVerified: new Date(),
+		})
+		.where(eq(users.id, userId));
+}
+
+export async function updateUserPassword(userId: string, passwordHash: string): Promise<void> {
+	await db
+		.update(users)
+		.set({
+			passwordHash,
+		})
+		.where(eq(users.id, userId));
+}
