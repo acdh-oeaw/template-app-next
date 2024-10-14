@@ -24,6 +24,5 @@ export const config: MiddlewareConfig = {
 		 * @see https://github.com/vercel/next.js/issues/56398
 		 */
 		"/(de|en)/:path*",
-		// "/api/:path*",
 	],
 };

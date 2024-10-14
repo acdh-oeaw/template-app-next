@@ -14,7 +14,7 @@ import {
 	deletePasswordResetSession,
 	getPasswordResetSession,
 } from "@/lib/data-access/password-reset-requests";
-import { deleteSessionsForUser } from "@/lib/data-access/sessions";
+import { deleteSessionsByUser } from "@/lib/data-access/sessions";
 import {
 	createUser,
 	getUserByEmail,
@@ -105,7 +105,7 @@ export async function changePassword(code: string, password: string): Promise<vo
 	// FIXME: wrap in transaction
 	await deletePasswordResetSession(code);
 	await updateUserPassword(userId, passwordHash);
-	await deleteSessionsForUser(userId);
+	await deleteSessionsByUser(userId);
 }
 
 export async function verifyEmail(code: string): Promise<void> {
