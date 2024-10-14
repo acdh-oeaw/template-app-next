@@ -1,6 +1,8 @@
 import { log } from "@acdh-oeaw/lib";
+import { NextResponse } from "next/server";
 
 import { urls } from "@/config/auth.config";
+import { redirect } from "@/lib/navigation"; // throws!
 import { verifyEmail } from "@/lib/users";
 
 export async function GET(request: Request): Promise<Response> {
@@ -11,30 +13,15 @@ export async function GET(request: Request): Promise<Response> {
 		const code = url.searchParams.get("code");
 
 		if (!code) {
-			return new Response(null, {
-				status: 302,
-				headers: {
-					Location: urls.signIn,
-				},
-			});
+			return NextResponse.redirect(new URL(urls.signIn, request.url));
 		}
 
 		await verifyEmail(code);
 
-		return new Response(null, {
-			status: 302,
-			headers: {
-				Location: urls.afterVerifyEmail,
-			},
-		});
+		return NextResponse.redirect(new URL(urls.afterVerifyEmail, request.url));
 	} catch (error) {
 		log.error(String(error));
 
-		return new Response(null, {
-			status: 302,
-			headers: {
-				Location: urls.signIn,
-			},
-		});
+		return NextResponse.redirect(new URL(urls.signIn, request.url));
 	}
 }
