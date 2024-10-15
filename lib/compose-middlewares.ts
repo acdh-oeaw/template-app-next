@@ -10,7 +10,7 @@ export function composeMiddleware(...middlewares: Array<Middleware>) {
 	return async (request: NextRequest, event: NextFetchEvent) => {
 		let response = NextResponse.next();
 
-		for await (const middleware of middlewares) {
+		for (const middleware of middlewares) {
 			response = await middleware(request, response, event);
 
 			if (response.status >= 300 || response.headers.has("x-middleware-rewrite")) {
