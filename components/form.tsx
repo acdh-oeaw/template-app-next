@@ -15,5 +15,17 @@ export function Form(props: FormProps): ReactNode {
 
 	const [state, formAction] = useActionState(action, createInitialActionState());
 
-	return <form action={formAction}>{children}</form>;
+	return (
+		<form action={formAction}>
+			{children}
+
+			<div aria-live="polite">
+				{state.status === "error" ? (
+					<div className="text-negative">{state.message}</div>
+				) : state.status === "success" ? (
+					<div className="text-positive">{state.message}</div>
+				) : null}
+			</div>
+		</form>
+	);
 }

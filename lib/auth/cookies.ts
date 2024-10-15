@@ -2,16 +2,17 @@ import "server-only";
 
 import { cookies } from "next/headers";
 
+import { sessionCookieName } from "@/config/auth.config";
 import { env } from "@/config/env.config";
 
-const SESSION_COOKIE_NAME = "session";
-
-export function getSessionToken(): string | undefined {
-	return cookies().get(SESSION_COOKIE_NAME)?.value;
+// eslint-disable-next-line @typescript-eslint/require-await
+export async function getSessionToken(): Promise<string | undefined> {
+	return cookies().get(sessionCookieName)?.value;
 }
 
-export function setSessionTokenCookie(token: string, expiresAt: Date): void {
-	cookies().set(SESSION_COOKIE_NAME, token, {
+// eslint-disable-next-line @typescript-eslint/require-await
+export async function setSessionTokenCookie(token: string, expiresAt: Date): Promise<void> {
+	cookies().set(sessionCookieName, token, {
 		httpOnly: true,
 		sameSite: "lax",
 		secure: env.NODE_ENV === "production",
@@ -20,8 +21,9 @@ export function setSessionTokenCookie(token: string, expiresAt: Date): void {
 	});
 }
 
-export function deleteSessionTokenCookie(): void {
-	cookies().set(SESSION_COOKIE_NAME, "", {
+// eslint-disable-next-line @typescript-eslint/require-await
+export async function deleteSessionTokenCookie(): Promise<void> {
+	cookies().set(sessionCookieName, "", {
 		httpOnly: true,
 		sameSite: "lax",
 		secure: env.NODE_ENV === "production",

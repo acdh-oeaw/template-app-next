@@ -18,19 +18,36 @@ export function generateSessionToken(): string {
 	return generateToken(20);
 }
 
-export async function createSession(token: string, userId: string): Promise<Session> {
+// type SessionFlags = Pick<Session, "twoFactorVerified">;
+
+export async function createSession(
+	token: string,
+	userId: string,
+	// flags: SessionFlags,
+): Promise<Session> {
 	const sessionId = generateSessionId(token);
 
 	const session: Session = {
 		id: sessionId,
 		userId,
 		expiresAt: new Date(Date.now() + sessionMaxDurationMs),
+		// twoFactorVerified: flags.twoFactorVerified,
 	};
 
+	// TODO: move to data-access folder
 	await db.insert(sessions).values(session);
 
 	return session;
 }
+
+// export async function setSessionAs2FAVerified(sessionId: string): Promise<void> {
+// 	await db
+// 		.update(sessions)
+// 		.set({
+// 			twoFactorVerified: new Date(),
+// 		})
+// 		.where(eq(sessions.id, sessionId));
+// }
 
 export type SessionValidationResult =
 	| { session: Session; user: User }
@@ -39,6 +56,7 @@ export type SessionValidationResult =
 export async function validateSessionToken(token: string): Promise<SessionValidationResult> {
 	const sessionId = generateSessionId(token);
 
+	// TODO: move to data-access folder
 	const [result] = await db
 		.select({ user: users, session: sessions })
 		.from(sessions)
@@ -52,7 +70,7 @@ export async function validateSessionToken(token: string): Promise<SessionValida
 	const { user, session } = result;
 
 	if (Date.now() >= session.expiresAt.getTime()) {
-		await db.delete(sessions).where(eq(sessions.id, session.id));
+		await db.delete(sessions).where(eq(sessions.id, session.id)); // TODO: move to data-access folder
 
 		return { session: null, user: null };
 	}
@@ -60,6 +78,7 @@ export async function validateSessionToken(token: string): Promise<SessionValida
 	if (Date.now() >= session.expiresAt.getTime() - sessionRefreshIntervalMs) {
 		session.expiresAt = new Date(Date.now() + sessionMaxDurationMs);
 
+		// TODO: move to data-access folder
 		await db
 			.update(sessions)
 			.set({
@@ -71,10 +90,10 @@ export async function validateSessionToken(token: string): Promise<SessionValida
 	return { session, user };
 }
 
-export async function validateRequest(): Promise<SessionValidationResult> {
-	const sessionToken = getSessionToken();
+export async function getCurrentSession(): Promise<SessionValidationResult> {
+	const sessionToken = await getSessionToken();
 
-	if (!sessionToken) {
+	if (sessionToken == null) {
 		return { session: null, user: null };
 	}
 
@@ -82,9 +101,9 @@ export async function validateRequest(): Promise<SessionValidationResult> {
 }
 
 export async function invalidateSession(sessionId: string): Promise<void> {
-	await db.delete(sessions).where(eq(sessions.id, sessionId));
+	await db.delete(sessions).where(eq(sessions.id, sessionId)); // TODO: move to data-access folder
 }
 
 export async function invalidateUserSessions(userId: string): Promise<void> {
-	await db.delete(sessions).where(eq(users.id, userId));
+	await db.delete(sessions).where(eq(users.id, userId)); // TODO: move to data-access folder
 }

@@ -7,13 +7,13 @@ import type { ReactNode } from "react";
 import { LocalizedStringProvider as Translations } from "react-aria-components/i18n";
 import { jsonLdScriptProps } from "react-schemaorg";
 
+import { AppFooter } from "@/app/[locale]/_components/app-footer";
+import { AppHeader } from "@/app/[locale]/_components/app-header";
+import { AppLayout } from "@/app/[locale]/_components/app-layout";
+import { TailwindIndicator } from "@/app/[locale]/_components/tailwind-indicator";
 import { Providers } from "@/app/[locale]/providers";
-import { AppFooter } from "@/components/app-footer";
-import { AppHeader } from "@/components/app-header";
-import { AppLayout } from "@/components/app-layout";
 import { id } from "@/components/main-content";
 import { SkipLink } from "@/components/skip-link";
-import { TailwindIndicator } from "@/components/tailwind-indicator";
 import { env } from "@/config/env.config";
 import { type Locale, locales } from "@/config/i18n.config";
 import { AnalyticsScript } from "@/lib/analytics-script";

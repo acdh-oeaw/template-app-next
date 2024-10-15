@@ -3,11 +3,11 @@ import { getTranslations } from "next-intl/server";
 import type { ReactNode } from "react";
 
 import { signOutAction } from "@/app/[locale]/_actions/sign-out-action";
-import { AppNavLink } from "@/components/app-nav-link";
-import { ColorSchemeSwitcher } from "@/components/color-scheme-switcher";
+import { AppNavLink } from "@/app/[locale]/_components/app-nav-link";
+import { ColorSchemeSwitcher } from "@/app/[locale]/_components/color-scheme-switcher";
+import { LocaleSwitcher } from "@/app/[locale]/_components/locale-switcher";
 import { Form } from "@/components/form";
 import { Link, type LinkProps } from "@/components/link";
-import { LocaleSwitcher } from "@/components/locale-switcher";
 import { urls } from "@/config/auth.config";
 import { getCurrentUser } from "@/lib/auth";
 import { createHref } from "@/lib/create-href";

@@ -1,7 +1,7 @@
 import { useTranslations } from "next-intl";
 import type { ReactNode } from "react";
 
-import { AppNavLink } from "@/components/app-nav-link";
+import { AppNavLink } from "@/app/[locale]/_components/app-nav-link";
 import type { LinkProps } from "@/components/link";
 import { createHref } from "@/lib/create-href";
 

@@ -1,7 +1,10 @@
 import { useLocale, useTranslations } from "next-intl";
 import { Fragment, type ReactNode, Suspense, useMemo } from "react";
 
-import { LocaleSwitcherLink, LocaleSwitcherLinkFallback } from "@/components/locale-switcher-link";
+import {
+	LocaleSwitcherLink,
+	LocaleSwitcherLinkFallback,
+} from "@/app/[locale]/_components/locale-switcher-link";
 import { type Locale, locales } from "@/config/i18n.config";
 
 export function LocaleSwitcher(): ReactNode {

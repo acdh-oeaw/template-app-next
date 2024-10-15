@@ -36,7 +36,7 @@ export async function signUpUser(email: string, password: string) {
 	const user = await createUser(email, passwordHash);
 	assert(user);
 
-	const code = await createEmailVerificationRequest(user.id);
+	const code = await createEmailVerificationRequest(user.id /**, user.email */);
 
 	const url = createUrl({
 		baseUrl: env.NEXT_PUBLIC_APP_BASE_URL,

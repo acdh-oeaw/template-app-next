@@ -2,7 +2,7 @@
 
 import type { ReactNode } from "react";
 
-import { AppLink } from "@/components/app-link";
+import { AppLink } from "@/app/[locale]/_components/app-link";
 import type { LinkProps } from "@/components/link";
 import { useNavLink } from "@/lib/use-nav-link";
 
