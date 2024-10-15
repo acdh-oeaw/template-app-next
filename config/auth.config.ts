@@ -10,8 +10,8 @@ export const argonConfig: Options = {
 export const sessionMaxDurationMs = 1000 * 60 * 60 * 24 * 30; /** 30 days. */
 export const sessionRefreshIntervalMs = sessionMaxDurationMs / 2;
 
-export const verificationCodeLength = 20; /** Bytes. */
-export const verificationCodeTTL = 1000 * 60 * 5; /** 5 min. */
+export const tokenCodeLength = 20; /** Bytes. */
+export const tokenCodeTTL = 1000 * 60 * 5; /** 5 min. */
 
 export const urls = {
 	afterSignIn: "/",

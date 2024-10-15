@@ -1,16 +1,16 @@
-import { type NextRequest, NextResponse } from "next/server";
-
 import { sessionMaxDurationMs } from "@/config/auth.config";
 import { env } from "@/config/env.config";
+import type { Middleware } from "@/lib/compose-middlewares";
 
-export function sessionExtensionMiddleware(request: NextRequest): NextResponse {
+export const sessionExtensionMiddleware: Middleware = function sessionExtensionMiddleware(
+	request,
+	response,
+) {
 	/**
 	 * Only extend cookie expiration on GET requests since we can be sure
 	 * a new session wasn't set when handling the request.
 	 */
 	if (request.method === "GET") {
-		const response = NextResponse.next();
-
 		const token = request.cookies.get("session")?.value;
 
 		if (token != null) {
@@ -22,9 +22,7 @@ export function sessionExtensionMiddleware(request: NextRequest): NextResponse {
 				secure: env.NODE_ENV === "production",
 			});
 		}
-
-		return response;
 	}
 
-	return NextResponse.next();
-}
+	return response;
+};

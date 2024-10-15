@@ -1,13 +1,13 @@
 import { eq } from "drizzle-orm";
 
-import { verificationCodeLength, verificationCodeTTL } from "@/config/auth.config";
+import { tokenCodeLength, tokenCodeTTL } from "@/config/auth.config";
 import { db } from "@/db";
 import { type PasswordResetSession, passwordResetSessions } from "@/db/schema";
 import { generateToken } from "@/lib/auth/tokens";
 
 export async function createPasswordResetSession(userId: string): Promise<string> {
-	const code = generateToken(verificationCodeLength);
-	const expiresAt = new Date(Date.now() + verificationCodeTTL);
+	const code = generateToken(tokenCodeLength);
+	const expiresAt = new Date(Date.now() + tokenCodeTTL);
 
 	await db
 		.insert(passwordResetSessions)

@@ -1,6 +1,8 @@
-import { type NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 
-export function csrfMiddlware(request: NextRequest): NextResponse {
+import type { Middleware } from "@/lib/compose-middlewares";
+
+export const csrfMiddlware: Middleware = function csrfMiddlware(request, response) {
 	if (request.method !== "GET") {
 		const originHeader = request.headers.get("Origin");
 		// TODO: May need to use `X-Forwarded-Host` header.
@@ -23,5 +25,5 @@ export function csrfMiddlware(request: NextRequest): NextResponse {
 		}
 	}
 
-	return NextResponse.next();
-}
+	return response;
+};

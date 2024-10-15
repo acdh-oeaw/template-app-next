@@ -1,19 +1,15 @@
-import type { MiddlewareConfig, NextRequest, NextResponse } from "next/server";
-import createI18nMiddleware from "next-intl/middleware";
+import type { MiddlewareConfig, NextMiddleware } from "next/server";
 
-import { defaultLocale, localePrefix, locales } from "@/config/i18n.config";
 import { csrfMiddlware } from "@/lib/auth/csrf-middleware";
 import { sessionExtensionMiddleware } from "@/lib/auth/session-extension-middleware";
+import { composeMiddleware } from "@/lib/compose-middlewares";
+import { i18nMiddlware } from "@/lib/i18n/i18n-middleware";
 
-const i18nMiddleware = createI18nMiddleware({
-	defaultLocale,
-	localePrefix,
-	locales,
-});
-
-export function middleware(request: NextRequest): NextResponse {
-	return i18nMiddleware(request);
-}
+export const middleware: NextMiddleware = composeMiddleware(
+	csrfMiddlware,
+	i18nMiddlware,
+	sessionExtensionMiddleware,
+);
 
 export const config: MiddlewareConfig = {
 	matcher: [
@@ -24,5 +20,6 @@ export const config: MiddlewareConfig = {
 		 * @see https://github.com/vercel/next.js/issues/56398
 		 */
 		"/(de|en)/:path*",
+		"/api/:path*",
 	],
 };
