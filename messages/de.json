@@ -54,7 +54,7 @@
 		"title": "Seite nicht gefunden"
 	},
 	"SignInForm": {
-		"email": "Email",
+		"email": "E-Mail",
 		"no-account": "Sie sind noch nicht registriert?",
 		"password": "Passwort",
 		"sign-in": "Anmelden",
@@ -67,7 +67,7 @@
 		"title": "Anmelden"
 	},
 	"SignUpForm": {
-		"email": "Email",
+		"email": "E-Mail",
 		"has-account": "Sie sind bereits registriert?",
 		"password": "Passwort",
 		"sign-in": "Anmelden",
@@ -78,5 +78,11 @@
 			"title": "Registrieren"
 		},
 		"title": "Registrieren"
+	},
+	"VerifyEmailPage": {
+		"meta": {
+			"title": "E-Mail-Adresse bestätigen"
+		},
+		"title": "E-Mail-Adresse bestätigen"
 	}
 }

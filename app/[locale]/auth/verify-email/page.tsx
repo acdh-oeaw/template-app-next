@@ -3,9 +3,14 @@ import { useTranslations } from "next-intl";
 import { getTranslations, unstable_setRequestLocale as setRequestLocale } from "next-intl/server";
 import type { ReactNode } from "react";
 
+import { EmailVerificationForm } from "@/app/[locale]/auth/verify-email/_components/email-verification-form";
+import { ResendEmailVerificationCodeForm } from "@/app/[locale]/auth/verify-email/_components/resend-email-verification-code-form";
 import { MainContent } from "@/components/main-content";
 import { PageTitle } from "@/components/ui/page-title";
+import { urls } from "@/config/auth.config";
 import type { Locale } from "@/config/i18n.config";
+import { getCurrentSession } from "@/lib/auth/sessions";
+import { redirect } from "@/lib/navigation";
 
 interface VerifyEmailPageProps {
 	params: {
@@ -30,18 +35,43 @@ export async function generateMetadata(
 	return metadata;
 }
 
-export default function VerifyEmailPage(props: VerifyEmailPageProps): ReactNode {
+export default async function VerifyEmailPage(props: VerifyEmailPageProps): Promise<ReactNode> {
 	const { params } = props;
 
 	const { locale } = params;
 
 	setRequestLocale(locale);
 
-	const t = useTranslations("VerifyEmailPage");
+	const t = await getTranslations("VerifyEmailPage");
+
+	const { user } = await getCurrentSession();
+
+	if (user == null) {
+		redirect(urls.signIn);
+	}
+
+	/**
+	 * TODO: Ideally we'd sent a new verification email automatically if the previous one is expired,
+	 * but we can't set cookies inside server components.
+	 */
+	const verificationRequest = getUserEmailVerificationRequestFromRequest();
+
+	if (verificationRequest == null && user.emailVerified.getTime() !== 0) {
+		redirect(urls.afterSignIn);
+	}
 
 	return (
 		<MainContent className="container py-8">
 			<PageTitle>{t("title")}</PageTitle>
+
+			<p>We sent an 8-digit code to {verificationRequest?.email ?? user.email}.</p>
+			<p>{t("message")}</p>
+
+			<EmailVerificationForm />
+
+			<ResendEmailVerificationCodeForm />
+
+			{/* <Link href={createHref({ pathname: "/settings" })}>{t("change-email")}</Link> */}
 		</MainContent>
 	);
 }

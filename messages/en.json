@@ -78,5 +78,11 @@
 			"title": "Sign up"
 		},
 		"title": "Sign up"
+	},
+	"VerifyEmailPage": {
+		"meta": {
+			"title": "Verify email address"
+		},
+		"title": "Verify email address"
 	}
 }
