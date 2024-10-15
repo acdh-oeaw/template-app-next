@@ -1,15 +1,9 @@
-import type { MiddlewareConfig } from "next/server";
-import createI18nMiddleware from "next-intl/middleware";
+import type { MiddlewareConfig, NextMiddleware } from "next/server";
 
-import { defaultLocale, localePrefix, locales } from "@/config/i18n.config";
+import { composeMiddleware } from "@/lib/compose-middlewares";
+import { i18nMiddlware } from "@/lib/i18n/i18n-middleware";
 
-const i18nMiddleware = createI18nMiddleware({
-	defaultLocale,
-	localePrefix,
-	locales,
-});
-
-export default i18nMiddleware;
+export const middleware: NextMiddleware = composeMiddleware(i18nMiddlware);
 
 export const config: MiddlewareConfig = {
 	matcher: [
@@ -20,5 +14,6 @@ export const config: MiddlewareConfig = {
 		 * @see https://github.com/vercel/next.js/issues/56398
 		 */
 		"/(de|en)/:path*",
+		"/api/:path*",
 	],
 };
