@@ -38,7 +38,7 @@ const config = {
 /** @type {Array<(config: NextConfig) => NextConfig>} */
 const plugins = [
 	createBundleAnalyzer({ enabled: env.BUNDLE_ANALYZER === "enabled" }),
-	createI18nPlugin("./lib/i18n.ts"),
+	createI18nPlugin("./lib/i18n/index.ts"),
 ];
 
 export default plugins.reduce((config, plugin) => {
