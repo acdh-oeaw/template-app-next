@@ -1,16 +1,9 @@
-import { createSharedPathnamesNavigation } from "next-intl/navigation";
+import { createNavigation } from "next-intl/navigation";
 import type { ComponentPropsWithRef, FC } from "react";
 
-import { locales } from "@/config/i18n.config";
+import { routing } from "@/config/i18n.config";
 
-const {
-	Link,
-	redirect: _redirect,
-	usePathname,
-	useRouter,
-} = createSharedPathnamesNavigation({
-	locales,
-});
+const { Link, redirect: _redirect, usePathname, useRouter } = createNavigation(routing);
 
 /** FIXME: @see https://github.com/amannn/next-intl/issues/823 */
 const redirect: typeof _redirect = _redirect;

@@ -10,7 +10,7 @@ import { Fragment, type ReactNode, Suspense, useEffect } from "react";
 
 import { env } from "@/config/env.config";
 import type { Locale } from "@/config/i18n.config";
-import { usePathname } from "@/lib/navigation";
+import { usePathname } from "@/lib/i18n/navigation";
 
 declare global {
 	interface Window {

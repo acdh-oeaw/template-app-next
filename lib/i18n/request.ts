@@ -3,10 +3,14 @@ import "server-only";
 import { notFound } from "next/navigation";
 import { getRequestConfig } from "next-intl/server";
 
-import { isValidLocale } from "@/config/i18n.config";
+import { formats, isValidLocale } from "@/config/i18n.config";
 
-export default getRequestConfig(async ({ locale }) => {
-	if (!isValidLocale(locale)) notFound();
+export default getRequestConfig(async ({ requestLocale }) => {
+	const locale = await requestLocale;
+
+	if (locale == null || !isValidLocale(locale)) notFound();
+
+	const timeZone = "UTC";
 
 	// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
 	const _messages = await import(`@/messages/${locale}.json`);
@@ -17,9 +21,8 @@ export default getRequestConfig(async ({ locale }) => {
 	// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
 	const messages = { metadata: _metadata.default, ..._messages.default } as IntlMessages;
 
-	const timeZone = "UTC";
-
 	return {
+		formats,
 		messages,
 		timeZone,
 	};

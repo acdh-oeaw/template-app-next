@@ -1,4 +1,5 @@
-import type { LocalePrefix } from "next-intl/routing";
+import type { Formats } from "next-intl";
+import { defineRouting, type LocalePrefix } from "next-intl/routing";
 
 import type metadataDe from "@/content/de/metadata/index.json";
 import type metadataEn from "@/content/en/metadata/index.json";
@@ -23,7 +24,27 @@ export const localePrefix = {
 	},
 } satisfies LocalePrefix<typeof locales>;
 
+export const routing = defineRouting({
+	locales,
+	defaultLocale,
+	localePrefix,
+});
+
 export interface Translations extends Record<Locale, IntlMessages> {
 	de: typeof de & { metadata: typeof metadataDe };
 	en: typeof en & { metadata: typeof metadataEn };
 }
+
+export const formats = {
+	dateTime: {
+		long: {
+			dateStyle: "long",
+		},
+	},
+	list: {
+		enumeration: {
+			style: "long",
+			type: "conjunction",
+		},
+	},
+} satisfies Formats;

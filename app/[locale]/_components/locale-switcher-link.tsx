@@ -6,7 +6,7 @@ import type { ReactNode } from "react";
 import { AppLink } from "@/app/[locale]/_components/app-link";
 import type { Locale } from "@/config/i18n.config";
 import { createHref } from "@/lib/create-href";
-import { usePathname } from "@/lib/navigation";
+import { usePathname } from "@/lib/i18n/navigation";
 
 interface LocaleSwitcherLinkProps {
 	children: ReactNode;

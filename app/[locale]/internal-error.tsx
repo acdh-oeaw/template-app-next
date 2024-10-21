@@ -5,7 +5,7 @@ import { type ReactNode, useEffect, useTransition } from "react";
 
 import { MainContent } from "@/components/main-content";
 import { PageTitle } from "@/components/ui/page-title";
-import { useRouter } from "@/lib/navigation";
+import { useRouter } from "@/lib/i18n/navigation";
 
 interface InternalErrorProps {
 	error: Error & { digest?: string };

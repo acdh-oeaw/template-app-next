@@ -8,6 +8,8 @@ import { env } from "./config/env.config.js";
 
 /** @type {NextConfig} */
 const config = {
+	/** Compression should be handled by nginx reverse proxy. */
+	compress: false,
 	eslint: {
 		dirs: [process.cwd()],
 		ignoreDuringBuilds: true,
@@ -38,7 +40,7 @@ const config = {
 /** @type {Array<(config: NextConfig) => NextConfig>} */
 const plugins = [
 	createBundleAnalyzer({ enabled: env.BUNDLE_ANALYZER === "enabled" }),
-	createI18nPlugin("./lib/i18n/index.ts"),
+	createI18nPlugin("./lib/i18n/request.ts"),
 ];
 
 export default plugins.reduce((config, plugin) => {
