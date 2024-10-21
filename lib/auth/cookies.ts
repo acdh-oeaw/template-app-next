@@ -31,3 +31,32 @@ export async function deleteSessionTokenCookie(): Promise<void> {
 		path: "/",
 	});
 }
+
+//
+
+const emailVerificationRequestCookieName = "email-verification-request";
+
+// eslint-disable-next-line @typescript-eslint/require-await
+export async function setEmailVerificationRequestCookie(
+	id: string,
+	expiresAt: Date,
+): Promise<void> {
+	cookies().set(emailVerificationRequestCookieName, id, {
+		httpOnly: true,
+		sameSite: "lax",
+		secure: env.NODE_ENV === "production",
+		expires: expiresAt,
+		path: "/",
+	});
+}
+
+// eslint-disable-next-line @typescript-eslint/require-await
+export async function deleteEmailVerificationRequestCookie(): Promise<void> {
+	cookies().set(emailVerificationRequestCookieName, "", {
+		httpOnly: true,
+		sameSite: "lax",
+		secure: env.NODE_ENV === "production",
+		maxAge: 0,
+		path: "/",
+	});
+}

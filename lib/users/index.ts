@@ -3,6 +3,7 @@ import { assert, createUrl, createUrlSearchParams } from "@acdh-oeaw/lib";
 import { urls } from "@/config/auth.config";
 import { env } from "@/config/env.config";
 import type { User } from "@/db/schema";
+import { setEmailVerificationRequestCookie } from "@/lib/auth/cookies";
 import { createPasswordHash, verifyPassword } from "@/lib/auth/passwords";
 import {
 	createEmailVerificationRequest,
@@ -24,7 +25,7 @@ import {
 import { EmailInUseError, InvalidVerificationCodeError, SignInError } from "@/lib/errors";
 import { sendEmail } from "@/lib/send-email";
 
-export async function signUpUser(email: string, password: string) {
+export async function signUpUser(email: string, username: string, password: string) {
 	const existingUser = await getUserByEmail(email);
 
 	if (existingUser != null) {
@@ -33,15 +34,16 @@ export async function signUpUser(email: string, password: string) {
 
 	const passwordHash = await createPasswordHash(password);
 
-	const user = await createUser(email, passwordHash);
+	const user = await createUser(email, username, passwordHash);
 	assert(user);
 
-	const code = await createEmailVerificationRequest(user.id /**, user.email */);
+	const emailVerificationRequest = await createEmailVerificationRequest(user.id /**, user.email */); // FIXME:
+	assert(emailVerificationRequest);
 
 	const url = createUrl({
 		baseUrl: env.NEXT_PUBLIC_APP_BASE_URL,
 		pathname: urls.verifyEmail,
-		searchParams: createUrlSearchParams({ code }),
+		searchParams: createUrlSearchParams({ code: emailVerificationRequest.code }),
 	});
 
 	await sendEmail({
@@ -49,6 +51,13 @@ export async function signUpUser(email: string, password: string) {
 		subject: "Verify your email address.",
 		html: `<a href="${String(url)}">Verify email address</a>`,
 	});
+
+	// FIXME: should this be a JWT instead of a cookie, so it will work on another device?
+	// FIXME: move somewhere else
+	await setEmailVerificationRequestCookie(
+		emailVerificationRequest.id,
+		emailVerificationRequest.expiresAt,
+	);
 
 	return user;
 }

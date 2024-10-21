@@ -2,7 +2,8 @@
 
 import { urls } from "@/config/auth.config";
 import { deleteSessionTokenCookie } from "@/lib/auth/cookies";
-import { getCurrentSession, invalidateSession } from "@/lib/auth/sessions";
+import { invalidateSession } from "@/lib/auth/sessions";
+import { getCurrentSession } from "@/lib/auth";
 import { type ActionState, createErrorActionState } from "@/lib/form";
 import { redirect } from "@/lib/navigation";
 import { globalPOSTRateLimit } from "@/lib/rate-limit";

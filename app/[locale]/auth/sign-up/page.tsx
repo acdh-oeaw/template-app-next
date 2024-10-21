@@ -7,7 +7,8 @@ import { MainContent } from "@/components/main-content";
 import { PageTitle } from "@/components/ui/page-title";
 import { urls } from "@/config/auth.config";
 import type { Locale } from "@/config/i18n.config";
-import { getCurrentSession } from "@/lib/auth/sessions";
+import { getCurrentSession } from "@/lib/auth";
+import { isVerified } from "@/lib/auth/is-verified";
 import { redirect } from "@/lib/navigation";
 
 interface SignUpPageProps {
@@ -45,16 +46,16 @@ export default async function SignUpPage(props: SignUpPageProps): Promise<ReactN
 	const { session, user } = await getCurrentSession();
 
 	if (session != null) {
-		if (user.emailVerified.getTime() === 0) {
-			redirect("/auth/verify-email");
+		if (!isVerified(user.emailVerified)) {
+			redirect(urls.verifyEmail);
 		}
 
 		// if (!user.registered2FA) {
-		// 	redirect("/auth/2fa/setup");
+		// 	redirect(urls.2faSetup);
 		// }
 
 		// if (!session.twoFactorVerified) {
-		// 	redirect("/auth/2fa");
+		// 	redirect(urls.2fa);
 		// }
 
 		redirect(urls.afterSignIn);

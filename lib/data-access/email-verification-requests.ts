@@ -5,11 +5,13 @@ import { db } from "@/db";
 import { type EmailVerificationRequest, emailVerificationRequests } from "@/db/schema";
 import { generateToken } from "@/lib/auth/tokens";
 
-export async function createEmailVerificationRequest(userId: string): Promise<string> {
+export async function createEmailVerificationRequest(
+	userId: string,
+): Promise<EmailVerificationRequest | undefined> {
 	const code = generateToken(tokenCodeLength);
 	const expiresAt = new Date(Date.now() + tokenCodeTTL);
 
-	await db
+	const [request] = await db
 		.insert(emailVerificationRequests)
 		.values({
 			userId,
@@ -22,9 +24,10 @@ export async function createEmailVerificationRequest(userId: string): Promise<st
 				code,
 				expiresAt,
 			},
-		});
+		})
+		.returning();
 
-	return code;
+	return request;
 }
 
 export async function getEmailVerificationRequest(

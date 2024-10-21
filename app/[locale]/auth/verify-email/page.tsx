@@ -9,7 +9,8 @@ import { MainContent } from "@/components/main-content";
 import { PageTitle } from "@/components/ui/page-title";
 import { urls } from "@/config/auth.config";
 import type { Locale } from "@/config/i18n.config";
-import { getCurrentSession } from "@/lib/auth/sessions";
+import { getCurrentSession } from "@/lib/auth";
+import { isVerified } from "@/lib/auth/is-verified";
 import { redirect } from "@/lib/navigation";
 
 interface VerifyEmailPageProps {
@@ -56,7 +57,7 @@ export default async function VerifyEmailPage(props: VerifyEmailPageProps): Prom
 	 */
 	const verificationRequest = getUserEmailVerificationRequestFromRequest();
 
-	if (verificationRequest == null && user.emailVerified.getTime() !== 0) {
+	if (verificationRequest == null && isVerified(user.emailVerified)) {
 		redirect(urls.afterSignIn);
 	}
 

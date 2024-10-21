@@ -1,18 +1,31 @@
+/**
+ * Note that in-memory rate limiters will only work if memory is persisted across requests.
+ * It will not work in serverless environments.
+ */
+
 interface RefillBucket {
 	count: number;
 	refilledAt: number;
 }
 
-interface ExpiringBucket {
-	count: number;
-	createdAt: number;
-}
-
-interface ThrottlingCounter {
-	timeout: number;
-	updatedAt: number;
-}
-
+/**
+ * Each user has their own bucket of tokens that gets refilled at a set interval.
+ * A token is removed on every request until none is left and the request is rejected.
+ * While a bit more complex than the fixed-window algorithm, it allows handling initial
+ * bursts and processes requests more smoothly overall.
+ *
+ * @example
+ *
+ * ```ts
+ * // Bucket that has 10 tokens max and refills at a rate of 2 tokens/sec.
+ *
+ * const bucket = new TokenBucket<string>(10, 2);
+ *
+ * if (!bucket.consume(ip, 1)) {
+ *   throw new Error("Too many requests");
+ * }
+ * ```
+ */
 export class RefillingTokenBucket<_Key> {
 	public max: number;
 	public refillIntervalSeconds: number;
@@ -25,9 +38,9 @@ export class RefillingTokenBucket<_Key> {
 	private storage = new Map<_Key, RefillBucket>();
 
 	public check(key: _Key, cost: number): boolean {
-		const bucket = this.storage.get(key) ?? null;
+		const bucket = this.storage.get(key);
 
-		if (bucket === null) {
+		if (bucket == null) {
 			return true;
 		}
 
@@ -42,11 +55,11 @@ export class RefillingTokenBucket<_Key> {
 	}
 
 	public consume(key: _Key, cost: number): boolean {
-		let bucket = this.storage.get(key) ?? null;
+		let bucket = this.storage.get(key);
 
 		const now = Date.now();
 
-		if (bucket === null) {
+		if (bucket == null) {
 			bucket = {
 				count: this.max - cost,
 				refilledAt: now,
@@ -72,6 +85,34 @@ export class RefillingTokenBucket<_Key> {
 	}
 }
 
+interface ThrottlingCounter {
+	index: number;
+	updatedAt: number;
+}
+
+/**
+ * After each failed attempt, the user has to wait longer before their next attempt.
+ *
+ * @example
+ *
+ * ```ts
+ * // On each failed sign in attempt, the lockout time gets extended with a max of 5 minutes.
+ *
+ * const throttler = new Throttler<number>([1, 2, 4, 8, 16, 30, 60, 180, 300]);
+ *
+ * if (!throttler.consume(userId)) {
+ * 	 throw new Error("Too many requests");
+ * }
+ *
+ * const validPassword = verifyPassword(password);
+ *
+ * if (!validPassword) {
+ * 	 throw new Error("Invalid password");
+ * }
+ *
+ * throttler.reset(user.id);
+ * ```
+ */
 export class Throttler<_Key> {
 	public timeoutSeconds: Array<number>;
 
@@ -82,13 +123,13 @@ export class Throttler<_Key> {
 	}
 
 	public consume(key: _Key): boolean {
-		let counter = this.storage.get(key) ?? null;
+		let counter = this.storage.get(key);
 
 		const now = Date.now();
 
-		if (counter === null) {
+		if (counter == null) {
 			counter = {
-				timeout: 0,
+				index: 0,
 				updatedAt: now,
 			};
 
@@ -97,14 +138,14 @@ export class Throttler<_Key> {
 			return true;
 		}
 
-		const allowed = now - counter.updatedAt >= this.timeoutSeconds[counter.timeout] * 1000;
+		const allowed = now - counter.updatedAt >= this.timeoutSeconds[counter.index]! * 1000;
 
 		if (!allowed) {
 			return false;
 		}
 
 		counter.updatedAt = now;
-		counter.timeout = Math.min(counter.timeout + 1, this.timeoutSeconds.length - 1);
+		counter.index = Math.min(counter.index + 1, this.timeoutSeconds.length - 1);
 		this.storage.set(key, counter);
 
 		return true;
@@ -115,6 +156,14 @@ export class Throttler<_Key> {
 	}
 }
 
+interface ExpiringBucket {
+	count: number;
+	createdAt: number;
+}
+
+/**
+ *
+ */
 export class ExpiringTokenBucket<_Key> {
 	public max: number;
 	public expiresInSeconds: number;
@@ -127,12 +176,10 @@ export class ExpiringTokenBucket<_Key> {
 	}
 
 	public check(key: _Key, cost: number): boolean {
-		const bucket = this.storage.get(key) ?? null;
+		const bucket = this.storage.get(key);
 		const now = Date.now();
 
-		if (bucket === null) {
-			return true;
-		}
+		if (bucket == null) return true;
 
 		if (now - bucket.createdAt >= this.expiresInSeconds * 1000) {
 			return true;

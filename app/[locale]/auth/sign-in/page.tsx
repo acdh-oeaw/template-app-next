@@ -1,12 +1,15 @@
 import type { Metadata, ResolvingMetadata } from "next";
-import { useTranslations } from "next-intl";
 import { getTranslations, unstable_setRequestLocale as setRequestLocale } from "next-intl/server";
 import type { ReactNode } from "react";
 
 import { SignInForm } from "@/app/[locale]/auth/sign-in/_components/sign-in-form";
 import { MainContent } from "@/components/main-content";
 import { PageTitle } from "@/components/ui/page-title";
+import { urls } from "@/config/auth.config";
 import type { Locale } from "@/config/i18n.config";
+import { getCurrentSession } from "@/lib/auth";
+import { isVerified } from "@/lib/auth/is-verified";
+import { redirect } from "@/lib/navigation";
 
 interface SignInPageProps {
 	params: {
@@ -31,14 +34,32 @@ export async function generateMetadata(
 	return metadata;
 }
 
-export default function SignInPage(props: SignInPageProps): ReactNode {
+export default async function SignInPage(props: SignInPageProps): Promise<ReactNode> {
 	const { params } = props;
 
 	const { locale } = params;
 
 	setRequestLocale(locale);
 
-	const t = useTranslations("SignInPage");
+	const t = await getTranslations("SignInPage");
+
+	const { session, user } = await getCurrentSession();
+
+	if (session != null) {
+		if (!isVerified(user.emailVerified)) {
+			redirect(urls.verifyEmail);
+		}
+
+		// if (!user.registered2FA) {
+		// 	redirect(urls.2faSetup);
+		// }
+
+		// if (!session.twoFactorVerified) {
+		// 	redirect(urls.2fa);
+		// }
+
+		redirect(urls.afterSignIn);
+	}
 
 	return (
 		<MainContent className="container py-8">

@@ -32,7 +32,7 @@ export const users = createTable(
 		id,
 		email: text().notNull().unique(),
 		emailVerified: timestamp({ mode: "date", withTimezone: true }).notNull().default(new Date(0)),
-		// username: text().notNull(),
+		username: text().notNull(),
 		passwordHash: text().notNull(),
 		role: userRole().notNull().default("user"),
 		// totpKey: blob(),

@@ -17,9 +17,10 @@ const ipBucket = new RefillingTokenBucket<string>(3, 10);
 
 const SignUpActionInputSchema = v.pipe(
 	v.object({
+		confirmation: v.pipe(v.string(), v.nonEmpty()),
 		email: v.pipe(v.string(), v.email()),
 		password: v.pipe(v.string(), v.minLength(6), v.maxLength(255)),
-		confirmation: v.pipe(v.string(), v.nonEmpty()),
+		username: v.pipe(v.string(), v.minLength(4), v.maxLength(31)),
 	}),
 	v.forward(
 		v.check((input) => {
@@ -48,10 +49,10 @@ export async function signUpAction(
 	const result = await v.safeParseAsync(SignUpActionInputSchema, getFormDataValues(formData));
 
 	if (!result.success) {
-		return createErrorActionState("Incorrect email or password.");
+		return createErrorActionState("Invalid email or password.");
 	}
 
-	const { email, password } = result.output;
+	const { email, password, username } = result.output;
 
 	try {
 		// const emailAvailable = checkEmailAvailability(email);
@@ -68,19 +69,9 @@ export async function signUpAction(
 		// 	return createErrorActionState("Too many requests");
 		// }
 
-		//
+		const user = await signUpUser(email, username, password);
 
-		const user = await signUpUser(email, password);
-		setEmailVerificationRequestCookie(emailVerificationRequest);
-
-		await setSession(user.id);
-
-		//
-
-		// const sessionToken = generateSessionToken();
-		// const session = createSession(sessionToken, user.id, { twoFactorVerified: false });
-		// setSessionTokenCookie(sessionToken, session.expiresAt);
-		// redirect("/auth/2fa/setup");
+		await setSession(user.id, { twoFactorVerified: false });
 	} catch (error) {
 		if (error instanceof EmailInUseError) {
 			return createErrorActionState("Email is already in use.");
@@ -89,5 +80,6 @@ export async function signUpAction(
 		return createErrorActionState("An unknown error occurred.");
 	}
 
+	// redirect(urls.2faSetup);
 	redirect(urls.afterSignIn);
 }

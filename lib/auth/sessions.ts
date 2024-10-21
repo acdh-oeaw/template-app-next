@@ -7,7 +7,6 @@ import { eq } from "drizzle-orm";
 import { sessionMaxDurationMs, sessionRefreshIntervalMs } from "@/config/auth.config";
 import { db } from "@/db";
 import { type Session, sessions, type User, users } from "@/db/schema";
-import { getSessionToken } from "@/lib/auth/cookies";
 import { generateToken } from "@/lib/auth/tokens";
 
 function generateSessionId(token: string) {
@@ -15,15 +14,20 @@ function generateSessionId(token: string) {
 }
 
 export function generateSessionToken(): string {
+	/** Alternatively, use `crypto.randomUUID()`. */
 	return generateToken(20);
 }
 
-// type SessionFlags = Pick<Session, "twoFactorVerified">;
+// FIXME:
+// export type SessionFlags = Pick<Session, "twoFactorVerified">;
+export interface SessionFlags {
+	twoFactorVerified: boolean;
+}
 
 export async function createSession(
 	token: string,
 	userId: string,
-	// flags: SessionFlags,
+	_flags: SessionFlags, // FIXME:
 ): Promise<Session> {
 	const sessionId = generateSessionId(token);
 
@@ -88,16 +92,6 @@ export async function validateSessionToken(token: string): Promise<SessionValida
 	}
 
 	return { session, user };
-}
-
-export async function getCurrentSession(): Promise<SessionValidationResult> {
-	const sessionToken = await getSessionToken();
-
-	if (sessionToken == null) {
-		return { session: null, user: null };
-	}
-
-	return validateSessionToken(sessionToken);
 }
 
 export async function invalidateSession(sessionId: string): Promise<void> {

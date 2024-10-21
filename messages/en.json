@@ -55,6 +55,7 @@
 	},
 	"SignInForm": {
 		"email": "Email",
+		"forgot-password": "Forgot password?",
 		"no-account": "Don't yet have an account?",
 		"password": "Password",
 		"sign-in": "Sign in",
@@ -71,7 +72,8 @@
 		"has-account": "Already have an account?",
 		"password": "Password",
 		"sign-in": "Sign in",
-		"sign-up": "Sign up"
+		"sign-up": "Sign up",
+		"username": "Username"
 	},
 	"SignUpPage": {
 		"meta": {

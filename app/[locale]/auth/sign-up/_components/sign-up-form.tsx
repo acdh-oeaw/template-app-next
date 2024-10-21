@@ -13,13 +13,32 @@ export function SignUpForm(): ReactNode {
 		<Form action={signUpAction}>
 			<div className="my-8 grid max-w-96 content-start gap-y-6">
 				<label className="grid gap-y-1.5">
+					<span className="text-xs font-medium uppercase tracking-wide">{t("username")}</span>
+					<input
+						autoComplete="username"
+						className="rounded border px-3 py-1"
+						maxLength={31}
+						minLength={4}
+						name="username"
+						required={true}
+					/>
+				</label>
+
+				<label className="grid gap-y-1.5">
 					<span className="text-xs font-medium uppercase tracking-wide">{t("email")}</span>
-					<input className="rounded border px-3 py-1" name="email" required={true} type="email" />
+					<input
+						autoComplete="email"
+						className="rounded border px-3 py-1"
+						name="email"
+						required={true}
+						type="email"
+					/>
 				</label>
 
 				<label className="grid gap-y-1.5">
 					<span className="text-xs font-medium uppercase tracking-wide">{t("password")}</span>
 					<input
+						autoComplete="new-password"
 						className="rounded border px-3 py-1"
 						name="password"
 						required={true}
@@ -30,6 +49,7 @@ export function SignUpForm(): ReactNode {
 				<label className="grid gap-y-1.5">
 					<span className="text-xs font-medium uppercase tracking-wide">{t("password")}</span>
 					<input
+						autoComplete="new-password"
 						className="rounded border px-3 py-1"
 						name="confirmation"
 						required={true}
