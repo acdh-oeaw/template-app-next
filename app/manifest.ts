@@ -1,10 +1,10 @@
 import type { MetadataRoute } from "next";
 import { getTranslations } from "next-intl/server";
 
-export default async function manifest(): Promise<MetadataRoute.Manifest> {
-	const locale = "en";
+import { defaultLocale } from "@/config/i18n.config";
 
-	const meta = await getTranslations({ locale, namespace: "metadata" });
+export default async function manifest(): Promise<MetadataRoute.Manifest> {
+	const meta = await getTranslations({ locale: defaultLocale, namespace: "metadata" });
 
 	return {
 		name: meta("manifest.name"),
