@@ -1,6 +1,7 @@
 import { pick } from "@acdh-oeaw/lib";
 import { cn } from "@acdh-oeaw/style-variants";
 import type { Metadata, ResolvingMetadata } from "next";
+import { notFound } from "next/navigation";
 import { useMessages, useTranslations } from "next-intl";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import type { ReactNode } from "react";
@@ -15,7 +16,7 @@ import { TailwindIndicator } from "@/app/[locale]/_components/tailwind-indicator
 import { id } from "@/components/main-content";
 import { SkipLink } from "@/components/skip-link";
 import { env } from "@/config/env.config";
-import { type Locale, locales } from "@/config/i18n.config";
+import { isValidLocale, type Locale, locales } from "@/config/i18n.config";
 import { AnalyticsScript } from "@/lib/analytics-script";
 import { ColorSchemeScript } from "@/lib/color-scheme-script";
 import * as fonts from "@/lib/fonts";
@@ -75,6 +76,7 @@ export default function LocaleLayout(props: LocaleLayoutProps): ReactNode {
 	const { children, params } = props;
 
 	const { locale } = params;
+	if (!isValidLocale(locale)) notFound();
 	setRequestLocale(locale);
 
 	const t = useTranslations("LocaleLayout");
