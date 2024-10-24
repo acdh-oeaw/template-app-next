@@ -17,7 +17,7 @@ const _throttler = new Throttler<string>([1, 2, 4, 8, 16, 30, 60, 180, 300]);
 const ipBucket = new RefillingTokenBucket<string>(20, 1);
 
 const SignInActionInputSchema = v.object({
-	email: v.pipe(v.string(), v.email()),
+	email: v.pipe(v.string(), v.email(), v.toLowerCase()),
 	password: v.pipe(v.string(), v.nonEmpty()),
 });
 

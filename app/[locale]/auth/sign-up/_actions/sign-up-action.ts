@@ -18,7 +18,7 @@ const ipBucket = new RefillingTokenBucket<string>(3, 10);
 const SignUpActionInputSchema = v.pipe(
 	v.object({
 		confirmation: v.pipe(v.string(), v.nonEmpty()),
-		email: v.pipe(v.string(), v.email()),
+		email: v.pipe(v.string(), v.email(), v.toLowerCase()),
 		password: v.pipe(v.string(), v.minLength(6), v.maxLength(255)),
 		username: v.pipe(v.string(), v.minLength(4), v.maxLength(31)),
 	}),

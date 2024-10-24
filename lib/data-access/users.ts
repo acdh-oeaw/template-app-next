@@ -11,7 +11,7 @@ export async function createUser(email: string, username: string, passwordHash: 
 			passwordHash,
 			username,
 		})
-		.returning();
+		.returning(); // TODO: omit password hash
 
 	return user;
 }
