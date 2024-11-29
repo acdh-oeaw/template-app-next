@@ -39,6 +39,7 @@
 		"@acdh-oeaw/style-variants": "^0.1.0",
 		"@acdh-oeaw/validate-env": "^0.0.3",
 		"@react-aria/utils": "^3.28.1",
+		"@sentry/nextjs": "^9.10.1",
 		"@valibot/i18n": "^1.0.0",
 		"client-only": "^0.0.1",
 		"fast-glob": "^3.3.3",
@@ -102,6 +103,7 @@
 	},
 	"pnpm": {
 		"onlyBuiltDependencies": [
+			"@sentry/cli",
 			"esbuild",
 			"sharp",
 			"simple-git-hooks"
