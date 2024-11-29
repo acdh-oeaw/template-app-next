@@ -34,5 +34,6 @@ function RacRouterProvider(props: Readonly<RacRouterProviderProps>): ReactNode {
 
 	const router = useRouter();
 
+	// eslint-disable-next-line @typescript-eslint/unbound-method
 	return <RouterProvider navigate={router.push}>{children}</RouterProvider>;
 }

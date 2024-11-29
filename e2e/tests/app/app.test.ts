@@ -1,9 +1,8 @@
 import { createUrl } from "@acdh-oeaw/lib";
 
 import { env } from "@/config/env.config";
-import { defaultLocale, locales } from "@/config/i18n.config";
+import { defaultLocale } from "@/config/i18n.config";
 import { expect, test } from "@/e2e/lib/test";
-import { getLocalePrefix } from "@/lib/i18n/get-locale-prefix";
 
 test.describe("app", () => {
 	if (env.NEXT_PUBLIC_BOTS !== "enabled") {
@@ -51,17 +50,15 @@ test.describe("app", () => {
 			].join("\n"),
 		);
 
-		for (const locale of locales) {
-			for (const url of ["/", "/imprint"]) {
-				const loc = String(
-					createUrl({
-						baseUrl: env.NEXT_PUBLIC_APP_BASE_URL,
-						pathname: [getLocalePrefix(locale), url].join(""),
-					}),
-				);
+		for (const pathname of ["/", "/imprint"]) {
+			const loc = String(
+				createUrl({
+					baseUrl: env.NEXT_PUBLIC_APP_BASE_URL,
+					pathname,
+				}),
+			);
 
-				expect(body.toString()).toContain(`<loc>${loc}</loc>`);
-			}
+			expect(body.toString()).toContain(`<loc>${loc}</loc>`);
 		}
 	});
 

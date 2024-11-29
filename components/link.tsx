@@ -1,7 +1,14 @@
 "use client";
 
 import { filterDOMProps, mergeRefs } from "@react-aria/utils";
-import { type ElementType, type ReactNode, type Ref, useMemo, useRef } from "react";
+import {
+	type ComponentPropsWithoutRef,
+	type ElementType,
+	type ReactNode,
+	type Ref,
+	useMemo,
+	useRef,
+} from "react";
 import {
 	mergeProps,
 	useFocusable,
@@ -26,11 +33,9 @@ import { useRenderProps } from "@/lib/use-render-props";
  */
 
 export interface LinkProps
-	extends Pick<
-			LocaleLinkProps,
-			"aria-current" | "href" | "id" | "locale" | "prefetch" | "replace" | "scroll" | "shallow"
-		>,
-		Omit<AriaLinkProps, "elementType" | "href" | "routerOptions" | "slot"> {
+	extends Pick<LocaleLinkProps, "href" | "locale" | "prefetch" | "replace" | "scroll" | "shallow">,
+		Omit<AriaLinkProps, "elementType" | "href" | "routerOptions" | "slot">,
+		Pick<ComponentPropsWithoutRef<"a">, "aria-current" | "id"> {
 	ref?: Ref<HTMLAnchorElement | HTMLSpanElement> | undefined;
 }
 
