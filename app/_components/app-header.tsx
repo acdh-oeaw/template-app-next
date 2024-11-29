@@ -5,9 +5,8 @@ import {
 	AppNavigation,
 	AppNavigationMobile,
 	type NavigationItem,
-} from "@/app/[locale]/_components/app-navigation";
-import { ColorSchemeSwitcher } from "@/app/[locale]/_components/color-scheme-switcher";
-import { LocaleSwitcher } from "@/app/[locale]/_components/locale-switcher";
+} from "@/app/_components/app-navigation";
+import { ColorSchemeSwitcher } from "@/app/_components/color-scheme-switcher";
 import { createHref } from "@/lib/create-href";
 
 export function AppHeader(): ReactNode {
@@ -42,7 +41,6 @@ export function AppHeader(): ReactNode {
 
 				<div className="flex items-center gap-x-6">
 					<ColorSchemeSwitcher />
-					<LocaleSwitcher />
 				</div>
 			</div>
 		</header>

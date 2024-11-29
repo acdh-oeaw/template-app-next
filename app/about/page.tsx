@@ -1,26 +1,17 @@
 import type { Metadata, ResolvingMetadata } from "next";
-import { getTranslations, setRequestLocale } from "next-intl/server";
+import { getTranslations } from "next-intl/server";
 import type { ReactNode } from "react";
 
 import { Image } from "@/components/image";
 import { MainContent } from "@/components/main-content";
-import type { Locale } from "@/config/i18n.config";
 
-interface AboutPageProps {
-	params: {
-		locale: Locale;
-	};
-}
+interface AboutPageProps extends EmptyObject {}
 
 export async function generateMetadata(
-	props: Readonly<AboutPageProps>,
+	_props: Readonly<AboutPageProps>,
 	_parent: ResolvingMetadata,
 ): Promise<Metadata> {
-	const { params } = props;
-
-	const { locale } = params;
-
-	const t = await getTranslations({ locale, namespace: "AboutPage" });
+	const t = await getTranslations("AboutPage");
 
 	const metadata: Metadata = {
 		title: t("meta.title"),
@@ -29,13 +20,7 @@ export async function generateMetadata(
 	return metadata;
 }
 
-export default async function AboutPage(props: Readonly<AboutPageProps>): Promise<ReactNode> {
-	const { params } = props;
-
-	const { locale } = params;
-
-	setRequestLocale(locale);
-
+export default async function AboutPage(_props: Readonly<AboutPageProps>): Promise<ReactNode> {
 	const t = await getTranslations("AboutPage");
 
 	return (

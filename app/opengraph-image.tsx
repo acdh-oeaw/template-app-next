@@ -1,8 +1,7 @@
 import type { ImageResponse } from "next/og";
-import { getTranslations } from "next-intl/server";
+import { getLocale, getTranslations } from "next-intl/server";
 
 import { MetadataImage } from "@/components/metadata-image";
-import type { Locale } from "@/config/i18n.config";
 
 export const runtime = "edge";
 
@@ -13,19 +12,13 @@ export const size = {
 	height: 630,
 };
 
-interface OpenGraphImageProps {
-	params: {
-		locale: Locale;
-	};
-}
+interface OpenGraphImageProps extends EmptyObject {}
 
 export default async function OpenGraphImage(
-	props: Readonly<OpenGraphImageProps>,
+	_props: Readonly<OpenGraphImageProps>,
 ): Promise<ImageResponse> {
-	const { params } = props;
-
-	const { locale } = params;
-	const meta = await getTranslations({ locale, namespace: "metadata" });
+	const locale = await getLocale();
+	const meta = await getTranslations("metadata");
 
 	const title = meta("title");
 
