@@ -5,6 +5,7 @@ import nextConfig from "@acdh-oeaw/eslint-config-next";
 import nodeConfig from "@acdh-oeaw/eslint-config-node";
 import playwrightConfig from "@acdh-oeaw/eslint-config-playwright";
 import reactConfig from "@acdh-oeaw/eslint-config-react";
+import storybookConfig from "@acdh-oeaw/eslint-config-storybook";
 import tailwindConfig from "@acdh-oeaw/eslint-config-tailwindcss";
 import gitignore from "eslint-config-flat-gitignore";
 import checkFilePlugin from "eslint-plugin-check-file";
@@ -31,6 +32,7 @@ export default config(
 		extends: [plugin.configs.recommended],
 	},
 	playwrightConfig,
+	storybookConfig,
 	{
 		plugins: {
 			"check-file": checkFilePlugin,
