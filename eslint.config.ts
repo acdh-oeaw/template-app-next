@@ -3,6 +3,7 @@ import nextConfig from "@acdh-oeaw/eslint-config-next";
 import nodeConfig from "@acdh-oeaw/eslint-config-node";
 import playwrightConfig from "@acdh-oeaw/eslint-config-playwright";
 import reactConfig from "@acdh-oeaw/eslint-config-react";
+import storybookConfig from "@acdh-oeaw/eslint-config-storybook";
 // import tailwindcssConfig from "@acdh-oeaw/eslint-config-tailwindcss";
 import gitignore from "eslint-config-flat-gitignore";
 // @ts-expect-error Missing type declaration.
@@ -16,6 +17,7 @@ const config: Config = [
 	...nextConfig,
 	// ...tailwindcssConfig,
 	...playwrightConfig,
+	...storybookConfig,
 	{
 		plugins: {
 			// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
