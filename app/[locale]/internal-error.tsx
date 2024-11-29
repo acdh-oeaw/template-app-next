@@ -1,5 +1,7 @@
 "use client";
 
+import { log } from "@acdh-oeaw/lib";
+import * as Sentry from "@sentry/nextjs";
 import { useTranslations } from "next-intl";
 import { type ReactNode, useEffect, useTransition } from "react";
 import { Button } from "react-aria-components";
@@ -23,7 +25,8 @@ export default function InternalError(props: Readonly<InternalErrorProps>): Reac
 	const [isPending, startTransition] = useTransition();
 
 	useEffect(() => {
-		console.error(error);
+		log.error(error);
+		Sentry.captureException(error);
 	}, [error]);
 
 	return (
