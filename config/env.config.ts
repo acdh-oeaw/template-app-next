@@ -17,6 +17,17 @@ export const env = createEnv({
 			BUILD_MODE: v.optional(v.picklist(["export", "standalone"])),
 			BUNDLE_ANALYZER: v.optional(v.picklist(["disabled", "enabled"]), "disabled"),
 			CI: v.optional(v.pipe(v.unknown(), v.transform(Boolean), v.boolean())),
+			EMAIL_ADDRESS: v.pipe(v.string(), v.email()),
+			EMAIL_SMTP_PASSWORD: v.optional(v.pipe(v.string(), v.minLength(8))),
+			EMAIL_SMTP_PORT: v.pipe(
+				v.string(),
+				v.transform(Number),
+				v.number(),
+				v.integer(),
+				v.minValue(1),
+			),
+			EMAIL_SMTP_SERVER: v.pipe(v.string(), v.nonEmpty()),
+			EMAIL_SMTP_USERNAME: v.optional(v.pipe(v.string(), v.nonEmpty())),
 		});
 
 		return v.parse(Schema, input);
@@ -45,6 +56,11 @@ export const env = createEnv({
 		BUILD_MODE: process.env.BUILD_MODE,
 		BUNDLE_ANALYZER: process.env.BUNDLE_ANALYZER,
 		CI: process.env.CI,
+		EMAIL_ADDRESS: process.env.EMAIL_ADDRESS,
+		EMAIL_SMTP_PASSWORD: process.env.EMAIL_SMTP_PASSWORD,
+		EMAIL_SMTP_PORT: process.env.EMAIL_SMTP_PORT,
+		EMAIL_SMTP_SERVER: process.env.EMAIL_SMTP_SERVER,
+		EMAIL_SMTP_USERNAME: process.env.EMAIL_SMTP_USERNAME,
 		NEXT_PUBLIC_APP_BASE_URL: process.env.NEXT_PUBLIC_APP_BASE_URL,
 		NEXT_PUBLIC_BOTS: process.env.NEXT_PUBLIC_BOTS,
 		NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION,
