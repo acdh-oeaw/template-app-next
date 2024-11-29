@@ -1,5 +1,6 @@
 import createBundleAnalyzerPlugin from "@next/bundle-analyzer";
 import localesPlugin from "@react-aria/optimize-locales-plugin";
+import { withSentryConfig } from "@sentry/nextjs";
 import type { NextConfig as Config } from "next";
 import createI18nPlugin from "next-intl/plugin";
 
@@ -66,6 +67,23 @@ const plugins: Array<(config: Config) => Config> = [
 		},
 		requestConfig: "./lib/i18n/request.ts",
 	}),
+	function createSentryPlugin(config) {
+		return withSentryConfig(config, {
+			disableLogger: true,
+			org: env.NEXT_PUBLIC_SENTRY_ORG,
+			project: env.NEXT_PUBLIC_SENTRY_PROJECT,
+			reactComponentAnnotation: {
+				enabled: true,
+			},
+			silent: env.CI !== true,
+			/**
+			 * Uncomment to route browser requests to sentry through a next.js rewrite to circumvent
+			 * ad-blockers.
+			 */
+			// tunnelRoute: true,
+			widenClientFileUpload: true,
+		});
+	},
 ];
 
 export default plugins.reduce((config, plugin) => {

@@ -40,6 +40,7 @@
 		"@acdh-oeaw/style-variants": "^0.1.0",
 		"@acdh-oeaw/validate-env": "^0.0.3",
 		"@react-aria/utils": "^3.29.0",
+		"@sentry/nextjs": "^9.31.0",
 		"@valibot/i18n": "^1.0.0",
 		"client-only": "^0.0.1",
 		"fast-glob": "^3.3.3",
