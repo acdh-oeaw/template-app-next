@@ -36,3 +36,6 @@ out/
 /playwright/.cache/
 /playwright-report/
 /test-results/
+
+# storybook
+/storybook-static
