@@ -16,22 +16,25 @@ export function createInitialActionState({
 	};
 }
 
-export interface SuccessActionState {
+export interface SuccessActionState<T extends object = object> {
 	status: "success";
 	timestamp: number;
 	message: string | Array<string> | null;
 	formData: FormData | null;
+	data: T | null;
 }
 
-export function createSuccessActionState({
+export function createSuccessActionState<T extends object = object>({
+	data,
 	formData,
 	message,
-}: Partial<Pick<SuccessActionState, "formData" | "message">>): SuccessActionState {
+}: Partial<Pick<SuccessActionState<T>, "data" | "formData" | "message">>): SuccessActionState<T> {
 	return {
 		status: "success",
 		timestamp: Date.now(),
 		message: message ?? null,
 		formData: formData ?? null,
+		data: data ?? null,
 	};
 }
 

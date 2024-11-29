@@ -1,2 +1,5 @@
 # package manager lock file
 pnpm-lock.yaml
+
+# database migrations
+/db/migrations/

@@ -7,6 +7,8 @@ import reactConfig from "@acdh-oeaw/eslint-config-react";
 import gitignore from "eslint-config-flat-gitignore";
 // @ts-expect-error Missing type declaration.
 import checkFilePlugin from "eslint-plugin-check-file";
+// @ts-expect-error Missing type declarations.
+import drizzle from "eslint-plugin-drizzle";
 import type { Config } from "typescript-eslint";
 
 const config: Config = [
@@ -108,6 +110,16 @@ const config: Config = [
 			...config,
 		};
 	}),
+	{
+		plugins: {
+			// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+			drizzle,
+		},
+		rules: {
+			"drizzle/enforce-delete-with-where": ["error", { drizzleObjectName: ["db"] }],
+			"drizzle/enforce-update-with-where": ["error", { drizzleObjectName: ["db"] }],
+		},
+	},
 ];
 
 export default config;

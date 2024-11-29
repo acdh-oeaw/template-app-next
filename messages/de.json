@@ -1,4 +1,65 @@
 {
+	"errors": {
+		"forbidden": "Verboten.",
+		"internal-server-error": "Interner Serverfehler.",
+		"invalid-form-fields": "Ungültige oder fehlende Felder.",
+		"not-authenticated": "Nicht authentifiziert.",
+		"too-many-requests": "Zu viele Anfragen."
+	},
+	"forgotPasswordAction": {
+		"invalid-account": "Konto existiert nicht."
+	},
+	"resendEmailVerificationCodeAction": {
+		"new-code-sent": "Ein neuer Code wurde an Ihren Posteingang gesendet."
+	},
+	"reset2FAAction": {
+		"invalid-code": "Ungültiger Wiederherstellungscode."
+	},
+	"resetPasswordAction": {
+		"weak-password": "Schwaches Passwort."
+	},
+	"setup2FAAction": {
+		"invalid-code": "Ungültiger Code.",
+		"invalid-key": "Ungültiger Schlüssel."
+	},
+	"signInAction": {
+		"incorrect-password": "Falsches Passwort.",
+		"invalid-account": "Konto existiert nicht."
+	},
+	"signUpAction": {
+		"email-in-use": "E-Mail wird bereits verwendet.",
+		"sign-up-disabled": "Registrierung ist deaktiviert.",
+		"weak-password": "Schwaches Passwort."
+	},
+	"updateEmailAction": {
+		"email-in-use": "E-Mail wird bereits verwendet."
+	},
+	"updatePasswordAction": {
+		"incorrect-password": "Falsches Passwort.",
+		"password-updated": "Passwort aktualisiert.",
+		"weak-password": "Schwaches Passwort."
+	},
+	"verify2FAAction": {
+		"incorrect-code": "Falscher Code."
+	},
+	"verifyEmailAction": {
+		"code-expired": "Der Bestätigungscode ist abgelaufen. Wir haben einen weiteren Code an Ihren Posteingang gesendet.",
+		"incorrect-code": "Falscher Code."
+	},
+	"verifyPasswordResetEmailAction": {
+		"incorrect-code": "Falscher Code.",
+		"restart": "Bitte starten Sie den Vorgang neu."
+	},
+	"verifyPasswordReset2FAWithRecoveryCodeAction": {
+		"incorrect-code": "Falscher Code."
+	},
+	"verifyPasswordReset2FAWithTOTPAction": {
+		"incorrect-code": "Falscher Code."
+	},
+	"AccountMenu": {
+		"settings": "Account-Einstellungen",
+		"sign-out": "Abmelden"
+	},
 	"AboutPage": {
 		"meta": {
 			"title": "Über das Projekt"
@@ -28,7 +89,13 @@
 		"navigation-menu": "Navigationsmenü",
 		"navigation-menu-close": "Navigationsmenü schließen",
 		"navigation-menu-open": "Navigationsmenü öffnen",
-		"navigation-primary": "Primär"
+		"navigation-primary": "Primär",
+		"sign-in": "Anmelden",
+		"sign-out": "Abmelden"
+	},
+	"AuthButtonGroup": {
+		"sign-in": "Anmelden",
+		"sign-up": "Registrieren"
 	},
 	"ColorSchemeSwitcher": {
 		"change-color-scheme": "Farbschema ändern",
@@ -38,9 +105,24 @@
 			"system": "System"
 		}
 	},
+	"EmailVerificationForm": {
+		"code": "Verifizierungscode",
+		"verify": "Bestätigen"
+	},
 	"Error": {
 		"something-went-wrong": "Etwas ist schief gelaufen!",
 		"try-again": "Erneut versuchen"
+	},
+	"ForgotPasswordForm": {
+		"email": "E-Mail",
+		"submit": "Absenden"
+	},
+	"ForgotPasswordPage": {
+		"meta": {
+			"title": "Passwort vergessen"
+		},
+		"sign-in": "Anmelden",
+		"title": "Passwort vergessen?"
 	},
 	"ImprintPage": {
 		"meta": {
@@ -69,5 +151,153 @@
 			"title": "Seite nicht gefunden"
 		},
 		"title": "Seite nicht gefunden"
+	},
+	"PasswordResetEmailVerificationForm": {
+		"code": "Code",
+		"submit": "Verifizieren"
+	},
+	"PasswordResetRecoveryCodeForm": {
+		"recovery-code": "Wiederherstellungscode",
+		"submit": "Verifizieren"
+	},
+	"PasswordResetTOTPForm": {
+		"code": "Code",
+		"submit": "Verifizieren"
+	},
+	"PasswordResetTwoFactorPage": {
+		"enter-code": "Geben Sie den Code aus Ihrer Authentifizierungs-App ein.",
+		"meta": {
+			"title": "Zwei-Faktor-Authentifizierung"
+		},
+		"title": "Zwei-Faktor-Authentifizierung",
+		"use-recovery-code": "Wiederherstellungscode verwenden"
+	},
+	"PasswordResetVerifyEmailPage": {
+		"message": "Wir haben einen 8-stelligen Code an {email} gesendet.",
+		"meta": {
+			"title": "E-Mail-Adresse bestätigen"
+		},
+		"title": "E-Mail-Adresse bestätigen"
+	},
+	"RecoveryCodeForm": {
+		"generate-new-code": "Neuen Code erstellen",
+		"your-code": "Ihr Wiederherstellungscode lautet:"
+	},
+	"RecoveryCodePage": {
+		"message": "Sie können diesen Wiederherstellungscode verwenden, wenn Sie den Zugriff auf Ihre zweiten Faktoren verlieren.",
+		"meta": {
+			"title": "Wiederherstellungscode"
+		},
+		"next": "Weiter",
+		"title": "Wiederherstellungscode",
+		"your-code": "Ihr Wiederherstellungscode lautet:"
+	},
+	"ResendEmailVerificationCodeForm": {
+		"resend-code": "Verifizierungscode erneut senden"
+	},
+	"ResetPasswordForm": {
+		"confirm-password": "Passwort bestätigen",
+		"password": "Passwort",
+		"submit": "Passwort zurücksetzen"
+	},
+	"ResetPasswordPage": {
+		"meta": {
+			"title": "Passwort zurücksetzen"
+		},
+		"title": "Passwort zurücksetzen"
+	},
+	"SettingsPage": {
+		"meta": {
+			"title": "Einstellungen"
+		},
+		"recovery-code": "Wiederherstellungscode",
+		"title": "Einstellungen",
+		"update": "Aktualisieren",
+		"update-email": "E-Mail aktualisieren",
+		"update-password": "Passwort aktualisieren",
+		"update-2fa": "Zwei-Faktor-Authentifizierung aktualisieren",
+		"your-email": "Ihre E-Mail: {email}"
+	},
+	"SignInForm": {
+		"email": "E-Mail",
+		"forgot-password": "Passwort vergessen?",
+		"no-account": "Sie sind noch nicht registriert?",
+		"password": "Passwort",
+		"submit": "Anmelden",
+		"sign-up": "Registrieren"
+	},
+	"SignInPage": {
+		"forgot-password": "Passwort vergessen?",
+		"meta": {
+			"title": "Anmelden"
+		},
+		"sign-up": "Account erstellen",
+		"title": "Anmelden"
+	},
+	"SignUpForm": {
+		"confirm-password": "Passwort bestätigen",
+		"email": "E-Mail",
+		"password": "Passwort",
+		"submit": "Weiter",
+		"username": "Username"
+	},
+	"SignUpPage": {
+		"has-account": "Sie sind bereits registriert?",
+		"message": "Ihr Username muss mindestens 3 Zeichen lang sein und Ihr Passwort muss mindestens 8 Zeichen lang sein.",
+		"meta": {
+			"title": "Registrieren"
+		},
+		"sign-in": "Anmelden",
+		"title": "Account erstellen"
+	},
+	"TwoFactorPage": {
+		"message": "Geben Sie den Code aus Ihrer Authentifizierungs-App ein.",
+		"meta": {
+			"title": "Zwei-Faktor-Authentifizierung"
+		},
+		"title": "Zwei-Faktor-Authentifizierung",
+		"use-recovery-code": "Wiederherstellungscode verwenden"
+	},
+	"TwoFactorResetForm": {
+		"recovery-code": "Wiederherstellungscode",
+		"submit": "Verifizieren"
+	},
+	"TwoFactorResetPage": {
+		"meta": {
+			"title": "Konto-Wiederherstellung"
+		},
+		"title": "Ihr Konto wiederherstellen"
+	},
+	"TwoFactorSetUpForm": {
+		"submit": "Speichern",
+		"verify": "Überprüfen Sie den Code der Anwendung"
+	},
+	"TwoFactorSetupPage": {
+		"meta": {
+			"title": "Zwei-Faktor-Authentifizierung einrichten"
+		},
+		"title": "Zwei-Faktor-Authentifizierung einrichten"
+	},
+	"TwoFactorVerificationForm": {
+		"code": "Code",
+		"submit": "Verifizieren"
+	},
+	"UpdateEmailForm": {
+		"new-email": "Neue E-Mail",
+		"submit": "Aktualisieren"
+	},
+	"UpdatePasswordForm": {
+		"confirm-new-password": "Neues Passwort bestätigen",
+		"current-password": "Aktuelles Passwort",
+		"new-password": "Neues Passwort",
+		"submit": "Aktualisieren"
+	},
+	"VerifyEmailPage": {
+		"change-email": "E-Mail-Adresse ändern",
+		"message": "Wir haben einen 8-stelligen Verifizierungscode an {email} gesendet.",
+		"meta": {
+			"title": "E-Mail-Adresse bestätigen"
+		},
+		"title": "E-Mail-Adresse bestätigen"
 	}
 }

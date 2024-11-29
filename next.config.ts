@@ -15,6 +15,7 @@ const config: NextConfig = {
 	experimental: {
 		// dynamicIO: true,
 		// ppr: true,
+		serverComponentsExternalPackages: ["@node-rs/argon2"],
 		useCache: true,
 	},
 	headers() {

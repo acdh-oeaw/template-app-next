@@ -1,17 +1,20 @@
-import { useTranslations } from "next-intl";
+import { getTranslations } from "next-intl/server";
 import type { ReactNode } from "react";
 
+import { AccountMenu } from "@/app/[locale]/_components/account-menu";
 import {
 	AppNavigation,
 	AppNavigationMobile,
 	type NavigationItem,
 } from "@/app/[locale]/_components/app-navigation";
+import { AuthButtonGroup } from "@/app/[locale]/_components/auth-button-group";
 import { ColorSchemeSwitcher } from "@/app/[locale]/_components/color-scheme-switcher";
 import { LocaleSwitcher } from "@/app/[locale]/_components/locale-switcher";
 import { createHref } from "@/lib/create-href";
+import { getCurrentSession } from "@/lib/server/auth/sessions";
 
-export function AppHeader(): ReactNode {
-	const t = useTranslations("AppHeader");
+export async function AppHeader(): Promise<ReactNode> {
+	const t = await getTranslations("AppHeader");
 
 	const label = t("navigation-primary");
 
@@ -28,6 +31,8 @@ export function AppHeader(): ReactNode {
 		},
 	} satisfies Record<string, NavigationItem>;
 
+	const { user } = await getCurrentSession();
+
 	return (
 		<header className="layout-grid border-b border-stroke-weak bg-fill-weaker">
 			<div className="flex justify-between gap-x-12">
@@ -43,6 +48,7 @@ export function AppHeader(): ReactNode {
 				<div className="flex items-center gap-x-6">
 					<ColorSchemeSwitcher />
 					<LocaleSwitcher />
+					{user != null ? <AccountMenu user={user} /> : <AuthButtonGroup />}
 				</div>
 			</div>
 		</header>

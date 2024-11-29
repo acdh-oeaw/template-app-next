@@ -24,7 +24,7 @@ export async function redirectWithToastMessage(
 ) {
 	const value = JSON.stringify({ ...toast, id: randomUUID() });
 	(await cookies()).set(toastCookieName, value, { maxAge: 0 });
-	return redirect(params);
+	redirect(params);
 }
 
 export async function getToastMessage(): Promise<ToastMessage | null> {
