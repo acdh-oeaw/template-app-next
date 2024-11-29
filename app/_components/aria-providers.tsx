@@ -21,6 +21,7 @@ export function AriaProviders(props: Readonly<AriaProvidersProps>): ReactNode {
 
 	return (
 		<AriaI18nProvider locale={locale}>
+			{/* eslint-disable-next-line @typescript-eslint/unbound-method */}
 			<AriaRouterProvider navigate={router.push}>{children}</AriaRouterProvider>
 		</AriaI18nProvider>
 	);

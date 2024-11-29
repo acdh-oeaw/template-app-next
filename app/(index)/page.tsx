@@ -1,29 +1,21 @@
 import { ArrowRightIcon } from "lucide-react";
 import type { Metadata, ResolvingMetadata } from "next";
 import { useTranslations } from "next-intl";
-import { getTranslations, setRequestLocale } from "next-intl/server";
+import { getTranslations } from "next-intl/server";
 import type { ReactNode } from "react";
 
 import { Image } from "@/components/image";
 import { Link } from "@/components/link";
 import { Logo } from "@/components/logo";
 import { MainContent } from "@/components/ui/main-content";
-import type { IntlLocale } from "@/lib/i18n/locales";
 
-interface IndexPageProps {
-	params: Promise<{
-		locale: IntlLocale;
-	}>;
-}
+interface IndexPageProps {}
 
 export async function generateMetadata(
-	props: Readonly<IndexPageProps>,
+	_props: Readonly<IndexPageProps>,
 	_parent: ResolvingMetadata,
 ): Promise<Metadata> {
-	const { params } = props;
-
-	const { locale } = await params;
-	const _t = await getTranslations({ locale, namespace: "IndexPage" });
+	const _t = await getTranslations("IndexPage");
 
 	const metadata: Metadata = {
 		/**
@@ -37,13 +29,7 @@ export async function generateMetadata(
 	return metadata;
 }
 
-export default async function IndexPage(props: Readonly<IndexPageProps>): Promise<ReactNode> {
-	const { params } = props;
-
-	const { locale } = await params;
-
-	setRequestLocale(locale);
-
+export default function IndexPage(_props: Readonly<IndexPageProps>): ReactNode {
 	return (
 		<MainContent className="layout-grid content-start">
 			<HeroSection />

@@ -2,7 +2,6 @@ import { createUrl } from "@acdh-oeaw/lib";
 
 import { env } from "@/config/env.config";
 import { expect, test } from "@/e2e/lib/test";
-import { defaultLocale } from "@/lib/i18n/locales";
 
 test.describe("analytics service", () => {
 	// eslint-disable-next-line playwright/no-skipped-test
@@ -15,7 +14,7 @@ test.describe("analytics service", () => {
 	);
 
 	test("should track page views", async ({ createIndexPage }) => {
-		const { indexPage, i18n } = await createIndexPage(defaultLocale);
+		const { indexPage, i18n } = await createIndexPage();
 		const { page } = indexPage;
 
 		const initialResponsePromise = page.waitForResponse(baseUrl);

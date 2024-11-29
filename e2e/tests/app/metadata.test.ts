@@ -3,51 +3,33 @@ import { jsonLdScriptProps } from "react-schemaorg";
 
 import { env } from "@/config/env.config";
 import { expect, test } from "@/e2e/lib/test";
-import { defaultLocale, type IntlLocale, locales } from "@/lib/i18n/locales";
-import { localePrefix } from "@/lib/i18n/routing";
-// import { getPathname } from "@/lib/i18n/navigation";
-
-/** @see https://github.com/microsoft/playwright/issues/35162 */
-function getPathname({ href, locale }: { href: { pathname: string }; locale: IntlLocale }): string {
-	return localePrefix.prefixes[locale] + href.pathname;
-}
+import { defaultLocale } from "@/lib/i18n/locales";
 
 test("should set a canonical url", async ({ createIndexPage }) => {
-	for (const locale of locales) {
-		const { indexPage } = await createIndexPage(locale);
-		await indexPage.goto();
+	const { indexPage } = await createIndexPage();
+	await indexPage.goto();
 
-		const canonicalUrl = indexPage.page.locator('link[rel="canonical"]');
-		await expect(canonicalUrl).toHaveAttribute(
-			"href",
-			String(
-				createUrl({
-					baseUrl: env.NEXT_PUBLIC_APP_BASE_URL,
-					pathname: removeTrailingSlash(getPathname({ href: { pathname: "/" }, locale })),
-				}),
-			),
-		);
-	}
+	const canonicalUrl = indexPage.page.locator('link[rel="canonical"]');
+	await expect(canonicalUrl).toHaveAttribute(
+		"href",
+		removeTrailingSlash(
+			String(createUrl({ baseUrl: env.NEXT_PUBLIC_APP_BASE_URL, pathname: "/" })),
+		),
+	);
 });
 
 /** FIXME: @see https://github.com/vercel/next.js/issues/45620 */
 test.fixme("should set document title on not-found page", async ({ createI18n, page }) => {
-	const en = await createI18n(defaultLocale);
+	const i18n = await createI18n();
 	await page.goto("/unknown");
 	await expect(page).toHaveTitle(
-		[en.t("NotFoundPage.meta.title"), en.messages.metadata.title].join(" | "),
-	);
-
-	const de = await createI18n("de-AT");
-	await page.goto("/de/unknown");
-	await expect(page).toHaveTitle(
-		[de.t("NotFoundPage.meta.title"), de.messages.metadata.title].join(" | "),
+		[i18n.t("NotFoundPage.meta.title"), i18n.messages.metadata.title].join(" | "),
 	);
 });
 
 /** FIXME: @see https://github.com/vercel/next.js/issues/45620 */
 test.fixme("should disallow indexing of not-found page", async ({ page }) => {
-	for (const pathname of ["/unknown", "/de/unknown"]) {
+	for (const pathname of ["/unknown"]) {
 		await page.goto(pathname);
 
 		const ogTitle = page.locator('meta[name="robots"]');
@@ -56,96 +38,87 @@ test.fixme("should disallow indexing of not-found page", async ({ page }) => {
 });
 
 test("should set page metadata", async ({ createIndexPage }) => {
-	for (const locale of locales) {
-		const { indexPage, i18n } = await createIndexPage(locale);
-		await indexPage.goto();
-		const { page } = indexPage;
+	const { indexPage, i18n } = await createIndexPage();
+	await indexPage.goto();
+	const { page } = indexPage;
 
-		const metadata = i18n.messages.metadata;
+	const metadata = i18n.messages.metadata;
 
-		const title = metadata.title;
-		const description = metadata.description;
-		const twitter = metadata.social.twitter;
+	const title = metadata.title;
+	const description = metadata.description;
+	const twitter = metadata.social.twitter;
 
-		expect(title).toBeTruthy();
-		expect(description).toBeTruthy();
+	expect(title).toBeTruthy();
+	expect(description).toBeTruthy();
 
-		const ogType = page.locator('meta[property="og:type"]');
-		await expect(ogType).toHaveAttribute("content", "website");
+	const ogType = page.locator('meta[property="og:type"]');
+	await expect(ogType).toHaveAttribute("content", "website");
 
-		const twCard = page.locator('meta[name="twitter:card"]');
-		await expect(twCard).toHaveAttribute("content", "summary_large_image");
+	const twCard = page.locator('meta[name="twitter:card"]');
+	await expect(twCard).toHaveAttribute("content", "summary_large_image");
 
-		const twCreator = page.locator('meta[name="twitter:creator"]');
-		await expect(twCreator).toHaveAttribute("content", twitter);
+	const twCreator = page.locator('meta[name="twitter:creator"]');
+	await expect(twCreator).toHaveAttribute("content", twitter);
 
-		const twSite = page.locator('meta[name="twitter:site"]');
-		await expect(twSite).toHaveAttribute("content", twitter);
+	const twSite = page.locator('meta[name="twitter:site"]');
+	await expect(twSite).toHaveAttribute("content", twitter);
 
-		// const googleSiteVerification = page.locator('meta[name="google-site-verification"]');
-		// await expect(googleSiteVerification).toHaveAttribute("content", "");
+	// const googleSiteVerification = page.locator('meta[name="google-site-verification"]');
+	// await expect(googleSiteVerification).toHaveAttribute("content", "");
 
-		await expect(page).toHaveTitle(title);
+	await expect(page).toHaveTitle(title);
 
-		const metaDescription = page.locator('meta[name="description"]');
-		await expect(metaDescription).toHaveAttribute("content", description);
+	const metaDescription = page.locator('meta[name="description"]');
+	await expect(metaDescription).toHaveAttribute("content", description);
 
-		const ogTitle = page.locator('meta[property="og:title"]');
-		await expect(ogTitle).toHaveAttribute("content", title);
+	const ogTitle = page.locator('meta[property="og:title"]');
+	await expect(ogTitle).toHaveAttribute("content", title);
 
-		const ogDescription = page.locator('meta[property="og:description"]');
-		await expect(ogDescription).toHaveAttribute("content", description);
+	const ogDescription = page.locator('meta[property="og:description"]');
+	await expect(ogDescription).toHaveAttribute("content", description);
 
-		const ogUrl = page.locator('meta[property="og:url"]');
-		await expect(ogUrl).toHaveAttribute(
-			"content",
-			String(
-				createUrl({
-					baseUrl: env.NEXT_PUBLIC_APP_BASE_URL,
-					pathname: removeTrailingSlash(getPathname({ href: { pathname: "/" }, locale })),
-				}),
-			),
-		);
+	const ogUrl = page.locator('meta[property="og:url"]');
+	await expect(ogUrl).toHaveAttribute(
+		"content",
+		removeTrailingSlash(
+			String(createUrl({ baseUrl: env.NEXT_PUBLIC_APP_BASE_URL, pathname: "/" })),
+		),
+	);
 
-		const ogLocale = page.locator('meta[property="og:locale"]');
-		await expect(ogLocale).toHaveAttribute("content", locale);
-	}
+	const ogLocale = page.locator('meta[property="og:locale"]');
+	await expect(ogLocale).toHaveAttribute("content", defaultLocale);
 });
 
 test("should add json+ld metadata", async ({ createIndexPage }) => {
-	for (const locale of locales) {
-		const { indexPage, i18n } = await createIndexPage(locale);
-		await indexPage.goto();
+	const { indexPage, i18n } = await createIndexPage();
+	await indexPage.goto();
 
-		const metadata = i18n.messages.metadata;
+	const metadata = i18n.messages.metadata;
 
-		const json = await indexPage.page.locator('script[type="application/ld+json"]').textContent();
+	const json = await indexPage.page.locator('script[type="application/ld+json"]').textContent();
 
-		// eslint-disable-next-line playwright/prefer-web-first-assertions
-		expect(json).toBe(
-			jsonLdScriptProps({
-				"@context": "https://schema.org",
-				"@type": "WebSite",
-				name: metadata.title,
-				description: metadata.description,
-			}).dangerouslySetInnerHTML?.__html,
-		);
-	}
+	// eslint-disable-next-line playwright/prefer-web-first-assertions
+	expect(json).toBe(
+		jsonLdScriptProps({
+			"@context": "https://schema.org",
+			"@type": "WebSite",
+			name: metadata.title,
+			description: metadata.description,
+		}).dangerouslySetInnerHTML?.__html,
+	);
 });
 
 test("should serve an open-graph image", async ({ createIndexPage, request }) => {
-	for (const locale of locales) {
-		const { indexPage } = await createIndexPage(locale);
-		await indexPage.goto();
+	const { indexPage } = await createIndexPage();
+	await indexPage.goto();
 
-		const url = await indexPage.page.locator('meta[property="og:image"]').getAttribute("content");
-		expect(url).toContain(`/${locale}/opengraph-image`);
+	const url = await indexPage.page.locator('meta[property="og:image"]').getAttribute("content");
+	expect(url).toContain("/opengraph-image");
 
-		const response = await request.get(String(url));
-		const status = response.status();
-		const contentType = response.headers()["content-type"];
+	const response = await request.get(String(url));
+	const status = response.status();
+	const contentType = response.headers()["content-type"];
 
-		expect(status).toBe(200);
-		expect(contentType).toBe("image/png");
-	}
+	expect(status).toBe(200);
+	expect(contentType).toBe("image/png");
 });

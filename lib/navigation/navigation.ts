@@ -1,23 +1,9 @@
-import { createNavigation } from "next-intl/navigation";
+// eslint-disable-next-line no-restricted-imports
+import Link from "next/link";
 import type { ComponentPropsWithRef, FC } from "react";
 
-import { routing } from "@/lib/i18n/routing";
-
-const {
-	Link,
-	getPathname,
-	redirect: _redirect,
-	usePathname,
-	useRouter,
-} = createNavigation(routing);
-
-/** FIXME: @see https://github.com/amannn/next-intl/issues/823 */
-const redirect: typeof _redirect = _redirect;
-
-export { getPathname, redirect, usePathname, useRouter };
-
 // eslint-disable-next-line no-restricted-imports
-export { useSearchParams } from "next/navigation";
+export { redirect, usePathname, useRouter, useSearchParams } from "next/navigation";
 
 export type LocaleLinkProps = Omit<ComponentPropsWithRef<typeof Link>, "href"> & {
 	href: string | undefined;

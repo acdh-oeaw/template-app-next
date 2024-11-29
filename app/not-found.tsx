@@ -1,18 +1,17 @@
-import { cn } from "@acdh-oeaw/style-variants";
 import type { Metadata, ResolvingMetadata } from "next";
+import { useTranslations } from "next-intl";
 import { getTranslations } from "next-intl/server";
 import type { ReactNode } from "react";
 
 import { MainContent } from "@/components/ui/main-content";
-import { ColorSchemeScript } from "@/lib/color-scheme-script";
-import * as fonts from "@/lib/fonts";
-import { defaultLocale } from "@/lib/i18n/locales";
+
+interface NotFoundPageProps {}
 
 export async function generateMetadata(
-	_props: Record<string, never>,
+	_props: Readonly<NotFoundPageProps>,
 	_parent: ResolvingMetadata,
 ): Promise<Metadata> {
-	const t = await getTranslations({ locale: defaultLocale, namespace: "NotFoundPage" });
+	const t = await getTranslations("NotFoundPage");
 
 	const metadata: Metadata = {
 		title: t("meta.title"),
@@ -29,34 +28,16 @@ export async function generateMetadata(
 	return metadata;
 }
 
-export default async function NotFoundPage(): Promise<ReactNode> {
-	const t = await getTranslations({ locale: defaultLocale, namespace: "NotFoundPage" });
+export default function NotFoundPage(_props: Readonly<NotFoundPageProps>): ReactNode {
+	const t = useTranslations("NotFoundPage");
 
 	return (
-		<html
-			className={cn(
-				fonts.body.variable,
-				fonts.heading.variable,
-				fonts.mono.variable,
-				"bg-background-base text-text-strong antialiased",
-			)}
-			lang={defaultLocale}
-			/**
-			 * Suppressing hydration warning because we add `data-ui-color-scheme` before first paint.
-			 */
-			suppressHydrationWarning={true}
-		>
-			<body>
-				<ColorSchemeScript />
-
-				<MainContent className="layout-grid min-h-full bg-fill-weaker">
-					<section className="grid place-content-center place-items-center py-16 xs:py-24">
-						<h1 className="text-center font-heading text-display font-strong text-balance text-text-strong">
-							{t("title")}
-						</h1>
-					</section>
-				</MainContent>
-			</body>
-		</html>
+		<MainContent className="layout-grid bg-fill-weaker">
+			<section className="grid place-content-center place-items-center py-16 xs:py-24">
+				<h1 className="text-center font-heading text-display font-strong text-balance text-text-strong">
+					{t("title")}
+				</h1>
+			</section>
+		</MainContent>
 	);
 }

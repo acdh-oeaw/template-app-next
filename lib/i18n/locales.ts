@@ -1,7 +1,7 @@
 import { unique } from "@acdh-oeaw/lib";
 import { hasLocale, type Timezone } from "next-intl";
 
-export const locales = ["de-AT", "en-GB"] as const;
+export const locales = ["en-GB"] as const;
 
 export type IntlLocale = (typeof locales)[number];
 
