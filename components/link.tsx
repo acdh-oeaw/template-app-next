@@ -2,6 +2,7 @@
 
 import { filterDOMProps, mergeRefs } from "@react-aria/utils";
 import {
+	type ComponentPropsWithoutRef,
 	type ElementType,
 	type ForwardedRef,
 	forwardRef,
@@ -33,11 +34,9 @@ import { useRenderProps } from "@/lib/use-render-props";
  */
 
 export interface LinkProps
-	extends Pick<
-			LocaleLinkProps,
-			"aria-current" | "href" | "id" | "locale" | "prefetch" | "replace" | "scroll" | "shallow"
-		>,
-		Omit<AriaLinkProps, "elementType" | "href" | "routerOptions" | "slot"> {}
+	extends Pick<LocaleLinkProps, "href" | "prefetch" | "replace" | "scroll" | "shallow">,
+		Omit<AriaLinkProps, "elementType" | "href" | "routerOptions" | "slot">,
+		Pick<ComponentPropsWithoutRef<"a">, "aria-current" | "id"> {}
 
 export const Link = forwardRef(function Link(
 	props: LinkProps,
