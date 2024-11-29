@@ -49,6 +49,9 @@ out/
 /playwright-report/
 /test-results/
 
+# storybook
+/storybook-static
+
 
 ## .dockerignore ##
 

@@ -15,5 +15,5 @@
 		"./types/**/*.d.ts",
 		".next/types/**/*.ts"
 	],
-	"exclude": [".next", "content", "node_modules", "out", "public"]
+	"exclude": [".next", "content", "node_modules", "out", "public", "storybook-static"]
 }
