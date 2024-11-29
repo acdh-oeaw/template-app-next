@@ -5,6 +5,7 @@ import { test as base } from "@playwright/test";
 
 import { env } from "@/config/env.config";
 import { type AccessibilityScanner, createAccessibilityScanner } from "@/e2e/lib/fixtures/a11y";
+import { ContactPage } from "@/e2e/lib/fixtures/contact-page";
 import { createI18n, type I18n, type WithI18n } from "@/e2e/lib/fixtures/i18n";
 import { ImprintPage } from "@/e2e/lib/fixtures/imprint-page";
 import { IndexPage } from "@/e2e/lib/fixtures/index-page";
@@ -16,8 +17,9 @@ interface Fixtures {
 
 	createAccessibilityScanner: () => Promise<AccessibilityScanner>;
 	createI18n: (locale: IntlLocale) => Promise<I18n>;
-	createImprintPage: (locale: IntlLocale) => Promise<WithI18n<{ imprintPage: ImprintPage }>>;
 	createIndexPage: (locale: IntlLocale) => Promise<WithI18n<{ indexPage: IndexPage }>>;
+	createContactPage: (locale: IntlLocale) => Promise<WithI18n<{ contactPage: ContactPage }>>;
+	createImprintPage: (locale: IntlLocale) => Promise<WithI18n<{ imprintPage: ImprintPage }>>;
 }
 
 export const test = base.extend<Fixtures>({
@@ -64,16 +66,6 @@ export const test = base.extend<Fixtures>({
 		});
 	},
 
-	async createImprintPage({ page }, use) {
-		async function createImprintPage(locale = defaultLocale) {
-			const i18n = await createI18n(page, locale);
-			const imprintPage = new ImprintPage(page, locale, i18n);
-			return { i18n, imprintPage };
-		}
-
-		await use(createImprintPage);
-	},
-
 	async createIndexPage({ page }, use) {
 		async function createIndexPage(locale = defaultLocale) {
 			const i18n = await createI18n(page, locale);
@@ -82,6 +74,26 @@ export const test = base.extend<Fixtures>({
 		}
 
 		await use(createIndexPage);
+	},
+
+	async createContactPage({ page }, use) {
+		async function createContactPage(locale = defaultLocale) {
+			const i18n = await createI18n(page, locale);
+			const contactPage = new ContactPage(page, locale, i18n);
+			return { i18n, contactPage };
+		}
+
+		await use(createContactPage);
+	},
+
+	async createImprintPage({ page }, use) {
+		async function createImprintPage(locale = defaultLocale) {
+			const i18n = await createI18n(page, locale);
+			const imprintPage = new ImprintPage(page, locale, i18n);
+			return { i18n, imprintPage };
+		}
+
+		await use(createImprintPage);
 	},
 });
 
