@@ -1,0 +1,16 @@
+services:
+  email:
+    image: axllent/mailpit:latest
+    container_name: email
+    restart: unless-stopped
+    volumes:
+      - email-data:/data
+    ports:
+      - 8025:8025 # web ui & api
+      - 1025:1025 # smtp
+    environment:
+      MP_DATABASE: /data/mailpit.db
+      MP_ENABLE_CHAOS: true
+
+volumes:
+  email-data:
