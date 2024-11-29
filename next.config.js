@@ -14,6 +14,10 @@ const config = {
 		dirs: [process.cwd()],
 		ignoreDuringBuilds: true,
 	},
+	experimental: {
+		instrumentationHook: true,
+		serverComponentsExternalPackages: ["@node-rs/argon2"],
+	},
 	headers() {
 		/** @type {Awaited<ReturnType<NonNullable<NextConfig["headers"]>>>} */
 		const headers = [

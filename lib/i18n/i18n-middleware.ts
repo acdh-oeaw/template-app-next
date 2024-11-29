@@ -1,7 +1,7 @@
 import createI18nMiddleware from "next-intl/middleware";
 
 import { routing } from "@/config/i18n.config";
-import type { Middleware } from "@/lib/compose-middlewares";
+import type { Middleware } from "@/lib/server/compose-middlewares";
 
 const middleware = createI18nMiddleware(routing);
 

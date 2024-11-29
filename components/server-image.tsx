@@ -5,7 +5,7 @@ import type { ImageProps as NextImageProps } from "next/image";
 import type { ReactNode } from "react";
 
 import { Image } from "@/components/image";
-import { getImageDimensions } from "@/lib/server/get-image-dimensions";
+import { getImageDimensions } from "@/lib/server/images/get-image-dimensions";
 
 interface ServerImageProps extends Omit<NextImageProps, "loader"> {}
 
