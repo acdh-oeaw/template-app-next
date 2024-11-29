@@ -12,7 +12,8 @@
 				"lokalise.i18n-ally",
 				"mikestead.dotenv",
 				"ms-playwright.playwright",
-				"stylelint.vscode-stylelint"
+				"stylelint.vscode-stylelint",
+				"vitest.explorer"
 			]
 		}
 	}

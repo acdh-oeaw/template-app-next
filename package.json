@@ -26,7 +26,9 @@
 		"prepare": "run-s setup i18n:prepare",
 		"setup": "is-ci || simple-git-hooks",
 		"start": "next start",
-		"test": "exit 0",
+		"test": "vitest run --config ./config/vitest.config.ts",
+		"test:ui": "vitest run --config ./config/vitest.config.ts --ui",
+		"test:watch": "vitest watch --config ./config/vitest.config.ts",
 		"test:e2e": "playwright test",
 		"test:e2e:codegen": "playwright codegen",
 		"test:e2e:install": "playwright install --with-deps",
@@ -100,7 +102,9 @@
 		"tailwindcss-react-aria-components": "^2.0.0",
 		"tsx": "^4.19.4",
 		"typescript": "^5.8.3",
-		"typescript-eslint": "^8.32.1"
+		"typescript-eslint": "^8.32.1",
+		"vite-tsconfig-paths": "5.1.4",
+		"vitest": "^3.2.2"
 	},
 	"browserslist": {
 		"development": [

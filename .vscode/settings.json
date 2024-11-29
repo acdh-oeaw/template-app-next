@@ -56,6 +56,8 @@
 	"typescript.preferences.importModuleSpecifier": "non-relative",
 	"typescript.preferences.preferTypeOnlyAutoImports": true,
 	"typescript.tsdk": "node_modules/typescript/lib",
+	"vitest.rootConfig": "./config/vitest.config.ts",
+	"vitest.shellType": "terminal",
 	"workbench.editor.customLabels.patterns": {
 		"**/app/**/error.tsx": "${dirname} - error",
 		"**/app/**/forbidden.tsx": "${dirname} - forbidden",
