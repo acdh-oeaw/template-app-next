@@ -1,4 +1,9 @@
 {
+	"sendContactFormEmailAction": {
+		"error": "Nachricht konnte nicht gesendet werden.",
+		"invalid-input": "Ungültige Eingabe.",
+		"success": "Nachricht erfolgreich gesendet."
+	},
 	"AboutPage": {
 		"meta": {
 			"title": "Über das Projekt"
@@ -36,6 +41,19 @@
 			"light": "Hell",
 			"system": "System"
 		}
+	},
+	"ContactForm": {
+		"email": "E-Mail",
+		"message": "Nachricht",
+		"subject": "Betreff",
+		"submit": "Nachricht senden"
+	},
+	"ContactPage": {
+		"message": "Wenn Sie Fragen haben, zögern Sie nicht, uns zu kontaktieren.",
+		"meta": {
+			"title": "Kontakt"
+		},
+		"title": "Kontakt"
 	},
 	"Error": {
 		"something-went-wrong": "Etwas ist schief gelaufen!",

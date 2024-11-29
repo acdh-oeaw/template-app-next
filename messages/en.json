@@ -1,4 +1,9 @@
 {
+	"sendContactFormEmailAction": {
+		"error": "Failed to send message.",
+		"invalid-input": "Invalid input.",
+		"success": "Successfully sent message."
+	},
 	"AboutPage": {
 		"meta": {
 			"title": "About the project"
@@ -36,6 +41,19 @@
 			"light": "Light",
 			"system": "System"
 		}
+	},
+	"ContactForm": {
+		"email": "Email",
+		"message": "Message",
+		"subject": "Subject",
+		"submit": "Send message"
+	},
+	"ContactPage": {
+		"message": "If you have any questions, don't hesitate to contact us.",
+		"meta": {
+			"title": "Contact"
+		},
+		"title": "Contact"
 	},
 	"Error": {
 		"something-went-wrong": "Something went wrong!",
