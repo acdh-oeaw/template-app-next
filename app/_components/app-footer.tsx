@@ -6,7 +6,7 @@ import {
 	MastodonLogo,
 	TwitterLogo,
 	YouTubeLogo,
-} from "@/app/[locale]/_components/social-media-logos";
+} from "@/app/_components/social-media-logos";
 import { Logo } from "@/components/logo";
 import { NavLink, type NavLinkProps } from "@/components/nav-link";
 import type { Locale } from "@/config/i18n.config";
@@ -55,7 +55,7 @@ export function AppFooter(): ReactNode {
 	} satisfies Record<string, { href: string; label: string; icon: FC }>;
 
 	const acdhLinks = {
-		de: { href: "https://www.oeaw.ac.at/de/acdh/" },
+		// de: { href: "https://www.oeaw.ac.at/de/acdh/" },
 		en: { href: "https://www.oeaw.ac.at/acdh/" },
 	} satisfies Record<Locale, { href: string }>;
 
