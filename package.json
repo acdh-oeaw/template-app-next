@@ -24,14 +24,16 @@
 		"prepare": "run-s setup",
 		"setup": "is-ci || simple-git-hooks",
 		"start": "next start",
-		"test": "exit 0",
+		"test:unit": "vitest run",
+		"test:unit:ui": "vitest run --ui",
+		"test:unit:watch": "vitest watch",
 		"test:e2e": "playwright test",
 		"test:e2e:codegen": "playwright codegen",
 		"test:e2e:install": "playwright install --with-deps",
 		"test:e2e:ui": "playwright test --ui",
 		"test:e2e:update-snapshots": "playwright test --update-snapshots",
 		"types:check": "tsc --noEmit",
-		"validate": "run-p format:check lint:check types:check test test:e2e"
+		"validate": "run-p format:check lint:check types:check test:unit test:e2e"
 	},
 	"dependencies": {
 		"@acdh-oeaw/lib": "^0.2.2",
@@ -95,7 +97,9 @@
 		"tailwindcss-animate": "^1.0.7",
 		"tailwindcss-react-aria-components": "nightly",
 		"typescript": "^5.7.3",
-		"typescript-eslint": "^8.24.1"
+		"typescript-eslint": "^8.24.1",
+		"vite-tsconfig-paths": "5.1.4",
+		"vitest": "^3.0.6"
 	},
 	"pnpm": {
 		"onlyBuiltDependencies": [
