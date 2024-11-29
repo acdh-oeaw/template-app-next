@@ -58,6 +58,7 @@
 		"valibot": "^1.1.0"
 	},
 	"devDependencies": {
+		"@acdh-oeaw/commitlint-config": "^2.0.0",
 		"@acdh-oeaw/eslint-config": "^2.0.9",
 		"@acdh-oeaw/eslint-config-next": "^2.0.19",
 		"@acdh-oeaw/eslint-config-node": "^2.0.9",
@@ -67,6 +68,7 @@
 		"@acdh-oeaw/prettier-config": "^2.0.1",
 		"@acdh-oeaw/stylelint-config": "^2.2.0",
 		"@acdh-oeaw/tsconfig": "^1.5.1",
+		"@commitlint/cli": "^19.8.1",
 		"@lingual/i18n-check": "^0.8.4",
 		"@next/bundle-analyzer": "canary",
 		"@next/eslint-plugin-next": "canary",
@@ -114,6 +116,9 @@
 			"not op_mini all"
 		]
 	},
+	"commitlint": {
+		"extends": "@acdh-oeaw/commitlint-config"
+	},
 	"lint-staged": {
 		"*.@(js|ts|tsx)": [
 			"eslint --cache --fix",
@@ -132,6 +137,7 @@
 	},
 	"prettier": "@acdh-oeaw/prettier-config",
 	"simple-git-hooks": {
+		"commit-msg": "pnpm exec commitlint --edit",
 		"pre-commit": "pnpm exec lint-staged"
 	},
 	"stylelint": {
