@@ -1,5 +1,6 @@
-import createBundleAnalyzer from "@next/bundle-analyzer";
+import createBundleAnalyzerPlugin from "@next/bundle-analyzer";
 import localesPlugin from "@react-aria/optimize-locales-plugin";
+import { withSentryConfig } from "@sentry/nextjs";
 import type { NextConfig } from "next";
 import createI18nPlugin from "next-intl/plugin";
 
@@ -52,7 +53,7 @@ const config: NextConfig = {
 };
 
 const plugins: Array<(config: NextConfig) => NextConfig> = [
-	createBundleAnalyzer({ enabled: env.BUNDLE_ANALYZER === "enabled" }),
+	createBundleAnalyzerPlugin({ enabled: env.BUNDLE_ANALYZER === "enabled" }),
 	createI18nPlugin({
 		experimental: {
 			/** @see https://v4.next-intl.dev/docs/workflows/typescript#messages-arguments */
@@ -60,6 +61,26 @@ const plugins: Array<(config: NextConfig) => NextConfig> = [
 		},
 		requestConfig: "./lib/i18n/get-request-config.ts",
 	}),
+	function createSentryPlugin(config) {
+		return withSentryConfig(config, {
+			disableLogger: true,
+			org: env.NEXT_PUBLIC_SENTRY_ORG,
+			project: env.NEXT_PUBLIC_SENTRY_PROJECT,
+			reactComponentAnnotation: {
+				enabled: true,
+			},
+			silent: !env.CI,
+			/**
+			 * Uncomment to route browser requests to Sentry through a Next.js rewrite to circumvent
+			 * ad-blockers.
+			 *
+			 * Note: Check that the configured route will not match with your Next.js middleware,
+			 * otherwise reporting of client-side errors will fail.
+			 */
+			// tunnelRoute: "/monitoring",
+			widenClientFileUpload: true,
+		});
+	},
 ];
 
 export default plugins.reduce((config, plugin) => {
