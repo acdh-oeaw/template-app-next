@@ -1,4 +1,10 @@
 {
+	"actions": {
+		"sendContactFormEmailAction": {
+			"error": "Failed to send message.",
+			"success": "Successfully sent message."
+		}
+	},
 	"errors": {
 		"internal-server-error": "Internal server error.",
 		"invalid-form-fields": "Invalid or missing fields.",
@@ -52,6 +58,19 @@
 			"light": "Light",
 			"system": "System"
 		}
+	},
+	"ContactForm": {
+		"email": "Email",
+		"message": "Message",
+		"subject": "Subject",
+		"submit": "Send message"
+	},
+	"ContactPage": {
+		"message": "If you have any questions, don't hesitate to contact us.",
+		"meta": {
+			"title": "Contact"
+		},
+		"title": "Contact"
 	},
 	"Error": {
 		"something-went-wrong": "Something went wrong!",

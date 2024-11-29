@@ -93,6 +93,10 @@ jobs:
       - name: Run e2e tests
         run: pnpm run test:e2e
         env:
+          EMAIL_ADDRESS: "acdh-ch@example.org"
+          EMAIL_SERVICE_API_BASE_URL: "http://localhost:8025"
+          EMAIL_SMTP_PORT: "1025"
+          EMAIL_SMTP_SERVER: "localhost"
           NEXT_PUBLIC_APP_BASE_URL: "http://localhost:3000"
           NEXT_PUBLIC_IMPRINT_SERVICE_BASE_URL: "${{ vars.NEXT_PUBLIC_IMPRINT_SERVICE_BASE_URL }}"
           NEXT_PUBLIC_MATOMO_BASE_URL: "${{ vars.NEXT_PUBLIC_MATOMO_BASE_URL }}"
