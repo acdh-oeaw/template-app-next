@@ -44,6 +44,7 @@ export async function generateMetadata(
 	const { params } = props;
 
 	const { locale } = await params;
+	const t = await getTranslations({ locale, namespace: "LocaleLayout" });
 	const meta = await getMetadata();
 
 	const metadata: Metadata = {
@@ -52,6 +53,11 @@ export async function generateMetadata(
 			template: ["%s", meta.title].join(" | "),
 		},
 		description: meta.description,
+		alternates: {
+			types: {
+				"application/rss+xml": [{ title: t("rss-feed", { locale }), url: `/${locale}/rss.xml` }],
+			},
+		},
 		openGraph: {
 			title: meta.title,
 			description: meta.description,
