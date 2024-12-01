@@ -17,6 +17,8 @@ export const env = createEnv({
 			BUILD_MODE: v.optional(v.picklist(["export", "standalone"])),
 			BUNDLE_ANALYZER: v.optional(v.picklist(["disabled", "enabled"]), "disabled"),
 			CI: v.optional(v.pipe(v.unknown(), v.transform(Boolean), v.boolean())),
+			OPENTELEMETRY_COLLECTOR_URL: v.optional(v.pipe(v.string(), v.url())),
+			OPENTELEMETRY_SERVICE_NAME: v.optional(v.pipe(v.string(), v.nonEmpty())),
 		});
 
 		return v.parse(Schema, input);
@@ -52,6 +54,8 @@ export const env = createEnv({
 		NEXT_PUBLIC_MATOMO_ID: process.env.NEXT_PUBLIC_MATOMO_ID,
 		NEXT_PUBLIC_REDMINE_ID: process.env.NEXT_PUBLIC_REDMINE_ID,
 		NODE_ENV: process.env.NODE_ENV,
+		OPENTELEMETRY_COLLECTOR_URL: process.env.OPENTELEMETRY_COLLECTOR_URL,
+		OPENTELEMETRY_SERVICE_NAME: process.env.OPENTELEMETRY_SERVICE_NAME,
 	},
 	validation: v.parse(
 		v.optional(v.picklist(["disabled", "enabled", "public"]), "enabled"),
