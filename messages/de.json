@@ -15,6 +15,7 @@
 		"navigation": {
 			"items": {
 				"contact": "Kontakt",
+				"feed": "RSS Feed",
 				"imprint": "Impressum"
 			},
 			"label": "Sekundär"
@@ -72,6 +73,7 @@
 		"loading": "Laden"
 	},
 	"LocaleLayout": {
+		"rss-feed": "RSS Feed ({locale})",
 		"skip-to-main-content": "Zum Hauptinhalt springen"
 	},
 	"LocaleSwitcher": {

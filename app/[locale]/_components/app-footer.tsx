@@ -24,6 +24,11 @@ export function AppFooter(): ReactNode {
 			href: createHref({ pathname: "/contact" }),
 			label: t("navigation.items.contact"),
 		},
+		feed: {
+			type: "link",
+			href: createHref({ pathname: "/rss.xml" }),
+			label: t("navigation.items.feed"),
+		},
 		imprint: {
 			type: "link",
 			href: createHref({ pathname: "/imprint" }),
