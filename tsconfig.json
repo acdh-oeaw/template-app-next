@@ -7,6 +7,17 @@
 		},
 		"plugins": [{ "name": "next" }]
 	},
-	"include": ["./**/*.d.ts", "./**/*.js", "./**/*.ts", "./**/*.tsx", ".next/types/**/*.ts"],
-	"exclude": ["node_modules", "out"]
+	"include": [
+		"./**/*.d.ts",
+		"./**/*.js",
+		"./**/*.mdx",
+		"./**/*.ts",
+		"./**/*.tsx",
+		".next/types/**/*.ts"
+	],
+	"exclude": ["node_modules", "out"],
+	"mdx": {
+		"checkMdx": false,
+		"plugins": ["remark-frontmatter", "remark-gfm"]
+	}
 }

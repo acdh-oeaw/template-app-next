@@ -4,7 +4,7 @@ import { Fragment, type ReactNode, Suspense, useMemo } from "react";
 import {
 	LocaleSwitcherLink,
 	LocaleSwitcherLinkFallback,
-} from "@/app/[locale]/_components/locale-switcher-link";
+} from "@/app/(app)/[locale]/_components/locale-switcher-link";
 import { TouchTarget } from "@/components/ui/touch-target";
 import { getIntlLanguage, type IntlLocale, locales } from "@/lib/i18n/locales";
 

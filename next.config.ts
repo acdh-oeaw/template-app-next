@@ -6,6 +6,7 @@ import createI18nPlugin from "next-intl/plugin";
 import { env } from "@/config/env.config";
 
 const config: Config = {
+	allowedDevOrigins: ["127.0.0.1"],
 	/** Compression should be handled by nginx reverse proxy. */
 	compress: false,
 	eslint: {
@@ -39,6 +40,17 @@ const config: Config = {
 		},
 	},
 	output: env.BUILD_MODE,
+	redirects() {
+		const redirects: Awaited<ReturnType<NonNullable<Config["redirects"]>>> = [
+			{
+				source: "/admin",
+				destination: "/keystatic",
+				permanent: false,
+			},
+		];
+
+		return Promise.resolve(redirects);
+	},
 	typescript: {
 		ignoreBuildErrors: true,
 	},

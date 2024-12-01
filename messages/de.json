@@ -4,6 +4,11 @@
 		"invalid-form-fields": "Ungültige oder fehlende Felder.",
 		"too-many-requests": "Zu viele Anfragen."
 	},
+	"mdx": {
+		"footnote-back-label": "Zurück zu Verweis {reference}",
+		"footnotes": "Fußnoten",
+		"table-of-contents": "Inhaltsverzeichnis"
+	},
 	"AboutPage": {
 		"meta": {
 			"title": "Über das Projekt"
