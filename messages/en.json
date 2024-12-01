@@ -9,6 +9,7 @@
 		"creator": "Austrian Centre for Digital Humanities and Cultural Heritage",
 		"links": {
 			"contact": "Contact",
+			"feed": "RSS feed",
 			"imprint": "Imprint"
 		},
 		"navigation-secondary": "Secondary",
@@ -57,6 +58,7 @@
 		"loading": "Loading"
 	},
 	"LocaleLayout": {
+		"rss-feed": "RSS feed ({locale})",
 		"skip-to-main-content": "Skip to main content"
 	},
 	"LocaleSwitcher": {
