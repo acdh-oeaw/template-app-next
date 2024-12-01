@@ -7,9 +7,9 @@ import { MainContent } from "@/components/main-content";
 import type { Locale } from "@/config/i18n.config";
 
 interface NotFoundPageProps {
-	params: {
+	params: Promise<{
 		locale: Locale;
-	};
+	}>;
 }
 
 export async function generateMetadata(
@@ -18,7 +18,7 @@ export async function generateMetadata(
 ): Promise<Metadata> {
 	const { params } = props;
 
-	const { locale } = params;
+	const { locale } = await params;
 	const t = await getTranslations({ locale, namespace: "NotFoundPage" });
 
 	const metadata: Metadata = {
