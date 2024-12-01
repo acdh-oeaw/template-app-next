@@ -6,7 +6,7 @@ import {
 	MastodonIcon,
 	TwitterIcon,
 	YouTubeIcon,
-} from "@/app/[locale]/_components/social-media-icons";
+} from "@/app/(app)/[locale]/_components/social-media-icons";
 import { Logo } from "@/components/logo";
 import { NavLink, type NavLinkProps } from "@/components/nav-link";
 import { createHref } from "@/lib/create-href";
