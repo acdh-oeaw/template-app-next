@@ -52,7 +52,9 @@
 		"react-stately": "^3.34.0",
 		"server-only": "^0.0.1",
 		"sharp": "^0.33.5",
-		"valibot": "^1.0.0-beta.9"
+		"valibot": "^1.0.0-beta.9",
+		"xast-util-feed": "^2.0.0",
+		"xast-util-to-xml": "^4.0.0"
 	},
 	"devDependencies": {
 		"@acdh-oeaw/eslint-config": "^2.0.5",
