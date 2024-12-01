@@ -1,5 +1,6 @@
 import { HttpError, request } from "@acdh-oeaw/lib";
 import type { Metadata, ResolvingMetadata } from "next";
+import { unstable_cache as cache } from "next/cache";
 import { notFound } from "next/navigation";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import type { ReactNode } from "react";
@@ -9,9 +10,9 @@ import type { Locale } from "@/config/i18n.config";
 import { createImprintUrl } from "@/config/imprint.config";
 
 interface ImprintPageProps {
-	params: {
+	params: Promise<{
 		locale: Locale;
-	};
+	}>;
 }
 
 export async function generateMetadata(
@@ -20,7 +21,7 @@ export async function generateMetadata(
 ): Promise<Metadata> {
 	const { params } = props;
 
-	const { locale } = params;
+	const { locale } = await params;
 	const t = await getTranslations({ locale, namespace: "ImprintPage" });
 
 	const metadata: Metadata = {
@@ -33,7 +34,7 @@ export async function generateMetadata(
 export default async function ImprintPage(props: Readonly<ImprintPageProps>): Promise<ReactNode> {
 	const { params } = props;
 
-	const { locale } = params;
+	const { locale } = await params;
 	setRequestLocale(locale);
 
 	const t = await getTranslations("ImprintPage");
@@ -60,10 +61,9 @@ export default async function ImprintPage(props: Readonly<ImprintPageProps>): Pr
 
 async function getImprintHtml(locale: Locale): Promise<string> {
 	try {
-		const url = createImprintUrl(locale);
-		const html = await request(url, { responseType: "text" });
+		const html = await getCachedImprintHtml(locale);
 
-		return html as string;
+		return html;
 	} catch (error) {
 		if (error instanceof HttpError && error.response.status === 404) {
 			notFound();
@@ -72,3 +72,10 @@ async function getImprintHtml(locale: Locale): Promise<string> {
 		throw error;
 	}
 }
+
+const getCachedImprintHtml = cache(async (locale: Locale) => {
+	const url = createImprintUrl(locale);
+	const html = await request(url, { responseType: "text" });
+
+	return html as string;
+});
