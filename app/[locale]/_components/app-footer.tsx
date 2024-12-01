@@ -25,6 +25,10 @@ export function AppFooter(): ReactNode {
 			href: createHref({ pathname: "/imprint" }),
 			label: t("links.imprint"),
 		},
+		feed: {
+			href: createHref({ pathname: "/rss.xml" }),
+			label: t("links.feed"),
+		},
 	} satisfies Record<string, { href: NavLinkProps["href"]; label: string }>;
 
 	const socialMedia = {

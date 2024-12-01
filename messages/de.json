@@ -8,6 +8,7 @@
 	"AppFooter": {
 		"links": {
 			"contact": "Kontakt",
+			"feed": "RSS Feed",
 			"imprint": "Impressum"
 		},
 		"navigation-secondary": "Sekundär",
@@ -56,6 +57,7 @@
 		"loading": "Laden"
 	},
 	"LocaleLayout": {
+		"rss-feed": "RSS Feed ({locale})",
 		"skip-to-main-content": "Zum Hauptinhalt springen"
 	},
 	"LocaleSwitcher": {
