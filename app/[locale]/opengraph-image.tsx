@@ -14,9 +14,9 @@ export const size = {
 };
 
 interface OpenGraphImageProps {
-	params: {
+	params: Promise<{
 		locale: Locale;
-	};
+	}>;
 }
 
 export default async function OpenGraphImage(
@@ -24,7 +24,7 @@ export default async function OpenGraphImage(
 ): Promise<ImageResponse> {
 	const { params } = props;
 
-	const { locale } = params;
+	const { locale } = await params;
 	const meta = await getTranslations({ locale, namespace: "metadata" });
 
 	const title = meta("title");
