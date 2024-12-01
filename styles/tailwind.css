@@ -10,7 +10,7 @@
 	}
 }
 
-@custom-variant dark (&:where([data-ui-color-scheme="dark"], [data-ui-color-scheme="dark"] *));
+@custom-variant dark (&:where([data-ui-color-scheme="dark"], [data-ui-color-scheme="dark"] *, .kui-theme.kui-scheme--dark, .kui-theme.kui-scheme--dark *));
 
 @custom-variant pointer-coarse {
 	@media (pointer: coarse) {
