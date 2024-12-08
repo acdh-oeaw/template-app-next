@@ -22,7 +22,8 @@
 	"AppHeader": {
 		"links": {
 			"about": "Über das Projekt",
-			"home": "Startseite"
+			"home": "Startseite",
+			"search": "Suche"
 		},
 		"navigation-menu": "Navigationsmenü",
 		"navigation-menu-close": "Navigationsmenü schließen",
@@ -68,5 +69,12 @@
 			"title": "Seite nicht gefunden"
 		},
 		"title": "Seite nicht gefunden"
+	},
+	"SearchPage": {
+		"meta": {
+			"title": "Suche"
+		},
+		"search": "Suchen",
+		"title": "Suche"
 	}
 }
