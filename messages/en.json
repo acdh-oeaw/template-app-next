@@ -23,7 +23,8 @@
 	"AppHeader": {
 		"links": {
 			"about": "About the project",
-			"home": "Home"
+			"home": "Home",
+			"search": "Search"
 		},
 		"navigation-menu": "Navigation menu",
 		"navigation-menu-close": "Close navigation menu",
@@ -69,5 +70,32 @@
 			"title": "Page not found"
 		},
 		"title": "Page not found"
+	},
+	"SearchPage": {
+		"empty-collection": "No documents in search index",
+		"facets": {
+			"authors": {
+				"label": "Authors",
+				"filter": "Filter \"authors\" search facet"
+			},
+			"genres": {
+				"label": "Genres",
+				"filter": "Filter \"genres\" search facet"
+			}
+		},
+		"meta": {
+			"title": "Search"
+		},
+		"nothing-found": "No results found",
+		"page-next": "Next page",
+		"page-previous": "Previous page",
+		"pagination": "Search results",
+		"search": "Search",
+		"search-filters": "Search filters",
+		"search-results": "Search results",
+		"show-less": "Show less",
+		"show-more": "Show more",
+		"submit": "Search",
+		"title": "Search"
 	}
 }

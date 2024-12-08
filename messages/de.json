@@ -23,7 +23,8 @@
 	"AppHeader": {
 		"links": {
 			"about": "Über das Projekt",
-			"home": "Startseite"
+			"home": "Startseite",
+			"search": "Suche"
 		},
 		"navigation-menu": "Navigationsmenü",
 		"navigation-menu-close": "Navigationsmenü schließen",
@@ -69,5 +70,32 @@
 			"title": "Seite nicht gefunden"
 		},
 		"title": "Seite nicht gefunden"
+	},
+	"SearchPage": {
+		"empty-collection": "Keine Dokumente im Suchindex",
+		"facets": {
+			"authors": {
+				"label": "Autor*innen",
+				"filter": "Filter \"Autor*innen\" durchsuchen"
+			},
+			"genres": {
+				"label": "Genres",
+				"filter": "Filter \"Genres\" durchsuchen"
+			}
+		},
+		"meta": {
+			"title": "Suche"
+		},
+		"nothing-found": "Nichts gefunden",
+		"page-next": "Nächste Seite",
+		"page-previous": "Vorherige Seite",
+		"pagination": "Suchergebnisse",
+		"search": "Suchen",
+		"search-filters": "Suchfilter",
+		"search-results": "Suchergebnisse",
+		"show-less": "Weniger anzeigen",
+		"show-more": "Mehr anzeigen",
+		"submit": "Suchen",
+		"title": "Suche"
 	}
 }

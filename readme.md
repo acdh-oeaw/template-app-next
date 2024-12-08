@@ -176,5 +176,9 @@ working setup.
   branch: adds [`storybook`](https://storybook.js.org) for building ui components in isolation and
   creating component documentation.
 
+- [`variant/with-typesense`](https://github.com/acdh-oeaw/template-app-next/tree/variant/with-typesense)
+  branch: adds example faceted search ui for interacting with [typesense](https://typesense.org)
+  index.
+
 - [`variant/with-unit-tests`](https://github.com/acdh-oeaw/template-app-next/tree/variant/with-unit-tests)
   branch: adds [vitest](https://vitest.dev) for unit testing.
