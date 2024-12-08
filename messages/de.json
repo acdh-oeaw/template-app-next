@@ -22,7 +22,8 @@
 	"AppHeader": {
 		"links": {
 			"about": "Über das Projekt",
-			"home": "Startseite"
+			"home": "Startseite",
+			"search": "Suche"
 		},
 		"navigation-menu": "Navigationsmenü",
 		"navigation-menu-close": "Navigationsmenü schließen",
@@ -68,5 +69,19 @@
 			"title": "Seite nicht gefunden"
 		},
 		"title": "Seite nicht gefunden"
+	},
+	"SearchPage": {
+		"facets": {
+			"brand": "Marken",
+			"categories": "Kategorien"
+		},
+		"filter-facet": "Suchfacette \"{facet}\" filtern",
+		"meta": {
+			"title": "Suche"
+		},
+		"search": "Suchen",
+		"show-less": "Weniger anzeigen",
+		"show-more": "Mehr anzeigen",
+		"title": "Suche"
 	}
 }
