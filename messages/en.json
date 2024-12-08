@@ -22,7 +22,8 @@
 	"AppHeader": {
 		"links": {
 			"about": "About the project",
-			"home": "Home"
+			"home": "Home",
+			"search": "Search"
 		},
 		"navigation-menu": "Navigation menu",
 		"navigation-menu-close": "Close navigation menu",
@@ -68,5 +69,19 @@
 			"title": "Page not found"
 		},
 		"title": "Page not found"
+	},
+	"SearchPage": {
+		"facets": {
+			"brand": "Brand",
+			"categories": "Categories"
+		},
+		"filter-facet": "Filter \"{facet}\" search facet",
+		"meta": {
+			"title": "Search"
+		},
+		"search": "Search",
+		"show-less": "Show less",
+		"show-more": "Show more",
+		"title": "Search"
 	}
 }

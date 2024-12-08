@@ -12,6 +12,8 @@
 		"analyze": "BUNDLE_ANALYZER=\"enabled\" next build --no-lint",
 		"build": "next build",
 		"dev": "next dev",
+		"dev:typesense:down": "docker compose --env-file=./.env.local down --volumes",
+		"dev:typesense:up": "docker compose --env-file=./.env.local up --detach",
 		"format:check": "prettier . \"!./@(content|public)/**\" --cache --cache-location ./.prettiercache --check",
 		"format:fix": "pnpm run format:check --write",
 		"lint:check": "run-p --continue-on-error \"lint:*:check\"",
@@ -31,6 +33,8 @@
 		"test:e2e:ui": "playwright test --ui",
 		"test:e2e:update-snapshots": "playwright test --update-snapshots",
 		"types:check": "tsc --noEmit",
+		"typesense:create": "dotenv -c development -- tsx ./scripts/typesense/create-collection.ts",
+		"typesense:seed": "dotenv -c development -- tsx ./scripts/typesense/seed-collection.ts",
 		"validate": "run-p format:check lint:check types:check test test:e2e"
 	},
 	"dependencies": {
@@ -48,10 +52,14 @@
 		"react-aria": "^3.36.0",
 		"react-aria-components": "^1.5.0",
 		"react-dom": "^18.3.1",
+		"react-instantsearch-core": "^7.13.8",
+		"react-instantsearch-nextjs": "^0.3.18",
 		"react-schemaorg": "^2.0.0",
 		"react-stately": "^3.34.0",
 		"server-only": "^0.0.1",
 		"sharp": "^0.33.5",
+		"typesense": "^1.8.2",
+		"typesense-instantsearch-adapter": "^2.8.0",
 		"valibot": "^1.0.0-beta.9"
 	},
 	"devDependencies": {
@@ -64,6 +72,7 @@
 		"@acdh-oeaw/prettier-config": "^2.0.1",
 		"@acdh-oeaw/stylelint-config": "^2.0.5",
 		"@acdh-oeaw/tsconfig": "^1.3.0",
+		"@faker-js/faker": "^9.3.0",
 		"@next/bundle-analyzer": "^14.2.20",
 		"@next/eslint-plugin-next": "^14.2.20",
 		"@playwright/test": "^1.49.1",
@@ -72,6 +81,7 @@
 		"@types/node": "^22.10.2",
 		"@types/react": "^18.3.16",
 		"@types/react-dom": "^18.3.5",
+		"algoliasearch": "^5.15.0",
 		"axe-core": "^4.10.2",
 		"axe-playwright": "^2.0.3",
 		"ci-info": "^4.1.0",
@@ -93,6 +103,7 @@
 		"tailwindcss": "^3.4.16",
 		"tailwindcss-animate": "^1.0.7",
 		"tailwindcss-react-aria-components": "^1.2.0",
+		"tsx": "^4.19.2",
 		"typescript": "^5.7.2"
 	},
 	"browserslist": {
