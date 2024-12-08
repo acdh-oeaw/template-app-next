@@ -17,6 +17,7 @@ export const env = createEnv({
 			BUILD_MODE: v.optional(v.picklist(["export", "standalone"])),
 			BUNDLE_ANALYZER: v.optional(v.picklist(["disabled", "enabled"]), "disabled"),
 			CI: v.optional(v.pipe(v.unknown(), v.transform(Boolean), v.boolean())),
+			TYPESENSE_ADMIN_API_KEY: v.pipe(v.string(), v.nonEmpty()),
 		});
 
 		return v.parse(Schema, input);
@@ -37,6 +38,21 @@ export const env = createEnv({
 				v.integer(),
 				v.minValue(1),
 			),
+			NEXT_PUBLIC_TYPESENSE_COLLECTION: v.pipe(v.string(), v.nonEmpty()),
+			NEXT_PUBLIC_TYPESENSE_HOST: v.pipe(v.string(), v.nonEmpty()),
+			NEXT_PUBLIC_TYPESENSE_PORT: v.pipe(
+				v.string(),
+				v.transform(Number),
+				v.number(),
+				v.integer(),
+				v.minValue(1),
+			),
+			NEXT_PUBLIC_TYPESENSE_PROTOCOL: v.optional(v.picklist(["http", "https"]), "https"),
+			/**
+			 * Optional, because we need to be able to create a collection, before we create
+			 * a search-only api key for that collection.
+			 */
+			NEXT_PUBLIC_TYPESENSE_SEARCH_API_KEY: v.optional(v.pipe(v.string(), v.nonEmpty())),
 		});
 
 		return v.parse(Schema, input);
@@ -51,7 +67,13 @@ export const env = createEnv({
 		NEXT_PUBLIC_MATOMO_BASE_URL: process.env.NEXT_PUBLIC_MATOMO_BASE_URL,
 		NEXT_PUBLIC_MATOMO_ID: process.env.NEXT_PUBLIC_MATOMO_ID,
 		NEXT_PUBLIC_REDMINE_ID: process.env.NEXT_PUBLIC_REDMINE_ID,
+		NEXT_PUBLIC_TYPESENSE_COLLECTION: process.env.NEXT_PUBLIC_TYPESENSE_COLLECTION,
+		NEXT_PUBLIC_TYPESENSE_HOST: process.env.NEXT_PUBLIC_TYPESENSE_HOST,
+		NEXT_PUBLIC_TYPESENSE_PORT: process.env.NEXT_PUBLIC_TYPESENSE_PORT,
+		NEXT_PUBLIC_TYPESENSE_PROTOCOL: process.env.NEXT_PUBLIC_TYPESENSE_PROTOCOL,
+		NEXT_PUBLIC_TYPESENSE_SEARCH_API_KEY: process.env.NEXT_PUBLIC_TYPESENSE_SEARCH_API_KEY,
 		NODE_ENV: process.env.NODE_ENV,
+		TYPESENSE_ADMIN_API_KEY: process.env.TYPESENSE_ADMIN_API_KEY,
 	},
 	validation: v.parse(
 		v.optional(v.picklist(["disabled", "enabled", "public"]), "enabled"),
