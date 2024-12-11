@@ -55,13 +55,14 @@ export function SearchFacets(props: Readonly<SearchFacetsProps>): ReactNode {
 				<Group className="relative grid items-center">
 					<Input
 						className={cn(
-							"pr-12",
-							"min-h-12 min-w-0 rounded-2 border border-stroke-strong bg-fill-inverse-strong px-4 py-2.5 text-small text-text-strong",
+							"min-h-8 px-3 py-1 pr-8 text-tiny",
+							// "min-h-12 px-4 py-2.5 pr-12 text-small",
+							"min-w-0 rounded-2 border border-stroke-strong bg-fill-inverse-strong text-text-strong",
 							"interactive focus:focus-outline hover:hover-overlay pressed:press-overlay",
 						)}
 					/>
-					<Button className={cn("absolute justify-self-end pl-2 pr-4", "group-empty:hidden")}>
-						<XIcon aria-hidden={true} className="size-6 text-icon-neutral" />
+					<Button className={cn("absolute justify-self-end pl-1 pr-3", "group-empty:hidden")}>
+						<XIcon aria-hidden={true} className="size-4 text-icon-neutral" />
 					</Button>
 				</Group>
 			</SearchField>
@@ -119,7 +120,7 @@ export function SearchFacets(props: Readonly<SearchFacetsProps>): ReactNode {
 						<li key={item.value}>
 							<Checkbox
 								key={item.value}
-								className="group flex items-center gap-x-3 text-small text-text-strong"
+								className="group flex items-center gap-x-3 text-tiny text-text-strong"
 								isSelected={item.isRefined}
 								onChange={() => {
 									refine(item.value);
@@ -131,7 +132,7 @@ export function SearchFacets(props: Readonly<SearchFacetsProps>): ReactNode {
 										<Fragment>
 											<div
 												className={cn(
-													"inline-grid size-8 shrink-0 place-content-center rounded-1 border border-stroke-strong bg-fill-inverse-strong",
+													"inline-grid size-6 shrink-0 place-content-center rounded-1 border border-stroke-strong bg-fill-inverse-strong",
 													"group-focus-visible:focus-outline",
 													"group-selected:border-stroke-selected group-selected:bg-fill-selected group-selected:text-text-inverse-strong",
 												)}
@@ -153,7 +154,9 @@ export function SearchFacets(props: Readonly<SearchFacetsProps>): ReactNode {
 
 			<Button
 				className={cn(
-					"min-h-12 rounded-2 border border-stroke-brand-strong px-4 py-2.5 text-text-brand",
+					"min-h-8 px-3 py-1 text-tiny",
+					// "min-h-12 px-4 py-2.5 text-small",
+					"rounded-2 border border-stroke-brand-strong font-strong text-text-brand",
 					"interactive focus-visible:focus-outline hover:hover-overlay pressed:press-overlay disabled:border-stroke-disabled disabled:text-text-disabled",
 				)}
 				isDisabled={!canToggleShowMore}
