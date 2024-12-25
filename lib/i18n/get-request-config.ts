@@ -2,11 +2,11 @@ import "server-only";
 
 import { getRequestConfig } from "next-intl/server";
 
-import { defaultLocale, formats, isValidLocale } from "@/config/i18n.config";
+import { defaultLocale, formats, type IntlMessages, isValidLocale } from "@/config/i18n.config";
 
 export default getRequestConfig(async ({ requestLocale }) => {
 	const _locale = await requestLocale;
-	const locale = _locale == null || !isValidLocale(_locale) ? defaultLocale : _locale;
+	const locale = isValidLocale(_locale) ? _locale : defaultLocale;
 
 	const timeZone = "UTC";
 
