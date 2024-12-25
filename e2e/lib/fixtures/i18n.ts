@@ -1,10 +1,10 @@
 import type { Page } from "@playwright/test";
 import { createFormatter, createTranslator } from "next-intl";
 
-import { defaultLocale } from "@/config/i18n.config";
+import { defaultLocale, type IntlMessages } from "@/config/i18n.config";
 
 export interface I18n {
-	t: ReturnType<typeof createTranslator<never>>;
+	t: ReturnType<typeof createTranslator<IntlMessages>>;
 	format: ReturnType<typeof createFormatter>;
 }
 

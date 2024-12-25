@@ -57,7 +57,13 @@ const config = {
 /** @type {Array<(config: NextConfig) => NextConfig>} */
 const plugins = [
 	createBundleAnalyzer({ enabled: env.BUNDLE_ANALYZER === "enabled" }),
-	createI18nPlugin("./lib/i18n/get-request-config.ts"),
+	createI18nPlugin({
+		experimental: {
+			/** @see https://v4.next-intl.dev/docs/workflows/typescript#messages-arguments */
+			createMessagesDeclaration: "./messages/en.json",
+		},
+		requestConfig: "./lib/i18n/get-request-config.ts",
+	}),
 ];
 
 export default plugins.reduce((config, plugin) => {
