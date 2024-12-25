@@ -41,3 +41,6 @@ out/
 /playwright/.cache/
 /playwright-report/
 /test-results/
+
+# i18n
+/messages/*.d.json.ts

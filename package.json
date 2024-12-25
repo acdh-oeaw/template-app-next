@@ -43,7 +43,7 @@
 		"image-dimensions": "^2.3.0",
 		"lucide-react": "^0.475.0",
 		"next": "^14.2.24",
-		"next-intl": "^3.26.3",
+		"next-intl": "v4-beta",
 		"react": "^18.3.1",
 		"react-aria": "^3.37.0",
 		"react-aria-components": "^1.6.0",
