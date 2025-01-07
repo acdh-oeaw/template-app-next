@@ -38,7 +38,9 @@
 		"@acdh-oeaw/style-variants": "^0.1.0",
 		"@acdh-oeaw/validate-env": "^0.0.3",
 		"@react-aria/utils": "^3.26.0",
+		"class-variance-authority": "^0.7.1",
 		"client-only": "^0.0.1",
+		"clsx": "^2.1.1",
 		"fast-glob": "^3.3.2",
 		"image-dimensions": "^2.3.0",
 		"lucide-react": "^0.468.0",
@@ -52,6 +54,7 @@
 		"react-stately": "^3.34.0",
 		"server-only": "^0.0.1",
 		"sharp": "^0.33.5",
+		"tailwind-merge": "^2.6.0",
 		"valibot": "^1.0.0-beta.9"
 	},
 	"devDependencies": {
