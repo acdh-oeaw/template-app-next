@@ -37,6 +37,17 @@ const config = {
 		},
 	},
 	output: env.BUILD_MODE,
+	rewrites() {
+		/** @type {Awaited<ReturnType<NonNullable<NextConfig["rewrites"]>>>} */
+		const rewrites = [
+			{
+				source: "/admin",
+				destination: "/admin/index.html",
+			},
+		];
+
+		return Promise.resolve(rewrites);
+	},
 	typescript: {
 		ignoreBuildErrors: true,
 	},

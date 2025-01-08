@@ -10,8 +10,8 @@
 	"packageManager": "pnpm@9.15.0",
 	"scripts": {
 		"analyze": "BUNDLE_ANALYZER=\"enabled\" next build --no-lint",
-		"build": "next build",
-		"dev": "next dev",
+		"build": "tinacms build && next build",
+		"dev": "TINA_PUBLIC_IS_LOCAL=\"true\" dotenv -c -- tinacms dev -c \"next dev\"",
 		"format:check": "prettier . \"!./@(content|public)/**\" --cache --cache-location ./.prettiercache --check",
 		"format:fix": "pnpm run format:check --write",
 		"lint:check": "run-p --continue-on-error \"lint:*:check\"",
@@ -52,6 +52,7 @@
 		"react-stately": "^3.34.0",
 		"server-only": "^0.0.1",
 		"sharp": "^0.33.5",
+		"tinacms": "^2.6.0",
 		"valibot": "^1.0.0-beta.9"
 	},
 	"devDependencies": {
@@ -69,6 +70,7 @@
 		"@playwright/test": "^1.49.1",
 		"@react-aria/optimize-locales-plugin": "^1.1.3",
 		"@react-types/shared": "^3.26.0",
+		"@tinacms/cli": "^1.8.0",
 		"@types/node": "^22.10.2",
 		"@types/react": "^18.3.16",
 		"@types/react-dom": "^18.3.5",
