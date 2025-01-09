@@ -24,7 +24,8 @@ import {
 
 import { Logo } from "@/components/logo";
 import { NavLink, type NavLinkProps } from "@/components/nav-link";
-import { useRouter } from "@/lib/i18n/navigation";
+import { usePathname, useRouter } from "@/lib/i18n/navigation";
+import { isCurrentPage } from "@/lib/use-nav-link";
 
 interface NavigationLink {
 	type: "link";
@@ -51,6 +52,8 @@ interface AppNavigationProps {
 
 export function AppNavigation(props: Readonly<AppNavigationProps>): ReactNode {
 	const { label, navigation } = props;
+
+	const pathname = usePathname();
 
 	return (
 		<nav aria-label={label} className="hidden md:flex md:gap-x-12">
@@ -97,6 +100,20 @@ export function AppNavigation(props: Readonly<AppNavigationProps>): ReactNode {
 						}
 
 						case "menu": {
+							/**
+							 * Menu items are not announced as links, so we should use selection state
+							 * instead of `aria-current`. Unfortunately, we cannot set selection state
+							 * on individual menu items, but only on the menu itself.
+							 *
+							 * @see https://github.com/adobe/react-spectrum/issues/7587
+							 */
+							const selectedKeys = new Set<string>();
+							Object.entries(item.children).forEach(([id, item]) => {
+								if (item.type === "link" && isCurrentPage(item.href, pathname)) {
+									selectedKeys.add(id);
+								}
+							});
+
 							return (
 								<li key={id}>
 									<MenuTrigger>
@@ -119,7 +136,10 @@ export function AppNavigation(props: Readonly<AppNavigationProps>): ReactNode {
 											)}
 											placement="bottom"
 										>
-											<Menu className="max-h-[inherit] min-w-40 overflow-auto py-2">
+											<Menu
+												className="max-h-[inherit] min-w-40 overflow-auto py-2"
+												selectedKeys={selectedKeys}
+											>
 												{Object.entries(item.children).map(([id, item]) => {
 													switch (item.type) {
 														case "link": {
@@ -129,6 +149,7 @@ export function AppNavigation(props: Readonly<AppNavigationProps>): ReactNode {
 																	className={cn(
 																		"flex cursor-pointer select-none items-center gap-x-3 px-4 py-3 text-small text-text-strong",
 																		"interactive focus-visible:focus-outline focus-visible:-focus-outline-offset-2 hover:hover-overlay pressed:press-overlay",
+																		"selected:select-overlay",
 																	)}
 																	href={item.href}
 																	textValue={item.label}
@@ -284,13 +305,13 @@ export function AppNavigationMobile(props: Readonly<AppNavigationMobileProps>): 
 												case "menu": {
 													return (
 														<li key={id}>
-															<Disclosure>
+															<Disclosure className="group">
 																<Heading>
 																	<Button
 																		className={cn(
 																			"inline-flex w-full items-center justify-between px-6 py-3 text-text-strong",
 																			"interactive focus-visible:focus-outline focus-visible:-focus-outline-offset-2 hover:hover-overlay pressed:press-overlay",
-																			"expanded:hover-overlay expanded:select-overlay",
+																			"group-expanded:hover-overlay",
 																		)}
 																		slot="trigger"
 																	>
