@@ -71,6 +71,8 @@ const config = [
 			],
 			// "@typescript-eslint/explicit-module-boundary-types": "error",
 			"@typescript-eslint/require-array-sort-compare": "error",
+			/** Avoid hardcoded, non-translated strings. */
+			"react/jsx-no-literals": "error",
 			// "@typescript-eslint/strict-boolean-expressions": "error",
 			"react/jsx-sort-props": ["error", { reservedFirst: true }],
 		},
