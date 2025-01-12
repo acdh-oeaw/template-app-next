@@ -208,4 +208,35 @@ test.describe("app", () => {
 			await expect(aboutLink).toHaveAttribute("aria-current", "page");
 		});
 	});
+
+	/**
+	 * Work around chrome-only bug: @see `./components/main-content.tsx`.
+	 */
+	test("should not scroll page when changing locale", async ({ createIndexPage, page }) => {
+		const { indexPage: enIndexPage, i18n: en } = await createIndexPage("en");
+		await enIndexPage.goto();
+		await enIndexPage.page
+			.getByRole("link", {
+				name: en.t("LocaleSwitcher.switch-locale-to", {
+					locale: new Intl.DisplayNames(["en"], { type: "language" }).of("de"),
+				}),
+			})
+			.click();
+
+		const { indexPage: deIndexPage, i18n: de } = await createIndexPage("de");
+		await deIndexPage.page
+			.getByRole("link", {
+				name: de.t("LocaleSwitcher.switch-locale-to", {
+					locale: new Intl.DisplayNames(["de"], { type: "language" }).of("en"),
+				}),
+			})
+			.click();
+
+		const scrollPosition = await page.evaluate(() => {
+			return { x: window.scrollX, y: window.scrollY };
+		});
+
+		expect(scrollPosition.x).toBe(0);
+		expect(scrollPosition.y).toBe(0);
+	});
 });
