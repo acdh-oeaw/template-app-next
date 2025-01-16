@@ -63,7 +63,7 @@ async function getImprintHtml(locale: Locale): Promise<string> {
 		const url = createImprintUrl(locale);
 		const html = await request(url, { responseType: "text" });
 
-		return html as string;
+		return html;
 	} catch (error) {
 		if (error instanceof HttpError && error.response.status === 404) {
 			notFound();

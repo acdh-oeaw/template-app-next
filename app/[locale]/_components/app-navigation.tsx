@@ -270,6 +270,8 @@ export function AppNavigationMobile(props: Readonly<AppNavigationMobileProps>): 
 																	 * we delay closing the dialog so the navigation is guaranteed to
 																	 * be triggered. practically, this seems only relevant for
 																	 * firefox on touch devices.
+																	 *
+																	 * maybe unnecessary after @see https://github.com/adobe/react-spectrum/pull/7542
 																	 */
 																	requestAnimationFrame(close);
 																}}
@@ -331,6 +333,8 @@ export function AppNavigationMobile(props: Readonly<AppNavigationMobileProps>): 
 																									 * we delay closing the dialog so the navigation is guaranteed to
 																									 * be triggered. practically, this seems only relevant for
 																									 * firefox on touch devices.
+																									 *
+																									 * maybe unnecessary after @see https://github.com/adobe/react-spectrum/pull/7542
 																									 */
 																									requestAnimationFrame(close);
 																								}}
