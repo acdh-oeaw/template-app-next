@@ -37,8 +37,13 @@ the default template accepts the following variables:
   client-side analytics with matomo.
 - `NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION` (optional): set this to verify site ownership for google
   search console.
+- `ENV_VALIDATION` (optional): whether to validate environment variables. supported values are
+  "disabled", "enabled", and "public". defaults to "enabled". "public" only validates build-args
+  prefixed with `NEXT_PUBLIC_`, which can make sense in a docker build context.
 
-when adding new environment variables, don't forget to add them to `.env.local.example` as well.
+when adding new environment variables, don't forget to add them to
+[`.env.local.example`](./.env.local.example) and [`config/env.config.js`](./config/env.config.js) as
+well.
 
 install dependencies:
 
@@ -125,7 +130,7 @@ working setup.
   orm.
 
 - [`variant/with-commitlint`](https://github.com/acdh-oeaw/template-app-next/tree/variant/with-commitlint)
-  branch: enables[ `commitlint`](https://commitlint.js.org) and runs it as a git hook, and as part
+  branch: enables [`commitlint`](https://commitlint.js.org) and runs it as a git hook, and as part
   of the validation workflow in a github action.
 
 - [`variant/with-email`](https://github.com/acdh-oeaw/template-app-next/tree/variant/with-email)
@@ -152,5 +157,5 @@ working setup.
   make it easy to activate full i18n support later if needed.
 
 - [`variant/with-storybook`](https://github.com/acdh-oeaw/template-app-next/tree/variant/with-storybook)
-  branch: adds [storybook](https://storybook.js.org) for building ui components in isolation and
+  branch: adds [`storybook`](https://storybook.js.org) for building ui components in isolation and
   creating component documentation.
