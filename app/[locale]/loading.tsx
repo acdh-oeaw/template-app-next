@@ -4,6 +4,9 @@ import type { ReactNode } from "react";
 import { LoadingIndicator } from "@/components/loading-indicator";
 import { MainContent } from "@/components/main-content";
 
+/**
+ * TODO: You may want to move this to a more appropriate location.
+ */
 export default function Loading(): ReactNode {
 	const t = useTranslations("Loading");
 
