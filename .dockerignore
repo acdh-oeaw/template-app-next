@@ -54,7 +54,9 @@ out/
 # git
 .git/
 .gitattributes
-.gitignore
+# must be allowed because `tailwindcss` v4 will use `.gitignore` to determine which
+# files and folders can be skipped by the compiler.
+# .gitignore
 
 # github
 .github/

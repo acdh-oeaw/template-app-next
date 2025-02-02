@@ -5,7 +5,7 @@ export const body = Inter({
 	display: "swap",
 	style: ["normal", "italic"],
 	subsets: ["latin", "latin-ext"],
-	variable: "--font-body",
+	variable: "--_font-body",
 });
 
 export const heading = Inter({
@@ -13,12 +13,12 @@ export const heading = Inter({
 	display: "swap",
 	style: ["normal", "italic"],
 	subsets: ["latin", "latin-ext"],
-	variable: "--font-heading",
+	variable: "--_font-heading",
 });
 
 export const mono = Fira_Code({
 	display: "swap",
 	preload: false,
 	subsets: ["latin", "latin-ext"],
-	variable: "--font-mono",
+	variable: "--_font-mono",
 });

@@ -1,0 +1,36 @@
+@utility focus-outline {
+	/** Interaction states. */
+	@apply outline-solid outline-2 outline-stroke-focus outline-offset-2;
+}
+
+@utility focus-outline-offset-0 {
+	@apply outline-offset-0;
+}
+
+@utility -focus-outline-offset-2 {
+	@apply -outline-offset-2;
+}
+
+@utility interactive {
+	@apply relative overflow-clip after:absolute after:inset-0 after:transition;
+}
+
+@utility hover-overlay {
+	@apply after:bg-fill-hover;
+}
+
+@utility select-overlay-left {
+	@apply after:border-stroke-selected after:border-l-4;
+}
+
+@utility select-overlay-bottom {
+	@apply after:border-stroke-selected after:border-b-4;
+}
+
+@utility press-overlay {
+	@apply after:bg-fill-press;
+}
+
+@utility target-area {
+	@apply before:absolute before:min-w-[48px] before:min-h-[48px] before:top-1/2 before:left-1/2 before:-translate-x-1/2 before:-translate-y-1/2;
+}

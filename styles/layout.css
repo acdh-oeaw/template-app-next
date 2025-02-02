@@ -1,0 +1,70 @@
+@utility alignment-grid {
+	--alignment-color: var(--color-neutral-200);
+
+	background-image:
+		linear-gradient(to right, var(--alignment-color) 1px, transparent 1px),
+		linear-gradient(to bottom, var(--alignment-color) 1px, transparent 1px);
+	background-size: 24px 24px;
+}
+
+@utility layout-grid {
+	--max-content-width: 100%;
+	--column-count: 4;
+	--column-gap: 1rem; /** 16px */
+	--padding-inline: 2rem; /** 32px */
+
+	display: grid;
+	grid-template-columns:
+		minmax(calc(var(--padding-inline) - var(--column-gap)), 1fr)
+		repeat(
+			var(--column-count),
+			calc(
+				(
+						min(100% - 2 * var(--padding-inline), var(--max-content-width)) -
+							(var(--column-count) - 1) * var(--column-gap)
+					) /
+					var(--column-count)
+			)
+		)
+		minmax(calc(var(--padding-inline) - var(--column-gap)), 1fr);
+	column-gap: var(--column-gap);
+
+	/* stylelint-disable-next-line order/order */
+	@variant sm {
+		--max-content-width: 100%;
+		--column-count: 8;
+		--column-gap: 1.5rem; /** 24px */
+		--padding-inline: 3rem; /** 48px */
+	}
+
+	@variant xl {
+		--max-content-width: 75rem; /** 1200px */
+		--column-count: 12;
+		--column-gap: 2rem; /** 32px */
+		--padding-inline: 7.5rem; /** 120px */
+	}
+
+	& > :where(*) {
+		grid-column: 2 / -2;
+	}
+}
+
+@utility layout-subgrid {
+	display: grid;
+	grid-template-columns: subgrid;
+	grid-column: 1 / -1;
+
+	& > :where(*) {
+		grid-column: 2 / -2;
+	}
+}
+
+@utility max-w-text {
+	max-width: var(--max-width-text, 46rem);
+}
+
+@utility content-max-w-text {
+	& > * {
+		max-width: var(--max-width-text, 46rem);
+	}
+}
