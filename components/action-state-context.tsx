@@ -1,5 +1,5 @@
 import { assert } from "@acdh-oeaw/lib";
-import { createContext, type ReactNode, useContext } from "react";
+import { createContext, type ReactNode, use } from "react";
 
 import type { ActionState } from "@/lib/server/actions";
 
@@ -17,7 +17,7 @@ export function ActionStateProvider(props: Readonly<ActionStateProviderProps>): 
 }
 
 export function useActionStateContext(): ActionState {
-	const value = useContext(ActionStateContext);
+	const value = use(ActionStateContext);
 
 	assert(value != null);
 
