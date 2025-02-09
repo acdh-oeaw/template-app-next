@@ -96,6 +96,12 @@
 		"typescript": "^5.7.3",
 		"typescript-eslint": "^8.23.0"
 	},
+	"pnpm": {
+		"onlyBuiltDependencies": [
+			"sharp",
+			"simple-git-hooks"
+		]
+	},
 	"browserslist": {
 		"development": [
 			"last 1 chrome version",
