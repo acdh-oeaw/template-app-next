@@ -1,4 +1,28 @@
 {
+	"api": {
+		"images": {
+			"list": {
+				"get": {
+					"internal-server-error": "Internal server error"
+				}
+			},
+			"upload": {
+				"post": {
+					"forbidden": "Forbidden",
+					"invalid-input": "Invalid input",
+					"internal-server-error": "Internal server error",
+					"upload-error": "Failed to upload image"
+				}
+			},
+			"url": {
+				"post": {
+					"forbidden": "Forbidden",
+					"invalid-input": "Invalid input",
+					"internal-server-error": "Internal server error"
+				}
+			}
+		}
+	},
 	"AboutPage": {
 		"meta": {
 			"title": "About the project"
@@ -40,6 +64,12 @@
 	"Error": {
 		"something-went-wrong": "Something went wrong!",
 		"try-again": "Try again"
+	},
+	"ImagesPage": {
+		"meta": {
+			"title": "Bilder"
+		},
+		"title": "Bilder"
 	},
 	"ImprintPage": {
 		"meta": {
