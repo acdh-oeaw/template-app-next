@@ -1,4 +1,28 @@
 {
+	"api": {
+		"images": {
+			"list": {
+				"get": {
+					"internal-server-error": "Interner Serverfehler"
+				}
+			},
+			"upload": {
+				"post": {
+					"forbidden": "Nicht erlaubt",
+					"invalid-input": "Ungültige Eingabe",
+					"internal-server-error": "Interner Serverfehler",
+					"upload-error": "Fehler beim Hochladen des Bildes"
+				}
+			},
+			"url": {
+				"post": {
+					"forbidden": "Nicht erlaubt",
+					"invalid-input": "Ungültige Eingabe",
+					"internal-server-error": "Interner Serverfehler"
+				}
+			}
+		}
+	},
 	"AboutPage": {
 		"meta": {
 			"title": "Über das Projekt"
@@ -40,6 +64,12 @@
 	"Error": {
 		"something-went-wrong": "Etwas ist schief gelaufen!",
 		"try-again": "Erneut versuchen"
+	},
+	"ImagesPage": {
+		"meta": {
+			"title": "Bilder"
+		},
+		"title": "Bilder"
 	},
 	"ImprintPage": {
 		"meta": {
