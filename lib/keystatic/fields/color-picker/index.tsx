@@ -43,42 +43,6 @@ function ColorPickerField(props: ColorPickerFieldProps): BasicFormField<string> 
 	};
 }
 
-interface ReadonlyFieldProps {
-	defaultValue?: string;
-	description?: string;
-	label: string;
-}
-
-function ReadonlyField(props: ReadonlyFieldProps): BasicFormField<string> {
-	const { defaultValue, description, label } = props;
-
-	return {
-		kind: "form",
-		label,
-		Input(props) {
-			// @ts-expect-error `keystatic` expects `react` v18 types.
-			return <TextField {...props} description={description} isReadOnly={true} label={label} />;
-		},
-		defaultValue() {
-			return defaultValue ?? "";
-		},
-		parse(value) {
-			return parseAsNormalField(value);
-		},
-		serialize(value) {
-			return { value: value === "" ? undefined : value };
-		},
-		validate(value) {
-			return validate(value);
-		},
-		reader: {
-			parse(value) {
-				return validate(parseAsNormalField(value));
-			},
-		},
-	};
-}
-
 function parseAsNormalField(value: FormFieldStoredValue): string {
 	if (value === undefined) {
 		return "";
@@ -94,4 +58,3 @@ function validate(value: string): string {
 }
 
 export const colorPicker = ColorPickerField;
-export const readonly = ReadonlyField;

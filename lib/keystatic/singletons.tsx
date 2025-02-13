@@ -4,7 +4,7 @@ import { fields, singleton } from "@keystatic/core";
 import { createLinkSchema } from "@/lib/keystatic/create-link-schema";
 import * as validation from "@/lib/keystatic/validation";
 
-export const createMetadata = createSingleton("/metadata/", (paths, locale) => {
+export const createMetadataSingleton = createSingleton("/metadata/", (paths, locale) => {
 	return singleton({
 		label: createLabel("Metadata", locale),
 		path: paths.contentPath,
@@ -57,7 +57,7 @@ export const createMetadata = createSingleton("/metadata/", (paths, locale) => {
 	});
 });
 
-export const createNavigation = createSingleton("/navigation/", (paths, locale) => {
+export const createNavigationSingleton = createSingleton("/navigation/", (paths, locale) => {
 	const link = createLinkSchema(paths.downloadPath, locale);
 
 	return singleton({

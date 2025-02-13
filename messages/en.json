@@ -1,4 +1,17 @@
 {
+	"api": {
+		"errors": {
+			"forbidden": "Forbidden.",
+			"internal-server-error": "Internal server error.",
+			"invalid-form-fields": "Invalid or missing fields.",
+			"too-many-requests": "Too many requests."
+		},
+		"images": {
+			"post": {
+				"upload-error": "Failed to upload image."
+			}
+		}
+	},
 	"mdx": {
 		"footnote-back-label": "Back to reference {reference}",
 		"footnotes": "Footnotes",
