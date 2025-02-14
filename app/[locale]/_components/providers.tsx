@@ -29,7 +29,7 @@ interface RacRouterProviderProps {
 	children: ReactNode;
 }
 
-function RacRouterProvider(props: RacRouterProviderProps): ReactNode {
+function RacRouterProvider(props: Readonly<RacRouterProviderProps>): ReactNode {
 	const { children } = props;
 
 	const router = useRouter();
