@@ -1,7 +1,7 @@
 import { getMessages } from "next-intl/server";
 
 export async function getMetadata() {
-	const messages = (await getMessages()) as IntlMessages;
+	const messages = (await getMessages()) as unknown as IntlMessages;
 
 	const metadata = messages.metadata;
 

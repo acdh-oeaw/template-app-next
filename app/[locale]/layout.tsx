@@ -84,7 +84,7 @@ export default async function LocaleLayout(props: Readonly<LocaleLayoutProps>): 
 
 	const t = await getTranslations("LocaleLayout");
 	const meta = await getMetadata();
-	const messages = (await getMessages()) as IntlMessages;
+	const messages = (await getMessages()) as unknown as IntlMessages;
 	const errorPageMessages = pick(messages, ["Error"]);
 
 	// TODO:
