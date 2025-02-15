@@ -2,11 +2,11 @@ import { useLocale, useTranslations } from "next-intl";
 import type { FC, ReactNode } from "react";
 
 import {
-	// BlueskyLogo,
-	MastodonLogo,
-	TwitterLogo,
-	YouTubeLogo,
-} from "@/app/[locale]/_components/social-media-logos";
+	// BlueskyIcon,
+	MastodonIcon,
+	TwitterIcon,
+	YouTubeIcon,
+} from "@/app/[locale]/_components/social-media-icons";
 import { Logo } from "@/components/logo";
 import { NavLink, type NavLinkProps } from "@/components/nav-link";
 import type { Locale } from "@/config/i18n.config";
@@ -32,25 +32,25 @@ export function AppFooter(): ReactNode {
 		// 	href: "https://bsky.app/acdh_oeaw",
 		// 	label: t("social-media.bluesky"),
 		// 	// icon: "/assets/images/logo-bluesky.svg",
-		// 	icon: BlueskyLogo,
+		// 	icon: BlueskyIcon,
 		// },
 		mastodon: {
 			href: "https://fedihum.org/@acdhch_oeaw",
 			label: t("social-media.mastodon"),
 			// icon: "/assets/images/logo-mastodon.svg",
-			icon: MastodonLogo,
+			icon: MastodonIcon,
 		},
 		twitter: {
 			href: "https://www.twitter.com/acdh_oeaw",
 			label: t("social-media.twitter"),
 			// icon: "/assets/images/logo-twitter.svg",
-			icon: TwitterLogo,
+			icon: TwitterIcon,
 		},
 		youtube: {
 			href: "https://www.youtube.com/channel/UCgaEMaMbPkULYRI5u6gvG-w",
 			label: t("social-media.youtube"),
 			// icon: "/assets/images/logo-youtube.svg",
-			icon: YouTubeLogo,
+			icon: YouTubeIcon,
 		},
 	} satisfies Record<string, { href: string; label: string; icon: FC }>;
 

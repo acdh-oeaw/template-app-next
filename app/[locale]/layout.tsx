@@ -19,6 +19,7 @@ import { isValidLocale, type Locale, locales } from "@/config/i18n.config";
 import { AnalyticsScript } from "@/lib/analytics-script";
 import { ColorSchemeScript } from "@/lib/color-scheme-script";
 import * as fonts from "@/lib/fonts";
+import { getMetadata } from "@/lib/i18n/get-metadata";
 import { getToastMessage } from "@/lib/i18n/redirect-with-message";
 
 interface LocaleLayoutProps {
@@ -43,26 +44,26 @@ export async function generateMetadata(
 	const { params } = props;
 
 	const { locale } = params;
-	const meta = await getTranslations({ locale, namespace: "metadata" });
+	const meta = await getMetadata();
 
 	const metadata: Metadata = {
 		title: {
-			default: meta("title"),
-			template: ["%s", meta("title")].join(" | "),
+			default: meta.title,
+			template: ["%s", meta.title].join(" | "),
 		},
-		description: meta("description"),
+		description: meta.description,
 		openGraph: {
-			title: meta("title"),
-			description: meta("description"),
+			title: meta.title,
+			description: meta.description,
 			url: "./",
-			siteName: meta("title"),
+			siteName: meta.title,
 			locale,
 			type: "website",
 		},
 		twitter: {
 			card: "summary_large_image",
-			creator: meta("twitter.creator"),
-			site: meta("twitter.site"),
+			creator: meta.social.twitter,
+			site: meta.social.twitter,
 		},
 		verification: {
 			google: env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION,
@@ -82,7 +83,7 @@ export default async function LocaleLayout(props: Readonly<LocaleLayoutProps>): 
 	setRequestLocale(locale);
 
 	const t = await getTranslations("LocaleLayout");
-	const meta = await getTranslations("metadata");
+	const meta = await getMetadata();
 	const messages = (await getMessages()) as IntlMessages;
 	const errorPageMessages = pick(messages, ["Error"]);
 
@@ -109,8 +110,8 @@ export default async function LocaleLayout(props: Readonly<LocaleLayoutProps>): 
 					{...jsonLdScriptProps({
 						"@context": "https://schema.org",
 						"@type": "WebSite",
-						name: meta("title"),
-						description: meta("description"),
+						name: meta.title,
+						description: meta.description,
 					})}
 				/>
 
