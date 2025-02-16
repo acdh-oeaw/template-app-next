@@ -1,8 +1,8 @@
 import type { ImageResponse } from "next/og";
-import { getTranslations } from "next-intl/server";
 
 import { MetadataImage } from "@/components/metadata-image";
 import type { Locale } from "@/config/i18n.config";
+import { getMetadata } from "@/lib/i18n/get-metadata";
 
 export const runtime = "edge";
 
@@ -25,9 +25,10 @@ export default async function OpenGraphImage(
 	const { params } = props;
 
 	const { locale } = params;
-	const meta = await getTranslations({ locale, namespace: "metadata" });
 
-	const title = meta("title");
+	const meta = await getMetadata(locale);
+
+	const title = meta.title;
 
 	return MetadataImage({ locale, size, title });
 }

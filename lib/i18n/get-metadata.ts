@@ -1,7 +1,9 @@
 import { getMessages } from "next-intl/server";
 
-export async function getMetadata() {
-	const messages = (await getMessages()) as unknown as IntlMessages;
+import type { Locale } from "@/config/i18n.config";
+
+export async function getMetadata(locale?: Locale) {
+	const messages = (await getMessages({ locale })) as unknown as IntlMessages;
 
 	const metadata = messages.metadata;
 
