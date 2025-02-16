@@ -1,4 +1,4 @@
-import { pick } from "@acdh-oeaw/lib";
+// import { pick } from "@acdh-oeaw/lib";
 import { cn } from "@acdh-oeaw/style-variants";
 import type { Metadata, ResolvingMetadata } from "next";
 import { notFound } from "next/navigation";
@@ -84,7 +84,15 @@ export default async function LocaleLayout(props: Readonly<LocaleLayoutProps>): 
 	const t = await getTranslations("LocaleLayout");
 	const meta = await getTranslations("metadata");
 	const messages = (await getMessages()) as IntlMessages;
-	const errorPageMessages = pick(messages, ["Error"]);
+	/**
+	 * TODO: Passing all messages to the client is fine for most apps. For larger apps, it can
+	 * make sense to only pass messages for the error page globally, and pass other required
+	 * messages via components props, or via a page-level or layout-level `NextIntlClientProvider`.
+	 *
+	 * @see https://next-intl.dev/docs/environments/server-client-components#using-internationalization-in-client-components
+	 */
+	// const clientMessages = pick(messages, ["Error"]);
+	const clientMessages = messages;
 
 	// TODO:
 	const _toastMessage = await getToastMessage();
@@ -125,7 +133,7 @@ export default async function LocaleLayout(props: Readonly<LocaleLayoutProps>): 
 				 */}
 				<Translations locale={locale} />
 
-				<Providers locale={locale} messages={errorPageMessages}>
+				<Providers locale={locale} messages={clientMessages}>
 					<AnalyticsScript
 						baseUrl={env.NEXT_PUBLIC_MATOMO_BASE_URL}
 						id={env.NEXT_PUBLIC_MATOMO_ID}
