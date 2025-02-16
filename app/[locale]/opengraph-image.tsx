@@ -4,8 +4,6 @@ import { getTranslations } from "next-intl/server";
 import { MetadataImage } from "@/components/metadata-image";
 import type { Locale } from "@/config/i18n.config";
 
-export const runtime = "edge";
-
 // export const alt = ''
 
 export const size = {
