@@ -6,6 +6,7 @@ import { defaultLocale } from "@/config/i18n.config";
 export interface I18n {
 	t: ReturnType<typeof createTranslator<never>>;
 	format: ReturnType<typeof createFormatter>;
+	messages: IntlMessages;
 }
 
 export async function createI18n(_page: Page, locale = defaultLocale): Promise<I18n> {
@@ -23,6 +24,7 @@ export async function createI18n(_page: Page, locale = defaultLocale): Promise<I
 	return {
 		t: createTranslator({ locale, messages }),
 		format: createFormatter({ locale }),
+		messages,
 	};
 }
 

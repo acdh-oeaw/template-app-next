@@ -1,15 +1,15 @@
 import type { MetadataRoute } from "next";
-import { getTranslations } from "next-intl/server";
 
 import { defaultLocale } from "@/config/i18n.config";
+import { getMetadata } from "@/lib/i18n/get-metadata";
 
 export default async function manifest(): Promise<MetadataRoute.Manifest> {
-	const meta = await getTranslations({ locale: defaultLocale, namespace: "metadata" });
+	const meta = await getMetadata(defaultLocale);
 
 	return {
-		name: meta("manifest.name"),
-		short_name: meta("manifest.short-name"),
-		description: meta("manifest.description"),
+		name: meta.manifest.name,
+		short_name: meta.manifest["short-name"],
+		description: meta.manifest.description,
 		start_url: "/",
 		display: "standalone",
 		background_color: "#fff",

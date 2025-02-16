@@ -1,10 +1,7 @@
 import type { Formats } from "next-intl";
 import { defineRouting, type LocalePrefix } from "next-intl/routing";
 
-import type metadataDe from "@/content/de/metadata/index.json";
-import type metadataEn from "@/content/en/metadata/index.json";
-import type de from "@/messages/de.json";
-import type en from "@/messages/en.json";
+import type { Messages } from "@/lib/i18n/get-request-config";
 
 export const locales = ["de", "en"] as const;
 
@@ -30,11 +27,6 @@ export const routing = defineRouting({
 	localePrefix,
 });
 
-export interface Translations extends Record<Locale, IntlMessages> {
-	de: typeof de & { metadata: typeof metadataDe };
-	en: typeof en & { metadata: typeof metadataEn };
-}
-
 export const formats = {
 	dateTime: {
 		long: {
@@ -48,3 +40,9 @@ export const formats = {
 		},
 	},
 } satisfies Formats;
+
+/** Globally available via `types/i18n.d.ts` */
+export type _IntlFormats = typeof formats;
+
+/** Globally available via `types/i18n.d.ts` */
+export type _IntlMessages = Messages;

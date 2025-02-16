@@ -1,13 +1,11 @@
-import type { formats, Locale } from "@/config/i18n.config";
-import type metadata from "@/content/en/metadata/index.json";
-import type messages from "@/messages/en.json";
+import type { _IntlFormats, _IntlMessages, Locale } from "@/config/i18n.config";
 
 declare global {
-	type Formats = typeof formats;
+	type Formats = _IntlFormats;
 
 	interface IntlFormats extends Formats {}
 
-	type Messages = typeof messages & { metadata: typeof metadata };
+	type Messages = _IntlMessages;
 
 	interface IntlMessages extends Messages {}
 }

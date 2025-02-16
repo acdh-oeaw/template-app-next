@@ -49,8 +49,16 @@ test("should set page metadata", async ({ createIndexPage }) => {
 		await indexPage.goto();
 		const { page } = indexPage;
 
-		expect(i18n.t("metadata.title")).toBeTruthy();
-		expect(i18n.t("metadata.description")).toBeTruthy();
+		const title = i18n.t("metadata.title");
+		const description = i18n.t("metadata.description");
+		const twitter =
+			// eslint-disable-next-line playwright/no-conditional-in-test
+			i18n.messages.metadata.social.find(({ kind }) => {
+				return kind === "twitter";
+			})?.href ?? "";
+
+		expect(title).toBeTruthy();
+		expect(description).toBeTruthy();
 
 		const ogType = page.locator('meta[property="og:type"]');
 		await expect(ogType).toHaveAttribute("content", "website");
@@ -59,24 +67,24 @@ test("should set page metadata", async ({ createIndexPage }) => {
 		await expect(twCard).toHaveAttribute("content", "summary_large_image");
 
 		const twCreator = page.locator('meta[name="twitter:creator"]');
-		await expect(twCreator).toHaveAttribute("content", i18n.t("metadata.twitter.creator"));
+		await expect(twCreator).toHaveAttribute("content", twitter);
 
 		const twSite = page.locator('meta[name="twitter:site"]');
-		await expect(twSite).toHaveAttribute("content", i18n.t("metadata.twitter.site"));
+		await expect(twSite).toHaveAttribute("content", twitter);
 
 		// const googleSiteVerification = page.locator('meta[name="google-site-verification"]');
 		// await expect(googleSiteVerification).toHaveAttribute("content", "");
 
-		await expect(page).toHaveTitle(i18n.t("metadata.title"));
+		await expect(page).toHaveTitle(title);
 
 		const metaDescription = page.locator('meta[name="description"]');
-		await expect(metaDescription).toHaveAttribute("content", i18n.t("metadata.description"));
+		await expect(metaDescription).toHaveAttribute("content", description);
 
 		const ogTitle = page.locator('meta[property="og:title"]');
-		await expect(ogTitle).toHaveAttribute("content", i18n.t("metadata.title"));
+		await expect(ogTitle).toHaveAttribute("content", title);
 
 		const ogDescription = page.locator('meta[property="og:description"]');
-		await expect(ogDescription).toHaveAttribute("content", i18n.t("metadata.description"));
+		await expect(ogDescription).toHaveAttribute("content", description);
 
 		const ogUrl = page.locator('meta[property="og:url"]');
 		await expect(ogUrl).toHaveAttribute(
