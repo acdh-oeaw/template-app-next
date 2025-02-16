@@ -1,3 +1,6 @@
+import { readFile } from "node:fs/promises";
+import { join } from "node:path";
+
 import { ImageResponse } from "next/og";
 
 import type { Locale } from "@/config/i18n.config";
@@ -16,11 +19,13 @@ export async function MetadataImage(props: Readonly<MetadataImageProps>): Promis
 	 *
 	 * @see https://github.com/vercel/satori/issues/162
 	 */
-	const font = await fetch(
-		new URL("../public/assets/fonts/inter-semibold.ttf", import.meta.url),
-	).then((res) => {
-		return res.arrayBuffer();
-	});
+	const fontPath = join(process.cwd(), "public", "assets", "fonts", "inter-semibold.ttf");
+	const font = await readFile(fontPath);
+
+	/** @see https://nextjs.org/docs/app/api-reference/file-conventions/metadata/opengraph-image#using-nodejs-runtime-with-local-assets */
+	// const imagePath = join(process.cwd(), image);
+	// const imageData = await readFile(featuredImagePath);
+	// const imageSrc = Uint8Array.from(featuredImageData).buffer;
 
 	return new ImageResponse(
 		(
