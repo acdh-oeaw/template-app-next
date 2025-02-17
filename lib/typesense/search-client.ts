@@ -1,23 +1,18 @@
 import { assert } from "@acdh-oeaw/lib";
-import type { SearchClient as AlgoliaSearchClient } from "algoliasearch";
-import TypesenseInstantSearchAdapter from "typesense-instantsearch-adapter";
+import { cache } from "react";
+import { Client } from "typesense";
 
 import { env } from "@/config/env.config";
 import { cacheSearchResultsForSeconds } from "@/config/typesense.config";
 
-assert(
-	env.NEXT_PUBLIC_TYPESENSE_SEARCH_API_KEY,
-	"Missing NEXT_PUBLIC_TYPESENSE_SEARCH_API_KEY environment variable.",
-);
+export const createClient = cache(function createClient(): Client {
+	const apiKey = env.NEXT_PUBLIC_TYPESENSE_SEARCH_API_KEY;
+	assert(apiKey, "Missing `NEXT_PUBLIC_TYPESENSE_SEARCH_API_KEY` environment variable.");
 
-export const typesense = new TypesenseInstantSearchAdapter({
-	additionalSearchParameters: {
-		query_by: "title,description",
-	},
-	server: {
-		apiKey: env.NEXT_PUBLIC_TYPESENSE_SEARCH_API_KEY,
+	const client = new Client({
+		apiKey,
 		cacheSearchResultsForSeconds,
-		connectionTimeoutSeconds: 2,
+		connectionTimeoutSeconds: 3,
 		nodes: [
 			{
 				host: env.NEXT_PUBLIC_TYPESENSE_HOST,
@@ -25,7 +20,7 @@ export const typesense = new TypesenseInstantSearchAdapter({
 				protocol: env.NEXT_PUBLIC_TYPESENSE_PROTOCOL,
 			},
 		],
-	},
-});
+	});
 
-export const searchClient = typesense.searchClient as AlgoliaSearchClient;
+	return client;
+});

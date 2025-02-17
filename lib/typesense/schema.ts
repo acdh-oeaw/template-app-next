@@ -23,14 +23,29 @@ export const schema: CollectionCreateSchema = {
 			name: "brand",
 			type: "string",
 			facet: true,
+			sort: true,
 		},
 	],
-	default_sorting_field: "title",
+	/** Must be a `int32` or `float` field. */
+	// default_sorting_field:
 };
 
-export interface TypesenseDocument {
+export interface CollectionItem {
+	id: string;
 	title: string;
 	description: string;
 	categories: Array<string>;
 	brand: string;
 }
+
+export const collectionQueryFields = ["description", "title"] as const;
+
+export type CollectionQueryField = (typeof collectionQueryFields)[number];
+
+export const collectionFacetFields = ["brand", "categories"] as const;
+
+export type CollectionFacetField = (typeof collectionFacetFields)[number];
+
+export const collectionSortFields = ["brand", "title"] as const;
+
+export type CollectionSortField = (typeof collectionSortFields)[number];

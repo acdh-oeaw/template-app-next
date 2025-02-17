@@ -1,18 +1,59 @@
+import { isNonNullable, keyByToMap } from "@acdh-oeaw/lib";
 import type { Metadata, ResolvingMetadata } from "next";
-import { getTranslations, setRequestLocale } from "next-intl/server";
+import { getFormatter, getTranslations, setRequestLocale } from "next-intl/server";
 import type { ReactNode } from "react";
+import * as v from "valibot";
 
-import { SearchFacets } from "@/app/[locale]/(search)/search/_components/search-facets";
-import { SearchInput } from "@/app/[locale]/(search)/search/_components/search-input";
-import { SearchProvider } from "@/app/[locale]/(search)/search/_components/search-provider";
-import { SearchResults } from "@/app/[locale]/(search)/search/_components/search-results";
 import { MainContent } from "@/components/main-content";
+import { SearchForm } from "@/components/search-form";
+import { SubmitButton } from "@/components/submit-button";
 import type { Locale } from "@/config/i18n.config";
+import { maxFacetValues } from "@/config/search.config";
+import { ensureArray } from "@/lib/ensure-array";
+import {
+	type CollectionFacetField,
+	collectionFacetFields,
+	type CollectionItem,
+	collectionQueryFields,
+	collectionSortFields,
+	schema,
+} from "@/lib/typesense/schema";
+import { createClient } from "@/lib/typesense/search-client";
+
+const SearchFiltersSchema = v.object({
+	brand: v.fallback(
+		v.pipe(v.unknown(), v.transform(ensureArray), v.array(v.pipe(v.string(), v.nonEmpty()))),
+		[],
+	),
+	categories: v.fallback(
+		v.pipe(v.unknown(), v.transform(ensureArray), v.array(v.pipe(v.string(), v.nonEmpty()))),
+		[],
+	),
+	q: v.fallback(v.string(), ""),
+	sort: v.fallback(v.picklist(collectionSortFields), "title"),
+	"sort-direction": v.fallback(v.picklist(["asc", "desc"]), "asc"),
+	limit: v.fallback(
+		v.pipe(
+			v.string(),
+			v.transform(Number),
+			v.number(),
+			v.integer(),
+			v.minValue(1),
+			v.maxValue(100),
+		),
+		10,
+	),
+	offset: v.fallback(
+		v.pipe(v.string(), v.transform(Number), v.number(), v.integer(), v.minValue(0)),
+		0,
+	),
+});
 
 interface SearchPageProps {
 	params: {
 		locale: Locale;
 	};
+	searchParams: SearchParams;
 }
 
 export async function generateMetadata(
@@ -33,82 +74,179 @@ export async function generateMetadata(
 }
 
 export default async function SearchPage(props: Readonly<SearchPageProps>): Promise<ReactNode> {
-	const { params } = props;
+	const { params, searchParams } = props;
 
 	const { locale } = params;
 
 	setRequestLocale(locale);
 
 	const t = await getTranslations("SearchPage");
+	const format = await getFormatter();
+
+	const searchFilters = await v.parseAsync(SearchFiltersSchema, searchParams);
+
+	const searchClient = createClient();
+
+	function createFacetFilter(field: CollectionFacetField) {
+		const values = searchFilters[field].sort().map((value) => {
+			return `\`${value}\``;
+		});
+
+		if (values.length === 0) {
+			return null;
+		}
+
+		return `${field}:=[${values.join(",")}]`;
+	}
+
+	const facetFilters = {
+		brand: createFacetFilter("brand"),
+		categories: createFacetFilter("categories"),
+	};
+
+	/**
+	 * @see https://typesense.org/docs/27.1/api/search.html
+	 * @see https://typesense.org/docs/27.1/api/federated-multi-search.html
+	 * @see https://typesense.org/docs/guide/faqs.html
+	 * @see https://github.com/typesense/typesense/issues/2131
+	 */
+	const searchResponses = await searchClient.multiSearch.perform<
+		[CollectionItem, CollectionItem, CollectionItem]
+	>(
+		{
+			searches: [
+				{
+					facet_by: collectionFacetFields.join(","),
+					filter_by: [facetFilters.brand, facetFilters.categories]
+						.filter(isNonNullable)
+						.join(" AND "),
+				},
+				{
+					facet_by: "brand",
+					/**
+					 * Apply all filters *except* for the current `facet_by` field, to get
+					 * all possible unfiltered facet values.
+					 */
+					filter_by: [facetFilters.categories].filter(isNonNullable).join(" AND "),
+					limit: 0,
+				},
+				{
+					facet_by: "categories",
+					/**
+					 * Apply all filters *except* for the current `facet_by` field, to get
+					 * all possible unfiltered facet values.
+					 */
+					filter_by: [facetFilters.brand].filter(isNonNullable).join(" AND "),
+					limit: 0,
+				},
+			],
+		},
+		{
+			collection: schema.name,
+			q: searchFilters.q,
+			query_by: collectionQueryFields.join(","),
+			sort_by: `${searchFilters.sort}:${searchFilters["sort-direction"]}`,
+			max_facet_values: maxFacetValues,
+			limit: searchFilters.limit,
+			offset: searchFilters.offset,
+		},
+	);
+
+	const [searchResults, allBrandFacetValues, allCategoryFacetValues] = searchResponses.results;
+
+	// TODO: merge filtered and unfiltered facet values, and sort selected values to top
+	const filteredFacetValues = keyByToMap(searchResults.facet_counts ?? [], (facet) => {
+		return facet.field_name;
+	});
+
+	const facetValues = new Map([
+		["brand", allBrandFacetValues.facet_counts?.at(0)] as const,
+		["categories", allCategoryFacetValues.facet_counts?.at(0)] as const,
+	]);
 
 	return (
-		<SearchProvider>
-			<div className="grid h-full grid-cols-[20rem_1fr]">
-				<aside className="grid h-full min-h-0 grid-rows-[auto_1fr_auto] gap-y-16 overflow-y-auto border-r border-stroke-weak bg-fill-weaker pb-3">
-					<div></div>
+		<MainContent className="grid grid-cols-[auto_1fr] gap-x-8 p-8">
+			<h1 className="sr-only">Search</h1>
 
-					<div>
-						<div className="px-6 py-3">
-							<SearchFacets
-								attribute="brand"
-								inputLabel={t("filter-facet", { facet: t("facets.brand") })}
-								label={t("facets.brand")}
-								showLessLabel={t("show-less")}
-								showMoreLabel={t("show-more")}
-							/>
-						</div>
+			<section className="grid content-start gap-y-6">
+				<h2>Search filters</h2>
 
-						<hr className="m-6" />
+				<SearchForm className="grid content-start gap-y-6">
+					<label>
+						<span>Search</span>
+						<input defaultValue={searchFilters.q} name="q" type="search" />
+					</label>
 
-						<div className="px-6 py-3">
-							<SearchFacets
-								attribute="categories"
-								inputLabel={t("filter-facet", { facet: t("facets.categories") })}
-								label={t("facets.categories")}
-								showLessLabel={t("show-less")}
-								showMoreLabel={t("show-more")}
-							/>
+					<div aria-labelledby="categories-facets" className="grid gap-y-2" role="group">
+						<h3 id="categories-facets">Categories</h3>
+
+						<div className="grid gap-y-1">
+							{facetValues.get("categories")?.counts.map((facet) => {
+								return (
+									<label key={facet.value}>
+										<input
+											defaultChecked={searchFilters.categories.includes(facet.value)}
+											name="categories"
+											type="checkbox"
+											value={facet.value}
+										/>
+										<span>
+											{facet.value} ({facet.count})
+										</span>
+									</label>
+								);
+							})}
 						</div>
 					</div>
-				</aside>
 
-				<div className="grid h-full min-h-0 grid-rows-[auto_1fr]">
-					<header className="border-b border-stroke-weak">
-						<div className="flex min-h-18 items-center justify-end px-8 py-3"></div>
-					</header>
+					<div aria-labelledby="brand-facets" className="grid gap-y-2" role="group">
+						<h3 id="brand-facets">Brands</h3>
 
-					<MainContent className="overflow-y-auto">
-						<section className="p-16 xs:py-20">
-							<div className="max-w-text grid gap-y-4">
-								<h1 className="text-balance font-heading text-heading-1 font-strong text-text-strong">
-									{t("title")}
-								</h1>
-								<p className="font-heading text-small text-text-weak xs:text-heading-4">
-									Veniam adipisicing ut consectetur do esse. Non consequat pariatur eiusmod dolor
-									aliquip officia voluptate ut aliquip enim anim duis dolore. Labore aute magna
-									officia ullamco adipisicing aute laboris sunt nulla voluptate adipisicing non.
-								</p>
-							</div>
-						</section>
+						<div className="grid gap-y-1">
+							{facetValues.get("brand")?.counts.map((facet) => {
+								return (
+									<label key={facet.value}>
+										<input
+											defaultChecked={searchFilters.brand.includes(facet.value)}
+											name="brand"
+											type="checkbox"
+											value={facet.value}
+										/>
+										<span>
+											{facet.value} ({facet.count})
+										</span>
+									</label>
+								);
+							})}
+						</div>
+					</div>
 
-						<hr />
+					<SubmitButton>Search</SubmitButton>
+				</SearchForm>
+			</section>
 
-						<section className="px-16 py-8">
-							<div className="grid gap-y-6">
-								<div className="mx-auto w-full max-w-2xl">
-									<SearchInput label={t("search")} />
-								</div>
+			<section className="grid content-start gap-y-6">
+				<h2>
+					Search results ({searchResults.found} / {searchResults.out_of})
+				</h2>
 
-								<div className="flex gap-x-8">
-									<div>
-										<SearchResults />
-									</div>
-								</div>
-							</div>
-						</section>
-					</MainContent>
-				</div>
-			</div>
-		</SearchProvider>
+				<ul className="grid content-start gap-y-2" role="list">
+					{searchResults.hits?.map((searchResult) => {
+						const { brand, categories, description, id, title } = searchResult.document;
+
+						return (
+							<li key={id}>
+								<article>
+									<h3>{title}</h3>
+									<div>{description}</div>
+									<div>{brand}</div>
+									<div>{format.list(categories)}</div>
+								</article>
+							</li>
+						);
+					})}
+				</ul>
+			</section>
+		</MainContent>
 	);
 }

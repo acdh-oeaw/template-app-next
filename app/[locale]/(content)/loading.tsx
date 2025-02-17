@@ -9,7 +9,7 @@ export default function Loading(): ReactNode {
 
 	return (
 		<MainContent className="layout-grid bg-fill-weaker">
-			<section className="grid place-content-center place-items-center py-16 xs:py-24 ">
+			<section className="grid place-content-center place-items-center py-16 xs:py-24">
 				<LoadingIndicator aria-label={t("loading")} />
 			</section>
 		</MainContent>
