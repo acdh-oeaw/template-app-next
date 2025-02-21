@@ -55,9 +55,15 @@ export function AppFooter(): ReactNode {
 	} satisfies Record<string, { href: string; label: string; icon: FC }>;
 
 	const acdhLinks = {
-		de: { href: "https://www.oeaw.ac.at/de/acdh/" },
-		en: { href: "https://www.oeaw.ac.at/acdh/" },
-	} satisfies Record<Locale, { href: string }>;
+		de: {
+			href: "https://www.oeaw.ac.at/de/acdh/",
+			label: "Austrian Centre for Digital Humanities and Cultural Heritage",
+		},
+		en: {
+			href: "https://www.oeaw.ac.at/acdh/",
+			label: "Austrian Centre for Digital Humanities and Cultural Heritage",
+		},
+	} satisfies Record<Locale, { href: string; label: string }>;
 
 	return (
 		<footer className="layout-grid grid gap-y-6 border-t border-stroke-weak py-12">
@@ -115,7 +121,7 @@ export function AppFooter(): ReactNode {
 						className="focus-visible:focus-outline rounded-0.5 hover:underline"
 						href={acdhLinks[locale].href}
 					>
-						Austrian Centre for Digital Humanities and Cultural Heritage
+						{acdhLinks[locale].label}
 					</a>
 				</small>
 			</div>

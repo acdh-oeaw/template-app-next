@@ -83,6 +83,7 @@ function FeaturesSection(): ReactNode {
 		authentication: { title: "Authentication" },
 	};
 
+	/* eslint-disable react/jsx-no-literals */
 	return (
 		<section className="layout-subgrid relative gap-y-12 border-t border-stroke-weak py-16 xs:py-24">
 			<header className="max-w-text grid gap-y-4">

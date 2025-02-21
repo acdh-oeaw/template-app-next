@@ -83,7 +83,7 @@ export default async function LocaleLayout(props: Readonly<LocaleLayoutProps>): 
 
 	const t = await getTranslations("LocaleLayout");
 	const meta = await getTranslations("metadata");
-	const messages = (await getMessages()) as IntlMessages;
+	const messages = await getMessages();
 	/**
 	 * TODO: Passing all messages to the client is fine for most apps. For larger apps, it can
 	 * make sense to only pass messages for the error page globally, and pass other required
