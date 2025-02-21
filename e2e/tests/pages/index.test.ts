@@ -33,7 +33,7 @@ test.describe("index page", () => {
 				const { indexPage } = await createIndexPage(locale);
 				await indexPage.goto();
 
-				await expect(indexPage.page).toHaveScreenshot();
+				await expect(indexPage.page).toHaveScreenshot({ fullPage: true });
 			}
 		});
 	});
@@ -47,7 +47,7 @@ test.describe("index page", () => {
 				const { indexPage } = await createIndexPage(locale);
 				await indexPage.goto();
 
-				await expect(indexPage.page).toHaveScreenshot();
+				await expect(indexPage.page).toHaveScreenshot({ fullPage: true });
 			}
 		});
 	});

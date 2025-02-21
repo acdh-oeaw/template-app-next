@@ -48,7 +48,7 @@ test.describe("imprint page", () => {
 				const { imprintPage } = await createImprintPage(locale);
 				await imprintPage.goto();
 
-				await expect(imprintPage.page).toHaveScreenshot();
+				await expect(imprintPage.page).toHaveScreenshot({ fullPage: true });
 			}
 		});
 	});
@@ -61,7 +61,7 @@ test.describe("imprint page", () => {
 				const { imprintPage } = await createImprintPage(locale);
 				await imprintPage.goto();
 
-				await expect(imprintPage.page).toHaveScreenshot();
+				await expect(imprintPage.page).toHaveScreenshot({ fullPage: true });
 			}
 		});
 	});
