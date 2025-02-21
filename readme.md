@@ -131,7 +131,8 @@ working setup.
 - [ ] set `NEXT_PUBLIC_BOTS` to "enabled".
 - [ ] ensure [`app/sitemap.ts`](./app/sitemap.ts) generates entries for dynamic pages.
 - [ ] optionally, create a google search console property, and provide the verification token as
-      `NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION`.
+      `NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION`. once verfied, submit `sitemap.xml` in the search
+      console settings.
 - [ ] when using the
       [`variant/with-rss-feed`](https://github.com/acdh-oeaw/template-app-next/tree/variant/with-rss-feed)
       branch, ensure [`app/[locale]/rss.xml/route.ts`](./app/[locale]/rss.xml/route.ts) generates
