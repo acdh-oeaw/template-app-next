@@ -122,6 +122,21 @@ if the validation pipeline passes.
 you can reference the [template repository](https://github.com/acdh-oeaw/template-app-next) for a
 working setup.
 
+## production deployment checklist
+
+- [ ] update `PUBLIC_URL`, `KUBE_INGRESS_BASE_DOMAIN`, `HELM_UPGRADE_EXTRA_ARGS`
+      [github variables](https://github.com/acdh-oeaw/template-app-next/settings/variables/actions).
+- [ ] get a matomo id for the app, and set both `NEXT_PUBLIC_MATOMO_BASE_URL` and
+      `NEXT_PUBLIC_MATOMO_ID`.
+- [ ] set `NEXT_PUBLIC_BOTS` to "enabled".
+- [ ] ensure [`app/sitemap.ts`](./app/sitemap.ts) generates entries for dynamic pages.
+- [ ] optionally, create a google search console property, and provide the verification token as
+      `NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION`.
+- [ ] when using the
+      [`variant/with-rss-feed`](https://github.com/acdh-oeaw/template-app-next/tree/variant/with-rss-feed)
+      branch, ensure [`app/[locale]/rss.xml/route.ts`](./app/[locale]/rss.xml/route.ts) generates
+      feed entries.
+
 ## template variants
 
 - [`variant/with-auth`](https://github.com/acdh-oeaw/template-app-next/tree/variant/with-auth)
