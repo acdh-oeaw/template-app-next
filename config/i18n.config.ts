@@ -48,3 +48,5 @@ export const formats = {
 		},
 	},
 } satisfies Formats;
+
+export type Language = Locale extends `${infer L}-${string}` ? L : Locale;
