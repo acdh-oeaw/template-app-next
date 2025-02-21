@@ -1,4 +1,14 @@
 {
+	"createImageAction": {
+		"success": "Bild erfolgreich hochgeladen."
+	},
+	"errors": {
+		"forbidden": "Verboten.",
+		"internal-server-error": "Interner Serverfehler.",
+		"invalid-form-fields": "Ungültige oder fehlende Felder.",
+		"not-authenticated": "Nicht authentifiziert.",
+		"too-many-requests": "Zu viele Anfragen."
+	},
 	"AboutPage": {
 		"meta": {
 			"title": "Über das Projekt"
@@ -40,6 +50,12 @@
 	"Error": {
 		"something-went-wrong": "Etwas ist schief gelaufen!",
 		"try-again": "Erneut versuchen"
+	},
+	"ImagesPage": {
+		"meta": {
+			"title": "Bilder"
+		},
+		"title": "Bilder"
 	},
 	"ImprintPage": {
 		"meta": {
