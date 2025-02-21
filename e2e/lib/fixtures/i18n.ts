@@ -3,6 +3,7 @@ import { createFormatter, createTranslator } from "next-intl";
 
 import { defaultLocale, type IntlMessages, type Locale } from "@/config/i18n.config";
 import type metadata from "@/content/en/metadata/index.json";
+import { getLanguage } from "@/lib/i18n/get-language";
 import type messages from "@/messages/en.json";
 
 export interface I18n {
@@ -33,10 +34,12 @@ type Metadata = typeof metadata;
 type SocialMediaKind = Metadata["social"][number]["kind"];
 
 async function getI18nMessages(locale: Locale) {
-	const { default: _messages } = (await import(`@/messages/${locale}.json`, {
+	const language = getLanguage(locale);
+
+	const { default: _messages } = (await import(`@/messages/${language}.json`, {
 		with: { type: "json" },
 	})) as { default: Messages };
-	const { default: _metadata } = (await import(`@/content/${locale}/metadata/index.json`, {
+	const { default: _metadata } = (await import(`@/content/${language}/metadata/index.json`, {
 		with: { type: "json" },
 	})) as { default: Metadata };
 

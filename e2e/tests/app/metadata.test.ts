@@ -4,6 +4,7 @@ import { jsonLdScriptProps } from "react-schemaorg";
 import { env } from "@/config/env.config";
 import { defaultLocale, locales } from "@/config/i18n.config";
 import { expect, test } from "@/e2e/lib/test";
+import { getLocalePrefix } from "@/lib/i18n/get-locale-prefix";
 
 test("should set a canonical url", async ({ createIndexPage }) => {
 	for (const locale of locales) {
@@ -13,7 +14,9 @@ test("should set a canonical url", async ({ createIndexPage }) => {
 		const canonicalUrl = indexPage.page.locator('link[rel="canonical"]');
 		await expect(canonicalUrl).toHaveAttribute(
 			"href",
-			String(createUrl({ baseUrl: env.NEXT_PUBLIC_APP_BASE_URL, pathname: `/${locale}` })),
+			String(
+				createUrl({ baseUrl: env.NEXT_PUBLIC_APP_BASE_URL, pathname: getLocalePrefix(locale) }),
+			),
 		);
 	}
 });
@@ -26,7 +29,7 @@ test.fixme("should set document title on not-found page", async ({ createI18n, p
 		[en.t("NotFoundPage.meta.title"), en.messages.metadata.title].join(" | "),
 	);
 
-	const de = await createI18n("de");
+	const de = await createI18n("de-AT");
 	await page.goto("/de/unknown");
 	await expect(page).toHaveTitle(
 		[de.t("NotFoundPage.meta.title"), de.messages.metadata.title].join(" | "),
@@ -87,7 +90,9 @@ test("should set page metadata", async ({ createIndexPage }) => {
 		const ogUrl = page.locator('meta[property="og:url"]');
 		await expect(ogUrl).toHaveAttribute(
 			"content",
-			String(createUrl({ baseUrl: env.NEXT_PUBLIC_APP_BASE_URL, pathname: `/${locale}` })),
+			String(
+				createUrl({ baseUrl: env.NEXT_PUBLIC_APP_BASE_URL, pathname: getLocalePrefix(locale) }),
+			),
 		);
 
 		const ogLocale = page.locator('meta[property="og:locale"]');

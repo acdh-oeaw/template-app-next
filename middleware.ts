@@ -1,9 +1,10 @@
 import type { MiddlewareConfig, NextMiddleware } from "next/server";
 
-import { composeMiddleware } from "@/lib/compose-middlewares";
 import { i18nMiddlware } from "@/lib/i18n/i18n-middleware";
+import { composeMiddleware } from "@/lib/server/compose-middlewares";
+import { csrfMiddlware } from "@/lib/server/csrf/csrf-middleware";
 
-export const middleware: NextMiddleware = composeMiddleware(i18nMiddlware);
+export const middleware: NextMiddleware = composeMiddleware(csrfMiddlware, i18nMiddlware);
 
 export const config: MiddlewareConfig = {
 	matcher: [

@@ -5,13 +5,13 @@ import type { I18nMessages } from "@/lib/i18n/get-messages";
 
 export type IntlMessages = I18nMessages;
 
-export const locales = ["de", "en"] as const;
+export const locales = ["de-AT", "en-GB"] as const;
 
 export type Locale = (typeof locales)[number];
 
 export type Language = Locale extends `${infer L}-${string}` ? L : Locale;
 
-export const defaultLocale: Locale = "en";
+export const defaultLocale: Locale = "en-GB";
 
 export function isValidLocale(value: unknown): value is Locale {
 	return hasLocale(locales, value);
@@ -20,10 +20,10 @@ export function isValidLocale(value: unknown): value is Locale {
 export const localePrefix = {
 	mode: "always",
 	prefixes: {
-		de: "/de",
-		en: "/en",
+		"de-AT": "/de",
+		"en-GB": "/en",
 	},
-} satisfies LocalePrefix<typeof locales>;
+} as const satisfies LocalePrefix<typeof locales>;
 
 export const routing = defineRouting({
 	locales,

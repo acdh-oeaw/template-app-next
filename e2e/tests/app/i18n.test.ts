@@ -43,7 +43,7 @@ test.describe("i18n", () => {
 		createI18n,
 		page,
 	}) => {
-		const i18n = await createI18n("de");
+		const i18n = await createI18n("de-AT");
 		const response = await page.goto("/de/unknown");
 		/**
 		 * When streaming a response, because the root layout has a suspense boundary
@@ -75,7 +75,7 @@ test.describe("i18n", () => {
 		// eslint-disable-next-line playwright/no-skipped-test, @typescript-eslint/no-unnecessary-condition
 		test.skip(locales.length === 1, "Only single locale configured.");
 
-		const { imprintPage, i18n: de } = await createImprintPage("de");
+		const { imprintPage, i18n: de } = await createImprintPage("de-AT");
 		await imprintPage.goto();
 
 		await expect(page).toHaveURL("/de/imprint");
@@ -87,7 +87,7 @@ test.describe("i18n", () => {
 		await page
 			.getByRole("link", { name: de.t("LocaleSwitcher.switch-locale-to", { locale: "Englisch" }) })
 			.click();
-		const en = await createI18n("en");
+		const en = await createI18n("en-GB");
 
 		await expect(page).toHaveURL("/en/imprint");
 		await expect(page.getByRole("heading", { name: en.t("ImprintPage.title") })).toBeVisible();
@@ -118,8 +118,8 @@ test.describe("i18n", () => {
 			const headers = response?.headers().link?.split(/, |\n/);
 			expect(headers).toEqual(
 				expect.arrayContaining([
-					`<${createAbsoluteUrl("/de")}>; rel="alternate"; hreflang="de"`,
-					`<${createAbsoluteUrl("/en")}>; rel="alternate"; hreflang="en"`,
+					`<${createAbsoluteUrl("/de")}>; rel="alternate"; hreflang="de-AT"`,
+					`<${createAbsoluteUrl("/en")}>; rel="alternate"; hreflang="en-GB"`,
 					`<${createAbsoluteUrl("/")}>; rel="alternate"; hreflang="x-default"`,
 				]),
 			);
@@ -131,8 +131,13 @@ test.describe("i18n", () => {
 			const headers = response?.headers().link?.split(/, |\n/);
 			expect(headers).toEqual(
 				expect.arrayContaining([
-					`<${createAbsoluteUrl("/de/imprint")}>; rel="alternate"; hreflang="de"`,
-					`<${createAbsoluteUrl("/en/imprint")}>; rel="alternate"; hreflang="en"`,
+					`<${createAbsoluteUrl("/de/imprint")}>; rel="alternate"; hreflang="de-AT"`,
+					`<${createAbsoluteUrl("/en/imprint")}>; rel="alternate"; hreflang="en-GB"`,
+				]),
+			);
+			expect(headers).toEqual(
+				expect.not.arrayContaining([
+					`<${createAbsoluteUrl("/imprint")}>; rel="alternate"; hreflang="x-default"`,
 				]),
 			);
 		}

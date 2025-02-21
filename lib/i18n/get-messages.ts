@@ -1,5 +1,6 @@
 import type { Locale } from "@/config/i18n.config";
 import type metadata from "@/content/en/metadata/index.json";
+import { getLanguage } from "@/lib/i18n/get-language";
 import type messages from "@/messages/en.json";
 
 type Messages = typeof messages;
@@ -7,8 +8,10 @@ type Metadata = typeof metadata;
 type SocialMediaKind = Metadata["social"][number]["kind"];
 
 export async function getI18nMessages(locale: Locale) {
-	const _messages = (await import(`@/messages/${locale}.json`)) as Messages;
-	const _metadata = (await import(`@/content/${locale}/metadata/index.json`)) as Metadata;
+	const language = getLanguage(locale);
+
+	const _messages = (await import(`@/messages/${language}.json`)) as Messages;
+	const _metadata = (await import(`@/content/${language}/metadata/index.json`)) as Metadata;
 
 	const _social: Record<string, string> = {};
 

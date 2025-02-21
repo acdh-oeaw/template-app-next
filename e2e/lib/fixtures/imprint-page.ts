@@ -2,6 +2,7 @@ import type { Locator, Page } from "@playwright/test";
 
 import { defaultLocale, type Locale } from "@/config/i18n.config";
 import type { I18n } from "@/e2e/lib/fixtures/i18n";
+import { getLocalePrefix } from "@/lib/i18n/get-locale-prefix";
 
 export class ImprintPage {
 	readonly page: Page;
@@ -16,7 +17,7 @@ export class ImprintPage {
 		this.page = page;
 		this.locale = locale;
 		this.i18n = i18n;
-		this.url = `/${locale}/imprint`;
+		this.url = `${getLocalePrefix(locale)}/imprint`;
 		this.mainContent = page.getByRole("main");
 		this.title = page.getByRole("heading", { level: 1 });
 		this.skipLink = page.getByRole("link", { name: i18n.t("LocaleLayout.skip-to-main-content") });
