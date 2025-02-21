@@ -20,7 +20,7 @@ export function generateImageMetadata(_props: OpenGraphImageProps) {
 		{
 			alt: "",
 			contentType: "image/png",
-			id: "global",
+			id: "default",
 			size,
 		},
 	];
