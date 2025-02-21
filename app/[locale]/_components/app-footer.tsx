@@ -1,20 +1,20 @@
-import { useLocale, useTranslations } from "next-intl";
+import { useTranslations } from "next-intl";
 import type { FC, ReactNode } from "react";
 
 import {
-	// BlueskyIcon,
+	BlueskyIcon,
 	MastodonIcon,
 	TwitterIcon,
 	YouTubeIcon,
 } from "@/app/[locale]/_components/social-media-icons";
 import { Logo } from "@/components/logo";
 import { NavLink, type NavLinkProps } from "@/components/nav-link";
-import type { Locale } from "@/config/i18n.config";
 import { createHref } from "@/lib/create-href";
+import { useMetadata } from "@/lib/i18n/use-messages";
 
 export function AppFooter(): ReactNode {
-	const locale = useLocale();
 	const t = useTranslations("AppFooter");
+	const meta = useMetadata();
 
 	const links = {
 		contact: {
@@ -28,36 +28,27 @@ export function AppFooter(): ReactNode {
 	} satisfies Record<string, { href: NavLinkProps["href"]; label: string }>;
 
 	const socialMedia = {
-		// bluesky: {
-		// 	href: "https://bsky.app/acdh_oeaw",
-		// 	label: t("social-media.bluesky"),
-		// 	// icon: "/assets/images/logo-bluesky.svg",
-		// 	icon: BlueskyIcon,
-		// },
+		bluesky: {
+			href: meta.social.bluesky,
+			label: t("social-media.bluesky"),
+			icon: BlueskyIcon,
+		},
 		mastodon: {
-			href: "https://fedihum.org/@acdhch_oeaw",
+			href: meta.social.mastodon,
 			label: t("social-media.mastodon"),
-			// icon: "/assets/images/logo-mastodon.svg",
 			icon: MastodonIcon,
 		},
 		twitter: {
-			href: "https://www.twitter.com/acdh_oeaw",
+			href: meta.social.twitter,
 			label: t("social-media.twitter"),
-			// icon: "/assets/images/logo-twitter.svg",
 			icon: TwitterIcon,
 		},
 		youtube: {
-			href: "https://www.youtube.com/channel/UCgaEMaMbPkULYRI5u6gvG-w",
+			href: meta.social.youtube,
 			label: t("social-media.youtube"),
-			// icon: "/assets/images/logo-youtube.svg",
 			icon: YouTubeIcon,
 		},
 	} satisfies Record<string, { href: string; label: string; icon: FC }>;
-
-	const acdhLinks = {
-		de: { href: "https://www.oeaw.ac.at/de/acdh/" },
-		en: { href: "https://www.oeaw.ac.at/acdh/" },
-	} satisfies Record<Locale, { href: string }>;
 
 	return (
 		<footer className="layout-grid grid gap-y-6 border-t border-stroke-weak py-12">
@@ -75,12 +66,6 @@ export function AppFooter(): ReactNode {
 										className="focus-visible:focus-outline inline-block rounded-0.5"
 										href={link.href}
 									>
-										{/* <img
-											alt=""
-											className="size-6 text-icon-neutral transition hover:text-icon-brand"
-											loading="lazy"
-											src={link.icon}
-										/> */}
 										<Icon className="size-6 text-icon-neutral transition hover:text-icon-brand" />
 										<span className="sr-only">{link.label}</span>
 									</NavLink>
@@ -113,9 +98,9 @@ export function AppFooter(): ReactNode {
 					&copy; {new Date().getUTCFullYear()}{" "}
 					<a
 						className="focus-visible:focus-outline rounded-0.5 hover:underline"
-						href={acdhLinks[locale].href}
+						href={meta.social.website}
 					>
-						Austrian Centre for Digital Humanities and Cultural Heritage
+						{t("creator")}
 					</a>
 				</small>
 			</div>

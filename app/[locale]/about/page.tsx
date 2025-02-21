@@ -38,6 +38,7 @@ export default async function AboutPage(props: Readonly<AboutPageProps>): Promis
 
 	const t = await getTranslations("AboutPage");
 
+	/* eslint-disable react/jsx-no-literals */
 	return (
 		<MainContent className="layout-grid content-start">
 			<section className="layout-subgrid relative bg-fill-weaker py-16 xs:py-20">

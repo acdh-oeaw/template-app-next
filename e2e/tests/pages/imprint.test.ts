@@ -8,7 +8,7 @@ test.describe("imprint page", () => {
 			await imprintPage.goto();
 
 			await expect(imprintPage.page).toHaveTitle(
-				[i18n.t("ImprintPage.meta.title"), i18n.t("metadata.title")].join(" | "),
+				[i18n.t("ImprintPage.meta.title"), i18n.messages.metadata.title].join(" | "),
 			);
 		}
 	});

@@ -23,13 +23,13 @@ test.fixme("should set document title on not-found page", async ({ createI18n, p
 	const en = await createI18n(defaultLocale);
 	await page.goto("/unknown");
 	await expect(page).toHaveTitle(
-		[en.t("NotFoundPage.meta.title"), en.t("metadata.title")].join(" | "),
+		[en.t("NotFoundPage.meta.title"), en.messages.metadata.title].join(" | "),
 	);
 
 	const de = await createI18n("de");
 	await page.goto("/de/unknown");
 	await expect(page).toHaveTitle(
-		[de.t("NotFoundPage.meta.title"), de.t("metadata.title")].join(" | "),
+		[de.t("NotFoundPage.meta.title"), de.messages.metadata.title].join(" | "),
 	);
 });
 
@@ -49,13 +49,11 @@ test("should set page metadata", async ({ createIndexPage }) => {
 		await indexPage.goto();
 		const { page } = indexPage;
 
-		const title = i18n.t("metadata.title");
-		const description = i18n.t("metadata.description");
-		const twitter =
-			// eslint-disable-next-line playwright/no-conditional-in-test
-			i18n.messages.metadata.social.find(({ kind }) => {
-				return kind === "twitter";
-			})?.href ?? "";
+		const metadata = i18n.messages.metadata;
+
+		const title = metadata.title;
+		const description = metadata.description;
+		const twitter = metadata.social.twitter;
 
 		expect(title).toBeTruthy();
 		expect(description).toBeTruthy();
@@ -102,17 +100,17 @@ test("should add json+ld metadata", async ({ createIndexPage }) => {
 		const { indexPage, i18n } = await createIndexPage(locale);
 		await indexPage.goto();
 
-		const metadata = await indexPage.page
-			.locator('script[type="application/ld+json"]')
-			.textContent();
+		const metadata = i18n.messages.metadata;
+
+		const json = await indexPage.page.locator('script[type="application/ld+json"]').textContent();
 
 		// eslint-disable-next-line playwright/prefer-web-first-assertions
-		expect(metadata).toBe(
+		expect(json).toBe(
 			jsonLdScriptProps({
 				"@context": "https://schema.org",
 				"@type": "WebSite",
-				name: i18n.t("metadata.title"),
-				description: i18n.t("metadata.description"),
+				name: metadata.title,
+				description: metadata.description,
 			}).dangerouslySetInnerHTML?.__html,
 		);
 	}

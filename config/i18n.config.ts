@@ -1,16 +1,20 @@
-import type { Formats } from "next-intl";
+import { type Formats, hasLocale } from "next-intl";
 import { defineRouting, type LocalePrefix } from "next-intl/routing";
 
-import type { Messages } from "@/lib/i18n/get-request-config";
+import type { I18nMessages } from "@/lib/i18n/get-messages";
+
+export type IntlMessages = I18nMessages;
 
 export const locales = ["de", "en"] as const;
 
 export type Locale = (typeof locales)[number];
 
+export type Language = Locale extends `${infer L}-${string}` ? L : Locale;
+
 export const defaultLocale: Locale = "en";
 
-export function isValidLocale(value: string): value is Locale {
-	return locales.includes(value as Locale);
+export function isValidLocale(value: unknown): value is Locale {
+	return hasLocale(locales, value);
 }
 
 export const localePrefix = {
@@ -25,6 +29,12 @@ export const routing = defineRouting({
 	locales,
 	defaultLocale,
 	localePrefix,
+	/**
+	 * For GDPR-conformance, the locale cookie is stored as a session cookie, which expires when
+	 * the browser is closed. When using an explicit cookie consent banner, the cookie expiration
+	 * can be adjusted via `maxAge`.
+	 */
+	// localeCookie: { maxAge: 60 * 60 * 24 * 365 /** 1 year. */ },
 });
 
 export const formats = {
@@ -41,8 +51,4 @@ export const formats = {
 	},
 } satisfies Formats;
 
-/** Globally available via `types/i18n.d.ts` */
-export type _IntlFormats = typeof formats;
-
-/** Globally available via `types/i18n.d.ts` */
-export type _IntlMessages = Messages;
+export type IntlFormats = typeof formats;

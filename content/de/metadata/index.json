@@ -8,12 +8,24 @@
 	},
 	"social": [
 		{
-			"kind": "website",
-			"href": "https://www.oeaw.ac.at/de/acdh"
+			"kind": "bluesky",
+			"href": "https://bsky.app/profile/acdh-ch-oeaw.bsky.social"
+		},
+		{
+			"kind": "mastodon",
+			"href": "https://fedihum.org/@acdhch_oeaw"
 		},
 		{
 			"kind": "twitter",
 			"href": "https://x.com/acdh_oeaw"
+		},
+		{
+			"kind": "website",
+			"href": "https://www.oeaw.ac.at/de/acdh"
+		},
+		{
+			"kind": "youtube",
+			"href": "https://www.youtube.com/channel/UCgaEMaMbPkULYRI5u6gvG-w"
 		}
 	]
 }
