@@ -6,6 +6,7 @@
 		"title": "Über das Projekt"
 	},
 	"AppFooter": {
+		"creator": "Austrian Centre for Digital Humanities and Cultural Heritage",
 		"links": {
 			"contact": "Kontakt",
 			"imprint": "Impressum"

@@ -1,14 +1,15 @@
 import { type Formats, hasLocale } from "next-intl";
 import { defineRouting, type LocalePrefix } from "next-intl/routing";
 
-import type metadataDe from "@/content/de/metadata/index.json";
-import type metadataEn from "@/content/en/metadata/index.json";
-import type de from "@/messages/de.json";
-import type en from "@/messages/en.json";
+import type { I18nMessages } from "@/lib/i18n/get-messages";
+
+export type IntlMessages = I18nMessages;
 
 export const locales = ["de", "en"] as const;
 
 export type Locale = (typeof locales)[number];
+
+export type Language = Locale extends `${infer L}-${string}` ? L : Locale;
 
 export const defaultLocale: Locale = "en";
 
@@ -36,13 +37,6 @@ export const routing = defineRouting({
 	// localeCookie: { maxAge: 60 * 60 * 24 * 365 /** 1 year. */ },
 });
 
-export type IntlMessages = typeof en & { metadata: typeof metadataEn };
-
-export interface IntlTranslations extends Record<Locale, IntlMessages> {
-	de: typeof de & { metadata: typeof metadataDe };
-	en: typeof en & { metadata: typeof metadataEn };
-}
-
 export const formats = {
 	dateTime: {
 		long: {
@@ -58,5 +52,3 @@ export const formats = {
 } satisfies Formats;
 
 export type IntlFormats = typeof formats;
-
-export type Language = Locale extends `${infer L}-${string}` ? L : Locale;

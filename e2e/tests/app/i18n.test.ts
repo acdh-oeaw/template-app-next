@@ -80,7 +80,9 @@ test.describe("i18n", () => {
 
 		await expect(page).toHaveURL("/de/imprint");
 		await expect(page.getByRole("heading", { name: de.t("ImprintPage.title") })).toBeVisible();
-		await expect(page).toHaveTitle([de.t("ImprintPage.title"), de.t("metadata.title")].join(" | "));
+		await expect(page).toHaveTitle(
+			[de.t("ImprintPage.title"), de.messages.metadata.title].join(" | "),
+		);
 
 		await page
 			.getByRole("link", { name: de.t("LocaleSwitcher.switch-locale-to", { locale: "Englisch" }) })
@@ -89,7 +91,9 @@ test.describe("i18n", () => {
 
 		await expect(page).toHaveURL("/en/imprint");
 		await expect(page.getByRole("heading", { name: en.t("ImprintPage.title") })).toBeVisible();
-		await expect(page).toHaveTitle([en.t("ImprintPage.title"), en.t("metadata.title")].join(" | "));
+		await expect(page).toHaveTitle(
+			[en.t("ImprintPage.title"), en.messages.metadata.title].join(" | "),
+		);
 	});
 
 	test("should set `lang` attribute on `html` element", async ({ createIndexPage }) => {

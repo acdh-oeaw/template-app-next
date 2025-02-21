@@ -23,13 +23,13 @@ test.fixme("should set document title on not-found page", async ({ createI18n, p
 	const en = await createI18n(defaultLocale);
 	await page.goto("/unknown");
 	await expect(page).toHaveTitle(
-		[en.t("NotFoundPage.meta.title"), en.t("metadata.title")].join(" | "),
+		[en.t("NotFoundPage.meta.title"), en.messages.metadata.title].join(" | "),
 	);
 
 	const de = await createI18n("de");
 	await page.goto("/de/unknown");
 	await expect(page).toHaveTitle(
-		[de.t("NotFoundPage.meta.title"), de.t("metadata.title")].join(" | "),
+		[de.t("NotFoundPage.meta.title"), de.messages.metadata.title].join(" | "),
 	);
 });
 
@@ -49,8 +49,14 @@ test("should set page metadata", async ({ createIndexPage }) => {
 		await indexPage.goto();
 		const { page } = indexPage;
 
-		expect(i18n.t("metadata.title")).toBeTruthy();
-		expect(i18n.t("metadata.description")).toBeTruthy();
+		const metadata = i18n.messages.metadata;
+
+		const title = metadata.title;
+		const description = metadata.description;
+		const twitter = metadata.social.twitter;
+
+		expect(title).toBeTruthy();
+		expect(description).toBeTruthy();
 
 		const ogType = page.locator('meta[property="og:type"]');
 		await expect(ogType).toHaveAttribute("content", "website");
@@ -59,24 +65,24 @@ test("should set page metadata", async ({ createIndexPage }) => {
 		await expect(twCard).toHaveAttribute("content", "summary_large_image");
 
 		const twCreator = page.locator('meta[name="twitter:creator"]');
-		await expect(twCreator).toHaveAttribute("content", i18n.t("metadata.twitter.creator"));
+		await expect(twCreator).toHaveAttribute("content", twitter);
 
 		const twSite = page.locator('meta[name="twitter:site"]');
-		await expect(twSite).toHaveAttribute("content", i18n.t("metadata.twitter.site"));
+		await expect(twSite).toHaveAttribute("content", twitter);
 
 		// const googleSiteVerification = page.locator('meta[name="google-site-verification"]');
 		// await expect(googleSiteVerification).toHaveAttribute("content", "");
 
-		await expect(page).toHaveTitle(i18n.t("metadata.title"));
+		await expect(page).toHaveTitle(title);
 
 		const metaDescription = page.locator('meta[name="description"]');
-		await expect(metaDescription).toHaveAttribute("content", i18n.t("metadata.description"));
+		await expect(metaDescription).toHaveAttribute("content", description);
 
 		const ogTitle = page.locator('meta[property="og:title"]');
-		await expect(ogTitle).toHaveAttribute("content", i18n.t("metadata.title"));
+		await expect(ogTitle).toHaveAttribute("content", title);
 
 		const ogDescription = page.locator('meta[property="og:description"]');
-		await expect(ogDescription).toHaveAttribute("content", i18n.t("metadata.description"));
+		await expect(ogDescription).toHaveAttribute("content", description);
 
 		const ogUrl = page.locator('meta[property="og:url"]');
 		await expect(ogUrl).toHaveAttribute(
@@ -94,17 +100,17 @@ test("should add json+ld metadata", async ({ createIndexPage }) => {
 		const { indexPage, i18n } = await createIndexPage(locale);
 		await indexPage.goto();
 
-		const metadata = await indexPage.page
-			.locator('script[type="application/ld+json"]')
-			.textContent();
+		const metadata = i18n.messages.metadata;
+
+		const json = await indexPage.page.locator('script[type="application/ld+json"]').textContent();
 
 		// eslint-disable-next-line playwright/prefer-web-first-assertions
-		expect(metadata).toBe(
+		expect(json).toBe(
 			jsonLdScriptProps({
 				"@context": "https://schema.org",
 				"@type": "WebSite",
-				name: i18n.t("metadata.title"),
-				description: i18n.t("metadata.description"),
+				name: metadata.title,
+				description: metadata.description,
 			}).dangerouslySetInnerHTML?.__html,
 		);
 	}

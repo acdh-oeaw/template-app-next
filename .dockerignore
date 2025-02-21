@@ -35,6 +35,10 @@ node_modules/
 next-env.d.ts
 out/
 
+# i18n
+/content/**/*.d.json.ts
+/messages/**/*.d.json.ts
+
 # test
 /coverage/
 
@@ -43,9 +47,6 @@ out/
 /playwright/.cache/
 /playwright-report/
 /test-results/
-
-# i18n
-/messages/*.d.json.ts
 
 
 ## .dockerignore ##
