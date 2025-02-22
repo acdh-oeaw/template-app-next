@@ -78,7 +78,7 @@ export default async function LocaleLayout(props: Readonly<LocaleLayoutProps>): 
 
 	const { locale } = params;
 	if (!isValidLocale(locale)) {
-		return notFound();
+		notFound();
 	}
 	setRequestLocale(locale);
 

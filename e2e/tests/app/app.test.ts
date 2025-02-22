@@ -3,6 +3,7 @@ import { createUrl } from "@acdh-oeaw/lib";
 import { env } from "@/config/env.config";
 import { defaultLocale, locales } from "@/config/i18n.config";
 import { expect, test } from "@/e2e/lib/test";
+import { getLocalePrefix } from "@/lib/i18n/get-locale-prefix";
 
 test.describe("app", () => {
 	if (env.NEXT_PUBLIC_BOTS !== "enabled") {
@@ -55,7 +56,7 @@ test.describe("app", () => {
 				const loc = String(
 					createUrl({
 						baseUrl: env.NEXT_PUBLIC_APP_BASE_URL,
-						pathname: ["/", locale, url].join(""),
+						pathname: [getLocalePrefix(locale), url].join(""),
 					}),
 				);
 

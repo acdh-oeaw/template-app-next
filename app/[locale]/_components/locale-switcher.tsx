@@ -6,6 +6,7 @@ import {
 	LocaleSwitcherLinkFallback,
 } from "@/app/[locale]/_components/locale-switcher-link";
 import { type Locale, locales } from "@/config/i18n.config";
+import { getLanguage } from "@/lib/i18n/get-language";
 
 export function LocaleSwitcher(): ReactNode {
 	const currentLocale = useLocale();
@@ -16,15 +17,17 @@ export function LocaleSwitcher(): ReactNode {
 
 		return Object.fromEntries(
 			locales.map((locale) => {
-				return [locale, displayNames.of(locale)];
+				const language = getLanguage(locale);
+
+				return [locale, { label: displayNames.of(language), language }];
 			}),
-		) as Record<Locale, string>;
+		) as Record<Locale, { label: string; language: string }>;
 	}, [currentLocale]);
 
 	return (
 		<div className="flex items-center gap-x-2 text-tiny">
 			{locales.map((locale, index) => {
-				const label = items[locale];
+				const { label, language } = items[locale];
 
 				const separator = index !== 0 ? <span className="cursor-default">|</span> : null;
 
@@ -35,7 +38,7 @@ export function LocaleSwitcher(): ReactNode {
 
 							<span className="sr-only">{t("current-locale", { locale: label })}</span>
 							<span aria-hidden={true} className="cursor-default font-strong">
-								{locale.toUpperCase()}
+								{language.toUpperCase()}
 							</span>
 						</Fragment>
 					);
@@ -44,7 +47,7 @@ export function LocaleSwitcher(): ReactNode {
 				const children = (
 					<Fragment>
 						<span className="sr-only">{t("switch-locale-to", { locale: label })}</span>
-						<span aria-hidden={true}>{locale.toUpperCase()}</span>
+						<span aria-hidden={true}>{language.toUpperCase()}</span>
 					</Fragment>
 				);
 
