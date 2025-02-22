@@ -18,19 +18,17 @@ const ToastMessageSchema = v.object({
 
 type ToastMessage = v.InferOutput<typeof ToastMessageSchema>;
 
-// eslint-disable-next-line @typescript-eslint/require-await
 export async function redirectWithToastMessage(
 	params: RedirectParams,
 	toast: Omit<ToastMessage, "id">,
 ) {
 	const value = JSON.stringify({ ...toast, id: randomUUID() });
-	cookies().set(toastCookieName, value, { maxAge: 0 });
+	(await cookies()).set(toastCookieName, value, { maxAge: 0 });
 	return redirect(params);
 }
 
-// eslint-disable-next-line @typescript-eslint/require-await
 export async function getToastMessage(): Promise<ToastMessage | null> {
-	const message = cookies().get(toastCookieName)?.value;
+	const message = (await cookies()).get(toastCookieName)?.value;
 
 	if (message == null) return null;
 

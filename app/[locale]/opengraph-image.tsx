@@ -11,9 +11,9 @@ const size = {
 };
 
 interface OpenGraphImageProps {
-	params: {
+	params: Promise<{
 		locale: Locale;
-	};
+	}>;
 }
 
 export const dynamicParams = false;
@@ -45,7 +45,7 @@ export default async function OpenGraphImage(
 ): Promise<ImageResponse> {
 	const { params } = props;
 
-	const { locale } = params;
+	const { locale } = await params;
 	if (!isValidLocale(locale)) {
 		notFound();
 	}

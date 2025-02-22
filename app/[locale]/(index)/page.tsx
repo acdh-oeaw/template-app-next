@@ -11,9 +11,9 @@ import { MainContent } from "@/components/main-content";
 import type { Locale } from "@/config/i18n.config";
 
 interface IndexPageProps {
-	params: {
+	params: Promise<{
 		locale: Locale;
-	};
+	}>;
 }
 
 export async function generateMetadata(
@@ -22,7 +22,7 @@ export async function generateMetadata(
 ): Promise<Metadata> {
 	const { params } = props;
 
-	const { locale } = params;
+	const { locale } = await params;
 	const _t = await getTranslations({ locale, namespace: "IndexPage" });
 
 	const metadata: Metadata = {
@@ -37,11 +37,10 @@ export async function generateMetadata(
 	return metadata;
 }
 
-// eslint-disable-next-line @typescript-eslint/require-await
 export default async function IndexPage(props: Readonly<IndexPageProps>): Promise<ReactNode> {
 	const { params } = props;
 
-	const { locale } = params;
+	const { locale } = await params;
 	setRequestLocale(locale);
 
 	return (
