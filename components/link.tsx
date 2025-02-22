@@ -1,14 +1,7 @@
 "use client";
 
 import { filterDOMProps, mergeRefs } from "@react-aria/utils";
-import {
-	type ElementType,
-	type ForwardedRef,
-	forwardRef,
-	type ReactNode,
-	useMemo,
-	useRef,
-} from "react";
+import { type ElementType, type ReactNode, type Ref, useMemo, useRef } from "react";
 import {
 	mergeProps,
 	useFocusable,
@@ -37,14 +30,13 @@ export interface LinkProps
 			LocaleLinkProps,
 			"aria-current" | "href" | "id" | "locale" | "prefetch" | "replace" | "scroll" | "shallow"
 		>,
-		Omit<AriaLinkProps, "elementType" | "href" | "routerOptions" | "slot"> {}
+		Omit<AriaLinkProps, "elementType" | "href" | "routerOptions" | "slot"> {
+	ref?: Ref<HTMLAnchorElement | HTMLSpanElement> | undefined;
+}
 
-export const Link = forwardRef(function Link(
-	props: Readonly<LinkProps>,
-	forwardedRef: ForwardedRef<HTMLAnchorElement | HTMLSpanElement>,
-): ReactNode {
+export function Link(props: Readonly<LinkProps>): ReactNode {
 	/** Ensure `className` is passed to `mergProps` only once to avoid duplication. */
-	const { className: _, ...interactionProps } = props;
+	const { className: _, ref: forwardedRef, ...interactionProps } = props;
 
 	const ref = useRef<HTMLAnchorElement | HTMLSpanElement>(null);
 	const linkRef = useObjectRef(
@@ -100,4 +92,4 @@ export const Link = forwardRef(function Link(
 			{renderProps.children}
 		</ElementType>
 	);
-});
+}

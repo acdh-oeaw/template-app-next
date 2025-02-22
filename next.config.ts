@@ -1,13 +1,11 @@
-/** @typedef {import("next").NextConfig} NextConfig */
-
 import createBundleAnalyzer from "@next/bundle-analyzer";
 import localesPlugin from "@react-aria/optimize-locales-plugin";
+import type { NextConfig } from "next";
 import createI18nPlugin from "next-intl/plugin";
 
-import { env } from "./config/env.config.js";
+import { env } from "@/config/env.config";
 
-/** @type {NextConfig} */
-const config = {
+const config: NextConfig = {
 	/** Compression should be handled by nginx reverse proxy. */
 	compress: false,
 	eslint: {
@@ -15,8 +13,7 @@ const config = {
 		ignoreDuringBuilds: true,
 	},
 	headers() {
-		/** @type {Awaited<ReturnType<NonNullable<NextConfig["headers"]>>>} */
-		const headers = [
+		const headers: Awaited<ReturnType<NonNullable<NextConfig["headers"]>>> = [
 			/** @see https://nextjs.org/docs/app/building-your-application/deploying#streaming-and-suspense */
 			{
 				source: "/:path*{/}?",
@@ -54,8 +51,7 @@ const config = {
 	},
 };
 
-/** @type {Array<(config: NextConfig) => NextConfig>} */
-const plugins = [
+const plugins: Array<(config: NextConfig) => NextConfig> = [
 	createBundleAnalyzer({ enabled: env.BUNDLE_ANALYZER === "enabled" }),
 	createI18nPlugin({
 		experimental: {

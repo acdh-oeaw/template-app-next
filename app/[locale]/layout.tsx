@@ -24,9 +24,9 @@ import { getToastMessage } from "@/lib/i18n/redirect-with-message";
 
 interface LocaleLayoutProps {
 	children: ReactNode;
-	params: {
+	params: Promise<{
 		locale: Locale;
-	};
+	}>;
 }
 
 export const dynamicParams = false;
@@ -43,7 +43,7 @@ export async function generateMetadata(
 ): Promise<Metadata> {
 	const { params } = props;
 
-	const { locale } = params;
+	const { locale } = await params;
 	const meta = await getMetadata();
 
 	const metadata: Metadata = {
@@ -76,7 +76,7 @@ export async function generateMetadata(
 export default async function LocaleLayout(props: Readonly<LocaleLayoutProps>): Promise<ReactNode> {
 	const { children, params } = props;
 
-	const { locale } = params;
+	const { locale } = await params;
 	if (!isValidLocale(locale)) {
 		notFound();
 	}
