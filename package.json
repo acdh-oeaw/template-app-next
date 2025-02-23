@@ -38,9 +38,12 @@
 		"@acdh-oeaw/lib": "^0.3.1",
 		"@acdh-oeaw/style-variants": "^0.1.0",
 		"@acdh-oeaw/validate-env": "^0.0.3",
+		"@radix-ui/react-slot": "^1.1.2",
 		"@react-aria/utils": "^3.28.1",
 		"@valibot/i18n": "^1.0.0",
+		"class-variance-authority": "^0.7.1",
 		"client-only": "^0.0.1",
+		"clsx": "^2.1.1",
 		"fast-glob": "^3.3.3",
 		"image-dimensions": "^2.3.0",
 		"lucide-react": "^0.484.0",
@@ -54,6 +57,7 @@
 		"react-stately": "^3.36.1",
 		"server-only": "^0.0.1",
 		"sharp": "^0.33.5",
+		"tailwind-merge": "^3.0.2",
 		"valibot": "^1.0.0"
 	},
 	"devDependencies": {
