@@ -95,13 +95,13 @@ function FeaturesSection(): ReactNode {
 			</header>
 
 			<ul
-				className="grid grid-cols-[repeat(auto-fill,minmax(min(100%,18rem),1fr))] gap-8"
+				className="grid grid-cols-[repeat(auto-fill,minmax(min(100%,20rem),1fr))] gap-8"
 				role="list"
 			>
 				{Object.entries(features).map(([id, feature]) => {
 					return (
 						<li key={id}>
-							<article className="grid grid-rows-[13rem,auto] overflow-hidden rounded-4 border border-stroke-weak bg-background-raised shadow-raised">
+							<article className="grid grid-rows-[14rem_auto] overflow-hidden rounded-4 border border-stroke-weak bg-background-raised shadow-raised">
 								<Image
 									alt=""
 									className="size-full border-b border-stroke-weak object-cover"

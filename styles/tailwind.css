@@ -1,0 +1,7 @@
+@import "tailwindcss";
+
+@plugin "tailwindcss-animate";
+@plugin "tailwindcss-react-aria-components";
+
+@custom-variant aria-current-page (&[aria-current="page"]);
+@custom-variant dark (&:where([data-ui-color-scheme="dark"], [data-ui-color-scheme="dark"] *));

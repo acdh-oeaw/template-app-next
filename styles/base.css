@@ -1,0 +1,85 @@
+@layer base {
+	:root,
+	body {
+		block-size: 100%;
+	}
+
+	:root {
+		background-color: var(--color-background-base);
+		color: var(--color-text-strong);
+		font-family: var(--font-body);
+		overflow-wrap: break-word;
+		font-synthesis: none;
+		text-rendering: optimizeLegibility;
+		text-size-adjust: none;
+		-webkit-tap-highlight-color: transparent;
+		interpolate-size: allow-keywords;
+	}
+
+	:focus {
+		/** Transparent outline. */
+		@apply outline-hidden;
+	}
+
+	:focus-visible {
+		@apply outline-solid outline-2 outline-stroke-focus outline-offset-2;
+	}
+
+	/** Let react aria components handle focus state. */
+	:where([data-rac]:is(:focus, :focus-visible)) {
+		@apply outline-hidden;
+	}
+
+	:where(blockquote) {
+		text-wrap: balance;
+	}
+
+	:where(h1, h2, h3, h4, h5, h6) {
+		font-family: var(--font-heading);
+		text-wrap: balance;
+	}
+
+	:where(iframe) {
+		border: 0;
+	}
+
+	:where(p) {
+		text-wrap: pretty;
+	}
+
+	:where(table) {
+		font-variant-numeric: tabular-nums;
+	}
+
+	:where(textarea) {
+		field-sizing: content;
+		min-block-size: 3lh;
+	}
+
+	:where([id]) {
+		scroll-margin-block-start: 2ex;
+	}
+
+	:where([inert] ::-webkit-scrollbar) {
+		display: none;
+	}
+
+	/* stylelint-disable-next-line order/order */
+	@media (prefers-reduced-motion: reduce) {
+		*,
+		*::after,
+		*::before {
+			transition-duration: 0.01ms !important;
+			animation-duration: 0.01ms !important;
+			animation-iteration-count: 1 !important;
+			scroll-behavior: auto !important;
+		}
+	}
+
+	/** Scale up hit targets on high resolution mobile devices. */
+	@media (resolution >= 200dpi) {
+		:root {
+			font-size: 18px;
+		}
+	}
+}

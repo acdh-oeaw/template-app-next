@@ -78,7 +78,7 @@ export function AppNavigation(props: Readonly<AppNavigationProps>): ReactNode {
 										className={cn(
 											"inline-flex px-4 py-6 text-text-strong",
 											"interactive focus-visible:focus-outline hover:hover-overlay pressed:press-overlay",
-											"aria-[current]:select-overlay aria-[current]:select-overlay-border-bottom",
+											"aria-[current]:select-overlay-bottom",
 										)}
 										href={item.href}
 									>
@@ -149,7 +149,7 @@ export function AppNavigation(props: Readonly<AppNavigationProps>): ReactNode {
 																	className={cn(
 																		"flex cursor-pointer select-none items-center gap-x-3 px-4 py-3 text-small text-text-strong",
 																		"interactive focus-visible:focus-outline focus-visible:-focus-outline-offset-2 hover:hover-overlay pressed:press-overlay",
-																		"selected:select-overlay",
+																		"selected:select-overlay-left",
 																	)}
 																	href={item.href}
 																	textValue={item.label}
@@ -281,7 +281,7 @@ export function AppNavigationMobile(props: Readonly<AppNavigationMobileProps>): 
 																className={cn(
 																	"inline-flex w-full px-6 py-3 text-text-strong",
 																	"interactive focus-visible:focus-outline focus-visible:-focus-outline-offset-2 hover:hover-overlay pressed:press-overlay",
-																	"aria-[current]:hover-overlay aria-[current]:select-overlay",
+																	"aria-[current]:hover-overlay aria-[current]:select-overlay-left",
 																)}
 																href={item.href}
 																onPress={() => {
@@ -344,7 +344,7 @@ export function AppNavigationMobile(props: Readonly<AppNavigationMobileProps>): 
 																								className={cn(
 																									"inline-flex w-full px-6 py-3 text-text-strong",
 																									"interactive focus-visible:focus-outline focus-visible:-focus-outline-offset-2 hover:hover-overlay pressed:press-overlay",
-																									"aria-[current]:hover-overlay aria-[current]:select-overlay",
+																									"aria-[current]:hover-overlay aria-[current]:select-overlay-left",
 																								)}
 																								href={item.href}
 																								onPress={() => {

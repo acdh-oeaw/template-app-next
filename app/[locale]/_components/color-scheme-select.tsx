@@ -66,7 +66,7 @@ export function ColorSchemeSelect(props: Readonly<ColorSchemeSelectProps>): Reac
 								key={id}
 								className={cn(
 									"relative flex cursor-default select-none items-center gap-x-3 px-4 py-3 text-small text-text-strong",
-									"interactive focus-visible:focus-outline focus-visible:-focus-outline-offset-2 hover:hover-overlay pressed:press-overlay selected:hover-overlay selected:select-overlay",
+									"interactive focus-visible:focus-outline focus-visible:-focus-outline-offset-2 hover:hover-overlay pressed:press-overlay selected:hover-overlay selected:select-overlay-left",
 								)}
 								id={id}
 								textValue={label}
