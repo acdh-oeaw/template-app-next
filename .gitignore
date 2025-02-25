@@ -34,9 +34,7 @@ next-env.d.ts
 out/
 
 # i18n
-# temporarily added to get correct types in ci/cd before application startup
-# @see https://github.com/amannn/next-intl/discussions/1737
-# /content/**/*.d.json.ts
+/content/**/*.d.json.ts
 /messages/**/*.d.json.ts
 
 # test

@@ -14,6 +14,7 @@
 		"dev": "next dev",
 		"format:check": "prettier . \"!./@(content|public)/**\" --cache --cache-location ./.prettiercache --check",
 		"format:fix": "pnpm run format:check --write",
+		"generate:i18n-message-types": "tsx ./scripts/generate-i18n-message-types.ts",
 		"lint:check": "run-p --continue-on-error \"lint:*:check\"",
 		"lint:fix": "run-p --continue-on-error \"lint:*:fix\"",
 		"lint:code:check": "eslint . --cache",
@@ -21,7 +22,7 @@
 		"lint:styles:check": "stylelint \"./**/*.css\" --cache --ignore-path ./.gitignore",
 		"lint:styles:fix": "pnpm run lint:styles:check --fix",
 		"preinstall": "npx only-allow pnpm",
-		"prepare": "run-s setup",
+		"prepare": "run-s setup generate:i18n-message-types",
 		"setup": "is-ci || simple-git-hooks",
 		"start": "next start",
 		"test": "exit 0",
@@ -94,11 +95,13 @@
 		"tailwindcss": "^4.0.8",
 		"tailwindcss-animate": "^1.0.7",
 		"tailwindcss-react-aria-components": "nightly",
+		"tsx": "^4.19.3",
 		"typescript": "^5.7.3",
 		"typescript-eslint": "^8.24.1"
 	},
 	"pnpm": {
 		"onlyBuiltDependencies": [
+			"esbuild",
 			"sharp",
 			"simple-git-hooks"
 		]
