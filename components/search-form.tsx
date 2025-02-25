@@ -1,3 +1,5 @@
+"use client";
+
 import Form, { type FormProps } from "next/form";
 import type { ReactNode } from "react";
 
