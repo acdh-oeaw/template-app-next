@@ -3,7 +3,7 @@
 import type { ReactNode } from "react";
 import { Form as AriaForm, type FormProps as AriaFormProps } from "react-aria-components";
 
-interface FormProps extends AriaFormProps {
+interface FormProps extends Omit<AriaFormProps, "encType" | "method" | "target"> {
 	children: ReactNode;
 }
 

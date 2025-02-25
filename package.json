@@ -42,7 +42,7 @@
 		"client-only": "^0.0.1",
 		"fast-glob": "^3.3.3",
 		"image-dimensions": "^2.3.0",
-		"lucide-react": "^0.475.0",
+		"lucide-react": "^0.476.0",
 		"next": "canary",
 		"next-intl": "v4-beta",
 		"react": "^19.0.0",
@@ -53,7 +53,7 @@
 		"react-stately": "nightly",
 		"server-only": "^0.0.1",
 		"sharp": "^0.33.5",
-		"valibot": "^1.0.0-rc.1"
+		"valibot": "^1.0.0-rc.2"
 	},
 	"devDependencies": {
 		"@acdh-oeaw/eslint-config": "^2.0.7",
@@ -88,7 +88,7 @@
 		"lint-staged": "^15.4.3",
 		"npm-run-all2": "^7.0.2",
 		"postcss": "^8.5.3",
-		"prettier": "^3.5.1",
+		"prettier": "^3.5.2",
 		"schema-dts": "^1.1.2",
 		"simple-git-hooks": "^2.11.1",
 		"stylelint": "^16.14.1",
@@ -97,7 +97,7 @@
 		"tailwindcss-react-aria-components": "nightly",
 		"tsx": "^4.19.3",
 		"typescript": "^5.7.3",
-		"typescript-eslint": "^8.24.1"
+		"typescript-eslint": "^8.25.0"
 	},
 	"pnpm": {
 		"onlyBuiltDependencies": [
