@@ -12,6 +12,11 @@ const config: NextConfig = {
 		dirs: [process.cwd()],
 		ignoreDuringBuilds: true,
 	},
+	experimental: {
+		// dynamicIO: true,
+		// ppr: true,
+		useCache: true,
+	},
 	headers() {
 		const headers: Awaited<ReturnType<NonNullable<NextConfig["headers"]>>> = [
 			/** @see https://nextjs.org/docs/app/building-your-application/deploying#streaming-and-suspense */
