@@ -42,7 +42,7 @@ the default template accepts the following variables:
   prefixed with `NEXT_PUBLIC_`, which can make sense in a docker build context.
 
 when adding new environment variables, don't forget to add them to
-[`.env.local.example`](./.env.local.example) and [`config/env.config.js`](./config/env.config.js) as
+[`.env.local.example`](./.env.local.example) and [`config/env.config.ts`](./config/env.config.ts) as
 well.
 
 install dependencies:
