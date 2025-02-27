@@ -22,7 +22,7 @@
 	}
 
 	:focus-visible {
-		@apply outline-solid outline-2 outline-stroke-focus outline-offset-2;
+		@apply outline-2 outline-stroke-focus outline-offset-2;
 	}
 
 	/** Let react aria components handle focus state. */
@@ -68,7 +68,11 @@
 	@media (prefers-reduced-motion: reduce) {
 		*,
 		*::after,
-		*::before {
+		*::before,
+		::backdrop,
+		::view-transition-group(*),
+		::view-transition-old(*),
+		::view-transition-new(*) {
 			transition-duration: 0.01ms !important;
 			animation-duration: 0.01ms !important;
 			animation-iteration-count: 1 !important;

@@ -14,6 +14,8 @@ import { Providers } from "@/app/[locale]/_components/providers";
 import { TailwindIndicator } from "@/app/[locale]/_components/tailwind-indicator";
 import { id } from "@/components/main-content";
 import { SkipLink } from "@/components/skip-link";
+import { queue } from "@/components/toast";
+import { ToastRegion } from "@/components/toast-region";
 import { env } from "@/config/env.config";
 import { isValidLocale, type Locale, locales } from "@/config/i18n.config";
 import { AnalyticsScript } from "@/lib/analytics-script";
@@ -95,8 +97,10 @@ export default async function LocaleLayout(props: Readonly<LocaleLayoutProps>): 
 	// const clientMessages = pick(messages, ["Error"]);
 	const clientMessages = messages;
 
-	// TODO:
-	const _toastMessage = await getToastMessage();
+	const toast = await getToastMessage();
+	if (toast != null) {
+		queue.add({ title: toast.message });
+	}
 
 	return (
 		<html
@@ -141,6 +145,8 @@ export default async function LocaleLayout(props: Readonly<LocaleLayoutProps>): 
 					/>
 
 					<SkipLink targetId={id}>{t("skip-to-main-content")}</SkipLink>
+
+					<ToastRegion />
 
 					<AppLayout>
 						<AppHeader />
