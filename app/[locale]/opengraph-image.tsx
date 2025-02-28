@@ -16,8 +16,6 @@ interface OpenGraphImageProps {
 	}>;
 }
 
-export const dynamicParams = false;
-
 export function generateStaticParams(): Array<Awaited<OpenGraphImageProps["params"]>> {
 	return locales.map((locale) => {
 		return { locale };
