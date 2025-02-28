@@ -475,7 +475,7 @@
 	--text-uppercase: var(--_text-uppercase);
 	--text-uppercase--line-height: var(--_text-uppercase--line-height);
 	--text-uppercase--font-weight: var(--font-weight-strong);
-	--text-uppercase--letter-spacing: var(--tracking-wider);
+	--text-uppercase--letter-spacing: 2px;
 }
 
 /** Font weights. */
