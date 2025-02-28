@@ -1,0 +1,21 @@
+::view-transition-new(.toast):only-child {
+	animation: slide-in 400ms;
+}
+
+::view-transition-old(.toast):only-child {
+	animation: slide-out 400ms;
+}
+
+@keyframes slide-out {
+	to {
+		opacity: 0%;
+		translate: 100% 0;
+	}
+}
+
+@keyframes slide-in {
+	from {
+		opacity: 0%;
+		translate: 100% 0;
+	}
+}
