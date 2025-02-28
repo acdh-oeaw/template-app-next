@@ -1,6 +1,6 @@
 @utility focus-outline {
 	/** Interaction states. */
-	@apply outline-solid outline-2 outline-stroke-focus outline-offset-2;
+	@apply outline-2 outline-stroke-focus outline-offset-2;
 }
 
 @utility focus-outline-offset-0 {

@@ -13,14 +13,16 @@ import { AppLayout } from "@/app/[locale]/_components/app-layout";
 import { Providers } from "@/app/[locale]/_components/providers";
 import { TailwindIndicator } from "@/app/[locale]/_components/tailwind-indicator";
 import { id } from "@/components/main-content";
+import { RedirectToast } from "@/components/redirect-toast";
 import { SkipLink } from "@/components/skip-link";
+import { ToastRegion } from "@/components/toast-region";
 import { env } from "@/config/env.config";
 import { isValidLocale, type Locale, locales } from "@/config/i18n.config";
 import { AnalyticsScript } from "@/lib/analytics-script";
 import { ColorSchemeScript } from "@/lib/color-scheme-script";
 import * as fonts from "@/lib/fonts";
 import { getMetadata } from "@/lib/i18n/get-metadata";
-import { getToastMessage } from "@/lib/i18n/redirect-with-message";
+import { getToast } from "@/lib/i18n/redirect-with-toast";
 
 interface LocaleLayoutProps {
 	children: ReactNode;
@@ -93,8 +95,7 @@ export default async function LocaleLayout(props: Readonly<LocaleLayoutProps>): 
 	// const clientMessages = pick(messages, ["Error"]);
 	const clientMessages = messages;
 
-	// TODO:
-	const _toastMessage = await getToastMessage();
+	const toast = await getToast();
 
 	return (
 		<html
@@ -137,6 +138,9 @@ export default async function LocaleLayout(props: Readonly<LocaleLayoutProps>): 
 						baseUrl={env.NEXT_PUBLIC_MATOMO_BASE_URL}
 						id={env.NEXT_PUBLIC_MATOMO_ID}
 					/>
+
+					<ToastRegion />
+					{toast != null ? <RedirectToast toast={toast} /> : null}
 
 					<SkipLink targetId={id}>{t("skip-to-main-content")}</SkipLink>
 
