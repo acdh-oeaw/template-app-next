@@ -63,7 +63,7 @@ export function AppFooter(): ReactNode {
 							return (
 								<li key={id} className="shrink-0">
 									<NavLink
-										className="focus-visible:focus-outline inline-block rounded-0.5"
+										className="inline-block rounded-0.5 focus-visible:focus-outline"
 										href={link.href}
 									>
 										<Icon className="size-6 text-icon-neutral transition hover:text-icon-brand" />
@@ -83,7 +83,7 @@ export function AppFooter(): ReactNode {
 							return (
 								<li key={id}>
 									<NavLink
-										className="focus-visible:focus-outline rounded-0.5 hover:underline"
+										className="rounded-0.5 hover:underline focus-visible:focus-outline"
 										href={link.href}
 									>
 										{link.label}
@@ -97,7 +97,7 @@ export function AppFooter(): ReactNode {
 				<small className="text-tiny text-text-weak">
 					&copy; {new Date().getUTCFullYear()}{" "}
 					<a
-						className="focus-visible:focus-outline rounded-0.5 hover:underline"
+						className="rounded-0.5 hover:underline focus-visible:focus-outline"
 						href={meta.social.website}
 					>
 						{t("creator")}
