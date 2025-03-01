@@ -89,6 +89,7 @@
 		"npm-run-all2": "^7.0.2",
 		"postcss": "^8.5.3",
 		"prettier": "^3.5.2",
+		"prettier-plugin-tailwindcss": "^0.6.11",
 		"schema-dts": "^1.1.2",
 		"simple-git-hooks": "^2.11.1",
 		"stylelint": "^16.14.1",
@@ -134,7 +135,6 @@
 			"@tailwindcss/postcss": {}
 		}
 	},
-	"prettier": "@acdh-oeaw/prettier-config",
 	"simple-git-hooks": {
 		"pre-commit": "pnpm exec lint-staged"
 	},
