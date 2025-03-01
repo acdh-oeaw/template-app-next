@@ -40,7 +40,7 @@ export function Toast(props: ToastProps): ReactNode {
 	return (
 		<AriaToast
 			{...props}
-			className="flex items-center gap-x-6 bg-fill-brand-strong text-text-inverse-strong shadow-overlay rounded-2 px-6 py-4 focus-visible:focus-outline"
+			className="bg-fill-brand-strong text-text-inverse-strong shadow-overlay rounded-2 focus-visible:focus-outline flex items-center gap-x-6 px-6 py-4"
 			style={{
 				// @ts-expect-error @see https://developer.chrome.com/blog/view-transitions-update-io24#view-transition-class
 				viewTransitionClass: "toast",
@@ -48,7 +48,7 @@ export function Toast(props: ToastProps): ReactNode {
 			}}
 			toast={toast}
 		>
-			<AriaToastContent className="grid gap-y-1 flex-1 min-w-0">
+			<AriaToastContent className="grid min-w-0 flex-1 gap-y-1">
 				<AriaText className="text-small text-text-inverse-strong font-strong" slot="title">
 					{toast.content.title}
 				</AriaText>
@@ -57,7 +57,7 @@ export function Toast(props: ToastProps): ReactNode {
 				</AriaText>
 			</AriaToastContent>
 			<AriaButton
-				className="rounded-full text-icon-inverse inline-grid place-content-center shrink-0 interactive hover:hover-overlay pressed:press-overlay focus-visible:focus-outline"
+				className="text-icon-inverse interactive hover:hover-overlay pressed:press-overlay focus-visible:focus-outline inline-grid shrink-0 place-content-center rounded-full"
 				slot="close"
 			>
 				<XIcon aria-hidden={true} className="size-6 shrink-0" />

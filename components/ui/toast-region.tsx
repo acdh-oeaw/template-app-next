@@ -3,7 +3,7 @@
 import type { ReactNode } from "react";
 import { UNSTABLE_ToastRegion as AriaToastRegion } from "react-aria-components";
 
-import { queue, Toast } from "@/components/toast";
+import { queue, Toast } from "@/components/ui/toast";
 
 export function ToastRegion(): ReactNode {
 	return (

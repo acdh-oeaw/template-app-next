@@ -2,7 +2,7 @@
 
 import { type ReactNode, useEffect } from "react";
 
-import { queue, type ToastContent } from "@/components/toast";
+import { queue, type ToastContent } from "@/components/ui/toast";
 
 interface RedirectToastProps {
 	toast: {
