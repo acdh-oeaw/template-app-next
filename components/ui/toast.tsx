@@ -32,14 +32,15 @@ export const queue = new AriaToastQueue<ToastContent>({
 	},
 });
 
-interface ToastProps extends AriaToastProps<ToastContent> {}
+interface ToastProps
+	extends Omit<AriaToastProps<ToastContent>, "children" | "className" | "style"> {}
 
 export function Toast(props: ToastProps): ReactNode {
-	const { toast } = props;
+	const { toast, ...rest } = props;
 
 	return (
 		<AriaToast
-			{...props}
+			{...rest}
 			className="flex items-center gap-x-6 rounded-2 bg-fill-brand-strong px-6 py-4 text-text-inverse-strong shadow-overlay focus-visible:focus-outline"
 			style={{
 				// @ts-expect-error @see https://developer.chrome.com/blog/view-transitions-update-io24#view-transition-class
