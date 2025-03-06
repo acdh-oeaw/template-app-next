@@ -77,7 +77,7 @@ export function AppNavigation(props: Readonly<AppNavigationProps>): ReactNode {
 									<NavLink
 										className={cn(
 											"inline-flex px-4 py-6 text-text-strong",
-											"interactive focus-visible:focus-outline hover:hover-overlay pressed:press-overlay",
+											"interactive hover:hover-overlay focus-visible:focus-outline pressed:press-overlay",
 											"aria-[current]:select-overlay-bottom",
 										)}
 										href={item.href}
@@ -120,7 +120,7 @@ export function AppNavigation(props: Readonly<AppNavigationProps>): ReactNode {
 										<Button
 											className={cn(
 												"inline-flex items-center gap-x-2 px-4 py-6 text-text-strong",
-												"interactive focus-visible:focus-outline hover:hover-overlay pressed:press-overlay",
+												"interactive hover:hover-overlay focus-visible:focus-outline pressed:press-overlay",
 											)}
 										>
 											{item.label}
@@ -147,8 +147,8 @@ export function AppNavigation(props: Readonly<AppNavigationProps>): ReactNode {
 																<NavigationMenuItem
 																	key={id}
 																	className={cn(
-																		"flex cursor-pointer select-none items-center gap-x-3 px-4 py-3 text-small text-text-strong",
-																		"interactive focus-visible:focus-outline focus-visible:-focus-outline-offset-2 hover:hover-overlay pressed:press-overlay",
+																		"flex cursor-pointer items-center gap-x-3 px-4 py-3 text-small text-text-strong select-none",
+																		"interactive hover:hover-overlay focus-visible:focus-outline focus-visible:-focus-outline-offset-2 pressed:press-overlay",
 																		"selected:select-overlay-left",
 																	)}
 																	href={item.href}
@@ -230,7 +230,7 @@ export function AppNavigationMobile(props: Readonly<AppNavigationMobileProps>): 
 				<Button
 					className={cn(
 						"-ml-3 grid place-content-center rounded-2 p-3",
-						"interactive focus-visible:focus-outline focus-visible:focus-outline-offset-0 hover:hover-overlay pressed:press-overlay",
+						"interactive hover:hover-overlay focus-visible:focus-outline focus-visible:focus-outline-offset-0 pressed:press-overlay",
 					)}
 				>
 					<MenuIcon aria-hidden={true} className="size-6 shrink-0 text-icon-neutral" />
@@ -239,7 +239,7 @@ export function AppNavigationMobile(props: Readonly<AppNavigationMobileProps>): 
 			</nav>
 			<ModalOverlay
 				className={cn(
-					"fixed left-0 top-0 isolate z-20 h-[var(--visual-viewport-height)] w-full bg-fill-overlay",
+					"fixed top-0 left-0 isolate z-20 h-[var(--visual-viewport-height)] w-full bg-fill-overlay",
 					"entering:duration-200 entering:ease-out entering:animate-in entering:fade-in",
 					"exiting:duration-200 exiting:ease-in exiting:animate-out exiting:fade-out",
 				)}
@@ -263,7 +263,7 @@ export function AppNavigationMobile(props: Readonly<AppNavigationMobileProps>): 
 										<Button
 											className={cn(
 												"-my-3 -ml-3 grid place-content-center rounded-2 p-3",
-												"interactive focus-visible:focus-outline focus-visible:focus-outline-offset-0 hover:hover-overlay pressed:press-overlay",
+												"interactive hover:hover-overlay focus-visible:focus-outline focus-visible:focus-outline-offset-0 pressed:press-overlay",
 											)}
 											slot="close"
 										>
@@ -280,8 +280,8 @@ export function AppNavigationMobile(props: Readonly<AppNavigationMobileProps>): 
 															<NavLink
 																className={cn(
 																	"inline-flex w-full px-6 py-3 text-text-strong",
-																	"interactive focus-visible:focus-outline focus-visible:-focus-outline-offset-2 hover:hover-overlay pressed:press-overlay",
-																	"aria-[current]:hover-overlay aria-[current]:select-overlay-left",
+																	"interactive hover:hover-overlay focus-visible:focus-outline focus-visible:-focus-outline-offset-2 pressed:press-overlay",
+																	"aria-[current]:select-overlay-left aria-[current]:hover-overlay",
 																)}
 																href={item.href}
 																onPress={() => {
@@ -321,7 +321,7 @@ export function AppNavigationMobile(props: Readonly<AppNavigationMobileProps>): 
 																	<Button
 																		className={cn(
 																			"inline-flex w-full items-center justify-between px-6 py-3 text-text-strong",
-																			"interactive focus-visible:focus-outline focus-visible:-focus-outline-offset-2 hover:hover-overlay pressed:press-overlay",
+																			"interactive hover:hover-overlay focus-visible:focus-outline focus-visible:-focus-outline-offset-2 pressed:press-overlay",
 																			"group-expanded:hover-overlay",
 																		)}
 																		slot="trigger"
@@ -343,8 +343,8 @@ export function AppNavigationMobile(props: Readonly<AppNavigationMobileProps>): 
 																							<NavLink
 																								className={cn(
 																									"inline-flex w-full px-6 py-3 text-text-strong",
-																									"interactive focus-visible:focus-outline focus-visible:-focus-outline-offset-2 hover:hover-overlay pressed:press-overlay",
-																									"aria-[current]:hover-overlay aria-[current]:select-overlay-left",
+																									"interactive hover:hover-overlay focus-visible:focus-outline focus-visible:-focus-outline-offset-2 pressed:press-overlay",
+																									"aria-[current]:select-overlay-left aria-[current]:hover-overlay",
 																								)}
 																								href={item.href}
 																								onPress={() => {
