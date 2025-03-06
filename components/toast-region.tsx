@@ -8,7 +8,7 @@ import { queue, Toast } from "@/components/toast";
 export function ToastRegion(): ReactNode {
 	return (
 		<AriaToastRegion
-			className="fixed bottom-4 right-4 flex flex-col gap-2 outline-hidden rounded-2 focus-visible:focus-outline"
+			className="fixed right-4 bottom-4 flex flex-col gap-2 rounded-2 outline-hidden focus-visible:focus-outline"
 			queue={queue}
 		>
 			{({ toast }) => {
