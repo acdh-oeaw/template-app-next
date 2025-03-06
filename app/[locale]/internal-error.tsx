@@ -1,6 +1,5 @@
 "use client";
 
-import { cn } from "@acdh-oeaw/style-variants";
 import { useTranslations } from "next-intl";
 import { type ReactNode, useEffect, useTransition } from "react";
 import { Button } from "react-aria-components";
@@ -34,10 +33,7 @@ export default function InternalError(props: Readonly<InternalErrorProps>): Reac
 					{t("something-went-wrong")}
 				</h1>
 				<Button
-					className={cn(
-						"inline-flex min-h-8 items-center rounded-2 border border-stroke-brand-strong bg-fill-brand-strong px-3 py-1 text-tiny font-strong text-text-inverse-strong shadow-raised",
-						"interactive hover:hover-overlay focus-visible:focus-outline pressed:press-overlay",
-					)}
+					className="interactive inline-flex min-h-8 items-center rounded-2 border border-stroke-brand-strong bg-fill-brand-strong px-3 py-1 text-tiny font-strong text-text-inverse-strong shadow-raised hover:hover-overlay focus-visible:focus-outline pressed:press-overlay"
 					isPending={isPending}
 					onPress={() => {
 						startTransition(() => {
