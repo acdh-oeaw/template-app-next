@@ -67,4 +67,17 @@ test.describe("imprint page", () => {
 			}
 		});
 	});
+
+	test.describe("should not have visible changes", () => {
+		test.use({ contextOptions: { forcedColors: "active" } });
+
+		test("in forced-colors mode", async ({ createImprintPage }) => {
+			for (const locale of locales) {
+				const { imprintPage } = await createImprintPage(locale);
+				await imprintPage.goto();
+
+				await expect(imprintPage.page).toHaveScreenshot({ fullPage: true });
+			}
+		});
+	});
 });
