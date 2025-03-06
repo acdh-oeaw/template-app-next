@@ -45,6 +45,7 @@
 		"lucide-react": "^0.476.0",
 		"next": "canary",
 		"next-intl": "v4-beta",
+		"prettier-plugin-tailwindcss": "^0.6.11",
 		"react": "^19.0.0",
 		"react-aria": "nightly",
 		"react-aria-components": "nightly",
@@ -134,7 +135,6 @@
 			"@tailwindcss/postcss": {}
 		}
 	},
-	"prettier": "@acdh-oeaw/prettier-config",
 	"simple-git-hooks": {
 		"pre-commit": "pnpm exec lint-staged"
 	},
