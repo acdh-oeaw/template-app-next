@@ -1,11 +1,11 @@
 "use client";
 
 import { cn } from "@acdh-oeaw/style-variants";
-import { AsteriskIcon } from "lucide-react";
 import type { ReactNode } from "react";
 import { Label as AriaLabel, type LabelProps as AriaLabelProps } from "react-aria-components";
 
 import { useFieldStatus } from "@/components/ui/field-status-context";
+import { RequiredIndicator } from "@/components/ui/required-indicator";
 
 interface LabelProps extends AriaLabelProps {}
 
@@ -23,9 +23,7 @@ export function Label(props: LabelProps): ReactNode {
 			)}
 		>
 			{children}
-			{status?.isRequired ? (
-				<AsteriskIcon className="size-3.5 shrink-0 self-start text-text-weak group-disabled:text-text-disabled" />
-			) : null}
+			{status?.isRequired ? <RequiredIndicator /> : null}
 		</AriaLabel>
 	);
 }
