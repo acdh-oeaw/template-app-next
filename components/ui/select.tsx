@@ -2,16 +2,16 @@
 
 import type { ReactNode } from "react";
 import {
+	Button as AriaButton,
+	FieldError as AriaFieldError,
 	Group as AriaGroup,
-	Select as AriaSelect,
-	SelectValue as AriaSelectValue,
-	type SelectProps as AriaSelectProps,
+	Label as AriaLabel,
 	ListBox as AriaListBox,
 	ListBoxItem as AriaListBoxItem,
-	Button as AriaButton,
-	Label as AriaLabel,
-	FieldError as AriaFieldError,
 	Popover as AriaPopover,
+	Select as AriaSelect,
+	type SelectProps as AriaSelectProps,
+	SelectValue as AriaSelectValue,
 } from "react-aria-components";
 
 interface SelectProps extends AriaSelectProps {

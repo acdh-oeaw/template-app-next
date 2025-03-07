@@ -1,26 +1,40 @@
 "use client";
 
-import type { ReactNode } from "react";
+import { cn } from "@acdh-oeaw/style-variants";
+import { type ReactNode, useMemo } from "react";
 import {
 	TextField as AriaTextField,
 	type TextFieldProps as AriaTextFieldProps,
-	Input as AriaInput,
-	Label as AriaLabel,
-	FieldError as AriaFieldError,
 } from "react-aria-components";
 
-interface TextFieldProps extends AriaTextFieldProps {
-	label: ReactNode;
-}
+import { FieldStatusContext } from "@/components/ui/field-status-context";
+
+interface TextFieldProps extends AriaTextFieldProps {}
 
 export function TextField(props: TextFieldProps): ReactNode {
-	const { label, ...rest } = props;
+	const { children, className, ...rest } = props;
+
+	const isRequired = Boolean(rest.isRequired);
+
+	const value = useMemo(() => {
+		const value = {
+			isRequired,
+		};
+
+		return value;
+	}, [isRequired]);
 
 	return (
-		<AriaTextField {...rest}>
-			<AriaLabel>{label}</AriaLabel>
-			<AriaInput />
-			<AriaFieldError />
-		</AriaTextField>
+		<FieldStatusContext.Provider value={value}>
+			<AriaTextField {...rest} className={cn("group grid gap-y-1", className)}>
+				{children}
+			</AriaTextField>
+		</FieldStatusContext.Provider>
 	);
 }
+
+// TODO:
+// - className can be function
+// - children can be function
+// - avoid -mt-1
+// - pass isRequired and isDisabled to label and description

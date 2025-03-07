@@ -4,4 +4,11 @@
 @plugin "tailwindcss-react-aria-components";
 
 @custom-variant aria-current-page (&[aria-current="page"]);
+
+@custom-variant base {
+	@layer base {
+		@slot;
+	}
+}
+
 @custom-variant dark (&:where([data-ui-color-scheme="dark"], [data-ui-color-scheme="dark"] *));

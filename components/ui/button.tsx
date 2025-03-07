@@ -1,8 +1,8 @@
 "use client";
 
-import { styles, type GetVariantProps } from "@acdh-oeaw/style-variants";
+import { type GetVariantProps, styles } from "@acdh-oeaw/style-variants";
 import { Loader2Icon } from "lucide-react";
-import { type ReactNode } from "react";
+import type { ReactNode } from "react";
 import { Button as AriaButton, type ButtonProps as AriaButtonProps } from "react-aria-components";
 
 const buttonStyles = styles({
@@ -51,7 +51,9 @@ export function Button(props: ButtonProps): ReactNode {
 			className={buttonStyles({ className, kind, size })}
 			data-status={isPending ? "pending" : undefined}
 		>
-			{isPending ? <Loader2Icon aria-hidden className="animate-spin" data-slot="icon" /> : null}
+			{isPending ? (
+				<Loader2Icon aria-hidden={true} className="animate-spin" data-slot="icon" />
+			) : null}
 			{typeof children === "string" ? <span>{children}</span> : children}
 		</AriaButton>
 	);
