@@ -42,6 +42,7 @@
 	"typescript.enablePromptUseWorkspaceTsdk": true,
 	"typescript.inlayHints.parameterNames.enabled": "all",
 	"typescript.preferences.autoImportFileExcludePatterns": [
+		"lucide-react",
 		"next/router.d.ts",
 		"next/dist/client/router.d.ts"
 	],
