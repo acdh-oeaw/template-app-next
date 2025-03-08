@@ -54,9 +54,23 @@ test.describe("index page", () => {
 
 	// eslint-disable-next-line playwright/no-skipped-test
 	test.describe.skip("should not have visible changes", () => {
-		test.use({ contextOptions: { forcedColors: "active" } });
+		test.use({ colorScheme: "light", contextOptions: { forcedColors: "active" } });
 
-		test("in forced-colors mode", async ({ createIndexPage }) => {
+		test("in light forced-colors mode", async ({ createIndexPage }) => {
+			for (const locale of locales) {
+				const { indexPage } = await createIndexPage(locale);
+				await indexPage.goto();
+
+				await expect(indexPage.page).toHaveScreenshot({ fullPage: true });
+			}
+		});
+	});
+
+	// eslint-disable-next-line playwright/no-skipped-test
+	test.describe.skip("should not have visible changes", () => {
+		test.use({ colorScheme: "dark", contextOptions: { forcedColors: "active" } });
+
+		test("in dark forced-colors mode", async ({ createIndexPage }) => {
 			for (const locale of locales) {
 				const { indexPage } = await createIndexPage(locale);
 				await indexPage.goto();
