@@ -105,7 +105,10 @@
 			"esbuild",
 			"sharp",
 			"simple-git-hooks"
-		]
+		],
+		"patchedDependencies": {
+			"next": "patches/next.patch"
+		}
 	},
 	"browserslist": {
 		"development": [
