@@ -3,6 +3,14 @@
 import { createContext, use } from "react";
 
 interface FieldContextValue {
+	isDisabled: boolean;
+	isInvalid: boolean;
+	/**
+	 * Currently not supported by all field components.
+	 *
+	 * @see https://github.com/adobe/react-spectrum/issues/6151
+	 */
+	// isReadOnly: boolean;
 	isRequired: boolean;
 }
 

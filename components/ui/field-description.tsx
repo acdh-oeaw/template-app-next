@@ -12,7 +12,7 @@ export function FieldDescription(props: FieldDescriptionProps): ReactNode {
 	return (
 		<AriaText
 			{...rest}
-			className={cn("-mt-1 text-tiny text-text-weak group-disabled:text-text-disabled", className)}
+			className={cn("text-tiny text-text-weak group-disabled:text-text-disabled", className)}
 			slot="description"
 		>
 			{children}

@@ -37,18 +37,22 @@ export default async function UiPage(props: Readonly<UiPageProps>): Promise<Reac
 					</TextField>
 
 					<TextField>
-						<Label>Your name</Label>
-						<FieldDescription>
-							Some help text to help you understand what this form field does
-						</FieldDescription>
+						<div>
+							<Label>Your name</Label>
+							<FieldDescription>
+								Some help text to help you understand what this form field does
+							</FieldDescription>
+						</div>
 						<Input />
 					</TextField>
 
 					<TextField isDisabled={true} isRequired={true}>
-						<Label>Your name</Label>
-						<FieldDescription>
-							Some help text to help you understand what this form field does
-						</FieldDescription>
+						<div>
+							<Label>Your name</Label>
+							<FieldDescription>
+								Some help text to help you understand what this form field does
+							</FieldDescription>
+						</div>
 						<FieldError />
 						<Input />
 					</TextField>
@@ -56,10 +60,12 @@ export default async function UiPage(props: Readonly<UiPageProps>): Promise<Reac
 
 				<form className="my-8 grid gap-y-8">
 					<TextField isRequired={true}>
-						<Label>Your name</Label>
-						<FieldDescription>
-							Some help text to help you understand what this form field does
-						</FieldDescription>
+						<div>
+							<Label>Your name</Label>
+							<FieldDescription>
+								Some help text to help you understand what this form field does
+							</FieldDescription>
+						</div>
 						<FieldError />
 						<Input />
 					</TextField>

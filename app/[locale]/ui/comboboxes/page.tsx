@@ -2,11 +2,12 @@ import { setRequestLocale } from "next-intl/server";
 import type { ReactNode } from "react";
 
 import { Button } from "@/components/ui/button";
+import { ComboBox, ComboBoxTrigger } from "@/components/ui/combobox";
+import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { ListBox, ListBoxItem } from "@/components/ui/listbox";
 import { MainContent } from "@/components/ui/main-content";
 import { Popover } from "@/components/ui/popover";
-import { Select, SelectTrigger, SelectValue } from "@/components/ui/select";
 import type { Locale } from "@/config/i18n.config";
 
 interface UiPageProps {
@@ -31,15 +32,15 @@ export default async function UiPage(props: Readonly<UiPageProps>): Promise<Reac
 	return (
 		<MainContent className="layout-grid content-start">
 			<section className="relative layout-subgrid bg-fill-weaker py-16 xs:py-24">
-				<h1>Selects</h1>
+				<h1>ComboBoxes</h1>
 
 				<form className="my-8 grid gap-8">
-					<Select isRequired={true}>
+					<ComboBox isRequired={true}>
 						<Label>Fruits</Label>
 
-						<SelectTrigger>
-							<SelectValue />
-						</SelectTrigger>
+						<ComboBoxTrigger>
+							<Input />
+						</ComboBoxTrigger>
 
 						<Popover>
 							<ListBox>
@@ -52,7 +53,7 @@ export default async function UiPage(props: Readonly<UiPageProps>): Promise<Reac
 								})}
 							</ListBox>
 						</Popover>
-					</Select>
+					</ComboBox>
 
 					<Button type="submit">Submit</Button>
 				</form>

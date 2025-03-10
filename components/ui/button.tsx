@@ -2,13 +2,18 @@
 
 import { type GetVariantProps, styles } from "@acdh-oeaw/style-variants";
 import { Loader2Icon } from "lucide-react";
-import type { ReactNode } from "react";
-import { Button as AriaButton, type ButtonProps as AriaButtonProps } from "react-aria-components";
+import { Fragment, type ReactNode } from "react";
+import {
+	Button as AriaButton,
+	type ButtonProps as AriaButtonProps,
+	composeRenderProps,
+} from "react-aria-components";
 
 const buttonStyles = styles({
 	base: [
-		"inline-grid items-center gap-x-2 border transition [grid-template-areas:'icon_content_icon-end']",
+		"group inline-grid items-center gap-x-2 border transition [grid-template-areas:'icon_content_icon-end']",
 		"interactive hover:hover-overlay focus-visible:focus-outline pressed:press-overlay",
+		"forced-colors:disabled:text-[GrayText]",
 		"*:col-[content] *:data-[slot=icon]:col-[icon]",
 	],
 	variants: {
@@ -43,18 +48,23 @@ type ButtonStyles = GetVariantProps<typeof buttonStyles>;
 interface ButtonProps extends AriaButtonProps, ButtonStyles {}
 
 export function Button(props: ButtonProps): ReactNode {
-	const { children, className, isPending, kind, size, ...rest } = props;
+	const { children, className, kind, size, ...rest } = props;
 
 	return (
 		<AriaButton
 			{...rest}
-			className={buttonStyles({ className, kind, size })}
-			data-status={isPending ? "pending" : undefined}
+			className={composeRenderProps(className, (className) => {
+				return buttonStyles({ className, kind, size });
+			})}
 		>
-			{isPending ? (
-				<Loader2Icon aria-hidden={true} className="animate-spin" data-slot="icon" />
-			) : null}
-			{typeof children === "string" ? <span>{children}</span> : children}
+			{composeRenderProps(children, (children) => {
+				return (
+					<Fragment>
+						{props.isPending ? <Loader2Icon aria-hidden={true} className="animate-spin" /> : null}
+						{typeof children === "string" ? <span>{children}</span> : children}
+					</Fragment>
+				);
+			})}
 		</AriaButton>
 	);
 }

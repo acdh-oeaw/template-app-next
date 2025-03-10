@@ -1,30 +1,32 @@
 "use client";
 
 import { cn } from "@acdh-oeaw/style-variants";
-import type { ReactNode } from "react";
+import { ChevronDownIcon } from "lucide-react";
+import { Fragment, type ReactNode } from "react";
 import {
 	Button as AriaButton,
 	type ButtonProps as AriaButtonProps,
-	ListBox as AriaListBox,
-	ListBoxItem as AriaListBoxItem,
-	type ListBoxItemProps as AriaListBoxItemProps,
-	type ListBoxProps as AriaListBoxProps,
-	Popover as AriaPopover,
-	type PopoverProps as AriaPopoverProps,
+	composeRenderProps,
 	Select as AriaSelect,
 	type SelectProps as AriaSelectProps,
 	SelectValue as AriaSelectValue,
 	type SelectValueProps as AriaSelectValueProps,
 } from "react-aria-components";
 
-interface SelectProps extends AriaSelectProps {}
+import { FieldStatusContext } from "@/components/ui/field-status-context";
 
-export function Select(props: SelectProps): ReactNode {
+interface SelectProps<T extends object> extends AriaSelectProps<T> {}
+
+export function Select<T extends object>(props: SelectProps<T>): ReactNode {
 	const { children, className, ...rest } = props;
 
 	return (
-		<AriaSelect {...rest} className={cn("", className)}>
-			{children}
+		<AriaSelect {...rest} className={cn("group grid gap-y-1", className)} data-slot="control">
+			{composeRenderProps(children, (children, renderProps) => {
+				return (
+					<FieldStatusContext.Provider value={renderProps}>{children}</FieldStatusContext.Provider>
+				);
+			})}
 		</AriaSelect>
 	);
 }
@@ -35,8 +37,27 @@ export function SelectTrigger(props: SelectTriggerProps): ReactNode {
 	const { children, className, ...rest } = props;
 
 	return (
-		<AriaButton {...rest} className={cn("", className)}>
-			{children}
+		<AriaButton
+			{...rest}
+			className={composeRenderProps(className, (className) => {
+				return cn(
+					"group interactive inline-grid min-h-12 items-center gap-x-2 rounded-2 border border-stroke-strong bg-fill-inverse-strong pr-12 pl-4 text-left transition group-invalid:border-2 group-invalid:border-stroke-error-strong group-invalid:bg-fill-error-weak hover:hover-overlay focus-visible:focus-outline disabled:border-stroke-disabled forced-colors:group-invalid:border-[Mark] forced-colors:disabled:border-[GrayText] forced-colors:disabled:text-[GrayText] pressed:press-overlay",
+					className,
+				);
+			})}
+			data-slot="control"
+		>
+			{composeRenderProps(children, (children) => {
+				return (
+					<Fragment>
+						{children}
+						<ChevronDownIcon
+							aria-hidden={true}
+							className="absolute top-0 right-4 size-6 h-full shrink-0 text-icon-neutral group-invalid:text-icon-error group-disabled:text-icon-disabled forced-colors:text-[ButtonText] forced-colors:group-disabled:text-[GrayText]"
+						/>
+					</Fragment>
+				);
+			})}
 		</AriaButton>
 	);
 }
@@ -47,44 +68,16 @@ export function SelectValue<T extends object>(props: SelectValueProps<T>): React
 	const { children, className, ...rest } = props;
 
 	return (
-		<AriaSelectValue {...rest} className={cn("", className)}>
+		<AriaSelectValue
+			{...rest}
+			className={composeRenderProps(className, (className) => {
+				return cn(
+					"text-small text-text-strong group-disabled:text-text-disabled placeholder-shown:text-text-weak placeholder-shown:italic",
+					className,
+				);
+			})}
+		>
 			{children}
 		</AriaSelectValue>
-	);
-}
-
-interface PopoverProps extends AriaPopoverProps {}
-
-export function Popover(props: PopoverProps): ReactNode {
-	const { children, className, ...rest } = props;
-
-	return (
-		<AriaPopover {...rest} className={cn("", className)}>
-			{children}
-		</AriaPopover>
-	);
-}
-
-interface ListBoxProps<T extends object> extends AriaListBoxProps<T> {}
-
-export function ListBox<T extends object>(props: ListBoxProps<T>): ReactNode {
-	const { children, className, ...rest } = props;
-
-	return (
-		<AriaListBox {...rest} className={cn("", className)}>
-			{children}
-		</AriaListBox>
-	);
-}
-
-interface ListBoxItemProps<T extends object> extends AriaListBoxItemProps<T> {}
-
-export function ListBoxItem<T extends object>(props: ListBoxItemProps<T>): ReactNode {
-	const { children, className, ...rest } = props;
-
-	return (
-		<AriaListBoxItem {...rest} className={cn("", className)}>
-			{children}
-		</AriaListBoxItem>
 	);
 }

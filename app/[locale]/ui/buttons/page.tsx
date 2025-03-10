@@ -34,7 +34,7 @@ export default async function UiPage(props: Readonly<UiPageProps>): Promise<Reac
 						Label
 					</Button>
 					<Button kind="primary" size="large" tone="brand">
-						<DownloadIcon aria-hidden={true} data-slot="icon" />
+						<DownloadIcon aria-hidden={true} />
 						Label
 					</Button>
 					<Button isPending={true} kind="primary" size="large" tone="brand">
@@ -50,7 +50,7 @@ export default async function UiPage(props: Readonly<UiPageProps>): Promise<Reac
 						Label
 					</Button>
 					<Button kind="primary" size="medium" tone="brand">
-						<DownloadIcon aria-hidden={true} data-slot="icon" />
+						<DownloadIcon aria-hidden={true} />
 						Label
 					</Button>
 					<Button isPending={true} kind="primary" size="medium" tone="brand">
@@ -66,7 +66,7 @@ export default async function UiPage(props: Readonly<UiPageProps>): Promise<Reac
 						Label
 					</Button>
 					<Button kind="primary" size="small" tone="brand">
-						<DownloadIcon aria-hidden={true} data-slot="icon" />
+						<DownloadIcon aria-hidden={true} />
 						Label
 					</Button>
 					<Button isPending={true} kind="primary" size="small" tone="brand">
@@ -82,7 +82,7 @@ export default async function UiPage(props: Readonly<UiPageProps>): Promise<Reac
 						Label
 					</Button>
 					<Button kind="secondary" size="large" tone="brand">
-						<DownloadIcon aria-hidden={true} data-slot="icon" />
+						<DownloadIcon aria-hidden={true} />
 						Label
 					</Button>
 					<Button isPending={true} kind="secondary" size="large" tone="brand">
@@ -98,7 +98,7 @@ export default async function UiPage(props: Readonly<UiPageProps>): Promise<Reac
 						Label
 					</Button>
 					<Button kind="secondary" size="medium" tone="brand">
-						<DownloadIcon aria-hidden={true} data-slot="icon" />
+						<DownloadIcon aria-hidden={true} />
 						Label
 					</Button>
 					<Button isPending={true} kind="secondary" size="medium" tone="brand">
@@ -114,7 +114,7 @@ export default async function UiPage(props: Readonly<UiPageProps>): Promise<Reac
 						Label
 					</Button>
 					<Button kind="secondary" size="small" tone="brand">
-						<DownloadIcon aria-hidden={true} data-slot="icon" />
+						<DownloadIcon aria-hidden={true} />
 						Label
 					</Button>
 					<Button isPending={true} kind="secondary" size="small" tone="brand">
@@ -130,7 +130,7 @@ export default async function UiPage(props: Readonly<UiPageProps>): Promise<Reac
 						Label
 					</Button>
 					<Button kind="tertiary" size="large" tone="brand">
-						<DownloadIcon aria-hidden={true} data-slot="icon" />
+						<DownloadIcon aria-hidden={true} />
 						Label
 					</Button>
 					<Button isPending={true} kind="tertiary" size="large" tone="brand">
@@ -146,7 +146,7 @@ export default async function UiPage(props: Readonly<UiPageProps>): Promise<Reac
 						Label
 					</Button>
 					<Button kind="tertiary" size="medium" tone="brand">
-						<DownloadIcon aria-hidden={true} data-slot="icon" />
+						<DownloadIcon aria-hidden={true} />
 						Label
 					</Button>
 					<Button isPending={true} kind="tertiary" size="medium" tone="brand">
@@ -162,7 +162,7 @@ export default async function UiPage(props: Readonly<UiPageProps>): Promise<Reac
 						Label
 					</Button>
 					<Button kind="tertiary" size="small" tone="brand">
-						<DownloadIcon aria-hidden={true} data-slot="icon" />
+						<DownloadIcon aria-hidden={true} />
 						Label
 					</Button>
 					<Button isPending={true} kind="tertiary" size="small" tone="brand">
