@@ -39,7 +39,10 @@ export function ComboBoxTrigger(props: ComboBoxTriggerProps): ReactNode {
 		<AriaGroup
 			{...rest}
 			className={composeRenderProps(className, (className) => {
-				return cn("group inline-grid items-center gap-x-2 forced-colors:bg-[Field]", className);
+				return cn(
+					"group relative inline-flex items-center gap-x-2 *:data-[slot=control]:pr-12 forced-colors:bg-[Field]",
+					className,
+				);
 			})}
 			data-slot="control"
 		>
@@ -50,7 +53,8 @@ export function ComboBoxTrigger(props: ComboBoxTriggerProps): ReactNode {
 						<AriaButton>
 							<ChevronDownIcon
 								aria-hidden={true}
-								className="size-6 h-full shrink-0 text-icon-neutral group-invalid:text-icon-error group-disabled:text-icon-disabled forced-colors:text-[ButtonText] forced-colors:group-disabled:text-[GrayText]"
+								className="absolute top-0 right-4 size-6 h-full shrink-0 text-icon-neutral group-invalid:text-icon-error group-disabled:text-icon-disabled forced-colors:text-[ButtonText] forced-colors:group-disabled:text-[GrayText]"
+								data-slot="icon"
 							/>
 						</AriaButton>
 					</Fragment>

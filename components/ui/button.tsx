@@ -10,20 +10,13 @@ import {
 } from "react-aria-components";
 
 const buttonStyles = styles({
-	base: [
-		"group inline-grid items-center gap-x-2 border transition [grid-template-areas:'icon_content_icon-end']",
-		"interactive hover:hover-overlay focus-visible:focus-outline pressed:press-overlay",
-		"forced-colors:disabled:text-[GrayText]",
-		"*:col-[content] *:data-[slot=icon]:col-[icon]",
-	],
+	base: "group *:data-[slot=icon]:first-child:-ml-1 *:data-[slot=icon]:last-child:-mr-1 interactive inline-flex items-center gap-x-2 border transition hover:hover-overlay focus-visible:focus-outline forced-colors:disabled:text-[GrayText] pressed:press-overlay",
 	variants: {
 		kind: {
-			primary:
-				"border-transparent bg-fill-brand-strong text-text-inverse-strong shadow-raised disabled:bg-fill-disabled",
-			secondary:
-				"border-stroke-brand-strong text-text-brand shadow-raised disabled:border-stroke-disabled disabled:text-text-disabled",
+			primary: "border-transparent shadow-raised disabled:bg-fill-disabled",
+			secondary: "shadow-raised disabled:border-stroke-disabled disabled:text-text-disabled",
 			tertiary:
-				"border-transparent text-text-brand underline hover:no-underline disabled:text-text-disabled pressed:no-underline",
+				"border-transparent underline hover:no-underline disabled:text-text-disabled pressed:no-underline",
 		},
 		size: {
 			small: "min-h-8 rounded-2 px-3 py-1 text-tiny font-strong *:data-[slot=icon]:size-4",
@@ -37,6 +30,25 @@ const buttonStyles = styles({
 			inverse: "",
 		},
 	},
+	combinations: [
+		[{ kind: "primary", tone: "brand" }, "bg-fill-brand-strong text-text-inverse-strong"],
+		[{ kind: "primary", tone: "neutral" }, "bg-fill-strong text-text-inverse-strong"],
+		[{ kind: "primary", tone: "destructive" }, "bg-fill-error-strong text-text-inverse-strong"],
+		[{ kind: "primary", tone: "inverse" }, "bg-fill-inverse-strong text-text-strong"],
+
+		[{ kind: "secondary", tone: "brand" }, "border-stroke-brand-strong text-text-brand"],
+		[{ kind: "secondary", tone: "neutral" }, "border-stroke-strong text-text-weak"],
+		[{ kind: "secondary", tone: "destructive" }, "border-stroke-error-strong text-text-error"],
+		[
+			{ kind: "secondary", tone: "inverse" },
+			"border-stroke-inverse-strong text-text-inverse-strong",
+		],
+
+		[{ kind: "tertiary", tone: "brand" }, "text-text-brand"],
+		[{ kind: "tertiary", tone: "neutral" }, "text-text-weak"],
+		[{ kind: "tertiary", tone: "destructive" }, "text-text-error"],
+		[{ kind: "tertiary", tone: "inverse" }, "text-text-inverse-strong"],
+	],
 	defaults: {
 		kind: "primary",
 		size: "medium",
@@ -60,7 +72,9 @@ export function Button(props: ButtonProps): ReactNode {
 			{composeRenderProps(children, (children) => {
 				return (
 					<Fragment>
-						{props.isPending ? <Loader2Icon aria-hidden={true} className="animate-spin" /> : null}
+						{props.isPending ? (
+							<Loader2Icon aria-hidden={true} className="animate-spin" data-slot="icon" />
+						) : null}
 						{typeof children === "string" ? <span>{children}</span> : children}
 					</Fragment>
 				);

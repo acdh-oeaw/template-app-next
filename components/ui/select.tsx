@@ -41,7 +41,7 @@ export function SelectTrigger(props: SelectTriggerProps): ReactNode {
 			{...rest}
 			className={composeRenderProps(className, (className) => {
 				return cn(
-					"group interactive inline-grid min-h-12 items-center gap-x-2 rounded-2 border border-stroke-strong bg-fill-inverse-strong pr-12 pl-4 text-left transition group-invalid:border-2 group-invalid:border-stroke-error-strong group-invalid:bg-fill-error-weak hover:hover-overlay focus-visible:focus-outline disabled:border-stroke-disabled forced-colors:group-invalid:border-[Mark] forced-colors:disabled:border-[GrayText] forced-colors:disabled:text-[GrayText] pressed:press-overlay",
+					"group interactive inline-flex min-h-12 items-center gap-x-2 rounded-2 border border-stroke-strong bg-fill-inverse-strong pr-12 pl-4 text-left transition group-invalid:border-2 group-invalid:border-stroke-error-strong group-invalid:bg-fill-error-weak hover:hover-overlay focus-visible:focus-outline disabled:border-stroke-disabled forced-colors:group-invalid:border-[Mark] forced-colors:disabled:border-[GrayText] forced-colors:disabled:text-[GrayText] pressed:press-overlay",
 					className,
 				);
 			})}
@@ -54,6 +54,7 @@ export function SelectTrigger(props: SelectTriggerProps): ReactNode {
 						<ChevronDownIcon
 							aria-hidden={true}
 							className="absolute top-0 right-4 size-6 h-full shrink-0 text-icon-neutral group-invalid:text-icon-error group-disabled:text-icon-disabled forced-colors:text-[ButtonText] forced-colors:group-disabled:text-[GrayText]"
+							data-slot="icon"
 						/>
 					</Fragment>
 				);
