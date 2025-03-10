@@ -1,11 +1,12 @@
 "use client";
 
-import { cn, type GetVariantProps, styles } from "@acdh-oeaw/style-variants";
+import { type GetVariantProps, styles } from "@acdh-oeaw/style-variants";
 import { CheckIcon, MinusIcon } from "lucide-react";
-import { Fragment, type ReactNode } from "react";
+import { type ComponentPropsWithRef, Fragment, type ReactNode } from "react";
 import {
 	Checkbox as AriaCheckBox,
 	type CheckboxProps as AriaCheckBoxProps,
+	type CheckboxRenderProps as AriaCheckboxRenderProps,
 	composeRenderProps,
 } from "react-aria-components";
 
@@ -15,19 +16,6 @@ const checkBoxStyles = styles({
 		size: {
 			small: "text-tiny",
 			large: "text-small",
-		},
-	},
-	defaults: {
-		size: "large",
-	},
-});
-
-const checkBoxBoxStyles = styles({
-	base: "interactive isolate inline-grid shrink-0 place-content-center rounded-1 border border-stroke-strong bg-fill-inverse-strong text-fill-inverse-strong transition group-invalid:border-stroke-error-strong group-invalid:bg-fill-error-weak group-hover:hover-overlay group-focus-visible:focus-outline group-disabled:border-stroke-disabled group-pressed:press-overlay group-selected:border-transparent group-selected:bg-fill-brand-strong group-selected:group-invalid:bg-fill-error-strong group-selected:group-disabled:bg-fill-disabled",
-	variants: {
-		size: {
-			small: "size-6 rounded-[3px] p-1.5",
-			large: "size-8 rounded-1 p-2",
 		},
 	},
 	defaults: {
@@ -55,25 +43,53 @@ export function CheckBox(props: CheckBoxProps): ReactNode {
 
 				return (
 					<Fragment>
-						<div className={checkBoxBoxStyles({ size })}>
-							{isIndeterminate ? (
-								<MinusIcon
-									aria-hidden={true}
-									className="shrink-0 group-disabled:text-text-disabled forced-colors:text-[HighlightText]"
-									data-slot="icon"
-								/>
-							) : isSelected ? (
-								<CheckIcon
-									aria-hidden={true}
-									className="shrink-0 group-disabled:text-text-disabled forced-colors:text-[HighlightText]"
-									data-slot="icon"
-								/>
-							) : null}
-						</div>
+						<CheckBoxBox isIndeterminate={isIndeterminate} isSelected={isSelected} size={size} />
 						{children}
 					</Fragment>
 				);
 			})}
 		</AriaCheckBox>
+	);
+}
+
+const checkBoxBoxStyles = styles({
+	base: "interactive isolate inline-grid shrink-0 place-content-center rounded-1 border border-stroke-strong bg-fill-inverse-strong text-fill-inverse-strong transition group-invalid:border-stroke-error-strong group-invalid:bg-fill-error-weak group-hover:hover-overlay group-focus-visible:focus-outline group-disabled:border-stroke-disabled group-pressed:press-overlay group-selected:border-transparent group-selected:bg-fill-brand-strong group-selected:group-invalid:bg-fill-error-strong group-selected:group-disabled:bg-fill-disabled forced-colors:group-invalid:text-[Mark] forced-colors:group-disabled:text-[GrayText] forced-colors:group-selected:text-[Highlight]",
+	variants: {
+		size: {
+			small: "size-6 rounded-[3px] p-1.5",
+			large: "size-8 rounded-1 p-2",
+		},
+	},
+	defaults: {
+		size: "large",
+	},
+});
+
+type CheckBoxBoxStyles = GetVariantProps<typeof checkBoxBoxStyles>;
+
+interface CheckBoxBoxProps
+	extends ComponentPropsWithRef<"div">,
+		Pick<AriaCheckboxRenderProps, "isIndeterminate" | "isSelected">,
+		CheckBoxBoxStyles {}
+
+export function CheckBoxBox(props: CheckBoxBoxProps): ReactNode {
+	const { className, isIndeterminate, isSelected, size, ...rest } = props;
+
+	return (
+		<div {...rest} className={checkBoxBoxStyles({ className, size })}>
+			{isIndeterminate ? (
+				<MinusIcon
+					aria-hidden={true}
+					className="shrink-0 group-disabled:text-text-disabled forced-colors:text-[HighlightText]"
+					data-slot="icon"
+				/>
+			) : isSelected ? (
+				<CheckIcon
+					aria-hidden={true}
+					className="shrink-0 group-disabled:text-text-disabled forced-colors:text-[HighlightText]"
+					data-slot="icon"
+				/>
+			) : null}
+		</div>
 	);
 }
