@@ -10,11 +10,13 @@ import {
 } from "react-aria-components";
 
 const buttonStyles = styles({
-	base: "group *:data-[slot=icon]:first-child:-ml-1 *:data-[slot=icon]:last-child:-mr-1 interactive isolate inline-flex items-center gap-x-2 border transition hover:hover-overlay focus-visible:focus-outline forced-colors:disabled:text-[GrayText] pressed:press-overlay",
+	base: "*:data-[slot=icon]:first-child:-ml-1 *:data-[slot=icon]:last-child:-mr-1 interactive isolate inline-flex items-center justify-center gap-x-2 border text-center transition hover:hover-overlay focus-visible:focus-outline forced-colors:disabled:text-[GrayText] pressed:press-overlay",
 	variants: {
 		kind: {
-			primary: "border-transparent shadow-raised disabled:bg-fill-disabled",
-			secondary: "shadow-raised disabled:border-stroke-disabled disabled:text-text-disabled",
+			primary:
+				"border-transparent shadow-raised disabled:bg-fill-disabled disabled:shadow-none pressed:shadow-none",
+			secondary:
+				"shadow-raised disabled:border-stroke-disabled disabled:text-text-disabled disabled:shadow-none pressed:shadow-none",
 			tertiary:
 				"border-transparent underline hover:no-underline disabled:text-text-disabled pressed:no-underline",
 		},
@@ -52,6 +54,7 @@ const buttonStyles = styles({
 	defaults: {
 		kind: "primary",
 		size: "medium",
+		tone: "brand",
 	},
 });
 
@@ -60,13 +63,13 @@ type ButtonStyles = GetVariantProps<typeof buttonStyles>;
 interface ButtonProps extends AriaButtonProps, ButtonStyles {}
 
 export function Button(props: ButtonProps): ReactNode {
-	const { children, className, kind, size, ...rest } = props;
+	const { children, className, kind, size, tone, ...rest } = props;
 
 	return (
 		<AriaButton
 			{...rest}
 			className={composeRenderProps(className, (className) => {
-				return buttonStyles({ className, kind, size });
+				return buttonStyles({ className, kind, size, tone });
 			})}
 		>
 			{composeRenderProps(children, (children) => {

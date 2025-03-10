@@ -2,9 +2,13 @@
 
 ## Button
 
-- better inline-grid
+- icon-only button
 - should we have a Icon component with slot="icon"?
 - pending icon separate?
+
+## Checkbox
+
+- refactor to have a different markup, which allows <FieldDescription>
 
 ## Popover
 
@@ -17,6 +21,7 @@
 - <Text slot="description">
 - inline grid for positioning selection check icon
 - renderEmptyState()
+- consider
 
 ## Select / ComboBox
 
@@ -26,6 +31,14 @@
 ## RequiredIndicator
 
 - should it be a separate component?
+
+---
+
+# Tailwind
+
+- named group classes? (e.g. `group/select` or `group/[data-slot=field]` instead of just `group`) to
+  avoid nesting problems
+- conventions for `data-slot` attribute
 
 ---
 

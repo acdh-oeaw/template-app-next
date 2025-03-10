@@ -36,7 +36,7 @@ export function CheckBox(props: CheckBoxProps): ReactNode {
 			className={composeRenderProps(className, (className) => {
 				return checkBoxStyles({ className, size });
 			})}
-			data-slot="control"
+			data-slot="field"
 		>
 			{composeRenderProps(children, (children, renderProps) => {
 				const { isIndeterminate, isSelected } = renderProps;
@@ -44,7 +44,7 @@ export function CheckBox(props: CheckBoxProps): ReactNode {
 				return (
 					<Fragment>
 						<CheckBoxBox isIndeterminate={isIndeterminate} isSelected={isSelected} size={size} />
-						{children}
+						<span data-slot="label">{children}</span>
 					</Fragment>
 				);
 			})}
@@ -76,7 +76,7 @@ export function CheckBoxBox(props: CheckBoxBoxProps): ReactNode {
 	const { className, isIndeterminate, isSelected, size, ...rest } = props;
 
 	return (
-		<div {...rest} className={checkBoxBoxStyles({ className, size })}>
+		<div {...rest} className={checkBoxBoxStyles({ className, size })} data-slot="control">
 			{isIndeterminate ? (
 				<MinusIcon
 					aria-hidden={true}

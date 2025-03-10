@@ -21,7 +21,7 @@ export function TextInput(props: TextInputProps): ReactNode {
 			className={composeRenderProps(className, (className) => {
 				return cn("group grid content-start gap-y-1", className);
 			})}
-			data-slot="control"
+			data-slot="field"
 		>
 			{composeRenderProps(children, (children, renderProps) => {
 				return (

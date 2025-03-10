@@ -23,7 +23,7 @@ export function ComboBox<T extends object>(props: ComboBoxProps<T>): ReactNode {
 		<AriaComboBox
 			{...rest}
 			className={cn("group grid content-start gap-y-1", className)}
-			data-slot="control"
+			data-slot="field"
 		>
 			{composeRenderProps(children, (children, renderProps) => {
 				return (
@@ -44,7 +44,7 @@ export function ComboBoxTrigger(props: ComboBoxTriggerProps): ReactNode {
 			{...rest}
 			className={composeRenderProps(className, (className) => {
 				return cn(
-					"group relative isolate inline-flex items-center gap-x-2 *:data-[slot=control]:pr-12 forced-colors:bg-[Field]",
+					"relative isolate inline-flex items-center gap-x-2 *:data-[slot=control]:flex-1 *:data-[slot=control]:pr-12 forced-colors:bg-[Field]",
 					className,
 				);
 			})}
@@ -54,10 +54,10 @@ export function ComboBoxTrigger(props: ComboBoxTriggerProps): ReactNode {
 				return (
 					<Fragment>
 						{children}
-						<AriaButton>
+						<AriaButton className="absolute top-0 right-3 bottom-0 isolate inline-grid size-8 shrink-0 place-content-center self-center rounded-1 transition">
 							<ChevronDownIcon
 								aria-hidden={true}
-								className="absolute top-0 right-4 size-6 h-full shrink-0 text-icon-neutral group-invalid:text-icon-error group-disabled:text-icon-disabled forced-colors:text-[ButtonText] forced-colors:group-disabled:text-[GrayText]"
+								className="size-6 h-full shrink-0 text-icon-neutral group-invalid:text-icon-error group-disabled:text-icon-disabled forced-colors:text-[ButtonText] forced-colors:group-disabled:text-[GrayText]"
 								data-slot="icon"
 							/>
 						</AriaButton>

@@ -1,7 +1,7 @@
 "use client";
 
 import { cn } from "@acdh-oeaw/style-variants";
-import { CheckIcon } from "lucide-react";
+// import { CheckIcon } from "lucide-react";
 import { type ComponentPropsWithRef, Fragment, type ReactNode } from "react";
 import {
 	Collection as AriaCollection,
@@ -29,11 +29,10 @@ export function ListBox<T extends object>(props: ListBoxProps<T>): ReactNode {
 			{...rest}
 			className={composeRenderProps(className, (className) => {
 				return cn(
-					"grid max-h-[inherit] overflow-auto py-2 text-text-strong outline-hidden",
+					"group grid max-h-[inherit] overflow-auto py-2 text-text-strong outline-hidden",
 					className,
 				);
 			})}
-			data-slot="control"
 		>
 			{children}
 		</AriaListBox>
@@ -52,20 +51,24 @@ export function ListBoxItem<T extends object>(props: ListBoxItemProps<T>): React
 			{...rest}
 			className={composeRenderProps(className, (className) => {
 				return cn(
-					"interactive isolate inline-grid cursor-default items-center gap-x-2 px-4 py-3 transition will-change-transform forced-color-adjust-none select-none hover:hover-overlay focus-visible:focus-outline focus-visible:-focus-outline-offset-2 disabled:text-text-disabled forced-colors:focus:bg-[Highlight] forced-colors:focus:text-[HighlightText] forced-colors:disabled:text-[GrayText] pressed:press-overlay selected:border-l-4 selected:border-stroke-selected selected:bg-fill-brand-weak forced-colors:selected:bg-[Highlight] forced-colors:selected:text-[HighlightText]",
+					"interactive isolate inline-flex cursor-default items-center gap-x-2 py-3 pr-12 pl-4 transition will-change-transform forced-color-adjust-none select-none hover:hover-overlay focus-visible:focus-outline focus-visible:-focus-outline-offset-2 disabled:text-text-disabled forced-colors:focus:bg-[Highlight] forced-colors:focus:text-[HighlightText] forced-colors:disabled:text-[GrayText] pressed:press-overlay selected:border-l-4 selected:border-stroke-selected selected:bg-fill-brand-weak forced-colors:selected:bg-[Highlight] forced-colors:selected:text-[HighlightText]",
 					className,
 				);
 			})}
 		>
-			{composeRenderProps(children, (children, renderProps) => {
-				const { isSelected } = renderProps;
+			{composeRenderProps(children, (children, _renderProps) => {
+				// const { isSelected } = renderProps;
 
 				return (
 					<Fragment>
 						{children}
-						{isSelected ? (
-							<CheckIcon aria-hidden={true} className="size-4 shrink-0" data-slot="icon" />
-						) : null}
+						{/* {isSelected ? (
+							<CheckIcon
+								aria-hidden={true}
+								className="absolute right-4 size-6 h-full shrink-0 text-icon-brand"
+								data-slot="icon"
+							/>
+						) : null} */}
 					</Fragment>
 				);
 			})}

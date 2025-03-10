@@ -28,6 +28,13 @@ export default async function UiPage(props: Readonly<UiPageProps>): Promise<Reac
 
 				<div className="my-8 flex flex-wrap items-center gap-8">
 					<Button kind="primary" size="large" tone="brand">
+						<span className="sr-only">Label</span>
+						<DownloadIcon aria-hidden={true} data-slot="icon" />
+					</Button>
+				</div>
+
+				<div className="my-8 flex flex-wrap items-center gap-8">
+					<Button kind="primary" size="large" tone="brand">
 						Label
 					</Button>
 					<Button isDisabled={true} kind="primary" size="large" tone="brand">
