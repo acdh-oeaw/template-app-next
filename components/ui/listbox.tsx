@@ -13,6 +13,10 @@ import {
 	type ListBoxProps as AriaListBoxProps,
 	ListBoxSection as AriaListBoxSection,
 	type ListBoxSectionProps as AriaListBoxSectionProps,
+	Separator as AriaSeparator,
+	type SeparatorProps as AriaSeparatorProps,
+	Text as AriaText,
+	type TextProps as AriaTextProps,
 } from "react-aria-components";
 
 interface ListBoxProps<T extends object> extends AriaListBoxProps<T> {}
@@ -48,7 +52,7 @@ export function ListBoxItem<T extends object>(props: ListBoxItemProps<T>): React
 			{...rest}
 			className={composeRenderProps(className, (className) => {
 				return cn(
-					"interactive inline-grid cursor-default items-center gap-x-2 px-4 py-3 transition will-change-transform forced-color-adjust-none select-none hover:hover-overlay focus-visible:focus-outline focus-visible:-focus-outline-offset-2 disabled:text-text-disabled forced-colors:focus:bg-[Highlight] forced-colors:focus:text-[HighlightText] forced-colors:disabled:text-[GrayText] pressed:press-overlay selected:border-l-4 selected:border-stroke-selected selected:bg-fill-brand-weak forced-colors:selected:bg-[Highlight] forced-colors:selected:text-[HighlightText]",
+					"interactive isolate inline-grid cursor-default items-center gap-x-2 px-4 py-3 transition will-change-transform forced-color-adjust-none select-none hover:hover-overlay focus-visible:focus-outline focus-visible:-focus-outline-offset-2 disabled:text-text-disabled forced-colors:focus:bg-[Highlight] forced-colors:focus:text-[HighlightText] forced-colors:disabled:text-[GrayText] pressed:press-overlay selected:border-l-4 selected:border-stroke-selected selected:bg-fill-brand-weak forced-colors:selected:bg-[Highlight] forced-colors:selected:text-[HighlightText]",
 					className,
 				);
 			})}
@@ -59,12 +63,34 @@ export function ListBoxItem<T extends object>(props: ListBoxItemProps<T>): React
 				return (
 					<Fragment>
 						{children}
-						{isSelected ? <CheckIcon aria-hidden={true} className="size-4 shrink-0" /> : null}
+						{isSelected ? (
+							<CheckIcon aria-hidden={true} className="size-4 shrink-0" data-slot="icon" />
+						) : null}
 					</Fragment>
 				);
 			})}
 		</AriaListBoxItem>
 	);
+}
+
+interface ListBoxItemLabelProps extends AriaTextProps {}
+
+export function ListBoxItemLabel(props: ListBoxItemLabelProps): ReactNode {
+	const { children, className, ...rest } = props;
+
+	return (
+		<AriaText slot="label" {...rest} className={cn("", className)}>
+			{children}
+		</AriaText>
+	);
+}
+
+interface ListBoxSeparatorProps extends AriaSeparatorProps {}
+
+export function ListBoxSeparator(props: ListBoxSeparatorProps): ReactNode {
+	const { className, ...rest } = props;
+
+	return <AriaSeparator {...rest} className={cn("border-t border-stroke-weak", className)} />;
 }
 
 interface ListBoxSectionProps<T extends object> extends AriaListBoxSectionProps<T> {
@@ -93,8 +119,14 @@ export function ListBoxSectionHeader(props: ListBoxSectionHeaderProps): ReactNod
 	);
 }
 
-interface ListBoxEmptyStateProps {}
+interface ListBoxEmptyStateProps extends ComponentPropsWithRef<"div"> {}
 
 export function ListBoxEmptyState(props: ListBoxEmptyStateProps): ReactNode {
-	return <div className="text-center text-text-weak">Nothing found</div>;
+	const { children, className, ...rest } = props;
+
+	return (
+		<div {...rest} className={cn("text-center text-text-weak", className)}>
+			{children}
+		</div>
+	);
 }

@@ -10,16 +10,16 @@ import {
 
 import { FieldStatusContext } from "@/components/ui/field-status-context";
 
-interface TextFieldProps extends AriaTextFieldProps {}
+interface TextInputProps extends AriaTextFieldProps {}
 
-export function TextField(props: TextFieldProps): ReactNode {
+export function TextInput(props: TextInputProps): ReactNode {
 	const { children, className, ...rest } = props;
 
 	return (
 		<AriaTextField
 			{...rest}
 			className={composeRenderProps(className, (className) => {
-				return cn("group group grid gap-y-1", className);
+				return cn("group grid content-start gap-y-1", className);
 			})}
 			data-slot="control"
 		>

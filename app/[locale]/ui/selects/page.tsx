@@ -1,3 +1,5 @@
+/* eslint-disable react/jsx-no-literals */
+
 import { setRequestLocale } from "next-intl/server";
 import type { ReactNode } from "react";
 

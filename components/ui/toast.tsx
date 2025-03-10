@@ -67,7 +67,7 @@ export function Toast(props: ToastProps): ReactNode {
 				className="interactive inline-grid shrink-0 place-content-center rounded-full text-icon-inverse hover:hover-overlay focus-visible:focus-outline pressed:press-overlay"
 				slot="close"
 			>
-				<XIcon aria-hidden={true} className="size-6 shrink-0" />
+				<XIcon aria-hidden={true} className="size-6 shrink-0" data-slot="icon" />
 			</AriaButton>
 		</AriaToast>
 	);

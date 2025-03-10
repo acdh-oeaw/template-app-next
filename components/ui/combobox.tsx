@@ -20,7 +20,11 @@ export function ComboBox<T extends object>(props: ComboBoxProps<T>): ReactNode {
 	const { children, className, ...rest } = props;
 
 	return (
-		<AriaComboBox {...rest} className={cn("group grid gap-y-1", className)} data-slot="control">
+		<AriaComboBox
+			{...rest}
+			className={cn("group grid content-start gap-y-1", className)}
+			data-slot="control"
+		>
 			{composeRenderProps(children, (children, renderProps) => {
 				return (
 					<FieldStatusContext.Provider value={renderProps}>{children}</FieldStatusContext.Provider>
@@ -40,7 +44,7 @@ export function ComboBoxTrigger(props: ComboBoxTriggerProps): ReactNode {
 			{...rest}
 			className={composeRenderProps(className, (className) => {
 				return cn(
-					"group relative inline-flex items-center gap-x-2 *:data-[slot=control]:pr-12 forced-colors:bg-[Field]",
+					"group relative isolate inline-flex items-center gap-x-2 *:data-[slot=control]:pr-12 forced-colors:bg-[Field]",
 					className,
 				);
 			})}

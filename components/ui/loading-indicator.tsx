@@ -24,6 +24,7 @@ export function LoadingIndicator(props: Readonly<LoadingIndicatorProps>): ReactN
 				{...labelingProps}
 				aria-hidden={hasLabeling ? (ariaHidden ?? undefined) : true}
 				className="animate-spin"
+				data-slot="icon"
 			/>
 		</div>
 	);

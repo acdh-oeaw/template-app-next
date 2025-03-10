@@ -10,7 +10,7 @@ import {
 } from "react-aria-components";
 
 const buttonStyles = styles({
-	base: "group *:data-[slot=icon]:first-child:-ml-1 *:data-[slot=icon]:last-child:-mr-1 interactive inline-flex items-center gap-x-2 border transition hover:hover-overlay focus-visible:focus-outline forced-colors:disabled:text-[GrayText] pressed:press-overlay",
+	base: "group *:data-[slot=icon]:first-child:-ml-1 *:data-[slot=icon]:last-child:-mr-1 interactive isolate inline-flex items-center gap-x-2 border transition hover:hover-overlay focus-visible:focus-outline forced-colors:disabled:text-[GrayText] pressed:press-overlay",
 	variants: {
 		kind: {
 			primary: "border-transparent shadow-raised disabled:bg-fill-disabled",
@@ -75,7 +75,7 @@ export function Button(props: ButtonProps): ReactNode {
 						{props.isPending ? (
 							<Loader2Icon aria-hidden={true} className="animate-spin" data-slot="icon" />
 						) : null}
-						{typeof children === "string" ? <span>{children}</span> : children}
+						{children}
 					</Fragment>
 				);
 			})}
