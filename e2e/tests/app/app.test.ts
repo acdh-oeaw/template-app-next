@@ -3,7 +3,7 @@ import { createUrl } from "@acdh-oeaw/lib";
 import { env } from "@/config/env.config";
 import { expect, test } from "@/e2e/lib/test";
 import { defaultLocale, locales } from "@/lib/i18n/locales";
-import { getLocalePrefix } from "@/lib/i18n/routing";
+import { getPathname } from "@/lib/i18n/navigation";
 
 test.describe("app", () => {
 	if (env.NEXT_PUBLIC_BOTS !== "enabled") {
@@ -52,11 +52,11 @@ test.describe("app", () => {
 		);
 
 		for (const locale of locales) {
-			for (const url of ["/", "/imprint"]) {
+			for (const pathname of ["/", "/imprint"]) {
 				const loc = String(
 					createUrl({
 						baseUrl: env.NEXT_PUBLIC_APP_BASE_URL,
-						pathname: [getLocalePrefix(locale), url].join(""),
+						pathname: getPathname({ href: { pathname }, locale }),
 					}),
 				);
 

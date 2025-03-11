@@ -4,7 +4,7 @@ import { jsonLdScriptProps } from "react-schemaorg";
 import { env } from "@/config/env.config";
 import { expect, test } from "@/e2e/lib/test";
 import { defaultLocale, locales } from "@/lib/i18n/locales";
-import { getLocalePrefix } from "@/lib/i18n/routing";
+import { getPathname } from "@/lib/i18n/navigation";
 
 test("should set a canonical url", async ({ createIndexPage }) => {
 	for (const locale of locales) {
@@ -15,7 +15,10 @@ test("should set a canonical url", async ({ createIndexPage }) => {
 		await expect(canonicalUrl).toHaveAttribute(
 			"href",
 			String(
-				createUrl({ baseUrl: env.NEXT_PUBLIC_APP_BASE_URL, pathname: getLocalePrefix(locale) }),
+				createUrl({
+					baseUrl: env.NEXT_PUBLIC_APP_BASE_URL,
+					pathname: getPathname({ href: { pathname: "/" }, locale }),
+				}),
 			),
 		);
 	}
@@ -91,7 +94,10 @@ test("should set page metadata", async ({ createIndexPage }) => {
 		await expect(ogUrl).toHaveAttribute(
 			"content",
 			String(
-				createUrl({ baseUrl: env.NEXT_PUBLIC_APP_BASE_URL, pathname: getLocalePrefix(locale) }),
+				createUrl({
+					baseUrl: env.NEXT_PUBLIC_APP_BASE_URL,
+					pathname: getPathname({ href: { pathname: "/" }, locale }),
+				}),
 			),
 		);
 

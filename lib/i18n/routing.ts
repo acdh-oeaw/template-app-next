@@ -1,6 +1,6 @@
 import { defineRouting, type LocalePrefix } from "next-intl/routing";
 
-import { defaultLocale, type IntlLocale, locales } from "@/lib/i18n/locales";
+import { defaultLocale, locales } from "@/lib/i18n/locales";
 
 export const localePrefix = {
 	mode: "always",
@@ -9,12 +9,6 @@ export const localePrefix = {
 		"en-GB": "/en",
 	},
 } as const satisfies LocalePrefix<typeof locales>;
-
-export function getLocalePrefix(locale: IntlLocale) {
-	const prefix = localePrefix.prefixes[locale];
-
-	return prefix;
-}
 
 export const routing = defineRouting({
 	defaultLocale,
