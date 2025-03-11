@@ -1,9 +1,9 @@
 import { createUrl } from "@acdh-oeaw/lib";
 
 import { env } from "@/config/env.config";
-import { defaultLocale, locales } from "@/config/i18n.config";
 import { expect, test } from "@/e2e/lib/test";
-import { getLocalePrefix } from "@/lib/i18n/get-locale-prefix";
+import { defaultLocale, locales } from "@/lib/i18n/locales";
+import { getLocalePrefix } from "@/lib/i18n/routing";
 
 test.describe("app", () => {
 	if (env.NEXT_PUBLIC_BOTS !== "enabled") {

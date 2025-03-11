@@ -1,12 +1,12 @@
 import type { Locator, Page } from "@playwright/test";
 
-import { defaultLocale, type Locale } from "@/config/i18n.config";
 import type { I18n } from "@/e2e/lib/fixtures/i18n";
-import { getLocalePrefix } from "@/lib/i18n/get-locale-prefix";
+import { defaultLocale, type IntlLocale } from "@/lib/i18n/locales";
+import { getLocalePrefix } from "@/lib/i18n/routing";
 
 export class ImprintPage {
 	readonly page: Page;
-	readonly locale: Locale;
+	readonly locale: IntlLocale;
 	readonly i18n: I18n;
 	readonly url: string;
 	readonly mainContent: Locator;

@@ -4,13 +4,13 @@ import { useSearchParams } from "next/navigation";
 import type { ReactNode } from "react";
 
 import { Link } from "@/components/link";
-import type { Locale } from "@/config/i18n.config";
-import { createHref } from "@/lib/create-href";
+import type { IntlLocale } from "@/lib/i18n/locales";
 import { usePathname } from "@/lib/i18n/navigation";
+import { createHref } from "@/lib/navigation/create-href";
 
 interface LocaleSwitcherLinkProps {
 	children: ReactNode;
-	locale: Locale;
+	locale: IntlLocale;
 }
 
 export function LocaleSwitcherLink(props: Readonly<LocaleSwitcherLinkProps>): ReactNode {

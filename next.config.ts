@@ -63,7 +63,7 @@ const plugins: Array<(config: NextConfig) => NextConfig> = [
 			/** @see https://v4.next-intl.dev/docs/workflows/typescript#messages-arguments */
 			createMessagesDeclaration: ["./content/en/metadata/index.json", "./messages/en.json"],
 		},
-		requestConfig: "./lib/i18n/get-request-config.ts",
+		requestConfig: "./lib/i18n/request.ts",
 	}),
 ];
 
