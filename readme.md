@@ -31,6 +31,8 @@ the default template accepts the following variables:
   [redmine](https://redmine.acdh.oeaw.ac.at) issue tracker.
 - `NEXT_PUBLIC_APP_BASE_URL` (required): the base url for this application. the default of
   "http://localhost:3000" should be fine for local development.
+- `NEXT_PUBLIC_IMPRINT_SERVICE_BASE_URL` (required): the base url for the acdh-ch imprint service,
+  which uses `NEXT_PUBLIC_REDMINE_ID` to fetch the imprint text.
 - `NEXT_PUBLIC_BOTS` (required): whether this website can be indexed by web crawlers like the google
   bot. supported values are "disabled" and "enabled", defaults to "disabled".
 - `NEXT_PUBLIC_MATOMO_BASE_URL` and `NEXT_PUBLIC_MATOMO_ID` (optional): set these to support
