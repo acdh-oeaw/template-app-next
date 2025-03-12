@@ -9,7 +9,7 @@ import { useLocale } from "next-intl";
 import { Fragment, type ReactNode, Suspense, useEffect } from "react";
 
 import { env } from "@/config/env.config";
-import type { Locale } from "@/config/i18n.config";
+import type { IntlLocale } from "@/lib/i18n/locales";
 import { usePathname } from "@/lib/i18n/navigation";
 
 declare global {
@@ -76,7 +76,7 @@ function PageViewTracker(): ReactNode {
 /**
  * Track urls without locale prefix, and separate custom event for locale.
  */
-function trackPageView(locale: Locale, url: URL): void {
+function trackPageView(locale: IntlLocale, url: URL): void {
 	/** @see https://developer.matomo.org/guides/tracking-javascript-guide#custom-variables */
 	window._paq?.push(["setCustomVariable", 1, "Locale", locale, "page"]);
 	window._paq?.push(["setCustomUrl", url]);

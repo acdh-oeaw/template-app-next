@@ -22,7 +22,7 @@
 	}
 
 	:focus-visible {
-		@apply outline-2 outline-offset-2 outline-stroke-focus forced-colors:outline-[Highlight];
+		@apply outline-stroke-focus outline-2 outline-offset-2 forced-colors:outline-[Highlight];
 	}
 
 	/** Let react aria components handle focus state. */

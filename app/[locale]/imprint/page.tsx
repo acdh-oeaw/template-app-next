@@ -7,12 +7,12 @@ import { getTranslations, setRequestLocale } from "next-intl/server";
 import type { ReactNode } from "react";
 
 import { MainContent } from "@/components/ui/main-content";
-import type { Locale } from "@/config/i18n.config";
 import { createImprintUrl } from "@/config/imprint.config";
+import type { IntlLocale } from "@/lib/i18n/locales";
 
 interface ImprintPageProps {
 	params: Promise<{
-		locale: Locale;
+		locale: IntlLocale;
 	}>;
 }
 
@@ -44,9 +44,9 @@ export default async function ImprintPage(props: Readonly<ImprintPageProps>): Pr
 
 	return (
 		<MainContent className="layout-grid content-start">
-			<section className="relative layout-subgrid grid gap-y-6 bg-fill-weaker py-16 xs:py-20">
-				<div className="grid max-w-text gap-y-4">
-					<h1 className="font-heading text-heading-1 font-strong text-balance text-text-strong">
+			<section className="layout-subgrid bg-fill-weaker xs:py-20 relative grid gap-y-6 py-16">
+				<div className="max-w-text grid gap-y-4">
+					<h1 className="font-heading text-heading-1 font-strong text-text-strong text-balance">
 						{t("title")}
 					</h1>
 				</div>
@@ -54,13 +54,13 @@ export default async function ImprintPage(props: Readonly<ImprintPageProps>): Pr
 
 			<section
 				dangerouslySetInnerHTML={{ __html: html }}
-				className="relative layout-subgrid typography content-max-w-text border-t border-stroke-weak py-16 xs:py-20"
+				className="layout-subgrid typography content-max-w-text border-stroke-weak xs:py-20 relative border-t py-16"
 			/>
 		</MainContent>
 	);
 }
 
-async function getImprintHtml(locale: Locale): Promise<string> {
+async function getImprintHtml(locale: IntlLocale): Promise<string> {
 	try {
 		const url = createImprintUrl(locale);
 		const html = await request(url, { responseType: "text" });

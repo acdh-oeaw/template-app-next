@@ -3,10 +3,10 @@ import { join } from "node:path";
 
 import { ImageResponse } from "next/og";
 
-import type { Locale } from "@/config/i18n.config";
+import type { IntlLocale } from "@/lib/i18n/locales";
 
 interface MetadataImageProps {
-	locale: Locale;
+	locale: IntlLocale;
 	size: { width: number; height: number };
 	title: string;
 }

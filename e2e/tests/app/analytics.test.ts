@@ -1,8 +1,8 @@
 import { createUrl } from "@acdh-oeaw/lib";
 
 import { env } from "@/config/env.config";
-import { defaultLocale } from "@/config/i18n.config";
 import { expect, test } from "@/e2e/lib/test";
+import { defaultLocale } from "@/lib/i18n/locales";
 
 test.describe("analytics service", () => {
 	// eslint-disable-next-line playwright/no-skipped-test

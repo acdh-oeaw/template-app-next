@@ -1,9 +1,15 @@
-import { createUrl } from "@acdh-oeaw/lib";
+import { createUrl, removeTrailingSlash } from "@acdh-oeaw/lib";
 
 import { env } from "@/config/env.config";
-import { defaultLocale, locales } from "@/config/i18n.config";
 import { expect, test } from "@/e2e/lib/test";
-import { getLocalePrefix } from "@/lib/i18n/get-locale-prefix";
+import { defaultLocale, type IntlLocale, locales } from "@/lib/i18n/locales";
+import { localePrefix } from "@/lib/i18n/routing";
+// import { getPathname } from "@/lib/i18n/navigation";
+
+/** @see https://github.com/microsoft/playwright/issues/35162 */
+function getPathname({ href, locale }: { href: { pathname: string }; locale: IntlLocale }): string {
+	return localePrefix.prefixes[locale] + href.pathname;
+}
 
 test.describe("app", () => {
 	if (env.NEXT_PUBLIC_BOTS !== "enabled") {
@@ -31,7 +37,7 @@ test.describe("app", () => {
 					"",
 					`Host: ${env.NEXT_PUBLIC_APP_BASE_URL}`,
 					`Sitemap: ${String(
-						createUrl({ baseUrl: env.NEXT_PUBLIC_APP_BASE_URL, pathname: "sitemap.xml" }),
+						createUrl({ baseUrl: env.NEXT_PUBLIC_APP_BASE_URL, pathname: "/sitemap.xml" }),
 					)}`,
 					"",
 				].join("\n"),
@@ -52,11 +58,11 @@ test.describe("app", () => {
 		);
 
 		for (const locale of locales) {
-			for (const url of ["/", "/imprint"]) {
+			for (const pathname of ["/", "/imprint"]) {
 				const loc = String(
 					createUrl({
 						baseUrl: env.NEXT_PUBLIC_APP_BASE_URL,
-						pathname: [getLocalePrefix(locale), url].join(""),
+						pathname: removeTrailingSlash(getPathname({ href: { pathname }, locale })),
 					}),
 				);
 

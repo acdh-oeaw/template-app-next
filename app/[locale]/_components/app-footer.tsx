@@ -9,8 +9,8 @@ import {
 } from "@/app/[locale]/_components/social-media-icons";
 import { Logo } from "@/components/logo";
 import { NavLink, type NavLinkProps } from "@/components/nav-link";
-import { createHref } from "@/lib/create-href";
-import { useMetadata } from "@/lib/i18n/use-messages";
+import { useMetadata } from "@/lib/i18n/metadata";
+import { createHref } from "@/lib/navigation/create-href";
 
 export function AppFooter(): ReactNode {
 	const t = useTranslations("AppFooter");

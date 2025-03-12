@@ -4,11 +4,11 @@ import { getTranslations } from "next-intl/server";
 import type { ReactNode } from "react";
 
 import { MainContent } from "@/components/ui/main-content";
-import type { Locale } from "@/config/i18n.config";
+import type { IntlLocale } from "@/lib/i18n/locales";
 
 interface NotFoundPageProps {
 	params: Promise<{
-		locale: Locale;
+		locale: IntlLocale;
 	}>;
 }
 
@@ -41,8 +41,8 @@ export default function NotFoundPage(_props: Readonly<NotFoundPageProps>): React
 
 	return (
 		<MainContent className="layout-grid bg-fill-weaker">
-			<section className="grid place-content-center place-items-center py-16 xs:py-24">
-				<h1 className="text-center font-heading text-display font-strong text-balance text-text-strong">
+			<section className="xs:py-24 grid place-content-center place-items-center py-16">
+				<h1 className="font-heading text-display font-strong text-text-strong text-balance text-center">
 					{t("title")}
 				</h1>
 			</section>

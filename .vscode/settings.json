@@ -20,6 +20,7 @@
 	},
 	"files.eol": "\n",
 	"i18n-ally.annotations": false,
+	"i18n-ally.enabledFrameworks": ["next-intl"],
 	"i18n-ally.keepFulfilled": true,
 	"i18n-ally.keystyle": "nested",
 	"i18n-ally.localesPaths": ["./messages"],
@@ -41,6 +42,7 @@
 	"typescript.enablePromptUseWorkspaceTsdk": true,
 	"typescript.inlayHints.parameterNames.enabled": "all",
 	"typescript.preferences.autoImportFileExcludePatterns": [
+		"lucide-react",
 		"next/router.d.ts",
 		"next/dist/client/router.d.ts"
 	],

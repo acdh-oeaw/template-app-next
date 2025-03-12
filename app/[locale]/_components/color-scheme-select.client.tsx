@@ -1,6 +1,5 @@
 "use client";
 
-import { cn } from "@acdh-oeaw/style-variants";
 import { LaptopIcon, MoonIcon, SunIcon } from "lucide-react";
 import type { Key, ReactNode } from "react";
 import { Button, ListBox, ListBoxItem, Popover, Select, SelectValue } from "react-aria-components";
@@ -41,20 +40,12 @@ export function ColorSchemeSelect(props: Readonly<ColorSchemeSelectProps>): Reac
 			onSelectionChange={onSelectionChange}
 			selectedKey={selectedKey}
 		>
-			<Button
-				className={cn(
-					"grid place-content-center rounded-2 p-3",
-					"interactive hover:hover-overlay focus-visible:focus-outline focus-visible:focus-outline-offset-0 pressed:press-overlay",
-				)}
-			>
-				<Icon aria-hidden={true} className="size-6 shrink-0 text-icon-neutral" />
+			<Button className="interactive rounded-2 hover:hover-overlay focus-visible:focus-outline focus-visible:focus-outline-offset-0 pressed:press-overlay grid place-content-center p-3">
+				<Icon aria-hidden={true} className="text-icon-neutral size-6 shrink-0" />
 				<SelectValue className="sr-only" />
 			</Button>
 			<Popover
-				className={cn(
-					"min-w-[var(--trigger-width)] rounded-2 border border-stroke-weak bg-background-overlay shadow-overlay",
-					"placement-bottom:translate-y-1 placement-bottom:slide-in-from-top-2 entering:animate-in entering:fade-in-0 exiting:animate-out exiting:fade-out-0 exiting:zoom-out-95",
-				)}
+				className="min-w-(--trigger-width) rounded-2 border-stroke-weak bg-background-overlay shadow-overlay placement-bottom:translate-y-1 placement-bottom:slide-in-from-top-2 entering:animate-in entering:fade-in-0 exiting:animate-out exiting:fade-out-0 exiting:zoom-out-95 border"
 				placement="bottom"
 			>
 				<ListBox className="max-h-[inherit] min-w-40 overflow-auto py-2">
@@ -64,14 +55,11 @@ export function ColorSchemeSelect(props: Readonly<ColorSchemeSelectProps>): Reac
 						return (
 							<ListBoxItem
 								key={id}
-								className={cn(
-									"relative flex cursor-default items-center gap-x-3 px-4 py-3 text-small text-text-strong select-none",
-									"interactive hover:hover-overlay focus-visible:focus-outline focus-visible:-focus-outline-offset-2 pressed:press-overlay selected:select-overlay-left selected:hover-overlay",
-								)}
+								className="interactive text-small text-text-strong hover:hover-overlay focus-visible:focus-outline focus-visible:-focus-outline-offset-2 pressed:press-overlay selected:select-overlay-left selected:hover-overlay relative flex cursor-default select-none items-center gap-x-3 px-4 py-3"
 								id={id}
 								textValue={label}
 							>
-								<Icon aria-hidden={true} className="size-5 text-icon-neutral" />
+								<Icon aria-hidden={true} className="text-icon-neutral size-5" />
 								{label}
 							</ListBoxItem>
 						);

@@ -1,6 +1,5 @@
-import { locales } from "@/config/i18n.config";
 import { expect, test } from "@/e2e/lib/test";
-import { getLanguage } from "@/lib/i18n/get-language";
+import { getIntlLanguage, locales } from "@/lib/i18n/locales";
 
 test.describe("imprint page", () => {
 	test("should have document title", async ({ createImprintPage }) => {
@@ -24,7 +23,7 @@ test.describe("imprint page", () => {
 			const { imprintPage } = await createImprintPage(locale);
 			await imprintPage.goto();
 
-			const language = getLanguage(locale);
+			const language = getIntlLanguage(locale);
 			await expect(imprintPage.page.getByRole("main")).toContainText(imprints[language]);
 		}
 	});

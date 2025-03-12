@@ -16,6 +16,7 @@ WORKDIR /app
 USER node
 
 COPY --chown=node:node .npmrc package.json pnpm-lock.yaml ./
+COPY ./patches ./patches
 
 RUN pnpm fetch
 

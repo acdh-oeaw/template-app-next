@@ -1,4 +1,4 @@
-import { defaultLocale } from "@/config/i18n.config";
+import { defaultLocale } from "@/lib/i18n/locales";
 import { redirect } from "@/lib/i18n/navigation";
 
 /**

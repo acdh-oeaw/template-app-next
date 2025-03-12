@@ -44,7 +44,7 @@ export function Toast(props: ToastProps): ReactNode {
 			{...rest}
 			className={composeRenderProps(className, (className) => {
 				return cn(
-					"flex items-center gap-x-6 rounded-2 bg-fill-brand-strong px-6 py-4 text-text-inverse-strong shadow-overlay focus-visible:focus-outline",
+					"rounded-2 bg-fill-brand-strong text-text-inverse-strong shadow-overlay focus-visible:focus-outline flex items-center gap-x-6 px-6 py-4",
 					className,
 				);
 			})}
@@ -64,7 +64,7 @@ export function Toast(props: ToastProps): ReactNode {
 				</AriaText>
 			</AriaToastContent>
 			<AriaButton
-				className="interactive inline-grid shrink-0 place-content-center rounded-full text-icon-inverse hover:hover-overlay focus-visible:focus-outline pressed:press-overlay"
+				className="interactive text-icon-inverse hover:hover-overlay focus-visible:focus-outline pressed:press-overlay inline-grid shrink-0 place-content-center rounded-full"
 				slot="close"
 			>
 				<XIcon aria-hidden={true} className="size-6 shrink-0" data-slot="icon" />
