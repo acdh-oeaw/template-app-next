@@ -39,7 +39,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 			segments.push(segment);
 		}
 
-		routes.push(segments.join("/"));
+		routes.push(`/${segments.join("/")}`);
 	});
 
 	const entries = locales.flatMap((locale) => {
