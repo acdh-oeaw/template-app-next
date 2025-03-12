@@ -26,6 +26,7 @@ export const env = createEnv({
 			NEXT_PUBLIC_APP_BASE_URL: v.pipe(v.string(), v.url()),
 			NEXT_PUBLIC_BOTS: v.optional(v.picklist(["disabled", "enabled"]), "disabled"),
 			NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION: v.optional(v.string()),
+			NEXT_PUBLIC_IMPRINT_SERVICE_BASE_URL: v.pipe(v.string(), v.url()),
 			NEXT_PUBLIC_MATOMO_BASE_URL: v.optional(v.pipe(v.string(), v.url())),
 			NEXT_PUBLIC_MATOMO_ID: v.optional(
 				v.pipe(v.string(), v.transform(Number), v.number(), v.integer(), v.minValue(1)),
@@ -48,6 +49,7 @@ export const env = createEnv({
 		NEXT_PUBLIC_APP_BASE_URL: process.env.NEXT_PUBLIC_APP_BASE_URL,
 		NEXT_PUBLIC_BOTS: process.env.NEXT_PUBLIC_BOTS,
 		NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION,
+		NEXT_PUBLIC_IMPRINT_SERVICE_BASE_URL: process.env.NEXT_PUBLIC_IMPRINT_SERVICE_BASE_URL,
 		NEXT_PUBLIC_MATOMO_BASE_URL: process.env.NEXT_PUBLIC_MATOMO_BASE_URL,
 		NEXT_PUBLIC_MATOMO_ID: process.env.NEXT_PUBLIC_MATOMO_ID,
 		NEXT_PUBLIC_REDMINE_ID: process.env.NEXT_PUBLIC_REDMINE_ID,
