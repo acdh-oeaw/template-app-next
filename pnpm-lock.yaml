@@ -15,7 +15,7 @@ importers:
     dependencies:
       '@acdh-oeaw/lib':
         specifier: ^0.3.0
-        version: 0.3.0
+        version: 0.3.1
       '@acdh-oeaw/style-variants':
         specifier: ^0.1.0
         version: 0.1.0
@@ -41,8 +41,8 @@ importers:
         specifier: canary
         version: 15.2.2-canary.4(patch_hash=de17907a43a1b46b5534a9628cc7b229f5c0cce5a5f7b19baa0dde85ba1b7624)(@babel/core@7.26.9)(@playwright/test@1.51.0)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
       next-intl:
-        specifier: v4-beta
-        version: 4.0.0-beta-dea867b(next@15.2.2-canary.4(patch_hash=de17907a43a1b46b5534a9628cc7b229f5c0cce5a5f7b19baa0dde85ba1b7624)(@babel/core@7.26.9)(@playwright/test@1.51.0)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react@19.0.0)(typescript@5.8.2)
+        specifier: ^4.0.0
+        version: 4.0.0(next@15.2.2-canary.4(patch_hash=de17907a43a1b46b5534a9628cc7b229f5c0cce5a5f7b19baa0dde85ba1b7624)(@babel/core@7.26.9)(@playwright/test@1.51.0)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react@19.0.0)(typescript@5.8.2)
       react:
         specifier: ^19.0.0
         version: 19.0.0
@@ -69,7 +69,7 @@ importers:
         version: 0.33.5
       valibot:
         specifier: ^1.0.0-rc.3
-        version: 1.0.0-rc.3(typescript@5.8.2)
+        version: 1.0.0-rc.4(typescript@5.8.2)
     devDependencies:
       '@acdh-oeaw/eslint-config':
         specifier: ^2.0.8
@@ -243,8 +243,8 @@ packages:
       globals: 16.x
       typescript: 5.x
 
-  '@acdh-oeaw/lib@0.3.0':
-    resolution: {integrity: sha512-cXxv3Hlh9KdjNW+PsLI7W2PRC1fHESGpKMuEA1LQgg+SBnUM9xLqL31JFQu8sll0DFMPNVXrp36R5Vr6VEik2g==}
+  '@acdh-oeaw/lib@0.3.1':
+    resolution: {integrity: sha512-yGEr19JLcTf8lD9CZkhCgvWk27gesqPPNc/Wj0egL2icNQHK4jhmuzFVWyM3gM3nDgReSsxQ5tsDXOKFfRdfQA==}
     engines: {node: '>=22', pnpm: 10.x}
 
   '@acdh-oeaw/prettier-config@2.0.1':
@@ -2965,8 +2965,8 @@ packages:
     resolution: {integrity: sha512-8Ofs/AUQh8MaEcrlq5xOX0CQ9ypTF5dl78mjlMNfOK08fzpgTHQRQPBxcPlEtIw0yRpws+Zo/3r+5WRby7u3Gg==}
     engines: {node: '>= 0.6'}
 
-  next-intl@4.0.0-beta-dea867b:
-    resolution: {integrity: sha512-JsnXgiclBcVbb1dffr5bQmXdZMD+Iww4i3QtWY1TXH1puLyFXbnuLirXXpCov9Cuoy0ydhdqQErCXOiEFzxMfQ==}
+  next-intl@4.0.0:
+    resolution: {integrity: sha512-l+I1PLAFrjzYzrc340n1vssDJ7pP1gtYT1jOWlRWIHkyrPdyosEIHPC+LiqJP4vWvWtCZzzqTn9AaBF+x5Ja8g==}
     peerDependencies:
       next: ^12.0.0 || ^13.0.0 || ^14.0.0 || ^15.0.0
       react: ^16.8.0 || ^17.0.0 || ^18.0.0 || >=19.0.0-rc <19.0.0 || ^19.0.0
@@ -3680,8 +3680,8 @@ packages:
   uri-js@4.4.1:
     resolution: {integrity: sha512-7rKUyy33Q1yc98pQ1DAmLtwX109F7TIfWlW1Ydo8Wl1ii1SeHieeh0HHfPeL2fMXK6z0s8ecKs9frCuLJvndBg==}
 
-  use-intl@4.0.0-beta-dea867b:
-    resolution: {integrity: sha512-wAyCz6JV1eJH9F5lM0NQyG1sIAzfv/IJqUiezRee3NBTEUibsUApI7/NPCja/0B27VfQlmiYKoZQ6dQTK89zmg==}
+  use-intl@4.0.0:
+    resolution: {integrity: sha512-/fmC7haEMVNa0isXGRGUir56fD4I9LRnOgbeBmji+bow6U8pE7WD+2X2sjqh+0h3yJ0T36PA6JXZ6PlVeRyt8w==}
     peerDependencies:
       react: ^17.0.0 || ^18.0.0 || >=19.0.0-rc <19.0.0 || ^19.0.0
 
@@ -3693,8 +3693,8 @@ packages:
   util-deprecate@1.0.2:
     resolution: {integrity: sha512-EPD5q1uXyFxJpCrLnCc1nHnq3gOa6DZBocAIiI2TaSCA7VCJ1UJDMagCzIkXNsUYfD1daK//LTEQ8xiIbrHtcw==}
 
-  valibot@1.0.0-rc.3:
-    resolution: {integrity: sha512-LT0REa7Iqx4QGcaHLiTiTkcmJqJ9QdpOy89HALFFBJgejTS64GQFRIbDF7e4f6pauQbo/myfKGmWXCLhMeM6+g==}
+  valibot@1.0.0-rc.4:
+    resolution: {integrity: sha512-VRaChgFv7Ab0P54AMLu7+GqoexdTPQ54Plj59X9qV0AFozI3j9CGH43skg+TqgMpXnrW8jxlJ2TTHAtAD3t4qA==}
     peerDependencies:
       typescript: '>=5'
     peerDependenciesMeta:
@@ -3849,7 +3849,7 @@ snapshots:
       - eslint-plugin-import
       - supports-color
 
-  '@acdh-oeaw/lib@0.3.0': {}
+  '@acdh-oeaw/lib@0.3.1': {}
 
   '@acdh-oeaw/prettier-config@2.0.1(prettier@3.5.3)':
     dependencies:
@@ -7203,13 +7203,13 @@ snapshots:
 
   negotiator@1.0.0: {}
 
-  next-intl@4.0.0-beta-dea867b(next@15.2.2-canary.4(patch_hash=de17907a43a1b46b5534a9628cc7b229f5c0cce5a5f7b19baa0dde85ba1b7624)(@babel/core@7.26.9)(@playwright/test@1.51.0)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react@19.0.0)(typescript@5.8.2):
+  next-intl@4.0.0(next@15.2.2-canary.4(patch_hash=de17907a43a1b46b5534a9628cc7b229f5c0cce5a5f7b19baa0dde85ba1b7624)(@babel/core@7.26.9)(@playwright/test@1.51.0)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react@19.0.0)(typescript@5.8.2):
     dependencies:
       '@formatjs/intl-localematcher': 0.5.10
       negotiator: 1.0.0
       next: 15.2.2-canary.4(patch_hash=de17907a43a1b46b5534a9628cc7b229f5c0cce5a5f7b19baa0dde85ba1b7624)(@babel/core@7.26.9)(@playwright/test@1.51.0)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
       react: 19.0.0
-      use-intl: 4.0.0-beta-dea867b(react@19.0.0)
+      use-intl: 4.0.0(react@19.0.0)
     optionalDependencies:
       typescript: 5.8.2
 
@@ -8060,7 +8060,7 @@ snapshots:
     dependencies:
       punycode: 2.3.1
 
-  use-intl@4.0.0-beta-dea867b(react@19.0.0):
+  use-intl@4.0.0(react@19.0.0):
     dependencies:
       '@formatjs/fast-memoize': 2.2.6
       '@schummar/icu-type-parser': 1.21.5
@@ -8073,7 +8073,7 @@ snapshots:
 
   util-deprecate@1.0.2: {}
 
-  valibot@1.0.0-rc.3(typescript@5.8.2):
+  valibot@1.0.0-rc.4(typescript@5.8.2):
     optionalDependencies:
       typescript: 5.8.2
 
