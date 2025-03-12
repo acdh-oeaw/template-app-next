@@ -3,7 +3,7 @@ import type { Metadata, ResolvingMetadata } from "next";
 import { getTranslations } from "next-intl/server";
 import type { ReactNode } from "react";
 
-import { MainContent } from "@/components/main-content";
+import { MainContent } from "@/components/ui/main-content";
 import { defaultLocale } from "@/config/i18n.config";
 import { ColorSchemeScript } from "@/lib/color-scheme-script";
 import * as fonts from "@/lib/fonts";
@@ -51,7 +51,7 @@ export default async function NotFoundPage(): Promise<ReactNode> {
 
 				<MainContent className="layout-grid min-h-full bg-fill-weaker">
 					<section className="grid place-content-center place-items-center py-16 xs:py-24">
-						<h1 className="text-balance text-center font-heading text-display font-strong text-text-strong">
+						<h1 className="text-center font-heading text-display font-strong text-balance text-text-strong">
 							{t("title")}
 						</h1>
 					</section>

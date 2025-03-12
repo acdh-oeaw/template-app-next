@@ -3,7 +3,7 @@ import { useTranslations } from "next-intl";
 import { getTranslations } from "next-intl/server";
 import type { ReactNode } from "react";
 
-import { MainContent } from "@/components/main-content";
+import { MainContent } from "@/components/ui/main-content";
 import type { Locale } from "@/config/i18n.config";
 
 interface NotFoundPageProps {
@@ -42,7 +42,7 @@ export default function NotFoundPage(_props: Readonly<NotFoundPageProps>): React
 	return (
 		<MainContent className="layout-grid bg-fill-weaker">
 			<section className="grid place-content-center place-items-center py-16 xs:py-24">
-				<h1 className="text-balance text-center font-heading text-display font-strong text-text-strong">
+				<h1 className="text-center font-heading text-display font-strong text-balance text-text-strong">
 					{t("title")}
 				</h1>
 			</section>

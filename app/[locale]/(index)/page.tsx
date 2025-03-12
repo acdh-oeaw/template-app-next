@@ -7,7 +7,7 @@ import type { ReactNode } from "react";
 import { Image } from "@/components/image";
 import { Link } from "@/components/link";
 import { Logo } from "@/components/logo";
-import { MainContent } from "@/components/main-content";
+import { MainContent } from "@/components/ui/main-content";
 import type { Locale } from "@/config/i18n.config";
 
 interface IndexPageProps {
@@ -55,13 +55,13 @@ function HeroSection(): ReactNode {
 	const t = useTranslations("IndexPage");
 
 	return (
-		<section className="layout-subgrid relative gap-y-10 bg-fill-weaker py-16 xs:py-24">
-			<div className="max-w-text grid gap-y-6">
+		<section className="relative layout-subgrid gap-y-10 bg-fill-weaker py-16 xs:py-24">
+			<div className="grid max-w-text gap-y-6">
 				<span className="inline-flex items-center gap-x-2 justify-self-start rounded-4 border border-stroke-weak bg-fill-weak px-3 py-0.5 text-tiny text-text-strong">
 					<Logo className="size-5 shrink-0 text-icon-neutral" />
 					<span>{t("badge")}</span>
 				</span>
-				<h1 className="text-balance font-heading text-display font-strong text-text-strong">
+				<h1 className="font-heading text-display font-strong text-balance text-text-strong">
 					{t("title")}
 				</h1>
 				<p className="font-heading text-small text-text-weak xs:text-heading-4">{t("lead-in")}</p>
@@ -84,9 +84,9 @@ function FeaturesSection(): ReactNode {
 
 	/* eslint-disable react/jsx-no-literals */
 	return (
-		<section className="layout-subgrid relative gap-y-12 border-t border-stroke-weak py-16 xs:py-24">
-			<header className="max-w-text grid gap-y-4">
-				<h2 className="text-balance font-heading text-heading-2 font-strong text-text-strong">
+		<section className="relative layout-subgrid gap-y-12 border-t border-stroke-weak py-16 xs:py-24">
+			<header className="grid max-w-text gap-y-4">
+				<h2 className="font-heading text-heading-2 font-strong text-balance text-text-strong">
 					Features
 				</h2>
 				<p className="font-heading text-heading-4 text-text-weak">
@@ -131,7 +131,7 @@ function FeaturesSection(): ReactNode {
 
 			<div>
 				<Link
-					className="focus-visible:focus-outline group inline-flex items-center gap-x-2 rounded-0.5 text-small text-text-brand"
+					className="group inline-flex items-center gap-x-2 rounded-0.5 text-small text-text-brand focus-visible:focus-outline"
 					href="/"
 				>
 					<span className="underline group-hover:no-underline">See all</span>

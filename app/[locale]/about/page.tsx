@@ -3,7 +3,7 @@ import { getTranslations, setRequestLocale } from "next-intl/server";
 import type { ReactNode } from "react";
 
 import { Image } from "@/components/image";
-import { MainContent } from "@/components/main-content";
+import { MainContent } from "@/components/ui/main-content";
 import type { Locale } from "@/config/i18n.config";
 
 interface AboutPageProps {
@@ -41,9 +41,9 @@ export default async function AboutPage(props: Readonly<AboutPageProps>): Promis
 	/* eslint-disable react/jsx-no-literals */
 	return (
 		<MainContent className="layout-grid content-start">
-			<section className="layout-subgrid relative bg-fill-weaker py-16 xs:py-20">
-				<div className="max-w-text grid gap-y-4">
-					<h1 className="text-balance font-heading text-heading-1 font-strong text-text-strong">
+			<section className="relative layout-subgrid bg-fill-weaker py-16 xs:py-20">
+				<div className="grid max-w-text gap-y-4">
+					<h1 className="font-heading text-heading-1 font-strong text-balance text-text-strong">
 						{t("title")}
 					</h1>
 					<p className="font-heading text-small text-text-weak xs:text-heading-4">
@@ -54,7 +54,7 @@ export default async function AboutPage(props: Readonly<AboutPageProps>): Promis
 				</div>
 			</section>
 
-			<section className="layout-subgrid typography content-max-w-text relative border-t border-stroke-weak py-16 xs:py-20">
+			<section className="relative layout-subgrid typography content-max-w-text border-t border-stroke-weak py-16 xs:py-20">
 				<h2>Lorem Ipsum Dolor Sit Amet</h2>
 				<p>
 					Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque vehicula metus nec erat

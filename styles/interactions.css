@@ -1,6 +1,6 @@
 @utility focus-outline {
 	/** Interaction states. */
-	@apply outline-2 outline-stroke-focus outline-offset-2;
+	@apply outline-2 outline-offset-2 outline-stroke-focus;
 }
 
 @utility focus-outline-offset-0 {
@@ -20,11 +20,11 @@
 }
 
 @utility select-overlay-left {
-	@apply after:border-stroke-selected after:border-l-4;
+	@apply after:border-l-4 after:border-stroke-selected;
 }
 
 @utility select-overlay-bottom {
-	@apply after:border-stroke-selected after:border-b-4;
+	@apply after:border-b-4 after:border-stroke-selected;
 }
 
 @utility press-overlay {
@@ -32,5 +32,5 @@
 }
 
 @utility target-area {
-	@apply before:absolute before:min-w-[48px] before:min-h-[48px] before:top-1/2 before:left-1/2 before:-translate-x-1/2 before:-translate-y-1/2;
+	@apply before:absolute before:top-1/2 before:left-1/2 before:min-h-[48px] before:min-w-[48px] before:-translate-x-1/2 before:-translate-y-1/2;
 }

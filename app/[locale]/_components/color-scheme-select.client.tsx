@@ -44,7 +44,7 @@ export function ColorSchemeSelect(props: Readonly<ColorSchemeSelectProps>): Reac
 			<Button
 				className={cn(
 					"grid place-content-center rounded-2 p-3",
-					"interactive focus-visible:focus-outline focus-visible:focus-outline-offset-0 hover:hover-overlay pressed:press-overlay",
+					"interactive hover:hover-overlay focus-visible:focus-outline focus-visible:focus-outline-offset-0 pressed:press-overlay",
 				)}
 			>
 				<Icon aria-hidden={true} className="size-6 shrink-0 text-icon-neutral" />
@@ -65,8 +65,8 @@ export function ColorSchemeSelect(props: Readonly<ColorSchemeSelectProps>): Reac
 							<ListBoxItem
 								key={id}
 								className={cn(
-									"relative flex cursor-default select-none items-center gap-x-3 px-4 py-3 text-small text-text-strong",
-									"interactive focus-visible:focus-outline focus-visible:-focus-outline-offset-2 hover:hover-overlay pressed:press-overlay selected:hover-overlay selected:select-overlay-left",
+									"relative flex cursor-default items-center gap-x-3 px-4 py-3 text-small text-text-strong select-none",
+									"interactive hover:hover-overlay focus-visible:focus-outline focus-visible:-focus-outline-offset-2 pressed:press-overlay selected:select-overlay-left selected:hover-overlay",
 								)}
 								id={id}
 								textValue={label}

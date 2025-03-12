@@ -1,8 +1,8 @@
 import { useTranslations } from "next-intl";
 import type { ReactNode } from "react";
 
-import { LoadingIndicator } from "@/components/loading-indicator";
-import { MainContent } from "@/components/main-content";
+import { LoadingIndicator } from "@/components/ui/loading-indicator";
+import { MainContent } from "@/components/ui/main-content";
 
 export default function Loading(): ReactNode {
 	const t = useTranslations("Loading");
