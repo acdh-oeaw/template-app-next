@@ -57,21 +57,21 @@ export function AppNavigation(props: Readonly<AppNavigationProps>): ReactNode {
 	return (
 		<nav aria-label={label} className="hidden md:flex md:gap-x-12">
 			<NavLink
-				className="interactive rounded-2 focus-visible:focus-outline -ml-2 grid shrink-0 place-content-center self-center p-2"
+				className="interactive -ml-2 grid shrink-0 place-content-center self-center rounded-2 p-2 focus-visible:focus-outline"
 				href={navigation.home.href}
 			>
-				<Logo className="text-text-strong h-8 w-auto" />
+				<Logo className="h-8 w-auto text-text-strong" />
 				<span className="sr-only">{navigation.home.label}</span>
 			</NavLink>
 
-			<ul className="text-small flex flex-wrap" role="list">
+			<ul className="flex flex-wrap text-small" role="list">
 				{Object.entries(navigation).map(([id, item]) => {
 					switch (item.type) {
 						case "link": {
 							return (
 								<li key={id}>
 									<NavLink
-										className="interactive text-text-strong hover:hover-overlay focus-visible:focus-outline aria-[current]:select-overlay-bottom pressed:press-overlay inline-flex px-4 py-6"
+										className="interactive inline-flex px-4 py-6 text-text-strong hover:hover-overlay focus-visible:focus-outline aria-[current]:select-overlay-bottom pressed:press-overlay"
 										href={item.href}
 									>
 										{item.label}
@@ -84,7 +84,7 @@ export function AppNavigation(props: Readonly<AppNavigationProps>): ReactNode {
 							return (
 								<Separator
 									key={id}
-									className="border-stroke-weak mx-1 h-full border-l"
+									className="mx-1 h-full border-l border-stroke-weak"
 									elementType="li"
 									orientation="vertical"
 								/>
@@ -109,15 +109,15 @@ export function AppNavigation(props: Readonly<AppNavigationProps>): ReactNode {
 							return (
 								<li key={id}>
 									<MenuTrigger>
-										<Button className="interactive text-text-strong hover:hover-overlay focus-visible:focus-outline pressed:press-overlay inline-flex items-center gap-x-2 px-4 py-6">
+										<Button className="interactive inline-flex items-center gap-x-2 px-4 py-6 text-text-strong hover:hover-overlay focus-visible:focus-outline pressed:press-overlay">
 											{item.label}
 											<ChevronDownIcon
 												aria-hidden={true}
-												className="text-icon-neutral size-6 shrink-0"
+												className="size-6 shrink-0 text-icon-neutral"
 											/>
 										</Button>
 										<Popover
-											className="min-w-(--trigger-width) rounded-2 border-stroke-weak bg-background-overlay shadow-overlay placement-bottom:translate-y-1 placement-bottom:slide-in-from-top-2 entering:animate-in entering:fade-in-0 exiting:animate-out exiting:fade-out-0 exiting:zoom-out-95 border"
+											className="min-w-(--trigger-width) rounded-2 border border-stroke-weak bg-background-overlay shadow-overlay placement-bottom:translate-y-1 placement-bottom:slide-in-from-top-2 entering:animate-in entering:fade-in-0 exiting:animate-out exiting:fade-out-0 exiting:zoom-out-95"
 											placement="bottom"
 										>
 											<Menu
@@ -130,7 +130,7 @@ export function AppNavigation(props: Readonly<AppNavigationProps>): ReactNode {
 															return (
 																<NavigationMenuItem
 																	key={id}
-																	className="interactive text-small text-text-strong hover:hover-overlay focus-visible:focus-outline focus-visible:-focus-outline-offset-2 pressed:press-overlay selected:select-overlay-left flex cursor-pointer select-none items-center gap-x-3 px-4 py-3"
+																	className="interactive flex cursor-pointer items-center gap-x-3 px-4 py-3 text-small text-text-strong select-none hover:hover-overlay focus-visible:focus-outline focus-visible:-focus-outline-offset-2 pressed:press-overlay selected:select-overlay-left"
 																	href={item.href}
 																	textValue={item.label}
 																>
@@ -143,7 +143,7 @@ export function AppNavigation(props: Readonly<AppNavigationProps>): ReactNode {
 															return (
 																<Separator
 																	key={id}
-																	className="border-stroke-weak my-1 w-full border-b"
+																	className="my-1 w-full border-b border-stroke-weak"
 																/>
 															);
 														}
@@ -207,16 +207,16 @@ export function AppNavigationMobile(props: Readonly<AppNavigationMobileProps>): 
 	return (
 		<DialogTrigger>
 			<nav aria-label={label} className="flex items-center py-3 md:hidden">
-				<Button className="interactive rounded-2 hover:hover-overlay focus-visible:focus-outline focus-visible:focus-outline-offset-0 pressed:press-overlay -ml-3 grid place-content-center p-3">
-					<MenuIcon aria-hidden={true} className="text-icon-neutral size-6 shrink-0" />
+				<Button className="interactive -ml-3 grid place-content-center rounded-2 p-3 hover:hover-overlay focus-visible:focus-outline focus-visible:focus-outline-offset-0 pressed:press-overlay">
+					<MenuIcon aria-hidden={true} className="size-6 shrink-0 text-icon-neutral" />
 					<span className="sr-only">{menuOpenLabel}</span>
 				</Button>
 			</nav>
 			<ModalOverlay
-				className="h-(--visual-viewport-height) bg-fill-overlay entering:duration-200 entering:ease-out entering:animate-in entering:fade-in exiting:duration-200 exiting:ease-in exiting:animate-out exiting:fade-out fixed left-0 top-0 isolate z-20 w-full"
+				className="fixed top-0 left-0 isolate z-20 h-(--visual-viewport-height) w-full bg-fill-overlay entering:duration-200 entering:ease-out entering:animate-in entering:fade-in exiting:duration-200 exiting:ease-in exiting:animate-out exiting:fade-out"
 				isDismissable={true}
 			>
-				<Modal className="bg-background-overlay shadow-overlay entering:duration-200 entering:ease-out entering:animate-in entering:slide-in-from-left exiting:duration-200 exiting:ease-in exiting:animate-out exiting:slide-out-to-left mr-12 size-full max-h-full max-w-sm forced-colors:bg-[Canvas]">
+				<Modal className="mr-12 size-full max-h-full max-w-sm bg-background-overlay shadow-overlay forced-colors:bg-[Canvas] entering:duration-200 entering:ease-out entering:animate-in entering:slide-in-from-left exiting:duration-200 exiting:ease-in exiting:animate-out exiting:slide-out-to-left">
 					<Dialog className="relative h-full max-h-[inherit] overflow-auto">
 						{({ close }) => {
 							return (
@@ -226,10 +226,10 @@ export function AppNavigationMobile(props: Readonly<AppNavigationMobileProps>): 
 											{menuTitleLabel}
 										</Heading>
 										<Button
-											className="interactive rounded-2 hover:hover-overlay focus-visible:focus-outline focus-visible:focus-outline-offset-0 pressed:press-overlay -my-3 -ml-3 grid place-content-center p-3"
+											className="interactive -my-3 -ml-3 grid place-content-center rounded-2 p-3 hover:hover-overlay focus-visible:focus-outline focus-visible:focus-outline-offset-0 pressed:press-overlay"
 											slot="close"
 										>
-											<XIcon aria-hidden={true} className="text-icon-neutral size-6 shrink-0" />
+											<XIcon aria-hidden={true} className="size-6 shrink-0 text-icon-neutral" />
 											<span className="sr-only">{menuCloseLabel}</span>
 										</Button>
 									</header>
@@ -240,7 +240,7 @@ export function AppNavigationMobile(props: Readonly<AppNavigationMobileProps>): 
 													return (
 														<li key={id}>
 															<NavLink
-																className="interactive text-text-strong hover:hover-overlay focus-visible:focus-outline focus-visible:-focus-outline-offset-2 aria-[current]:select-overlay-left aria-[current]:hover-overlay pressed:press-overlay inline-flex w-full px-6 py-3"
+																className="interactive inline-flex w-full px-6 py-3 text-text-strong hover:hover-overlay focus-visible:focus-outline focus-visible:-focus-outline-offset-2 aria-[current]:select-overlay-left aria-[current]:hover-overlay pressed:press-overlay"
 																href={item.href}
 																onPress={() => {
 																	/**
@@ -265,7 +265,7 @@ export function AppNavigationMobile(props: Readonly<AppNavigationMobileProps>): 
 													return (
 														<Separator
 															key={id}
-															className="border-stroke-weak my-1 w-full border-b"
+															className="my-1 w-full border-b border-stroke-weak"
 															elementType="li"
 														/>
 													);
@@ -277,7 +277,7 @@ export function AppNavigationMobile(props: Readonly<AppNavigationMobileProps>): 
 															<Disclosure className="group">
 																<Heading>
 																	<Button
-																		className="interactive text-text-strong group-expanded:hover-overlay hover:hover-overlay focus-visible:focus-outline focus-visible:-focus-outline-offset-2 pressed:press-overlay inline-flex w-full items-center justify-between px-6 py-3"
+																		className="interactive inline-flex w-full items-center justify-between px-6 py-3 text-text-strong group-expanded:hover-overlay hover:hover-overlay focus-visible:focus-outline focus-visible:-focus-outline-offset-2 pressed:press-overlay"
 																		slot="trigger"
 																	>
 																		{item.label}
@@ -295,7 +295,7 @@ export function AppNavigationMobile(props: Readonly<AppNavigationMobileProps>): 
 																					return (
 																						<li key={id}>
 																							<NavLink
-																								className="interactive text-text-strong hover:hover-overlay focus-visible:focus-outline focus-visible:-focus-outline-offset-2 aria-[current]:select-overlay-left aria-[current]:hover-overlay pressed:press-overlay inline-flex w-full px-6 py-3"
+																								className="interactive inline-flex w-full px-6 py-3 text-text-strong hover:hover-overlay focus-visible:focus-outline focus-visible:-focus-outline-offset-2 aria-[current]:select-overlay-left aria-[current]:hover-overlay pressed:press-overlay"
 																								href={item.href}
 																								onPress={() => {
 																									/**
@@ -320,7 +320,7 @@ export function AppNavigationMobile(props: Readonly<AppNavigationMobileProps>): 
 																					return (
 																						<Separator
 																							key={id}
-																							className="border-stroke-weak my-1 w-full border-b"
+																							className="my-1 w-full border-b border-stroke-weak"
 																							elementType="li"
 																						/>
 																					);

@@ -28,12 +28,12 @@ export default function InternalError(props: Readonly<InternalErrorProps>): Reac
 
 	return (
 		<MainContent className="layout-grid bg-fill-weaker">
-			<section className="xs:py-24 grid place-content-center place-items-center gap-y-8 py-16">
-				<h1 className="font-heading text-display font-strong text-text-strong text-balance text-center">
+			<section className="grid place-content-center place-items-center gap-y-8 py-16 xs:py-24">
+				<h1 className="text-center font-heading text-display font-strong text-balance text-text-strong">
 					{t("something-went-wrong")}
 				</h1>
 				<Button
-					className="interactive rounded-2 border-stroke-brand-strong bg-fill-brand-strong text-tiny font-strong text-text-inverse-strong shadow-raised hover:hover-overlay focus-visible:focus-outline pressed:press-overlay inline-flex min-h-8 items-center border px-3 py-1"
+					className="interactive inline-flex min-h-8 items-center rounded-2 border border-stroke-brand-strong bg-fill-brand-strong px-3 py-1 text-tiny font-strong text-text-inverse-strong shadow-raised hover:hover-overlay focus-visible:focus-outline pressed:press-overlay"
 					isPending={isPending}
 					onPress={() => {
 						startTransition(() => {

@@ -55,13 +55,13 @@ function HeroSection(): ReactNode {
 	const t = useTranslations("IndexPage");
 
 	return (
-		<section className="layout-subgrid bg-fill-weaker xs:py-24 relative gap-y-10 py-16">
-			<div className="max-w-text grid gap-y-6">
-				<span className="rounded-4 border-stroke-weak bg-fill-weak text-tiny text-text-strong inline-flex items-center gap-x-2 justify-self-start border px-3 py-0.5">
-					<Logo className="text-icon-neutral size-5 shrink-0" />
+		<section className="relative layout-subgrid gap-y-10 bg-fill-weaker py-16 xs:py-24">
+			<div className="grid max-w-text gap-y-6">
+				<span className="inline-flex items-center gap-x-2 justify-self-start rounded-4 border border-stroke-weak bg-fill-weak px-3 py-0.5 text-tiny text-text-strong">
+					<Logo className="size-5 shrink-0 text-icon-neutral" />
 					<span>{t("badge")}</span>
 				</span>
-				<h1 className="font-heading text-display font-strong text-text-strong text-balance">
+				<h1 className="font-heading text-display font-strong text-balance text-text-strong">
 					{t("title")}
 				</h1>
 				<p className="font-heading text-small text-text-weak xs:text-heading-4">{t("lead-in")}</p>
@@ -84,9 +84,9 @@ function FeaturesSection(): ReactNode {
 
 	/* eslint-disable react/jsx-no-literals */
 	return (
-		<section className="layout-subgrid border-stroke-weak xs:py-24 relative gap-y-12 border-t py-16">
-			<header className="max-w-text grid gap-y-4">
-				<h2 className="font-heading text-heading-2 font-strong text-text-strong text-balance">
+		<section className="relative layout-subgrid gap-y-12 border-t border-stroke-weak py-16 xs:py-24">
+			<header className="grid max-w-text gap-y-4">
+				<h2 className="font-heading text-heading-2 font-strong text-balance text-text-strong">
 					Features
 				</h2>
 				<p className="font-heading text-heading-4 text-text-weak">
@@ -101,10 +101,10 @@ function FeaturesSection(): ReactNode {
 				{Object.entries(features).map(([id, feature]) => {
 					return (
 						<li key={id}>
-							<article className="rounded-4 border-stroke-weak bg-background-raised shadow-raised grid grid-rows-[14rem_auto] overflow-hidden border">
+							<article className="grid grid-rows-[14rem_auto] overflow-hidden rounded-4 border border-stroke-weak bg-background-raised shadow-raised">
 								<Image
 									alt=""
-									className="border-stroke-weak size-full border-b object-cover"
+									className="size-full border-b border-stroke-weak object-cover"
 									height={300}
 									/** Preload image because it's the largest contentful paint (lcp) element. */
 									priority={true}
@@ -131,13 +131,13 @@ function FeaturesSection(): ReactNode {
 
 			<div>
 				<Link
-					className="rounded-0.5 text-small text-text-brand focus-visible:focus-outline group inline-flex items-center gap-x-2"
+					className="group inline-flex items-center gap-x-2 rounded-0.5 text-small text-text-brand focus-visible:focus-outline"
 					href="/"
 				>
 					<span className="underline group-hover:no-underline">See all</span>
 					<ArrowRightIcon
 						aria-hidden={true}
-						className="text-icon-brand size-5 shrink-0 transition group-hover:translate-x-1"
+						className="size-5 shrink-0 text-icon-brand transition group-hover:translate-x-1"
 					/>
 				</Link>
 			</div>

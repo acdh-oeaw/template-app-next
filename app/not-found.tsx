@@ -49,9 +49,9 @@ export default async function NotFoundPage(): Promise<ReactNode> {
 			<body>
 				<ColorSchemeScript />
 
-				<MainContent className="layout-grid bg-fill-weaker min-h-full">
-					<section className="xs:py-24 grid place-content-center place-items-center py-16">
-						<h1 className="font-heading text-display font-strong text-text-strong text-balance text-center">
+				<MainContent className="layout-grid min-h-full bg-fill-weaker">
+					<section className="grid place-content-center place-items-center py-16 xs:py-24">
+						<h1 className="text-center font-heading text-display font-strong text-balance text-text-strong">
 							{t("title")}
 						</h1>
 					</section>
