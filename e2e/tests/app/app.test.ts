@@ -1,4 +1,4 @@
-import { createUrl } from "@acdh-oeaw/lib";
+import { createUrl, removeTrailingSlash } from "@acdh-oeaw/lib";
 
 import { env } from "@/config/env.config";
 import { expect, test } from "@/e2e/lib/test";
@@ -37,7 +37,7 @@ test.describe("app", () => {
 					"",
 					`Host: ${env.NEXT_PUBLIC_APP_BASE_URL}`,
 					`Sitemap: ${String(
-						createUrl({ baseUrl: env.NEXT_PUBLIC_APP_BASE_URL, pathname: "sitemap.xml" }),
+						createUrl({ baseUrl: env.NEXT_PUBLIC_APP_BASE_URL, pathname: "/sitemap.xml" }),
 					)}`,
 					"",
 				].join("\n"),
@@ -62,7 +62,7 @@ test.describe("app", () => {
 				const loc = String(
 					createUrl({
 						baseUrl: env.NEXT_PUBLIC_APP_BASE_URL,
-						pathname: getPathname({ href: { pathname }, locale }),
+						pathname: removeTrailingSlash(getPathname({ href: { pathname }, locale })),
 					}),
 				);
 
