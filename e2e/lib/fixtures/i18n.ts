@@ -1,9 +1,9 @@
 import type { Page } from "@playwright/test";
 import { createFormatter, createTranslator } from "next-intl";
 
-import { defaultLocale, type IntlMessages, type Locale } from "@/config/i18n.config";
 import type metadata from "@/content/en/metadata/index.json";
-import { getLanguage } from "@/lib/i18n/get-language";
+import { defaultLocale, getIntlLanguage, type IntlLocale } from "@/lib/i18n/locales";
+import type { IntlMessages } from "@/lib/i18n/messages";
 import type messages from "@/messages/en.json";
 
 export interface I18n {
@@ -13,7 +13,7 @@ export interface I18n {
 }
 
 export async function createI18n(_page: Page, locale = defaultLocale): Promise<I18n> {
-	const messages = await getI18nMessages(locale);
+	const messages = await getIntlMessages(locale);
 
 	return {
 		t: createTranslator({ locale, messages }),
@@ -33,8 +33,8 @@ type Messages = typeof messages;
 type Metadata = typeof metadata;
 type SocialMediaKind = Metadata["social"][number]["kind"];
 
-async function getI18nMessages(locale: Locale) {
-	const language = getLanguage(locale);
+async function getIntlMessages(locale: IntlLocale) {
+	const language = getIntlLanguage(locale);
 
 	const { default: _messages } = (await import(`@/messages/${language}.json`, {
 		with: { type: "json" },

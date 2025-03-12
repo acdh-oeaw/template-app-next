@@ -3,13 +3,13 @@ import { NextResponse } from "next/server";
 import type { Middleware } from "@/lib/server/compose-middlewares";
 
 /**
- * While Next.js provides built-in csrf protection for server actions, regular route handlers are
+ * While next.js provides built-in csrf protection for server actions, regular route handlers are
  * not protected. Therefore we implement csrf protection globally via middleware as a precaution.
  */
-export const csrfMiddlware: Middleware = function csrfMiddlware(request, response) {
+export const middleware: Middleware = function middleware(request, response) {
 	if (request.method !== "GET") {
-		const originHeader = request.headers.get("Origin");
-		const hostHeader = request.headers.get("X-Forwarded-Host") ?? request.headers.get("Host");
+		const originHeader = request.headers.get("origin");
+		const hostHeader = request.headers.get("x-forwarded-host") ?? request.headers.get("host");
 
 		if (originHeader == null || hostHeader == null) {
 			return new NextResponse(null, { status: 403 });

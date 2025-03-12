@@ -5,8 +5,8 @@ import { glob } from "fast-glob";
 import type { MetadataRoute } from "next";
 
 import { env } from "@/config/env.config";
-import { locales } from "@/config/i18n.config";
-import { getLocalePrefix } from "@/lib/i18n/get-locale-prefix";
+import { locales } from "@/lib/i18n/locales";
+import { getPathname } from "@/lib/i18n/navigation";
 
 const baseUrl = env.NEXT_PUBLIC_APP_BASE_URL;
 
@@ -39,13 +39,13 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 			segments.push(segment);
 		}
 
-		routes.push(segments.join("/"));
+		routes.push(`/${segments.join("/")}`);
 	});
 
 	const entries = locales.flatMap((locale) => {
 		return routes.map((pathname) => {
 			return {
-				url: String(createUrl({ baseUrl, pathname: `${getLocalePrefix(locale)}/${pathname}` })),
+				url: String(createUrl({ baseUrl, pathname: getPathname({ href: { pathname }, locale }) })),
 				/**
 				 * Only add `lastmod` when the publication date is actually known.
 				 * Don't use the build date instead.

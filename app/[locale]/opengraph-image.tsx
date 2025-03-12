@@ -2,8 +2,8 @@ import { notFound } from "next/navigation";
 import type { ImageResponse } from "next/og";
 
 import { MetadataImage } from "@/components/metadata-image";
-import { isValidLocale, type Locale, locales } from "@/config/i18n.config";
-import { getMetadata } from "@/lib/i18n/get-metadata";
+import { type IntlLocale, isValidLocale, locales } from "@/lib/i18n/locales";
+import { getMetadata } from "@/lib/i18n/metadata";
 
 const size = {
 	height: 630,
@@ -12,7 +12,7 @@ const size = {
 
 interface OpenGraphImageProps {
 	params: Promise<{
-		locale: Locale;
+		locale: IntlLocale;
 	}>;
 }
 

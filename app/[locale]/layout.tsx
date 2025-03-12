@@ -17,17 +17,17 @@ import { RedirectToast } from "@/components/redirect-toast";
 import { SkipLink } from "@/components/skip-link";
 import { ToastRegion } from "@/components/toast-region";
 import { env } from "@/config/env.config";
-import { isValidLocale, type Locale, locales } from "@/config/i18n.config";
 import { AnalyticsScript } from "@/lib/analytics-script";
 import { ColorSchemeScript } from "@/lib/color-scheme-script";
 import * as fonts from "@/lib/fonts";
-import { getMetadata } from "@/lib/i18n/get-metadata";
-import { getToast } from "@/lib/i18n/redirect-with-toast";
+import { type IntlLocale, isValidLocale, locales } from "@/lib/i18n/locales";
+import { getMetadata } from "@/lib/i18n/metadata";
+import { getToast } from "@/lib/navigation/toast";
 
 interface LocaleLayoutProps {
 	children: ReactNode;
 	params: Promise<{
-		locale: Locale;
+		locale: IntlLocale;
 	}>;
 }
 

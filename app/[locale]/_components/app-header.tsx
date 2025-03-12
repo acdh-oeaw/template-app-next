@@ -8,7 +8,7 @@ import {
 } from "@/app/[locale]/_components/app-navigation";
 import { ColorSchemeSwitcher } from "@/app/[locale]/_components/color-scheme-switcher";
 import { LocaleSwitcher } from "@/app/[locale]/_components/locale-switcher";
-import { createHref } from "@/lib/create-href";
+import { createHref } from "@/lib/navigation/create-href";
 
 export function AppHeader(): ReactNode {
 	const t = useTranslations("AppHeader");

@@ -4,9 +4,9 @@ import { getTranslations } from "next-intl/server";
 import type { ReactNode } from "react";
 
 import { MainContent } from "@/components/main-content";
-import { defaultLocale } from "@/config/i18n.config";
 import { ColorSchemeScript } from "@/lib/color-scheme-script";
 import * as fonts from "@/lib/fonts";
+import { defaultLocale } from "@/lib/i18n/locales";
 
 export async function generateMetadata(
 	_props: Record<string, never>,

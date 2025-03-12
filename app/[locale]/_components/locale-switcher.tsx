@@ -5,8 +5,7 @@ import {
 	LocaleSwitcherLink,
 	LocaleSwitcherLinkFallback,
 } from "@/app/[locale]/_components/locale-switcher-link";
-import { type Locale, locales } from "@/config/i18n.config";
-import { getLanguage } from "@/lib/i18n/get-language";
+import { getIntlLanguage, type IntlLocale, locales } from "@/lib/i18n/locales";
 
 export function LocaleSwitcher(): ReactNode {
 	const currentLocale = useLocale();
@@ -17,11 +16,11 @@ export function LocaleSwitcher(): ReactNode {
 
 		return Object.fromEntries(
 			locales.map((locale) => {
-				const language = getLanguage(locale);
+				const language = getIntlLanguage(locale);
 
 				return [locale, { label: displayNames.of(language), language }];
 			}),
-		) as Record<Locale, { label: string; language: string }>;
+		) as Record<IntlLocale, { label: string; language: string }>;
 	}, [currentLocale]);
 
 	return (

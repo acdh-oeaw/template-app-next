@@ -4,11 +4,11 @@ import { getTranslations } from "next-intl/server";
 import type { ReactNode } from "react";
 
 import { MainContent } from "@/components/main-content";
-import type { Locale } from "@/config/i18n.config";
+import type { IntlLocale } from "@/lib/i18n/locales";
 
 interface NotFoundPageProps {
 	params: Promise<{
-		locale: Locale;
+		locale: IntlLocale;
 	}>;
 }
 

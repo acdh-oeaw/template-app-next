@@ -4,11 +4,11 @@ import type { ReactNode } from "react";
 
 import { Image } from "@/components/image";
 import { MainContent } from "@/components/main-content";
-import type { Locale } from "@/config/i18n.config";
+import type { IntlLocale } from "@/lib/i18n/locales";
 
 interface AboutPageProps {
 	params: Promise<{
-		locale: Locale;
+		locale: IntlLocale;
 	}>;
 }
 

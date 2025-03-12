@@ -8,11 +8,11 @@ import { Image } from "@/components/image";
 import { Link } from "@/components/link";
 import { Logo } from "@/components/logo";
 import { MainContent } from "@/components/main-content";
-import type { Locale } from "@/config/i18n.config";
+import type { IntlLocale } from "@/lib/i18n/locales";
 
 interface IndexPageProps {
 	params: Promise<{
-		locale: Locale;
+		locale: IntlLocale;
 	}>;
 }
 

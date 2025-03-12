@@ -1,17 +1,22 @@
 import { createNavigation } from "next-intl/navigation";
-import type { ComponentPropsWithRef, FC, ReactNode } from "react";
+import type { ComponentPropsWithRef, FC } from "react";
 
-import { routing } from "@/config/i18n.config";
+import { routing } from "@/lib/i18n/routing";
 
-const { Link, redirect: _redirect, usePathname, useRouter } = createNavigation(routing);
+const {
+	Link,
+	getPathname,
+	redirect: _redirect,
+	usePathname,
+	useRouter,
+} = createNavigation(routing);
 
 /** FIXME: @see https://github.com/amannn/next-intl/issues/823 */
 const redirect: typeof _redirect = _redirect;
 
-export { redirect, usePathname, useRouter };
+export { getPathname, redirect, usePathname, useRouter };
 
 export type LocaleLinkProps = Omit<ComponentPropsWithRef<typeof Link>, "href"> & {
-	children: ReactNode;
 	href?: string | undefined;
 };
 

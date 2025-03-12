@@ -7,12 +7,12 @@ import { getTranslations, setRequestLocale } from "next-intl/server";
 import type { ReactNode } from "react";
 
 import { MainContent } from "@/components/main-content";
-import type { Locale } from "@/config/i18n.config";
 import { createImprintUrl } from "@/config/imprint.config";
+import type { IntlLocale } from "@/lib/i18n/locales";
 
 interface ImprintPageProps {
 	params: Promise<{
-		locale: Locale;
+		locale: IntlLocale;
 	}>;
 }
 
@@ -60,7 +60,7 @@ export default async function ImprintPage(props: Readonly<ImprintPageProps>): Pr
 	);
 }
 
-async function getImprintHtml(locale: Locale): Promise<string> {
+async function getImprintHtml(locale: IntlLocale): Promise<string> {
 	try {
 		const url = createImprintUrl(locale);
 		const html = await request(url, { responseType: "text" });

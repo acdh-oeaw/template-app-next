@@ -1,15 +1,14 @@
-import { includes } from "@acdh-oeaw/lib";
+import { includes, removeTrailingSlash } from "@acdh-oeaw/lib";
 import createI18nMiddleware from "next-intl/middleware";
 
-import { localePrefix, routing } from "@/config/i18n.config";
-import { removeTrailingSlash } from "@/lib/remove-trailing-slash";
+import { localePrefix, routing } from "@/lib/i18n/routing";
 import type { Middleware } from "@/lib/server/compose-middlewares";
 
-const middleware = createI18nMiddleware(routing);
+const intlMiddleware = createI18nMiddleware(routing);
 
-export const i18nMiddlware: Middleware = function i18nMiddleware(request, response) {
+export const middleware: Middleware = function middleware(request, response) {
 	if (request.method === "GET" && !request.nextUrl.pathname.startsWith("/api")) {
-		const response = middleware(request);
+		const response = intlMiddleware(request);
 
 		/**
 		 * 'next-intl` v4 adds an `x-default` alternate link for all routes,
@@ -17,6 +16,7 @@ export const i18nMiddlware: Middleware = function i18nMiddleware(request, respon
 		 *
 		 * @see https://next-intl.dev/docs/routing#alternate-links
 		 */
+
 		const pathname = removeTrailingSlash(request.nextUrl.pathname);
 
 		if (!includes(Object.values(localePrefix.prefixes), pathname)) {
