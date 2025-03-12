@@ -2,8 +2,14 @@ import { createUrl } from "@acdh-oeaw/lib";
 
 import { env } from "@/config/env.config";
 import { expect, test } from "@/e2e/lib/test";
-import { defaultLocale, locales } from "@/lib/i18n/locales";
-import { getPathname } from "@/lib/i18n/navigation";
+import { defaultLocale, type IntlLocale, locales } from "@/lib/i18n/locales";
+import { localePrefix } from "@/lib/i18n/routing";
+// import { getPathname } from "@/lib/i18n/navigation";
+
+/** @see https://github.com/microsoft/playwright/issues/35162 */
+function getPathname({ href, locale }: { href: { pathname: string }; locale: IntlLocale }): string {
+	return localePrefix.prefixes[locale] + href.pathname;
+}
 
 test.describe("app", () => {
 	if (env.NEXT_PUBLIC_BOTS !== "enabled") {

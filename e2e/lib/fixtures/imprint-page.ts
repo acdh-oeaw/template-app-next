@@ -2,7 +2,13 @@ import type { Locator, Page } from "@playwright/test";
 
 import type { I18n } from "@/e2e/lib/fixtures/i18n";
 import { defaultLocale, type IntlLocale } from "@/lib/i18n/locales";
-import { getPathname } from "@/lib/i18n/navigation";
+import { localePrefix } from "@/lib/i18n/routing";
+// import { getPathname } from "@/lib/i18n/navigation";
+
+/** @see https://github.com/microsoft/playwright/issues/35162 */
+function getPathname({ href, locale }: { href: { pathname: string }; locale: IntlLocale }): string {
+	return localePrefix.prefixes[locale] + href.pathname;
+}
 
 export class ImprintPage {
 	readonly page: Page;
