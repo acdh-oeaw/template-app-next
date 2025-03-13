@@ -7,7 +7,7 @@
 		"node": "22.x",
 		"pnpm": "10.x"
 	},
-	"packageManager": "pnpm@10.6.1",
+	"packageManager": "pnpm@10.6.2",
 	"scripts": {
 		"analyze": "BUNDLE_ANALYZER=\"enabled\" next build --no-lint",
 		"build": "next build",
@@ -35,10 +35,10 @@
 		"validate": "run-p format:check lint:check types:check test test:e2e"
 	},
 	"dependencies": {
-		"@acdh-oeaw/lib": "^0.3.0",
+		"@acdh-oeaw/lib": "^0.3.1",
 		"@acdh-oeaw/style-variants": "^0.1.0",
 		"@acdh-oeaw/validate-env": "^0.0.3",
-		"@react-aria/utils": "^3.28.0",
+		"@react-aria/utils": "^3.28.1",
 		"client-only": "^0.0.1",
 		"fast-glob": "^3.3.3",
 		"image-dimensions": "^2.3.0",
@@ -46,14 +46,14 @@
 		"next": "canary",
 		"next-intl": "^4.0.0",
 		"react": "^19.0.0",
-		"react-aria": "^3.38.0",
-		"react-aria-components": "1.7.0",
+		"react-aria": "^3.38.1",
+		"react-aria-components": "1.7.1",
 		"react-dom": "^19.0.0",
 		"react-schemaorg": "^2.0.0",
-		"react-stately": "^3.36.0",
+		"react-stately": "^3.36.1",
 		"server-only": "^0.0.1",
 		"sharp": "^0.33.5",
-		"valibot": "^1.0.0-rc.3"
+		"valibot": "^1.0.0-rc.4"
 	},
 	"devDependencies": {
 		"@acdh-oeaw/eslint-config": "^2.0.8",
@@ -70,13 +70,13 @@
 		"@playwright/test": "^1.51.0",
 		"@react-aria/optimize-locales-plugin": "1.1.4",
 		"@react-types/shared": "^3.28.0",
-		"@tailwindcss/postcss": "^4.0.12",
+		"@tailwindcss/postcss": "^4.0.13",
 		"@types/node": "^22.13.10",
 		"@types/react": "^19.0.10",
 		"@types/react-dom": "^19.0.4",
 		"axe-core": "^4.10.3",
 		"axe-playwright": "^2.1.0",
-		"ci-info": "^4.1.0",
+		"ci-info": "^4.2.0",
 		"dotenv": "^16.4.7",
 		"dotenv-cli": "^8.0.0",
 		"dotenv-expand": "^12.0.1",
@@ -93,12 +93,12 @@
 		"schema-dts": "^1.1.5",
 		"simple-git-hooks": "^2.11.1",
 		"stylelint": "^16.15.0",
-		"tailwindcss": "^4.0.12",
+		"tailwindcss": "^4.0.13",
 		"tailwindcss-animate": "^1.0.7",
 		"tailwindcss-react-aria-components": "2.0.0",
 		"tsx": "^4.19.3",
 		"typescript": "^5.8.2",
-		"typescript-eslint": "^8.26.0"
+		"typescript-eslint": "^8.26.1"
 	},
 	"pnpm": {
 		"onlyBuiltDependencies": [

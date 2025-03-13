@@ -1,13 +1,13 @@
 "use cache";
 
-import { HttpError, request } from "@acdh-oeaw/lib";
+import { createUrl, createUrlSearchParams, HttpError, request } from "@acdh-oeaw/lib";
 import type { Metadata, ResolvingMetadata } from "next";
 import { notFound } from "next/navigation";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import type { ReactNode } from "react";
 
 import { MainContent } from "@/components/ui/main-content";
-import { createImprintUrl } from "@/config/imprint.config";
+import { env } from "@/config/env.config";
 import type { IntlLocale } from "@/lib/i18n/locales";
 
 interface ImprintPageProps {
@@ -58,6 +58,14 @@ export default async function ImprintPage(props: Readonly<ImprintPageProps>): Pr
 			/>
 		</MainContent>
 	);
+}
+
+function createImprintUrl(locale: IntlLocale): URL {
+	return createUrl({
+		baseUrl: env.NEXT_PUBLIC_IMPRINT_SERVICE_BASE_URL,
+		pathname: `/${String(env.NEXT_PUBLIC_REDMINE_ID)}`,
+		searchParams: createUrlSearchParams({ locale }),
+	});
 }
 
 async function getImprintHtml(locale: IntlLocale): Promise<string> {
