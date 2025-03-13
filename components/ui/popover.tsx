@@ -5,6 +5,7 @@ import { Fragment, type ReactNode } from "react";
 import {
 	composeRenderProps,
 	OverlayArrow as AriaOverlayArrow,
+	type OverlayArrowProps as AriaOverlayArrowProps,
 	Popover as AriaPopover,
 	type PopoverProps as AriaPopoverProps,
 } from "react-aria-components";
@@ -14,7 +15,7 @@ interface PopoverProps extends AriaPopoverProps {}
 export function Popover(props: PopoverProps): ReactNode {
 	const { children, className, ...rest } = props;
 
-	const isArrowVisible = props.arrow === ""; // FIXME:
+	const isArrowVisible = props.showArrow === "enabled"; // FIXME:
 	// let popoverContext = useSlottedContext(PopoverContext);
 	// let isSubmenu = popoverContext?.trigger === 'SubmenuTrigger';
 	// let offset = isArrowVisible ? 12 : 8;
@@ -38,22 +39,28 @@ export function Popover(props: PopoverProps): ReactNode {
 			{composeRenderProps(children, (children) => {
 				return (
 					<Fragment>
-						{isArrowVisible ? (
-							<AriaOverlayArrow className="group">
-								<svg
-									className="block fill-background-overlay stroke-stroke-weak stroke-1 group-placement-left:-rotate-90 group-placement-right:rotate-90 group-placement-bottom:rotate-180 forced-colors:fill-[Canvas] forced-colors:stroke-[ButtonBorder]"
-									height={12}
-									viewBox="0 0 12 12"
-									width={12}
-								>
-									<path d="M0 0 L6 6 L12 0" />
-								</svg>
-							</AriaOverlayArrow>
-						) : null}
+						{isArrowVisible ? <OverlayArrow /> : null}
 						{children}
 					</Fragment>
 				);
 			})}
 		</AriaPopover>
+	);
+}
+
+interface OverlayArrowProps extends AriaOverlayArrowProps {}
+
+function OverlayArrow(_props: OverlayArrowProps): ReactNode {
+	return (
+		<AriaOverlayArrow className="group">
+			<svg
+				className="block fill-background-overlay stroke-stroke-weak stroke-1 group-placement-left:-rotate-90 group-placement-right:rotate-90 group-placement-bottom:rotate-180 forced-colors:fill-[Canvas] forced-colors:stroke-[ButtonBorder]"
+				height={12}
+				viewBox="0 0 12 12"
+				width={12}
+			>
+				<path d="M0 0 L6 6 L12 0" />
+			</svg>
+		</AriaOverlayArrow>
 	);
 }

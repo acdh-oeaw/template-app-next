@@ -28,7 +28,7 @@ export function ModalOverlay(props: ModalOverlayProps): ReactNode {
 			{...rest}
 			className={composeRenderProps(className, (className) => {
 				return cn(
-					"fixed inset-0 isolate z-10 flex min-h-full items-end justify-center overflow-y-auto bg-fill-overlay p-4 text-center backdrop-blur-xl xs:items-center entering:duration-300 entering:ease-out entering:animate-in entering:fade-in exiting:duration-200 exiting:ease-in exiting:animate-out exiting:fade-out",
+					"fixed inset-0 isolate z-10 flex min-h-full items-end justify-center overflow-y-auto bg-fill-overlay p-4 backdrop-blur-xl xs:items-center entering:duration-300 entering:ease-out entering:animate-in entering:fade-in exiting:duration-200 exiting:ease-in exiting:animate-out exiting:fade-out",
 					className,
 				);
 			})}
@@ -39,7 +39,7 @@ export function ModalOverlay(props: ModalOverlayProps): ReactNode {
 }
 
 const modalStyles = styles({
-	base: "w-full overflow-hidden rounded-4 border border-stroke-weak bg-background-overlay p-8 text-left align-middle shadow-overlay forced-colors:bg-[Canvas] entering:duration-300 entering:ease-out entering:animate-in entering:zoom-in-95 exiting:duration-200 exiting:ease-in exiting:animate-out exiting:zoom-out-95",
+	base: "w-full overflow-hidden rounded-4 border border-stroke-weak bg-background-overlay p-8 shadow-overlay forced-colors:bg-[Canvas] entering:duration-300 entering:ease-out entering:animate-in entering:zoom-in-95 exiting:duration-200 exiting:ease-in exiting:animate-out exiting:zoom-out-95",
 	variants: {
 		size: {
 			small: "max-w-lg",
