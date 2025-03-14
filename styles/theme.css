@@ -540,7 +540,8 @@
 
 	@keyframes underlay-in {
 		from {
-			background-color: transparent;
+			/** Work around safari "treating" transparent as "transparent black". */
+			background-color: color-mix(in sRGB, var(--color-background-overlay) 0%, transparent);
 			backdrop-filter: blur(0);
 		}
 
@@ -557,7 +558,8 @@
 		}
 
 		to {
-			background-color: transparent;
+			/** Work around safari "treating" transparent as "transparent black". */
+			background-color: color-mix(in sRGB, var(--color-background-overlay) 0%, transparent);
 			backdrop-filter: blur(0);
 		}
 	}
