@@ -1,6 +1,5 @@
 @import "tailwindcss";
 
-@plugin "tailwindcss-animate";
 @plugin "tailwindcss-react-aria-components";
 
 @custom-variant aria-current-page (&[aria-current="page"]);

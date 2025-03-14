@@ -8,7 +8,7 @@ import {
 	UNSTABLE_ToastRegion as AriaToastRegion,
 } from "react-aria-components";
 
-import { queue, Toast, type ToastContent } from "@/components/ui/toast";
+import { toasts, Toast, type ToastContent } from "@/components/ui/toast";
 
 interface ToastRegionProps extends Omit<AriaToastRegionProps<ToastContent>, "children" | "queue"> {}
 
@@ -24,7 +24,7 @@ export function ToastRegion(props: ToastRegionProps): ReactNode {
 					className,
 				);
 			})}
-			queue={queue}
+			queue={toasts}
 		>
 			{({ toast }) => {
 				return <Toast toast={toast} />;

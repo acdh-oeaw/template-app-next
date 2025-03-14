@@ -22,7 +22,7 @@ export interface ToastContent {
 	status: "error" | "success";
 }
 
-export const queue = new AriaToastQueue<ToastContent>({
+export const toasts = new AriaToastQueue<ToastContent>({
 	wrapUpdate(fn) {
 		if ("startViewTransition" in document) {
 			document.startViewTransition(() => {

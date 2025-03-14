@@ -518,3 +518,63 @@
 	--shadow-raised: 0px 4px 8px rgb(0 0 0 / 4%), 0px 2px 4px rgb(0 0 0 / 8%);
 	--shadow-sunken: inset 0px 1px 4px rgb(0 0 0 / 8%);
 }
+
+/** Animations. */
+@theme {
+	--animation-underlay-in: underlay-in 300ms ease-out;
+	--animation-underlay-out: underlay-out 200ms ease-in;
+
+	--animation-overlay-in: overlay-in 300ms ease-out;
+	--animation-overlay-out: overlay-out 200ms ease-in;
+
+	--animation-drawer-left-in: drawer-left-in 200ms ease-in;
+	--animation-drawer-left-out: drawer-left-out 200ms ease-in;
+	--animation-drawer-right-in: drawer-right-in 200ms ease-in;
+	--animation-drawer-right-out: drawer-right-out 200ms ease-in;
+	--animation-drawer-top-in: drawer-top-in 200ms ease-in;
+	--animation-drawer-top-out: drawer-top-out 200ms ease-in;
+	--animation-drawer-bottom-in: drawer-bottom-in 200ms ease-in;
+	--animation-drawer-bottom-out: drawer-bottom-out 200ms ease-in;
+
+	--animation-loading-indicator-in: loading-indicator-in 1000ms 500ms linear infinite;
+
+	@keyframes underlay-in {
+		to {
+			background-color: var(--color-background-overlay);
+			backdrop-filter: blur(var(--blur-xl));
+		}
+	}
+
+	@keyframes underlay-out {
+		to {
+			background-color: transparent;
+			backdrop-filter: blur(0);
+		}
+	}
+
+	@keyframes overlay-in {
+		from {
+			transform: scale(95%);
+		}
+
+		to {
+			transform: scale(100%);
+		}
+	}
+
+	@keyframes overlay-out {
+		from {
+			transform: scale(100%);
+		}
+
+		to {
+			transform: scale(95%);
+		}
+	}
+
+	@keyframes loading-indicator-in {
+		to {
+			transform: rotate(360deg);
+		}
+	}
+}

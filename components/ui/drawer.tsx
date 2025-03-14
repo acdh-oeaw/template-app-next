@@ -28,7 +28,7 @@ export function ModalOverlay(props: ModalOverlayProps): ReactNode {
 			{...rest}
 			className={composeRenderProps(className, (className) => {
 				return cn(
-					"fixed inset-0 isolate z-10 grid min-h-full w-full overflow-y-auto bg-fill-overlay backdrop-blur-xl entering:duration-300 entering:ease-out entering:animate-in entering:fade-in exiting:duration-200 exiting:ease-in exiting:animate-out exiting:fade-out",
+					"entering:animate-underlay-in exiting:animate-underlay-out fixed inset-0 isolate z-10 grid min-h-full w-full overflow-y-auto bg-fill-overlay backdrop-blur-xl",
 					className,
 				);
 			})}
@@ -41,7 +41,7 @@ export function ModalOverlay(props: ModalOverlayProps): ReactNode {
 const modalStyles = styles({
 	base: "h-full w-full overflow-hidden border border-stroke-weak bg-background-overlay shadow-overlay forced-colors:bg-[Canvas] entering:duration-300 entering:ease-out entering:animate-in exiting:duration-200 exiting:ease-in exiting:animate-out",
 	variants: {
-		position: {
+		placement: {
 			bottom: "",
 			left: "mr-16 justify-self-start entering:slide-in-from-left exiting:slide-out-to-left",
 			right: "ml-16 justify-self-end entering:slide-in-from-right exiting:slide-out-to-right",
@@ -53,7 +53,7 @@ const modalStyles = styles({
 		},
 	},
 	defaults: {
-		position: "right",
+		placement: "right",
 		size: "small",
 	},
 });
@@ -63,13 +63,13 @@ type ModalStyleProps = GetVariantProps<typeof modalStyles>;
 interface ModalProps extends AriaModalOverlayProps, ModalStyleProps {}
 
 export function Modal(props: ModalProps): ReactNode {
-	const { children, className, position, size, ...rest } = props;
+	const { children, className, placement, size, ...rest } = props;
 
 	return (
 		<AriaModal
 			{...rest}
 			className={composeRenderProps(className, (className) => {
-				return modalStyles({ className, position, size });
+				return modalStyles({ className, placement: placement, size });
 			})}
 		>
 			{children}
@@ -123,9 +123,9 @@ export function DrawerTitle(props: DrawerTitleProps): ReactNode {
 	);
 }
 
-interface DrawerContentProps extends ComponentPropsWithRef<"div"> {}
+interface DrawerBodyProps extends ComponentPropsWithRef<"div"> {}
 
-export function DrawerContent(props: DrawerContentProps): ReactNode {
+export function DrawerBody(props: DrawerBodyProps): ReactNode {
 	const { children, className, ...rest } = props;
 
 	return (

@@ -28,7 +28,7 @@ export function ModalOverlay(props: ModalOverlayProps): ReactNode {
 			{...rest}
 			className={composeRenderProps(className, (className) => {
 				return cn(
-					"fixed inset-0 isolate z-10 flex min-h-full items-end justify-center overflow-y-auto bg-fill-overlay p-4 backdrop-blur-xl xs:items-center entering:duration-300 entering:ease-out entering:animate-in entering:fade-in exiting:duration-200 exiting:ease-in exiting:animate-out exiting:fade-out",
+					"entering:animate-underlay-in exiting:animate-underlay-out fixed inset-0 isolate z-10 flex min-h-full items-end justify-center overflow-y-auto bg-fill-overlay p-4 backdrop-blur-xl xs:items-center",
 					className,
 				);
 			})}
@@ -39,7 +39,7 @@ export function ModalOverlay(props: ModalOverlayProps): ReactNode {
 }
 
 const modalStyles = styles({
-	base: "w-full overflow-hidden rounded-4 border border-stroke-weak bg-background-overlay p-8 shadow-overlay forced-colors:bg-[Canvas] entering:duration-300 entering:ease-out entering:animate-in entering:zoom-in-95 exiting:duration-200 exiting:ease-in exiting:animate-out exiting:zoom-out-95",
+	base: "entering:animate-overlay-in exiting:overlay-out w-full overflow-hidden rounded-4 border border-stroke-weak bg-background-overlay p-8 shadow-overlay forced-colors:bg-[Canvas]",
 	variants: {
 		size: {
 			small: "max-w-lg",
@@ -131,9 +131,9 @@ export function DialogDescription(props: DialogDescriptionProps): ReactNode {
 	);
 }
 
-interface DialogContentProps extends ComponentPropsWithRef<"div"> {}
+interface DialogBodyProps extends ComponentPropsWithRef<"div"> {}
 
-export function DialogContent(props: DialogContentProps): ReactNode {
+export function DialogBody(props: DialogBodyProps): ReactNode {
 	const { children, className, ...rest } = props;
 
 	return (
