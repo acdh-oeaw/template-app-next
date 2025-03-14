@@ -117,7 +117,7 @@ export function AppNavigation(props: Readonly<AppNavigationProps>): ReactNode {
 											/>
 										</Button>
 										<Popover
-											className="min-w-(--trigger-width) rounded-2 border border-stroke-weak bg-background-overlay shadow-overlay placement-bottom:translate-y-1 placement-bottom:slide-in-from-top-2 entering:animate-in entering:fade-in-0 exiting:animate-out exiting:fade-out-0 exiting:zoom-out-95"
+											className="placement-bottom:slide-in-from-top-2 entering:animate-in entering:fade-in-0 exiting:animate-out exiting:fade-out-0 exiting:zoom-out-95 min-w-(--trigger-width) rounded-2 border border-stroke-weak bg-background-overlay shadow-overlay placement-bottom:translate-y-1"
 											placement="bottom"
 										>
 											<Menu
@@ -213,10 +213,10 @@ export function AppNavigationMobile(props: Readonly<AppNavigationMobileProps>): 
 				</Button>
 			</nav>
 			<ModalOverlay
-				className="fixed top-0 left-0 isolate z-20 h-(--visual-viewport-height) w-full bg-fill-overlay entering:duration-200 entering:ease-out entering:animate-in entering:fade-in exiting:duration-200 exiting:ease-in exiting:animate-out exiting:fade-out"
+				className="entering:animate-in entering:fade-in exiting:animate-out exiting:fade-out fixed top-0 left-0 isolate z-20 h-(--visual-viewport-height) w-full bg-fill-overlay entering:duration-200 entering:ease-out exiting:duration-200 exiting:ease-in"
 				isDismissable={true}
 			>
-				<Modal className="mr-12 size-full max-h-full max-w-sm bg-background-overlay shadow-overlay forced-colors:bg-[Canvas] entering:duration-200 entering:ease-out entering:animate-in entering:slide-in-from-left exiting:duration-200 exiting:ease-in exiting:animate-out exiting:slide-out-to-left">
+				<Modal className="entering:animate-in entering:slide-in-from-left exiting:animate-out exiting:slide-out-to-left mr-12 size-full max-h-full max-w-sm bg-background-overlay shadow-overlay forced-colors:bg-[Canvas] entering:duration-200 entering:ease-out exiting:duration-200 exiting:ease-in">
 					<Dialog className="relative h-full max-h-[inherit] overflow-auto">
 						{({ close }) => {
 							return (

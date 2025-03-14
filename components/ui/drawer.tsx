@@ -28,7 +28,7 @@ export function ModalOverlay(props: ModalOverlayProps): ReactNode {
 			{...rest}
 			className={composeRenderProps(className, (className) => {
 				return cn(
-					"entering:animate-underlay-in exiting:animate-underlay-out fixed inset-0 isolate z-10 grid min-h-full w-full overflow-y-auto bg-fill-overlay backdrop-blur-xl",
+					"fixed inset-0 isolate z-10 grid min-h-full w-full overflow-y-auto bg-fill-overlay entering:animate-underlay-in exiting:animate-underlay-out",
 					className,
 				);
 			})}
@@ -39,13 +39,13 @@ export function ModalOverlay(props: ModalOverlayProps): ReactNode {
 }
 
 const modalStyles = styles({
-	base: "h-full w-full overflow-hidden border border-stroke-weak bg-background-overlay shadow-overlay forced-colors:bg-[Canvas] entering:duration-300 entering:ease-out entering:animate-in exiting:duration-200 exiting:ease-in exiting:animate-out",
+	base: "entering:animate-in exiting:animate-out h-full w-full overflow-hidden border border-stroke-weak bg-background-overlay shadow-overlay forced-colors:bg-[Canvas] entering:duration-300 entering:ease-out exiting:duration-200 exiting:ease-in",
 	variants: {
 		placement: {
-			bottom: "",
-			left: "mr-16 justify-self-start entering:slide-in-from-left exiting:slide-out-to-left",
-			right: "ml-16 justify-self-end entering:slide-in-from-right exiting:slide-out-to-right",
-			top: "",
+			bottom: "entering:slide-bottom-in exiting:slide-bottom-out mt-16 self-end",
+			left: "entering:slide-left-in exiting:slide-left-out mr-16 justify-self-start",
+			right: "entering:slide-right-in exiting:slide-right-out ml-16 justify-self-end",
+			top: "entering:slide-top-in exiting:slide-top-out mb-16 self-start",
 		},
 		size: {
 			small: "max-w-sm",

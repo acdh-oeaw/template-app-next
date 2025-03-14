@@ -28,7 +28,7 @@ export function ModalOverlay(props: ModalOverlayProps): ReactNode {
 			{...rest}
 			className={composeRenderProps(className, (className) => {
 				return cn(
-					"entering:animate-underlay-in exiting:animate-underlay-out fixed inset-0 isolate z-10 flex min-h-full items-end justify-center overflow-y-auto bg-fill-overlay p-4 backdrop-blur-xl xs:items-center",
+					"fixed inset-0 isolate z-10 flex min-h-full items-end justify-center overflow-y-auto bg-fill-overlay p-4 xs:items-center entering:animate-underlay-in exiting:animate-underlay-out",
 					className,
 				);
 			})}
@@ -39,7 +39,7 @@ export function ModalOverlay(props: ModalOverlayProps): ReactNode {
 }
 
 const modalStyles = styles({
-	base: "entering:animate-overlay-in exiting:overlay-out w-full overflow-hidden rounded-4 border border-stroke-weak bg-background-overlay p-8 shadow-overlay forced-colors:bg-[Canvas]",
+	base: "exiting:overlay-out w-full overflow-hidden rounded-4 border border-stroke-weak bg-background-overlay p-8 shadow-overlay forced-colors:bg-[Canvas] entering:animate-overlay-in",
 	variants: {
 		size: {
 			small: "max-w-lg",

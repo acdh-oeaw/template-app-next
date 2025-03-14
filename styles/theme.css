@@ -521,24 +521,29 @@
 
 /** Animations. */
 @theme {
-	--animation-underlay-in: underlay-in 300ms ease-out;
-	--animation-underlay-out: underlay-out 200ms ease-in;
+	--animate-underlay-in: 300ms ease-out underlay-in;
+	--animate-underlay-out: 200ms ease-in underlay-out;
 
-	--animation-overlay-in: overlay-in 300ms ease-out;
-	--animation-overlay-out: overlay-out 200ms ease-in;
+	--animate-overlay-in: 300ms ease-out overlay-in;
+	--animate-overlay-out: 200ms ease-in overlay-out;
 
-	--animation-drawer-left-in: drawer-left-in 200ms ease-in;
-	--animation-drawer-left-out: drawer-left-out 200ms ease-in;
-	--animation-drawer-right-in: drawer-right-in 200ms ease-in;
-	--animation-drawer-right-out: drawer-right-out 200ms ease-in;
-	--animation-drawer-top-in: drawer-top-in 200ms ease-in;
-	--animation-drawer-top-out: drawer-top-out 200ms ease-in;
-	--animation-drawer-bottom-in: drawer-bottom-in 200ms ease-in;
-	--animation-drawer-bottom-out: drawer-bottom-out 200ms ease-in;
+	--animate-slide-left-in: 300ms ease-out slide-left-in;
+	--animate-slide-left-out: 200ms ease-in slide-left-out;
+	--animate-slide-right-in: 300ms ease-out slide-right-in;
+	--animate-slide-right-out: 200ms ease-in slide-right-out;
+	--animate-slide-top-in: 300ms ease-out slide-top-in;
+	--animate-slide-top-out: 200ms ease-in slide-top-out;
+	--animate-slide-bottom-in: 300ms ease-out slide-bottom-in;
+	--animate-slide-bottom-out: 200ms ease-in slide-bottom-out;
 
-	--animation-loading-indicator-in: loading-indicator-in 1000ms 500ms linear infinite;
+	--animate-loading-indicator-in: 300ms ease-out 500ms fade-in, 1000ms linear 500ms spin infinite;
 
 	@keyframes underlay-in {
+		from {
+			background-color: transparent;
+			backdrop-filter: blur(0);
+		}
+
 		to {
 			background-color: var(--color-background-overlay);
 			backdrop-filter: blur(var(--blur-xl));
@@ -546,6 +551,11 @@
 	}
 
 	@keyframes underlay-out {
+		from {
+			background-color: var(--color-background-overlay);
+			backdrop-filter: blur(var(--blur-xl));
+		}
+
 		to {
 			background-color: transparent;
 			backdrop-filter: blur(0);
@@ -554,27 +564,115 @@
 
 	@keyframes overlay-in {
 		from {
-			transform: scale(95%);
+			opacity: 0%;
+			transform: scale(0.95);
 		}
 
 		to {
-			transform: scale(100%);
+			opacity: 100%;
+			transform: scale(1);
 		}
 	}
 
 	@keyframes overlay-out {
 		from {
-			transform: scale(100%);
+			opacity: 100%;
+			transform: scale(1);
 		}
 
 		to {
-			transform: scale(95%);
+			opacity: 0%;
+			transform: scale(0.95);
 		}
 	}
 
-	@keyframes loading-indicator-in {
+	@keyframes fade-in {
+		from {
+			opacity: 0%;
+		}
+
 		to {
-			transform: rotate(360deg);
+			opacity: 100%;
+		}
+	}
+
+	@keyframes slide-left-in {
+		from {
+			transform: translateX(-100%);
+		}
+
+		to {
+			transform: translateX(0);
+		}
+	}
+
+	@keyframes slide-left-out {
+		from {
+			transform: translateX(0);
+		}
+
+		to {
+			transform: translateX(-100%);
+		}
+	}
+
+	@keyframes slide-right-in {
+		from {
+			transform: translateX(100%);
+		}
+
+		to {
+			transform: translateX(0);
+		}
+	}
+
+	@keyframes slide-right-out {
+		from {
+			transform: translateX(0);
+		}
+
+		to {
+			transform: translateX(100%);
+		}
+	}
+
+	@keyframes slide-top-in {
+		from {
+			transform: translateY(-100%);
+		}
+
+		to {
+			transform: translateY(0);
+		}
+	}
+
+	@keyframes slide-top-out {
+		from {
+			transform: translateY(0);
+		}
+
+		to {
+			transform: translateY(-100%);
+		}
+	}
+
+	@keyframes slide-bottom-in {
+		from {
+			transform: translateY(100%);
+		}
+
+		to {
+			transform: translateY(0);
+		}
+	}
+
+	@keyframes slide-bottom-out {
+		from {
+			transform: translateY(0);
+		}
+
+		to {
+			transform: translateY(100%);
 		}
 	}
 }
