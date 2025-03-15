@@ -4,7 +4,7 @@ import { useTranslations } from "next-intl";
 import { type ReactNode, useEffect, useTransition } from "react";
 import { Button } from "react-aria-components";
 
-import { MainContent } from "@/components/main-content";
+import { MainContent } from "@/components/ui/main-content";
 import { useRouter } from "@/lib/i18n/navigation";
 
 interface InternalErrorProps {

@@ -6,7 +6,7 @@ import { notFound } from "next/navigation";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import type { ReactNode } from "react";
 
-import { MainContent } from "@/components/main-content";
+import { MainContent } from "@/components/ui/main-content";
 import { env } from "@/config/env.config";
 import type { IntlLocale } from "@/lib/i18n/locales";
 
