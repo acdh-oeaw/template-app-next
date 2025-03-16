@@ -8,7 +8,7 @@ import {
 	UNSTABLE_ToastRegion as AriaToastRegion,
 } from "react-aria-components";
 
-import { toasts, Toast, type ToastContent } from "@/components/ui/toast";
+import { Toast, type ToastContent, toasts } from "@/components/ui/toast";
 
 interface ToastRegionProps extends Omit<AriaToastRegionProps<ToastContent>, "children" | "queue"> {}
 

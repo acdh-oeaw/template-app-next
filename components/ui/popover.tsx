@@ -15,7 +15,7 @@ interface PopoverProps extends AriaPopoverProps {}
 export function Popover(props: PopoverProps): ReactNode {
 	const { children, className, ...rest } = props;
 
-	const isArrowVisible = props.showArrow === "enabled"; // FIXME:
+	const isArrowVisible = false as boolean; // FIXME:
 	// let popoverContext = useSlottedContext(PopoverContext);
 	// let isSubmenu = popoverContext?.trigger === 'SubmenuTrigger';
 	// let offset = isArrowVisible ? 12 : 8;
@@ -25,13 +25,9 @@ export function Popover(props: PopoverProps): ReactNode {
 		<AriaPopover
 			offset={4}
 			{...rest}
-			className={composeRenderProps(className, (className, renderProps) => {
+			className={composeRenderProps(className, (className) => {
 				return cn(
-					"min-w-(--trigger-width) rounded-2 border border-stroke-weak bg-background-overlay shadow-overlay forced-colors:bg-[Canvas]",
-					renderProps.isEntering &&
-						"animate-in fade-in placement-left:slide-in-from-right-1 placement-right:slide-in-from-left-1 placement-top:slide-in-from-bottom-1 placement-bottom:slide-in-from-top-1 duration-200 ease-out",
-					renderProps.isExiting &&
-						"animate-out fade-out placement-left:slide-out-to-right-1 placement-right:slide-out-to-left-1 placement-top:slide-out-to-bottom-1 placement-bottom:slide-out-to-top-1 duration-150 ease-in",
+					"min-w-(--trigger-width) rounded-2 border border-stroke-weak bg-background-overlay shadow-overlay forced-colors:bg-[Canvas] entering:placement-left:animate-popover-left-in entering:placement-right:animate-popover-right-in entering:placement-top:animate-popover-top-in entering:placement-bottom:animate-popover-bottom-in exiting:placement-left:animate-popover-left-out exiting:placement-right:animate-popover-right-out exiting:placement-top:animate-popover-top-out exiting:placement-bottom:animate-popover-bottom-out",
 					className,
 				);
 			})}

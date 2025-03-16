@@ -536,6 +536,15 @@
 	--animate-slide-bottom-in: 300ms ease-out slide-bottom-in;
 	--animate-slide-bottom-out: 200ms ease-in slide-bottom-out;
 
+	--animate-popover-left-in: 200ms ease-out popover-left-in;
+	--animate-popover-left-out: 150ms ease-in popover-left-out;
+	--animate-popover-right-in: 200ms ease-out popover-right-in;
+	--animate-popover-right-out: 150ms ease-in popover-right-out;
+	--animate-popover-top-in: 200ms ease-out popover-top-in;
+	--animate-popover-top-out: 150ms ease-in popover-top-out;
+	--animate-popover-bottom-in: 200ms ease-out popover-bottom-in;
+	--animate-popover-bottom-out: 150ms ease-in popover-bottom-out;
+
 	--animate-loading-indicator-in: 300ms ease-out 500ms fade-in, 1000ms linear 500ms spin infinite;
 
 	@keyframes underlay-in {
@@ -675,6 +684,86 @@
 
 		to {
 			transform: translateY(100%);
+		}
+	}
+
+	@keyframes popover-left-in {
+		from {
+			transform: translateX(4px);
+		}
+
+		to {
+			transform: translateX(0);
+		}
+	}
+
+	@keyframes popover-left-out {
+		from {
+			transform: translateX(0);
+		}
+
+		to {
+			transform: translateX(4px);
+		}
+	}
+
+	@keyframes popover-right-in {
+		from {
+			transform: translateX(-4px);
+		}
+
+		to {
+			transform: translateX(0);
+		}
+	}
+
+	@keyframes popover-right-out {
+		from {
+			transform: translateX(0);
+		}
+
+		to {
+			transform: translateX(-4px);
+		}
+	}
+
+	@keyframes popover-top-in {
+		from {
+			transform: translateY(-4px);
+		}
+
+		to {
+			transform: translateY(0);
+		}
+	}
+
+	@keyframes popover-top-out {
+		from {
+			transform: translateY(0);
+		}
+
+		to {
+			transform: translateY(-4px);
+		}
+	}
+
+	@keyframes popover-bottom-in {
+		from {
+			transform: translateY(4px);
+		}
+
+		to {
+			transform: translateY(0);
+		}
+	}
+
+	@keyframes popover-bottom-out {
+		from {
+			transform: translateY(0);
+		}
+
+		to {
+			transform: translateY(4px);
 		}
 	}
 }
