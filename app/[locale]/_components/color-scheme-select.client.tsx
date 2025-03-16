@@ -45,7 +45,7 @@ export function ColorSchemeSelect(props: Readonly<ColorSchemeSelectProps>): Reac
 				<SelectValue className="sr-only" />
 			</Button>
 			<Popover
-				className="min-w-(--trigger-width) rounded-2 border border-stroke-weak bg-background-overlay shadow-overlay placement-bottom:translate-y-1 placement-bottom:slide-in-from-top-2 entering:animate-in entering:fade-in-0 exiting:animate-out exiting:fade-out-0 exiting:zoom-out-95"
+				className="placement-bottom:slide-in-from-top-2 entering:animate-in entering:fade-in-0 exiting:animate-out exiting:fade-out-0 exiting:zoom-out-95 min-w-(--trigger-width) rounded-2 border border-stroke-weak bg-background-overlay shadow-overlay placement-bottom:translate-y-1"
 				placement="bottom"
 			>
 				<ListBox className="max-h-[inherit] min-w-40 overflow-auto py-2">

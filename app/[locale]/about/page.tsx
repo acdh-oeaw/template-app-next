@@ -3,7 +3,7 @@ import { getTranslations, setRequestLocale } from "next-intl/server";
 import type { ReactNode } from "react";
 
 import { Image } from "@/components/image";
-import { MainContent } from "@/components/main-content";
+import { MainContent } from "@/components/ui/main-content";
 import type { IntlLocale } from "@/lib/i18n/locales";
 
 interface AboutPageProps {

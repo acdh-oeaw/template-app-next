@@ -2,7 +2,7 @@ import { cookies } from "next/headers";
 import type { ToastOptions } from "react-aria-components";
 import * as v from "valibot";
 
-import type { ToastContent } from "@/components/toast";
+import type { ToastContent } from "@/components/ui/toast";
 import { redirect } from "@/lib/i18n/navigation";
 
 type RedirectParams = Parameters<typeof redirect>[0];
