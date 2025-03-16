@@ -689,80 +689,96 @@
 
 	@keyframes popover-left-in {
 		from {
+			opacity: 0%;
 			transform: translateX(4px);
 		}
 
 		to {
+			opacity: 100%;
 			transform: translateX(0);
 		}
 	}
 
 	@keyframes popover-left-out {
 		from {
+			opacity: 100%;
 			transform: translateX(0);
 		}
 
 		to {
+			opacity: 0%;
 			transform: translateX(4px);
 		}
 	}
 
 	@keyframes popover-right-in {
 		from {
+			opacity: 0%;
 			transform: translateX(-4px);
 		}
 
 		to {
+			opacity: 100%;
 			transform: translateX(0);
 		}
 	}
 
 	@keyframes popover-right-out {
 		from {
+			opacity: 100%;
 			transform: translateX(0);
 		}
 
 		to {
+			opacity: 0%;
 			transform: translateX(-4px);
 		}
 	}
 
 	@keyframes popover-top-in {
 		from {
+			opacity: 0%;
 			transform: translateY(-4px);
 		}
 
 		to {
+			opacity: 100%;
 			transform: translateY(0);
 		}
 	}
 
 	@keyframes popover-top-out {
 		from {
+			opacity: 100%;
 			transform: translateY(0);
 		}
 
 		to {
+			opacity: 0%;
 			transform: translateY(-4px);
 		}
 	}
 
 	@keyframes popover-bottom-in {
 		from {
+			opacity: 0%;
 			transform: translateY(4px);
 		}
 
 		to {
+			opacity: 100%;
 			transform: translateY(0);
 		}
 	}
 
 	@keyframes popover-bottom-out {
 		from {
+			opacity: 100%;
 			transform: translateY(0);
 		}
 
 		to {
+			opacity: 0%;
 			transform: translateY(4px);
 		}
 	}
