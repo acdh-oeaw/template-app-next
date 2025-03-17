@@ -1,4 +1,4 @@
-import createBundleAnalyzer from "@next/bundle-analyzer";
+import createBundleAnalyzerPlugin from "@next/bundle-analyzer";
 import localesPlugin from "@react-aria/optimize-locales-plugin";
 import type { NextConfig as Config } from "next";
 import createI18nPlugin from "next-intl/plugin";
@@ -57,7 +57,7 @@ const config: Config = {
 };
 
 const plugins: Array<(config: Config) => Config> = [
-	createBundleAnalyzer({ enabled: env.BUNDLE_ANALYZER === "enabled" }),
+	createBundleAnalyzerPlugin({ enabled: env.BUNDLE_ANALYZER === "enabled" }),
 	createI18nPlugin({
 		experimental: {
 			/** @see https://v4.next-intl.dev/docs/workflows/typescript#messages-arguments */
