@@ -22,7 +22,7 @@ import { ColorSchemeScript } from "@/lib/color-scheme-script";
 import * as fonts from "@/lib/fonts";
 import { type IntlLocale, isValidLocale, locales } from "@/lib/i18n/locales";
 import { getMetadata } from "@/lib/i18n/metadata";
-import { getToast } from "@/lib/navigation/toast";
+import { getToastCookie } from "@/lib/server/toast";
 
 interface LocaleLayoutProps {
 	children: ReactNode;
@@ -95,7 +95,7 @@ export default async function LocaleLayout(props: Readonly<LocaleLayoutProps>): 
 	// const clientMessages = pick(messages, ["Error"]);
 	const clientMessages = messages;
 
-	const toast = await getToast();
+	const toast = await getToastCookie();
 
 	return (
 		<html

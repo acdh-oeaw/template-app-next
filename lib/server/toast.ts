@@ -3,22 +3,16 @@ import type { ToastOptions } from "react-aria-components";
 import * as v from "valibot";
 
 import type { ToastContent } from "@/components/ui/toast";
-import { redirect } from "@/lib/navigation/navigation";
 
-type RedirectParams = Parameters<typeof redirect>[0];
+const toastCookieName = "toast";
 
-const toastCookieName = "redirect-with-toast";
-
-export async function redirectWithToast(
-	params: RedirectParams,
+export async function setToastCookie(
 	content: ToastContent,
 	options?: Pick<ToastOptions, "timeout">,
-): Promise<never> {
+): Promise<void> {
 	const value = JSON.stringify({ content, options });
 
 	(await cookies()).set(toastCookieName, value, { maxAge: 0 });
-
-	redirect(params);
 }
 
 const ToastContentSchema = v.object({
@@ -34,7 +28,7 @@ const ToastContentSchema = v.object({
 	),
 });
 
-export async function getToast(): Promise<{
+export async function getToastCookie(): Promise<{
 	content: ToastContent;
 	options?: { timeout?: number };
 } | null> {
