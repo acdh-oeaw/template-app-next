@@ -549,27 +549,23 @@
 
 	@keyframes underlay-in {
 		from {
-			/** Work around safari "treating" transparent as "transparent black". */
-			background-color: color-mix(in sRGB, var(--color-background-overlay) 0%, transparent);
-			backdrop-filter: blur(0);
+			/** Work around for safari treating "transparent" as "transparent black". */
+			background-color: color-mix(in sRGB, var(--color-fill-overlay) 0%, transparent);
 		}
 
 		to {
-			background-color: var(--color-background-overlay);
-			backdrop-filter: blur(var(--blur-xl));
+			background-color: var(--color-fill-overlay);
 		}
 	}
 
 	@keyframes underlay-out {
 		from {
-			background-color: var(--color-background-overlay);
-			backdrop-filter: blur(var(--blur-xl));
+			background-color: var(--color-fill-overlay);
 		}
 
 		to {
-			/** Work around safari "treating" transparent as "transparent black". */
-			background-color: color-mix(in sRGB, var(--color-background-overlay) 0%, transparent);
-			backdrop-filter: blur(0);
+			/** Work around for safari treating "transparent" as "transparent black". */
+			background-color: color-mix(in sRGB, var(--color-fill-overlay) 0%, transparent);
 		}
 	}
 
@@ -690,7 +686,7 @@
 	@keyframes popover-left-in {
 		from {
 			opacity: 0%;
-			translate: 4px 0;
+			translate: 0.5rem 0;
 		}
 
 		to {
@@ -707,14 +703,15 @@
 
 		to {
 			opacity: 0%;
-			translate: 4px 0;
+			translate: 0.5rem 0;
+			scale: 0.95;
 		}
 	}
 
 	@keyframes popover-right-in {
 		from {
 			opacity: 0%;
-			translate: -4px 0;
+			translate: -0.5rem 0;
 		}
 
 		to {
@@ -731,14 +728,15 @@
 
 		to {
 			opacity: 0%;
-			translate: -4px 0;
+			translate: -0.5rem 0;
+			scale: 0.95;
 		}
 	}
 
 	@keyframes popover-top-in {
 		from {
 			opacity: 0%;
-			translate: 0 -4px;
+			translate: 0 0.5rem;
 		}
 
 		to {
@@ -755,14 +753,15 @@
 
 		to {
 			opacity: 0%;
-			translate: 0 -4px;
+			translate: 0 0.5rem;
+			scale: 0.95;
 		}
 	}
 
 	@keyframes popover-bottom-in {
 		from {
 			opacity: 0%;
-			translate: 0 4px;
+			translate: 0 -0.5rem;
 		}
 
 		to {
@@ -779,7 +778,8 @@
 
 		to {
 			opacity: 0%;
-			translate: 0 4px;
+			translate: 0 -0.5rem;
+			scale: 0.95;
 		}
 	}
 }
