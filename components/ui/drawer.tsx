@@ -39,7 +39,7 @@ export function ModalOverlay(props: ModalOverlayProps): ReactNode {
 }
 
 const modalStyles = styles({
-	base: "entering:animate-in exiting:animate-out h-full w-full overflow-hidden border border-stroke-weak bg-background-overlay shadow-overlay forced-colors:bg-[Canvas] entering:duration-300 entering:ease-out exiting:duration-200 exiting:ease-in",
+	base: "h-full w-full overflow-hidden border border-stroke-weak bg-background-overlay shadow-overlay forced-colors:bg-[Canvas]",
 	variants: {
 		placement: {
 			bottom: "entering:slide-bottom-in exiting:slide-bottom-out mt-16 self-end",
