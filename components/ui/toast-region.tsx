@@ -20,7 +20,7 @@ export function ToastRegion(props: ToastRegionProps): ReactNode {
 			{...rest}
 			className={composeRenderProps(className, (className) => {
 				return cn(
-					"fixed right-4 bottom-4 flex flex-col gap-2 rounded-2 outline-hidden focus-visible:focus-outline",
+					"fixed right-4 bottom-4 flex flex-col items-end gap-2 rounded-2 outline-hidden focus-visible:focus-outline",
 					className,
 				);
 			})}
