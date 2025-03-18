@@ -1,5 +1,5 @@
 import { defaultLocale } from "@/lib/i18n/locales";
-import { redirect } from "@/lib/i18n/navigation";
+import { redirect } from "@/lib/navigation/navigation";
 
 /**
  * This page only renders when the app is built statically with `output: "export"`.

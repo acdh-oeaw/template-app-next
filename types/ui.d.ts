@@ -1,4 +1,4 @@
-import type { useRouter } from "@/lib/i18n/navigation";
+import type { useRouter } from "@/lib/navigation/navigation";
 
 declare module "react-aria-components" {
 	interface RouterConfig {

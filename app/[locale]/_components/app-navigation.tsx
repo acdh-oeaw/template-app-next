@@ -23,7 +23,7 @@ import {
 
 import { Logo } from "@/components/logo";
 import { NavLink, type NavLinkProps } from "@/components/nav-link";
-import { usePathname, useRouter } from "@/lib/i18n/navigation";
+import { usePathname, useRouter } from "@/lib/navigation/navigation";
 import { isCurrentPage } from "@/lib/navigation/use-nav-link";
 
 interface NavigationLink {

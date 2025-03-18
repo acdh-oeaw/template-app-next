@@ -3,7 +3,7 @@ import type { ToastOptions } from "react-aria-components";
 import * as v from "valibot";
 
 import type { ToastContent } from "@/components/ui/toast";
-import { redirect } from "@/lib/i18n/navigation";
+import { redirect } from "@/lib/navigation/navigation";
 
 type RedirectParams = Parameters<typeof redirect>[0];
 

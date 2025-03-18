@@ -5,7 +5,7 @@ import { type ReactNode, useEffect, useTransition } from "react";
 import { Button } from "react-aria-components";
 
 import { MainContent } from "@/components/ui/main-content";
-import { useRouter } from "@/lib/i18n/navigation";
+import { useRouter } from "@/lib/navigation/navigation";
 
 interface InternalErrorProps {
 	error: Error & { digest?: string };

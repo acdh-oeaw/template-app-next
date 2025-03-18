@@ -5,7 +5,7 @@ import type { ReactNode } from "react";
 
 import { Link } from "@/components/link";
 import type { IntlLocale } from "@/lib/i18n/locales";
-import { usePathname } from "@/lib/i18n/navigation";
+import { usePathname } from "@/lib/navigation/navigation";
 import { createHref } from "@/lib/navigation/create-href";
 
 interface LocaleSwitcherLinkProps {

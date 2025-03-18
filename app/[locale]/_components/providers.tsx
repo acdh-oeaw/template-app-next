@@ -6,7 +6,7 @@ import { I18nProvider as RacI18nProvider, RouterProvider } from "react-aria-comp
 
 import type { IntlLocale } from "@/lib/i18n/locales";
 import type { IntlMessages } from "@/lib/i18n/messages";
-import { useRouter } from "@/lib/i18n/navigation";
+import { useRouter } from "@/lib/navigation/navigation";
 
 interface ProvidersProps {
 	children: ReactNode;
