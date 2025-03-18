@@ -117,7 +117,7 @@ export function AppNavigation(props: Readonly<AppNavigationProps>): ReactNode {
 											/>
 										</Button>
 										<Popover
-											className="min-w-(--trigger-width) rounded-2 border border-stroke-weak bg-background-overlay shadow-overlay placement-bottom:translate-y-1 entering:placement-bottom:animate-popover-bottom-in exiting:placement-bottom:animate-popover-bottom-out"
+											className="min-w-(--trigger-width) rounded-2 border border-stroke-weak bg-background-overlay shadow-overlay entering:placement-bottom:animate-popover-bottom-in exiting:placement-bottom:animate-popover-bottom-out"
 											placement="bottom"
 										>
 											<Menu
@@ -213,7 +213,7 @@ export function AppNavigationMobile(props: Readonly<AppNavigationMobileProps>): 
 				</Button>
 			</nav>
 			<ModalOverlay
-				className="fixed top-0 left-0 isolate z-20 h-(--visual-viewport-height) w-full animate-underlay-in exiting:animate-underlay-out"
+				className="fixed top-0 left-0 isolate z-20 h-(--visual-viewport-height) w-full animate-underlay-in bg-fill-overlay exiting:animate-underlay-out"
 				isDismissable={true}
 			>
 				<Modal className="mr-12 size-full max-h-full max-w-sm bg-background-overlay shadow-overlay forced-colors:bg-[Canvas] entering:animate-slide-left-in exiting:animate-slide-left-out">

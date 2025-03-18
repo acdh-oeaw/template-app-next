@@ -1,7 +1,5 @@
 "use client";
 
-import "@/styles/toast.css";
-
 import { cn } from "@acdh-oeaw/style-variants";
 import { XIcon } from "lucide-react";
 import type { ReactNode } from "react";

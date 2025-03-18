@@ -536,21 +536,21 @@
 	--animate-slide-bottom-in: 300ms ease-out slide-bottom-in;
 	--animate-slide-bottom-out: 200ms ease-in slide-bottom-out;
 
-	--animate-popover-left-in: 200ms ease-out popover-left-in;
-	--animate-popover-left-out: 150ms ease-in popover-left-out;
-	--animate-popover-right-in: 200ms ease-out popover-right-in;
-	--animate-popover-right-out: 150ms ease-in popover-right-out;
-	--animate-popover-top-in: 200ms ease-out popover-top-in;
-	--animate-popover-top-out: 150ms ease-in popover-top-out;
-	--animate-popover-bottom-in: 200ms ease-out popover-bottom-in;
-	--animate-popover-bottom-out: 150ms ease-in popover-bottom-out;
+	--animate-popover-left-in: 150ms ease-out popover-left-in;
+	--animate-popover-left-out: 100ms ease-in popover-left-out;
+	--animate-popover-right-in: 150ms ease-out popover-right-in;
+	--animate-popover-right-out: 100ms ease-in popover-right-out;
+	--animate-popover-top-in: 150ms ease-out popover-top-in;
+	--animate-popover-top-out: 100ms ease-in popover-top-out;
+	--animate-popover-bottom-in: 150ms ease-out popover-bottom-in;
+	--animate-popover-bottom-out: 100ms ease-in popover-bottom-out;
 
 	--animate-loading-indicator-in: 300ms ease-out 500ms fade-in, 1000ms linear 500ms spin infinite;
 
 	@keyframes underlay-in {
 		from {
 			/** Work around for safari treating "transparent" as "transparent black". */
-			background-color: color-mix(in sRGB, var(--color-fill-overlay) 0%, transparent);
+			background-color: hsl(0deg 0 0 / 0%);
 		}
 
 		to {
@@ -565,7 +565,7 @@
 
 		to {
 			/** Work around for safari treating "transparent" as "transparent black". */
-			background-color: color-mix(in sRGB, var(--color-fill-overlay) 0%, transparent);
+			background-color: hsl(0deg 0 0 / 0%);
 		}
 	}
 
@@ -600,6 +600,16 @@
 
 		to {
 			opacity: 100%;
+		}
+	}
+
+	@keyframes fade-out {
+		from {
+			opacity: 100%;
+		}
+
+		to {
+			opacity: 0%;
 		}
 	}
 
@@ -781,5 +791,29 @@
 			translate: 0 -0.5rem;
 			scale: 0.95;
 		}
+	}
+}
+
+@layer base {
+	@keyframes toast-in {
+		from {
+			opacity: 0%;
+			translate: 100% 0;
+		}
+	}
+
+	@keyframes toast-out {
+		to {
+			opacity: 0%;
+			translate: 100% 0;
+		}
+	}
+
+	::view-transition-new(.toast):only-child {
+		animation: toast-in 300ms;
+	}
+
+	::view-transition-old(.toast):only-child {
+		animation: toast-out 200ms;
 	}
 }
