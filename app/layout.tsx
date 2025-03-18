@@ -5,7 +5,7 @@ import type { ReactNode } from "react";
 
 import { env } from "@/config/env.config";
 
-interface RootLayoutProps {
+interface AppLayoutProps {
 	children: ReactNode;
 }
 
@@ -26,7 +26,7 @@ export const metadata: Metadata = {
  * Since we have a root `not-found.tsx` page, a layout file is required,
  * even if it's just passing children through.
  */
-export default function RootLayout(props: Readonly<RootLayoutProps>): ReactNode {
+export default function AppLayout(props: Readonly<AppLayoutProps>): ReactNode {
 	const { children } = props;
 
 	return children;

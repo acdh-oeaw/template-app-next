@@ -4,7 +4,7 @@ import { type ReactNode, useEffect } from "react";
 
 import { type ToastContent, toasts } from "@/components/ui/toast";
 
-interface RedirectToastProps {
+interface ServerToastProps {
 	toast: {
 		content: ToastContent;
 		options?: {
@@ -13,7 +13,7 @@ interface RedirectToastProps {
 	};
 }
 
-export function RedirectToast(props: Readonly<RedirectToastProps>): ReactNode {
+export function ServerToast(props: Readonly<ServerToastProps>): ReactNode {
 	const { toast } = props;
 
 	useEffect(() => {

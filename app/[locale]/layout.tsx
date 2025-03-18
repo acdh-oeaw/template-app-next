@@ -12,7 +12,7 @@ import { AppHeader } from "@/app/[locale]/_components/app-header";
 import { AppLayout } from "@/app/[locale]/_components/app-layout";
 import { Providers } from "@/app/[locale]/_components/providers";
 import { TailwindIndicator } from "@/app/[locale]/_components/tailwind-indicator";
-import { RedirectToast } from "@/components/redirect-toast";
+import { ServerToast } from "@/components/server-toast";
 import { id } from "@/components/ui/main-content";
 import { SkipLink } from "@/components/ui/skip-link";
 import { ToastRegion } from "@/components/ui/toast-region";
@@ -140,7 +140,7 @@ export default async function LocaleLayout(props: Readonly<LocaleLayoutProps>): 
 					/>
 
 					<ToastRegion />
-					{toast != null ? <RedirectToast toast={toast} /> : null}
+					{toast != null ? <ServerToast toast={toast} /> : null}
 
 					<SkipLink targetId={id}>{t("skip-to-main-content")}</SkipLink>
 
