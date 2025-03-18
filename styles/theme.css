@@ -576,24 +576,24 @@
 	@keyframes overlay-in {
 		from {
 			opacity: 0%;
-			transform: scale(0.95);
+			scale: 0.95;
 		}
 
 		to {
 			opacity: 100%;
-			transform: scale(1);
+			scale: 1;
 		}
 	}
 
 	@keyframes overlay-out {
 		from {
 			opacity: 100%;
-			transform: scale(1);
+			scale: 1;
 		}
 
 		to {
 			opacity: 0%;
-			transform: scale(0.95);
+			scale: 0.95;
 		}
 	}
 
@@ -609,177 +609,177 @@
 
 	@keyframes slide-left-in {
 		from {
-			transform: translateX(-100%);
+			translate: -100% 0;
 		}
 
 		to {
-			transform: translateX(0);
+			translate: 0 0;
 		}
 	}
 
 	@keyframes slide-left-out {
 		from {
-			transform: translateX(0);
+			translate: 0 0;
 		}
 
 		to {
-			transform: translateX(-100%);
+			translate: -100% 0;
 		}
 	}
 
 	@keyframes slide-right-in {
 		from {
-			transform: translateX(100%);
+			translate: 100% 0;
 		}
 
 		to {
-			transform: translateX(0);
+			translate: 0 0;
 		}
 	}
 
 	@keyframes slide-right-out {
 		from {
-			transform: translateX(0);
+			translate: 0 0;
 		}
 
 		to {
-			transform: translateX(100%);
+			translate: 100% 0;
 		}
 	}
 
 	@keyframes slide-top-in {
 		from {
-			transform: translateY(-100%);
+			translate: 0 -100%;
 		}
 
 		to {
-			transform: translateY(0);
+			translate: 0 0;
 		}
 	}
 
 	@keyframes slide-top-out {
 		from {
-			transform: translateY(0);
+			translate: 0 0;
 		}
 
 		to {
-			transform: translateY(-100%);
+			translate: 0 -100%;
 		}
 	}
 
 	@keyframes slide-bottom-in {
 		from {
-			transform: translateY(100%);
+			translate: 0 100%;
 		}
 
 		to {
-			transform: translateY(0);
+			translate: 0 0;
 		}
 	}
 
 	@keyframes slide-bottom-out {
 		from {
-			transform: translateY(0);
+			translate: 0 0;
 		}
 
 		to {
-			transform: translateY(100%);
+			translate: 0 100%;
 		}
 	}
 
 	@keyframes popover-left-in {
 		from {
 			opacity: 0%;
-			transform: translateX(4px);
+			translate: 4px 0;
 		}
 
 		to {
 			opacity: 100%;
-			transform: translateX(0);
+			translate: 0 0;
 		}
 	}
 
 	@keyframes popover-left-out {
 		from {
 			opacity: 100%;
-			transform: translateX(0);
+			translate: 0 0;
 		}
 
 		to {
 			opacity: 0%;
-			transform: translateX(4px);
+			translate: 4px 0;
 		}
 	}
 
 	@keyframes popover-right-in {
 		from {
 			opacity: 0%;
-			transform: translateX(-4px);
+			translate: -4px 0;
 		}
 
 		to {
 			opacity: 100%;
-			transform: translateX(0);
+			translate: 0 0;
 		}
 	}
 
 	@keyframes popover-right-out {
 		from {
 			opacity: 100%;
-			transform: translateX(0);
+			translate: 0 0;
 		}
 
 		to {
 			opacity: 0%;
-			transform: translateX(-4px);
+			translate: -4px 0;
 		}
 	}
 
 	@keyframes popover-top-in {
 		from {
 			opacity: 0%;
-			transform: translateY(-4px);
+			translate: 0 -4px;
 		}
 
 		to {
 			opacity: 100%;
-			transform: translateY(0);
+			translate: 0 0;
 		}
 	}
 
 	@keyframes popover-top-out {
 		from {
 			opacity: 100%;
-			transform: translateY(0);
+			translate: 0 0;
 		}
 
 		to {
 			opacity: 0%;
-			transform: translateY(-4px);
+			translate: 0 -4px;
 		}
 	}
 
 	@keyframes popover-bottom-in {
 		from {
 			opacity: 0%;
-			transform: translateY(4px);
+			translate: 0 4px;
 		}
 
 		to {
 			opacity: 100%;
-			transform: translateY(0);
+			translate: 0 0;
 		}
 	}
 
 	@keyframes popover-bottom-out {
 		from {
 			opacity: 100%;
-			transform: translateY(0);
+			translate: 0 0;
 		}
 
 		to {
 			opacity: 0%;
-			transform: translateY(4px);
+			translate: 0 4px;
 		}
 	}
 }
