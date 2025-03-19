@@ -103,6 +103,7 @@ export function AppNavigation(props: Readonly<AppNavigationProps>): ReactNode {
 											<ChevronDownIcon
 												aria-hidden={true}
 												className="size-6 shrink-0 text-icon-neutral"
+												data-slot="icon"
 											/>
 										</Button>
 										<Popover

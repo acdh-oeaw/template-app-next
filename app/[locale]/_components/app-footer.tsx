@@ -68,7 +68,10 @@ export function AppFooter(): ReactNode {
 										href={link.href}
 									>
 										<TouchTarget />
-										<Icon className="size-6 text-icon-neutral transition hover:text-icon-brand" />
+										<Icon
+											className="size-6 text-icon-neutral transition hover:text-icon-brand"
+											data-slot="icon"
+										/>
 										<span className="sr-only">{link.label}</span>
 									</NavLink>
 								</li>

@@ -2,7 +2,7 @@
 
 import { LaptopIcon, MoonIcon, SunIcon } from "lucide-react";
 import type { Key, ReactNode } from "react";
-import { Button, Select, SelectValue } from "react-aria-components";
+import { Select, SelectValue } from "react-aria-components";
 
 import { IconButton } from "@/components/ui/icon-button";
 import { ListBox, ListBoxItem } from "@/components/ui/listbox";
@@ -43,10 +43,9 @@ export function ColorSchemeSelect(props: Readonly<ColorSchemeSelectProps>): Reac
 			onSelectionChange={onSelectionChange}
 			selectedKey={selectedKey}
 		>
-			<Button className="interactive grid place-content-center rounded-2 p-3 hover:hover-overlay focus-visible:focus-outline focus-visible:focus-outline-offset-0 pressed:press-overlay">
-				<Icon aria-hidden={true} className="size-6 shrink-0 text-icon-neutral" />
-				<SelectValue className="sr-only" />
-			</Button>
+			<IconButton className="p-3" label={<SelectValue className="sr-only" />}>
+				<Icon aria-hidden={true} className="size-6 shrink-0 text-icon-neutral" data-slot="icon" />
+			</IconButton>
 			<Popover placement="bottom">
 				<ListBox className="min-w-40">
 					{Object.entries(items).map(([id, label]) => {
@@ -54,7 +53,7 @@ export function ColorSchemeSelect(props: Readonly<ColorSchemeSelectProps>): Reac
 
 						return (
 							<ListBoxItem key={id} className="gap-x-3" id={id} textValue={label}>
-								<Icon aria-hidden={true} className="size-5 text-icon-neutral" />
+								<Icon aria-hidden={true} className="size-5 text-icon-neutral" data-slot="icon" />
 								{label}
 							</ListBoxItem>
 						);
