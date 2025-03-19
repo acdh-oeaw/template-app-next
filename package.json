@@ -42,7 +42,7 @@
 		"client-only": "^0.0.1",
 		"fast-glob": "^3.3.3",
 		"image-dimensions": "^2.3.0",
-		"lucide-react": "^0.482.0",
+		"lucide-react": "^0.483.0",
 		"next": "canary",
 		"next-intl": "^4.0.2",
 		"react": "^19.0.0",
@@ -53,7 +53,7 @@
 		"react-stately": "^3.36.1",
 		"server-only": "^0.0.1",
 		"sharp": "^0.33.5",
-		"valibot": "^1.0.0-rc.4"
+		"valibot": "^1.0.0"
 	},
 	"devDependencies": {
 		"@acdh-oeaw/eslint-config": "^2.0.9",
@@ -67,12 +67,12 @@
 		"@acdh-oeaw/tsconfig": "^1.5.1",
 		"@next/bundle-analyzer": "canary",
 		"@next/eslint-plugin-next": "canary",
-		"@playwright/test": "^1.51.0",
+		"@playwright/test": "^1.51.1",
 		"@react-aria/optimize-locales-plugin": "1.1.4",
 		"@react-types/shared": "^3.28.0",
 		"@tailwindcss/postcss": "^4.0.14",
 		"@types/node": "^22.13.10",
-		"@types/react": "^19.0.10",
+		"@types/react": "^19.0.11",
 		"@types/react-dom": "^19.0.4",
 		"axe-core": "^4.10.3",
 		"axe-playwright": "^2.1.0",
