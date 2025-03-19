@@ -80,17 +80,6 @@ export function AppNavigation(props: Readonly<AppNavigationProps>): ReactNode {
 							);
 						}
 
-						case "separator": {
-							return (
-								<Separator
-									key={id}
-									className="mx-1 h-full border-l border-stroke-weak"
-									elementType="li"
-									orientation="vertical"
-								/>
-							);
-						}
-
 						case "menu": {
 							/**
 							 * Menu items are not announced as links, so we should use selection state
@@ -153,6 +142,17 @@ export function AppNavigation(props: Readonly<AppNavigationProps>): ReactNode {
 										</Popover>
 									</MenuTrigger>
 								</li>
+							);
+						}
+
+						case "separator": {
+							return (
+								<Separator
+									key={id}
+									className="mx-1 h-full border-l border-stroke-weak"
+									elementType="li"
+									orientation="vertical"
+								/>
 							);
 						}
 					}

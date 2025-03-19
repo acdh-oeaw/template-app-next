@@ -1,14 +1,14 @@
 import { useTranslations } from "next-intl";
 import type { FC, ReactNode } from "react";
 
+import { Logo } from "@/components/logo";
+import { NavLink, type NavLinkProps } from "@/components/nav-link";
 import {
 	BlueskyIcon,
 	MastodonIcon,
 	TwitterIcon,
 	YouTubeIcon,
-} from "@/app/[locale]/_components/social-media-icons";
-import { Logo } from "@/components/logo";
-import { NavLink, type NavLinkProps } from "@/components/nav-link";
+} from "@/components/social-media-icons";
 import { useMetadata } from "@/lib/i18n/metadata";
 import { createHref } from "@/lib/navigation/create-href";
 

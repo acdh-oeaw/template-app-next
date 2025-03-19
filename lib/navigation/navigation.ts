@@ -20,7 +20,7 @@ export { getPathname, redirect, usePathname, useRouter };
 export { useSearchParams } from "next/navigation";
 
 export type LocaleLinkProps = Omit<ComponentPropsWithRef<typeof Link>, "href"> & {
-	href?: string | undefined;
+	href: string | undefined;
 };
 
 export const LocaleLink = Link as FC<LocaleLinkProps>;
