@@ -20,7 +20,7 @@ export function LocaleSwitcherLink(props: Readonly<LocaleSwitcherLinkProps>): Re
 
 	return (
 		<Link
-			className="rounded-0.5 focus-visible:focus-outline"
+			className="relative rounded-0.5 focus-visible:focus-outline"
 			href={createHref({ pathname, searchParams })}
 			locale={locale}
 			replace={true}
@@ -37,7 +37,7 @@ export function LocaleSwitcherLinkFallback(props: Readonly<LocaleSwitcherLinkPro
 
 	return (
 		<Link
-			className="rounded-0.5 focus-visible:focus-outline"
+			className="relative rounded-0.5 focus-visible:focus-outline"
 			href={createHref({ pathname })}
 			locale={locale}
 			replace={true}

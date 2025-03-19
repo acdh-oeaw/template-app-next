@@ -9,6 +9,7 @@ import {
 	TwitterIcon,
 	YouTubeIcon,
 } from "@/components/social-media-icons";
+import { TouchTarget } from "@/components/ui/touch-target";
 import { useMetadata } from "@/lib/i18n/metadata";
 import { createHref } from "@/lib/navigation/create-href";
 
@@ -63,9 +64,10 @@ export function AppFooter(): ReactNode {
 							return (
 								<li key={id} className="shrink-0">
 									<NavLink
-										className="inline-block rounded-0.5 focus-visible:focus-outline"
+										className="relative inline-block rounded-0.5 focus-visible:focus-outline"
 										href={link.href}
 									>
+										<TouchTarget />
 										<Icon className="size-6 text-icon-neutral transition hover:text-icon-brand" />
 										<span className="sr-only">{link.label}</span>
 									</NavLink>

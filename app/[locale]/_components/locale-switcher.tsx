@@ -5,6 +5,7 @@ import {
 	LocaleSwitcherLink,
 	LocaleSwitcherLinkFallback,
 } from "@/app/[locale]/_components/locale-switcher-link";
+import { TouchTarget } from "@/components/ui/touch-target";
 import { getIntlLanguage, type IntlLocale, locales } from "@/lib/i18n/locales";
 
 export function LocaleSwitcher(): ReactNode {
@@ -61,10 +62,16 @@ export function LocaleSwitcher(): ReactNode {
 
 						<Suspense
 							fallback={
-								<LocaleSwitcherLinkFallback locale={locale}>{children}</LocaleSwitcherLinkFallback>
+								<LocaleSwitcherLinkFallback locale={locale}>
+									<TouchTarget />
+									{children}
+								</LocaleSwitcherLinkFallback>
 							}
 						>
-							<LocaleSwitcherLink locale={locale}>{children}</LocaleSwitcherLink>
+							<LocaleSwitcherLink locale={locale}>
+								<TouchTarget />
+								{children}
+							</LocaleSwitcherLink>
 						</Suspense>
 					</Fragment>
 				);
