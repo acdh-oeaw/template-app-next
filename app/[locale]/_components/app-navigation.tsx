@@ -6,25 +6,20 @@ import { Fragment, type ReactNode } from "react";
 import { chain } from "react-aria";
 import {
 	Button,
-	Dialog,
-	DialogTrigger,
 	Disclosure,
 	DisclosurePanel,
 	Heading,
-	Menu,
-	MenuItem,
 	type MenuItemProps,
 	MenuTrigger,
-	Modal,
-	ModalOverlay,
-	Popover,
-	Separator,
 } from "react-aria-components";
 
 import { Logo } from "@/components/logo";
 import { NavLink, type NavLinkProps } from "@/components/nav-link";
-import { Drawer } from "@/components/ui/drawer";
+import { Drawer, DrawerTrigger, Modal, ModalOverlay } from "@/components/ui/drawer";
 import { IconButton } from "@/components/ui/icon-button";
+import { Menu, MenuItem } from "@/components/ui/menu";
+import { Popover } from "@/components/ui/popover";
+import { Separator } from "@/components/ui/separator";
 import { usePathname, useRouter } from "@/lib/navigation/navigation";
 import { isCurrentPage } from "@/lib/navigation/use-nav-link";
 
@@ -108,21 +103,14 @@ export function AppNavigation(props: Readonly<AppNavigationProps>): ReactNode {
 												data-slot="icon"
 											/>
 										</Button>
-										<Popover
-											className="min-w-(--trigger-width) rounded-2 border border-stroke-weak bg-background-overlay shadow-overlay entering:placement-bottom:animate-popover-bottom-in exiting:placement-bottom:animate-popover-bottom-out"
-											placement="bottom"
-										>
-											<Menu
-												className="max-h-[inherit] min-w-40 overflow-auto py-2"
-												selectedKeys={selectedKeys}
-											>
+										<Popover placement="bottom">
+											<Menu className="min-w-40" selectedKeys={selectedKeys}>
 												{Object.entries(item.children).map(([id, item]) => {
 													switch (item.type) {
 														case "link": {
 															return (
 																<NavigationMenuItem
 																	key={id}
-																	className="interactive flex cursor-pointer items-center gap-x-3 px-4 py-3 text-small text-text-strong select-none hover:hover-overlay focus-visible:focus-outline focus-visible:-focus-outline-offset-2 pressed:press-overlay selected:select-overlay-left"
 																	href={item.href}
 																	textValue={item.label}
 																>
@@ -132,12 +120,7 @@ export function AppNavigation(props: Readonly<AppNavigationProps>): ReactNode {
 														}
 
 														case "separator": {
-															return (
-																<Separator
-																	key={id}
-																	className="my-1 w-full border-b border-stroke-weak"
-																/>
-															);
+															return <Separator key={id} className="my-1" />;
 														}
 													}
 												})}
@@ -150,12 +133,7 @@ export function AppNavigation(props: Readonly<AppNavigationProps>): ReactNode {
 
 						case "separator": {
 							return (
-								<Separator
-									key={id}
-									className="mx-1 h-full border-l border-stroke-weak"
-									elementType="li"
-									orientation="vertical"
-								/>
+								<Separator key={id} className="mx-1" elementType="li" orientation="vertical" />
 							);
 						}
 					}
@@ -208,18 +186,15 @@ export function AppNavigationMobile(props: Readonly<AppNavigationMobileProps>): 
 	const { label, menuCloseLabel, menuOpenLabel, menuTitleLabel, navigation } = props;
 
 	return (
-		<DialogTrigger>
+		<DrawerTrigger>
 			<nav aria-label={label} className="flex items-center py-3 md:hidden">
 				<IconButton className="-ml-3" kind="tertiary" label={menuOpenLabel} tone="neutral">
 					<MenuIcon aria-hidden={true} data-slot="icon" />
 				</IconButton>
 			</nav>
-			<ModalOverlay
-				className="fixed top-0 left-0 isolate z-20 h-(--visual-viewport-height) w-full animate-underlay-in bg-fill-overlay exiting:animate-underlay-out"
-				isDismissable={true}
-			>
-				<Modal className="mr-12 size-full max-h-full max-w-sm bg-background-overlay shadow-overlay forced-colors:bg-[Canvas] entering:animate-slide-left-in exiting:animate-slide-left-out">
-					<Dialog className="relative h-full max-h-[inherit] overflow-auto">
+			<ModalOverlay isDismissable={true}>
+				<Modal placement="left">
+					<Drawer>
 						{({ close }) => {
 							return (
 								<Fragment>
@@ -299,7 +274,7 @@ export function AppNavigationMobile(props: Readonly<AppNavigationMobileProps>): 
 																					return (
 																						<li key={id}>
 																							<NavLink
-																								className="interactive inline-flex w-full px-6 py-3 text-text-strong hover:hover-overlay focus-visible:focus-outline focus-visible:-focus-outline-offset-2 aria-[current]:select-overlay-left aria-[current]:hover-overlay pressed:press-overlay"
+																								className="interactive inline-flex w-full px-6 py-3 text-text-strong hover:hover-overlay focus-visible:focus-outline focus-visible:-focus-outline-offset-2 aria-[current]:select-overlay-left aria-[current]:bg-fill-brand-weak pressed:press-overlay"
 																								href={item.href}
 																								onPress={() => {
 																									/**
@@ -343,9 +318,9 @@ export function AppNavigationMobile(props: Readonly<AppNavigationMobileProps>): 
 								</Fragment>
 							);
 						}}
-					</Dialog>
+					</Drawer>
 				</Modal>
 			</ModalOverlay>
-		</DialogTrigger>
+		</DrawerTrigger>
 	);
 }

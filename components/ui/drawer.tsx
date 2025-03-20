@@ -28,6 +28,7 @@ export function ModalOverlay(props: ModalOverlayProps): ReactNode {
 			{...rest}
 			className={composeRenderProps(className, (className) => {
 				return cn(
+					// FIXME: h-(--visual-viewport-height) ?
 					"fixed inset-0 isolate z-10 grid min-h-full w-full overflow-y-auto bg-fill-overlay entering:animate-underlay-in exiting:animate-underlay-out",
 					className,
 				);
@@ -42,16 +43,30 @@ const modalStyles = styles({
 	base: "h-full w-full overflow-hidden border border-stroke-weak bg-background-overlay shadow-overlay forced-colors:bg-[Canvas]",
 	variants: {
 		placement: {
-			bottom: "entering:slide-bottom-in exiting:slide-bottom-out mt-16 self-end",
-			left: "entering:slide-left-in exiting:slide-left-out mr-16 justify-self-start",
-			right: "entering:slide-right-in exiting:slide-right-out ml-16 justify-self-end",
-			top: "entering:slide-top-in exiting:slide-top-out mb-16 self-start",
+			bottom: "mt-16 self-end entering:animate-slide-bottom-in exiting:animate-slide-bottom-out",
+			left: "mr-16 justify-self-start entering:animate-slide-left-in exiting:animate-slide-left-out",
+			right:
+				"ml-16 justify-self-end entering:animate-slide-right-in exiting:animate-slide-right-out",
+			top: "mb-16 self-start entering:animate-slide-top-in exiting:animate-slide-top-out",
 		},
 		size: {
-			small: "max-w-sm",
-			large: "max-w-xl",
+			small: "",
+			large: "",
 		},
 	},
+	combinations: [
+		[{ placement: "bottom", size: "small" }, "max-h-96"],
+		[{ placement: "bottom", size: "large" }, "max-h-144"],
+
+		[{ placement: "left", size: "small" }, "max-w-96"],
+		[{ placement: "left", size: "large" }, "max-w-144"],
+
+		[{ placement: "right", size: "small" }, "max-w-96"],
+		[{ placement: "right", size: "large" }, "max-w-144"],
+
+		[{ placement: "top", size: "small" }, "max-h-96"],
+		[{ placement: "top", size: "large" }, "max-h-144"],
+	],
 	defaults: {
 		placement: "right",
 		size: "small",
@@ -83,7 +98,14 @@ export function Drawer(props: DrawerProps): ReactNode {
 	const { children, className, ...rest } = props;
 
 	return (
-		<AriaDialog {...rest} className={cn("relative flex h-full flex-col outline-hidden", className)}>
+		<AriaDialog
+			{...rest}
+			className={cn(
+				"relative flex h-full flex-col outline-hidden",
+				// "max-h-[inherit] overflow-auto", // FIXME: ?
+				className,
+			)}
+		>
 			{children}
 		</AriaDialog>
 	);

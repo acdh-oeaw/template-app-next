@@ -42,8 +42,8 @@ const modalStyles = styles({
 	base: "w-full overflow-hidden rounded-4 border border-stroke-weak bg-background-overlay p-8 shadow-overlay forced-colors:bg-[Canvas] entering:animate-overlay-in exiting:animate-overlay-out",
 	variants: {
 		size: {
-			small: "max-w-lg",
-			large: "max-w-2xl max-xs:h-full",
+			small: "max-w-128",
+			large: "max-w-168 max-xs:h-full",
 		},
 	},
 	defaults: {
