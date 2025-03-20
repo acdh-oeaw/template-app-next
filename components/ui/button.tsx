@@ -21,15 +21,15 @@ const buttonStyles = styles({
 				"border-transparent underline hover:no-underline disabled:text-text-disabled pressed:no-underline",
 		},
 		size: {
-			small: "rounded-2 text-tiny font-strong *:data-[slot=icon]:size-4",
-			medium: "rounded-2 text-small font-strong *:data-[slot=icon]:size-5",
-			large: "rounded-3 text-heading-4 font-strong *:data-[slot=icon]:size-6",
+			small: "rounded-2 text-tiny font-strong",
+			medium: "rounded-2 text-small font-strong",
+			large: "rounded-3 text-heading-4 font-strong",
 		},
 		tone: {
-			brand: "*:data-[slot=icon]:text-icon-brand",
-			neutral: "*:data-[slot=icon]:text-icon-neutral",
-			destructive: "*:data-[slot=icon]:text-icon-error",
-			inverse: "*:data-[slot=icon]:text-icon-inverse",
+			brand: "",
+			neutral: "",
+			destructive: "",
+			inverse: "",
 		},
 		variant: {
 			default: "",
@@ -37,31 +37,58 @@ const buttonStyles = styles({
 		},
 	},
 	combinations: [
-		[{ kind: "primary", tone: "brand" }, "bg-fill-brand-strong text-text-inverse-strong"],
-		[{ kind: "primary", tone: "neutral" }, "bg-fill-strong text-text-inverse-strong"],
-		[{ kind: "primary", tone: "destructive" }, "bg-fill-error-strong text-text-inverse-strong"],
-		[{ kind: "primary", tone: "inverse" }, "bg-fill-inverse-strong text-text-strong"],
-
-		[{ kind: "secondary", tone: "brand" }, "border-stroke-brand-strong text-text-brand"],
-		[{ kind: "secondary", tone: "neutral" }, "border-stroke-strong text-text-weak"],
-		[{ kind: "secondary", tone: "destructive" }, "border-stroke-error-strong text-text-error"],
 		[
-			{ kind: "secondary", tone: "inverse" },
-			"border-stroke-inverse-strong text-text-inverse-strong",
+			{ kind: "primary", tone: "brand" },
+			"bg-fill-brand-strong text-text-inverse-strong *:data-[slot=icon]:text-icon-inverse",
+		],
+		[
+			{ kind: "primary", tone: "neutral" },
+			"bg-fill-strong text-text-inverse-strong *:data-[slot=icon]:text-icon-inverse",
+		],
+		[
+			{ kind: "primary", tone: "destructive" },
+			"bg-fill-error-strong text-text-inverse-strong *:data-[slot=icon]:text-icon-inverse",
+		],
+		[
+			{ kind: "primary", tone: "inverse" },
+			"bg-fill-inverse-strong text-text-strong *:data-[slot=icon]:text-icon-neutral",
 		],
 
-		[{ kind: "tertiary", tone: "brand" }, "text-text-brand"],
-		[{ kind: "tertiary", tone: "neutral" }, "text-text-weak"],
-		[{ kind: "tertiary", tone: "destructive" }, "text-text-error"],
-		[{ kind: "tertiary", tone: "inverse" }, "text-text-inverse-strong"],
+		[
+			{ kind: "secondary", tone: "brand" },
+			"border-stroke-brand-strong text-text-brand *:data-[slot=icon]:text-icon-brand",
+		],
+		[
+			{ kind: "secondary", tone: "neutral" },
+			"border-stroke-strong text-text-weak *:data-[slot=icon]:text-icon-neutral",
+		],
+		[
+			{ kind: "secondary", tone: "destructive" },
+			"border-stroke-error-strong text-text-error *:data-[slot=icon]:text-icon-error",
+		],
+		[
+			{ kind: "secondary", tone: "inverse" },
+			"border-stroke-inverse-strong text-text-inverse-strong *:data-[slot=icon]:text-icon-inverse",
+		],
 
-		[{ size: "small", variant: "default" }, "min-h-8 px-3 py-1"],
-		[{ size: "medium", variant: "default" }, "min-h-12 px-4 py-2.5"],
-		[{ size: "large", variant: "default" }, "min-h-14 px-6 py-3"],
+		[{ kind: "tertiary", tone: "brand" }, "text-text-brand *:data-[slot=icon]:text-icon-brand"],
+		[{ kind: "tertiary", tone: "neutral" }, "text-text-weak *:data-[slot=icon]:text-icon-neutral"],
+		[
+			{ kind: "tertiary", tone: "destructive" },
+			"text-text-error *:data-[slot=icon]:text-icon-error",
+		],
+		[
+			{ kind: "tertiary", tone: "inverse" },
+			"text-text-inverse-strong *:data-[slot=icon]:text-icon-inverse",
+		],
 
-		[{ size: "small", variant: "icon-only" }, "size-8"],
-		[{ size: "medium", variant: "icon-only" }, "size-12"],
-		[{ size: "large", variant: "icon-only" }, "size-14"],
+		[{ size: "small", variant: "default" }, "min-h-8 px-3 py-1 *:data-[slot=icon]:size-4"],
+		[{ size: "medium", variant: "default" }, "min-h-12 px-4 py-2.5 *:data-[slot=icon]:size-5"],
+		[{ size: "large", variant: "default" }, "min-h-14 px-6 py-3 *:data-[slot=icon]:size-6"],
+
+		[{ size: "small", variant: "icon-only" }, "size-8 *:data-[slot=icon]:size-4"],
+		[{ size: "medium", variant: "icon-only" }, "size-12 *:data-[slot=icon]:size-6"],
+		[{ size: "large", variant: "icon-only" }, "size-14 *:data-[slot=icon]:size-6"],
 	],
 	defaults: {
 		kind: "primary",
