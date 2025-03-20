@@ -23,6 +23,8 @@ import {
 
 import { Logo } from "@/components/logo";
 import { NavLink, type NavLinkProps } from "@/components/nav-link";
+import { Drawer } from "@/components/ui/drawer";
+import { IconButton } from "@/components/ui/icon-button";
 import { usePathname, useRouter } from "@/lib/navigation/navigation";
 import { isCurrentPage } from "@/lib/navigation/use-nav-link";
 
@@ -208,10 +210,9 @@ export function AppNavigationMobile(props: Readonly<AppNavigationMobileProps>): 
 	return (
 		<DialogTrigger>
 			<nav aria-label={label} className="flex items-center py-3 md:hidden">
-				<Button className="interactive -ml-3 grid place-content-center rounded-2 p-3 hover:hover-overlay focus-visible:focus-outline focus-visible:focus-outline-offset-0 pressed:press-overlay">
-					<MenuIcon aria-hidden={true} className="size-6 shrink-0 text-icon-neutral" />
-					<span className="sr-only">{menuOpenLabel}</span>
-				</Button>
+				<IconButton className="-ml-3" kind="tertiary" label={menuOpenLabel} tone="neutral">
+					<MenuIcon aria-hidden={true} data-slot="icon" />
+				</IconButton>
 			</nav>
 			<ModalOverlay
 				className="fixed top-0 left-0 isolate z-20 h-(--visual-viewport-height) w-full animate-underlay-in bg-fill-overlay exiting:animate-underlay-out"
@@ -226,13 +227,15 @@ export function AppNavigationMobile(props: Readonly<AppNavigationMobileProps>): 
 										<Heading className="sr-only" slot="title">
 											{menuTitleLabel}
 										</Heading>
-										<Button
-											className="interactive -my-3 -ml-3 grid place-content-center rounded-2 p-3 hover:hover-overlay focus-visible:focus-outline focus-visible:focus-outline-offset-0 pressed:press-overlay"
+										<IconButton
+											className="-my-3 -ml-3"
+											kind="tertiary"
+											label={menuCloseLabel}
 											slot="close"
+											tone="neutral"
 										>
-											<XIcon aria-hidden={true} className="size-6 shrink-0 text-icon-neutral" />
-											<span className="sr-only">{menuCloseLabel}</span>
-										</Button>
+											<XIcon aria-hidden={true} data-slot="icon" />
+										</IconButton>
 									</header>
 									<ul className="text-small" role="list">
 										{Object.entries(navigation).map(([id, item]) => {

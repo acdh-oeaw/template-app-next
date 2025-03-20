@@ -23,7 +23,7 @@ export function Popover(props: PopoverProps): ReactNode {
 
 	return (
 		<AriaPopover
-			offset={4}
+			offset={8}
 			{...rest}
 			className={composeRenderProps(className, (className) => {
 				return cn(

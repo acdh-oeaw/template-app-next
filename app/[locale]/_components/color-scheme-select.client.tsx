@@ -43,8 +43,8 @@ export function ColorSchemeSelect(props: Readonly<ColorSchemeSelectProps>): Reac
 			onSelectionChange={onSelectionChange}
 			selectedKey={selectedKey}
 		>
-			<IconButton className="p-3" label={<SelectValue className="sr-only" />}>
-				<Icon aria-hidden={true} className="size-6 shrink-0 text-icon-neutral" data-slot="icon" />
+			<IconButton kind="tertiary" label={<SelectValue className="sr-only" />} tone="neutral">
+				<Icon aria-hidden={true} data-slot="icon" />
 			</IconButton>
 			<Popover placement="bottom">
 				<ListBox className="min-w-40">
@@ -52,8 +52,8 @@ export function ColorSchemeSelect(props: Readonly<ColorSchemeSelectProps>): Reac
 						const Icon = icons[id as keyof typeof items];
 
 						return (
-							<ListBoxItem key={id} className="gap-x-3" id={id} textValue={label}>
-								<Icon aria-hidden={true} className="size-5 text-icon-neutral" data-slot="icon" />
+							<ListBoxItem key={id} id={id} textValue={label}>
+								<Icon aria-hidden={true} data-slot="icon" />
 								{label}
 							</ListBoxItem>
 						);
