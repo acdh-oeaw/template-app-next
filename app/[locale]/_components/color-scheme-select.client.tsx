@@ -2,8 +2,11 @@
 
 import { LaptopIcon, MoonIcon, SunIcon } from "lucide-react";
 import type { Key, ReactNode } from "react";
-import { Button, ListBox, ListBoxItem, Popover, Select, SelectValue } from "react-aria-components";
+import { Select, SelectValue } from "react-aria-components";
 
+import { IconButton } from "@/components/ui/icon-button";
+import { ListBox, ListBoxItem } from "@/components/ui/listbox";
+import { Popover } from "@/components/ui/popover";
 import type { ColorScheme } from "@/lib/color-scheme-script";
 import { useColorScheme } from "@/lib/use-color-scheme";
 
@@ -40,26 +43,17 @@ export function ColorSchemeSelect(props: Readonly<ColorSchemeSelectProps>): Reac
 			onSelectionChange={onSelectionChange}
 			selectedKey={selectedKey}
 		>
-			<Button className="interactive grid place-content-center rounded-2 p-3 hover:hover-overlay focus-visible:focus-outline focus-visible:focus-outline-offset-0 pressed:press-overlay">
-				<Icon aria-hidden={true} className="size-6 shrink-0 text-icon-neutral" />
-				<SelectValue className="sr-only" />
-			</Button>
-			<Popover
-				className="min-w-(--trigger-width) rounded-2 border border-stroke-weak bg-background-overlay shadow-overlay entering:placement-bottom:animate-popover-bottom-in exiting:placement-bottom:animate-popover-bottom-out"
-				placement="bottom"
-			>
-				<ListBox className="max-h-[inherit] min-w-40 overflow-auto py-2">
+			<IconButton kind="tertiary" label={<SelectValue className="sr-only" />} tone="neutral">
+				<Icon aria-hidden={true} data-slot="icon" />
+			</IconButton>
+			<Popover placement="bottom">
+				<ListBox className="min-w-40">
 					{Object.entries(items).map(([id, label]) => {
 						const Icon = icons[id as keyof typeof items];
 
 						return (
-							<ListBoxItem
-								key={id}
-								className="interactive relative flex cursor-default items-center gap-x-3 px-4 py-3 text-small text-text-strong select-none hover:hover-overlay focus-visible:focus-outline focus-visible:-focus-outline-offset-2 pressed:press-overlay selected:select-overlay-left selected:hover-overlay"
-								id={id}
-								textValue={label}
-							>
-								<Icon aria-hidden={true} className="size-5 text-icon-neutral" />
+							<ListBoxItem key={id} id={id} textValue={label}>
+								<Icon aria-hidden={true} data-slot="icon" />
 								{label}
 							</ListBoxItem>
 						);
