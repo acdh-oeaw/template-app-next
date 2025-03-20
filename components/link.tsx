@@ -25,7 +25,7 @@ import { useRenderProps } from "@/lib/use-render-props";
  * @see https://github.com/adobe/react-spectrum/blob/main/packages/%40react-aria/link/src/useLink.ts
  */
 
-export interface LinkProps
+interface LinkProps
 	extends Pick<
 			LocaleLinkProps,
 			"aria-current" | "href" | "id" | "locale" | "prefetch" | "replace" | "scroll" | "shallow"

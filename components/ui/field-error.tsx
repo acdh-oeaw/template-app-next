@@ -10,7 +10,7 @@ import {
 
 interface FieldErrorProps extends AriaFieldErrorProps {}
 
-export function FieldError(props: FieldErrorProps): ReactNode {
+export function FieldError(props: Readonly<FieldErrorProps>): ReactNode {
 	const { className, ...rest } = props;
 
 	return (

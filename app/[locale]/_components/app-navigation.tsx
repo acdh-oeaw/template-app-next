@@ -14,7 +14,7 @@ import {
 } from "react-aria-components";
 
 import { Logo } from "@/components/logo";
-import { NavLink, type NavLinkProps } from "@/components/nav-link";
+import { NavLink } from "@/components/nav-link";
 import { Drawer, DrawerTrigger, Modal, ModalOverlay } from "@/components/ui/drawer";
 import { IconButton } from "@/components/ui/icon-button";
 import { Menu, MenuItem } from "@/components/ui/menu";
@@ -25,7 +25,7 @@ import { isCurrentPage } from "@/lib/navigation/use-nav-link";
 
 interface NavigationLink {
 	type: "link";
-	href: NonNullable<NavLinkProps["href"]>;
+	href: string;
 	label: string;
 }
 

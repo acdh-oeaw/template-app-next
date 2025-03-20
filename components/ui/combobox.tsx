@@ -16,7 +16,7 @@ import { FieldStatusContext } from "@/components/ui/field-status-context";
 
 interface ComboBoxProps<T extends object> extends AriaComboBoxProps<T> {}
 
-export function ComboBox<T extends object>(props: ComboBoxProps<T>): ReactNode {
+export function ComboBox<T extends object>(props: Readonly<ComboBoxProps<T>>): ReactNode {
 	const { children, className, ...rest } = props;
 
 	return (
@@ -26,9 +26,7 @@ export function ComboBox<T extends object>(props: ComboBoxProps<T>): ReactNode {
 			data-slot="field"
 		>
 			{composeRenderProps(children, (children, renderProps) => {
-				return (
-					<FieldStatusContext.Provider value={renderProps}>{children}</FieldStatusContext.Provider>
-				);
+				return <FieldStatusContext value={renderProps}>{children}</FieldStatusContext>;
 			})}
 		</AriaComboBox>
 	);
@@ -36,7 +34,7 @@ export function ComboBox<T extends object>(props: ComboBoxProps<T>): ReactNode {
 
 interface ComboBoxTriggerProps extends AriaGroupProps {}
 
-export function ComboBoxTrigger(props: ComboBoxTriggerProps): ReactNode {
+export function ComboBoxTrigger(props: Readonly<ComboBoxTriggerProps>): ReactNode {
 	const { children, className, ...rest } = props;
 
 	return (

@@ -9,7 +9,7 @@ import {
 
 interface SeparatorProps extends AriaSeparatorProps {}
 
-export function Separator(props: SeparatorProps): ReactNode {
+export function Separator(props: Readonly<SeparatorProps>): ReactNode {
 	const { className, ...rest } = props;
 
 	return (

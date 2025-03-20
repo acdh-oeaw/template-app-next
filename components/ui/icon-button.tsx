@@ -9,7 +9,7 @@ interface IconButtonProps extends Omit<ComponentPropsWithRef<typeof Button>, "va
 	label: ReactNode;
 }
 
-export function IconButton(props: IconButtonProps): ReactNode {
+export function IconButton(props: Readonly<IconButtonProps>): ReactNode {
 	const { children, label, ...rest } = props;
 
 	return (

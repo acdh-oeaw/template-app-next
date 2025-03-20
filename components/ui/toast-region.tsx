@@ -12,7 +12,7 @@ import { Toast, type ToastContent, toasts } from "@/components/ui/toast";
 
 interface ToastRegionProps extends Omit<AriaToastRegionProps<ToastContent>, "children" | "queue"> {}
 
-export function ToastRegion(props: ToastRegionProps): ReactNode {
+export function ToastRegion(props: Readonly<ToastRegionProps>): ReactNode {
 	const { className, ...rest } = props;
 
 	return (

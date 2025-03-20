@@ -17,7 +17,7 @@ import { FieldStatusContext } from "@/components/ui/field-status-context";
 
 interface SelectProps<T extends object> extends AriaSelectProps<T> {}
 
-export function Select<T extends object>(props: SelectProps<T>): ReactNode {
+export function Select<T extends object>(props: Readonly<SelectProps<T>>): ReactNode {
 	const { children, className, ...rest } = props;
 
 	return (
@@ -27,9 +27,7 @@ export function Select<T extends object>(props: SelectProps<T>): ReactNode {
 			data-slot="field"
 		>
 			{composeRenderProps(children, (children, renderProps) => {
-				return (
-					<FieldStatusContext.Provider value={renderProps}>{children}</FieldStatusContext.Provider>
-				);
+				return <FieldStatusContext value={renderProps}>{children}</FieldStatusContext>;
 			})}
 		</AriaSelect>
 	);
@@ -37,7 +35,7 @@ export function Select<T extends object>(props: SelectProps<T>): ReactNode {
 
 interface SelectTriggerProps extends AriaButtonProps {}
 
-export function SelectTrigger(props: SelectTriggerProps): ReactNode {
+export function SelectTrigger(props: Readonly<SelectTriggerProps>): ReactNode {
 	const { children, className, ...rest } = props;
 
 	return (
@@ -69,7 +67,7 @@ export function SelectTrigger(props: SelectTriggerProps): ReactNode {
 
 interface SelectValueProps<T extends object> extends AriaSelectValueProps<T> {}
 
-export function SelectValue<T extends object>(props: SelectValueProps<T>): ReactNode {
+export function SelectValue<T extends object>(props: Readonly<SelectValueProps<T>>): ReactNode {
 	const { children, className, ...rest } = props;
 
 	return (

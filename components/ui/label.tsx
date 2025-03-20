@@ -9,7 +9,7 @@ import { RequiredIndicator } from "@/components/ui/required-indicator";
 
 interface LabelProps extends AriaLabelProps {}
 
-export function Label(props: LabelProps): ReactNode {
+export function Label(props: Readonly<LabelProps>): ReactNode {
 	const { children, className, ...rest } = props;
 
 	const status = useFieldStatus();

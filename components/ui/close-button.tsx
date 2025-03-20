@@ -8,7 +8,7 @@ import { IconButton } from "@/components/ui/icon-button";
 
 interface CloseButtonProps extends ComponentPropsWithRef<typeof IconButton> {}
 
-export function CloseButton(props: CloseButtonProps): ReactNode {
+export function CloseButton(props: Readonly<CloseButtonProps>): ReactNode {
 	const { children, ...rest } = props;
 
 	return (
@@ -16,7 +16,7 @@ export function CloseButton(props: CloseButtonProps): ReactNode {
 			{composeRenderProps(children, (children) => {
 				return (
 					<Fragment>
-						<XIcon aria-hidden={true} />
+						<XIcon aria-hidden={true} data-slot="icon" />
 						{children}
 					</Fragment>
 				);

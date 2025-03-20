@@ -20,7 +20,7 @@ export { AriaDialogTrigger as DrawerTrigger };
 
 interface ModalOverlayProps extends AriaModalOverlayProps {}
 
-export function ModalOverlay(props: ModalOverlayProps): ReactNode {
+export function ModalOverlay(props: Readonly<ModalOverlayProps>): ReactNode {
 	const { children, className, ...rest } = props;
 
 	return (
@@ -77,7 +77,7 @@ type ModalStyleProps = GetVariantProps<typeof modalStyles>;
 
 interface ModalProps extends AriaModalOverlayProps, ModalStyleProps {}
 
-export function Modal(props: ModalProps): ReactNode {
+export function Modal(props: Readonly<ModalProps>): ReactNode {
 	const { children, className, placement, size, ...rest } = props;
 
 	return (
@@ -94,7 +94,7 @@ export function Modal(props: ModalProps): ReactNode {
 
 interface DrawerProps extends AriaDialogProps {}
 
-export function Drawer(props: DrawerProps): ReactNode {
+export function Drawer(props: Readonly<DrawerProps>): ReactNode {
 	const { children, className, ...rest } = props;
 
 	return (
@@ -113,7 +113,7 @@ export function Drawer(props: DrawerProps): ReactNode {
 
 interface DrawerHeaderProps extends ComponentPropsWithRef<"header"> {}
 
-export function DrawerHeader(props: DrawerHeaderProps): ReactNode {
+export function DrawerHeader(props: Readonly<DrawerHeaderProps>): ReactNode {
 	const { children, className, ...rest } = props;
 
 	return (
@@ -131,7 +131,7 @@ export function DrawerHeader(props: DrawerHeaderProps): ReactNode {
 
 interface DrawerTitleProps extends AriaHeadingProps {}
 
-export function DrawerTitle(props: DrawerTitleProps): ReactNode {
+export function DrawerTitle(props: Readonly<DrawerTitleProps>): ReactNode {
 	const { children, className, ...rest } = props;
 
 	return (
@@ -147,7 +147,7 @@ export function DrawerTitle(props: DrawerTitleProps): ReactNode {
 
 interface DrawerBodyProps extends ComponentPropsWithRef<"div"> {}
 
-export function DrawerBody(props: DrawerBodyProps): ReactNode {
+export function DrawerBody(props: Readonly<DrawerBodyProps>): ReactNode {
 	const { children, className, ...rest } = props;
 
 	return (
@@ -159,7 +159,7 @@ export function DrawerBody(props: DrawerBodyProps): ReactNode {
 
 interface DrawerFooterProps extends ComponentPropsWithRef<"footer"> {}
 
-export function DrawerFooter(props: DrawerFooterProps): ReactNode {
+export function DrawerFooter(props: Readonly<DrawerFooterProps>): ReactNode {
 	const { children, className, ...rest } = props;
 
 	return (

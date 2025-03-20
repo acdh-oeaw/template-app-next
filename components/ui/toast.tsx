@@ -34,7 +34,7 @@ export const toasts = new AriaToastQueue<ToastContent>({
 
 interface ToastProps extends Omit<AriaToastProps<ToastContent>, "children"> {}
 
-export function Toast(props: ToastProps): ReactNode {
+export function Toast(props: Readonly<ToastProps>): ReactNode {
 	const { className, toast, ...rest } = props;
 
 	return (

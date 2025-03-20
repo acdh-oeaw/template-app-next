@@ -1,3 +1,7 @@
+export class HoneypotError extends Error {
+	name = "HoneypotError" as const;
+}
+
 export class RateLimitError extends Error {
-	name = "RateLimit";
+	name = "RateLimitError" as const;
 }

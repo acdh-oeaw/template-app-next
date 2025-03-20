@@ -1,12 +1,12 @@
 "use client";
 
-import type { ReactNode } from "react";
-import { Button, type ButtonProps } from "react-aria-components";
+import type { ComponentPropsWithRef, ReactNode } from "react";
 import { useFormStatus } from "react-dom";
 
-interface SubmitButtonProps extends Omit<ButtonProps, "isPending"> {
-	children: ReactNode;
-}
+import { Button } from "@/components/ui/button";
+
+interface SubmitButtonProps
+	extends Omit<ComponentPropsWithRef<typeof Button>, "isPending" | "type"> {}
 
 export function SubmitButton(props: Readonly<SubmitButtonProps>): ReactNode {
 	const { children, ...rest } = props;

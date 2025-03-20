@@ -12,7 +12,7 @@ import { FieldStatusContext } from "@/components/ui/field-status-context";
 
 interface TextInputProps extends AriaTextFieldProps {}
 
-export function TextInput(props: TextInputProps): ReactNode {
+export function TextInput(props: Readonly<TextInputProps>): ReactNode {
 	const { children, className, ...rest } = props;
 
 	return (
@@ -24,9 +24,7 @@ export function TextInput(props: TextInputProps): ReactNode {
 			data-slot="field"
 		>
 			{composeRenderProps(children, (children, renderProps) => {
-				return (
-					<FieldStatusContext.Provider value={renderProps}>{children}</FieldStatusContext.Provider>
-				);
+				return <FieldStatusContext value={renderProps}>{children}</FieldStatusContext>;
 			})}
 		</AriaTextField>
 	);

@@ -6,7 +6,7 @@ import { Text as AriaText, type TextProps as AriaTextProps } from "react-aria-co
 
 interface FieldDescriptionProps extends AriaTextProps {}
 
-export function FieldDescription(props: FieldDescriptionProps): ReactNode {
+export function FieldDescription(props: Readonly<FieldDescriptionProps>): ReactNode {
 	const { children, className, ...rest } = props;
 
 	return (

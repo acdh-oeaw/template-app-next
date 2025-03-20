@@ -4,7 +4,7 @@ interface IconProps {
 	className?: string;
 }
 
-export function BlueskyIcon(props: IconProps): ReactNode {
+export function BlueskyIcon(props: Readonly<IconProps>): ReactNode {
 	const { className } = props;
 
 	return (
@@ -22,7 +22,7 @@ export function BlueskyIcon(props: IconProps): ReactNode {
 	);
 }
 
-export function EmailIcon(props: IconProps): ReactNode {
+export function EmailIcon(props: Readonly<IconProps>): ReactNode {
 	const { className } = props;
 
 	return (
@@ -45,7 +45,7 @@ export function EmailIcon(props: IconProps): ReactNode {
 	);
 }
 
-export function FacebookIcon(props: IconProps): ReactNode {
+export function FacebookIcon(props: Readonly<IconProps>): ReactNode {
 	const { className } = props;
 
 	return (
@@ -63,7 +63,7 @@ export function FacebookIcon(props: IconProps): ReactNode {
 	);
 }
 
-export function FlickrIcon(props: IconProps): ReactNode {
+export function FlickrIcon(props: Readonly<IconProps>): ReactNode {
 	const { className } = props;
 
 	return (
@@ -81,7 +81,7 @@ export function FlickrIcon(props: IconProps): ReactNode {
 	);
 }
 
-export function GitHubIcon(props: IconProps): ReactNode {
+export function GitHubIcon(props: Readonly<IconProps>): ReactNode {
 	const { className } = props;
 
 	return (
@@ -99,7 +99,7 @@ export function GitHubIcon(props: IconProps): ReactNode {
 	);
 }
 
-export function LinkedInIcon(props: IconProps): ReactNode {
+export function LinkedInIcon(props: Readonly<IconProps>): ReactNode {
 	const { className } = props;
 
 	return (
@@ -117,7 +117,7 @@ export function LinkedInIcon(props: IconProps): ReactNode {
 	);
 }
 
-export function MastodonIcon(props: IconProps): ReactNode {
+export function MastodonIcon(props: Readonly<IconProps>): ReactNode {
 	const { className } = props;
 
 	return (
@@ -135,7 +135,7 @@ export function MastodonIcon(props: IconProps): ReactNode {
 	);
 }
 
-export function OrcidIcon(props: IconProps): ReactNode {
+export function OrcidIcon(props: Readonly<IconProps>): ReactNode {
 	const { className } = props;
 
 	return (
@@ -153,7 +153,7 @@ export function OrcidIcon(props: IconProps): ReactNode {
 	);
 }
 
-export function RssIcon(props: IconProps): ReactNode {
+export function RssIcon(props: Readonly<IconProps>): ReactNode {
 	const { className } = props;
 
 	return (
@@ -171,7 +171,7 @@ export function RssIcon(props: IconProps): ReactNode {
 	);
 }
 
-export function TwitterIcon(props: IconProps): ReactNode {
+export function TwitterIcon(props: Readonly<IconProps>): ReactNode {
 	const { className } = props;
 
 	return (
@@ -189,7 +189,7 @@ export function TwitterIcon(props: IconProps): ReactNode {
 	);
 }
 
-export function WebsiteIcon(props: IconProps): ReactNode {
+export function WebsiteIcon(props: Readonly<IconProps>): ReactNode {
 	const { className } = props;
 
 	return (
@@ -213,7 +213,7 @@ export function WebsiteIcon(props: IconProps): ReactNode {
 	);
 }
 
-export function YouTubeIcon(props: IconProps): ReactNode {
+export function YouTubeIcon(props: Readonly<IconProps>): ReactNode {
 	const { className } = props;
 
 	return (

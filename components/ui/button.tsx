@@ -102,7 +102,7 @@ type ButtonStyleProps = GetVariantProps<typeof buttonStyles>;
 
 interface ButtonProps extends AriaButtonProps, ButtonStyleProps {}
 
-export function Button(props: ButtonProps): ReactNode {
+export function Button(props: Readonly<ButtonProps>): ReactNode {
 	const { children, className, kind, size, tone, variant, ...rest } = props;
 
 	return (

@@ -21,7 +21,7 @@ import {
 
 interface ListBoxProps<T extends object> extends AriaListBoxProps<T> {}
 
-export function ListBox<T extends object>(props: ListBoxProps<T>): ReactNode {
+export function ListBox<T extends object>(props: Readonly<ListBoxProps<T>>): ReactNode {
 	const { children, className, ...rest } = props;
 
 	return (
@@ -43,7 +43,7 @@ interface ListBoxItemProps<T extends object> extends AriaListBoxItemProps<T> {
 	textValue: string;
 }
 
-export function ListBoxItem<T extends object>(props: ListBoxItemProps<T>): ReactNode {
+export function ListBoxItem<T extends object>(props: Readonly<ListBoxItemProps<T>>): ReactNode {
 	const { children, className, ...rest } = props;
 
 	return (
@@ -78,7 +78,7 @@ export function ListBoxItem<T extends object>(props: ListBoxItemProps<T>): React
 
 interface ListBoxItemLabelProps extends AriaTextProps {}
 
-export function ListBoxItemLabel(props: ListBoxItemLabelProps): ReactNode {
+export function ListBoxItemLabel(props: Readonly<ListBoxItemLabelProps>): ReactNode {
 	const { children, className, ...rest } = props;
 
 	return (
@@ -90,7 +90,7 @@ export function ListBoxItemLabel(props: ListBoxItemLabelProps): ReactNode {
 
 interface ListBoxSeparatorProps extends AriaSeparatorProps {}
 
-export function ListBoxSeparator(props: ListBoxSeparatorProps): ReactNode {
+export function ListBoxSeparator(props: Readonly<ListBoxSeparatorProps>): ReactNode {
 	const { className, ...rest } = props;
 
 	return <AriaSeparator {...rest} className={cn("border-t border-stroke-weak", className)} />;
@@ -100,7 +100,9 @@ interface ListBoxSectionProps<T extends object> extends AriaListBoxSectionProps<
 	items?: Array<T>;
 }
 
-export function ListBoxSection<T extends object>(props: ListBoxSectionProps<T>): ReactNode {
+export function ListBoxSection<T extends object>(
+	props: Readonly<ListBoxSectionProps<T>>,
+): ReactNode {
 	const { children, className, items, ...rest } = props;
 
 	return (
@@ -112,7 +114,7 @@ export function ListBoxSection<T extends object>(props: ListBoxSectionProps<T>):
 
 interface ListBoxSectionHeaderProps extends ComponentPropsWithRef<typeof AriaHeader> {}
 
-export function ListBoxSectionHeader(props: ListBoxSectionHeaderProps): ReactNode {
+export function ListBoxSectionHeader(props: Readonly<ListBoxSectionHeaderProps>): ReactNode {
 	const { children, className, ...rest } = props;
 
 	return (
@@ -124,7 +126,7 @@ export function ListBoxSectionHeader(props: ListBoxSectionHeaderProps): ReactNod
 
 interface ListBoxEmptyStateProps extends ComponentPropsWithRef<"div"> {}
 
-export function ListBoxEmptyState(props: ListBoxEmptyStateProps): ReactNode {
+export function ListBoxEmptyState(props: Readonly<ListBoxEmptyStateProps>): ReactNode {
 	const { children, className, ...rest } = props;
 
 	return (

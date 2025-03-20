@@ -4,17 +4,17 @@ import { cn } from "@acdh-oeaw/style-variants";
 import type { ReactNode } from "react";
 import {
 	composeRenderProps,
-	Input as AriaInput,
-	type InputProps as AriaInputProps,
+	TextArea as AriaTextArea,
+	type TextAreaProps as AriaTextAreaProps,
 } from "react-aria-components";
 
-interface InputProps extends AriaInputProps {}
+interface TextAreaProps extends AriaTextAreaProps {}
 
-export function Input(props: Readonly<InputProps>): ReactNode {
+export function TextArea(props: Readonly<TextAreaProps>): ReactNode {
 	const { className, ...rest } = props;
 
 	return (
-		<AriaInput
+		<AriaTextArea
 			{...rest}
 			className={composeRenderProps(className, (className) => {
 				return cn(

@@ -2,7 +2,7 @@ import { useTranslations } from "next-intl";
 import type { FC, ReactNode } from "react";
 
 import { Logo } from "@/components/logo";
-import { NavLink, type NavLinkProps } from "@/components/nav-link";
+import { NavLink } from "@/components/nav-link";
 import {
 	BlueskyIcon,
 	MastodonIcon,
@@ -26,7 +26,7 @@ export function AppFooter(): ReactNode {
 			href: createHref({ pathname: "/imprint" }),
 			label: t("links.imprint"),
 		},
-	} satisfies Record<string, { href: NavLinkProps["href"]; label: string }>;
+	} satisfies Record<string, { href: string; label: string }>;
 
 	const socialMedia = {
 		bluesky: {

@@ -3,7 +3,7 @@ import type { ComponentPropsWithRef, ReactNode } from "react";
 
 interface FieldLabelsProps extends ComponentPropsWithRef<"div"> {}
 
-export function FieldLabels(props: FieldLabelsProps): ReactNode {
+export function FieldLabels(props: Readonly<FieldLabelsProps>): ReactNode {
 	const { children, className, ...rest } = props;
 
 	return (

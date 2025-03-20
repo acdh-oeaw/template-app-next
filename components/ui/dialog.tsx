@@ -20,7 +20,7 @@ export { AriaDialogTrigger as DialogTrigger };
 
 interface ModalOverlayProps extends AriaModalOverlayProps {}
 
-export function ModalOverlay(props: ModalOverlayProps): ReactNode {
+export function ModalOverlay(props: Readonly<ModalOverlayProps>): ReactNode {
 	const { children, className, ...rest } = props;
 
 	return (
@@ -55,7 +55,7 @@ type ModalStyleProps = GetVariantProps<typeof modalStyles>;
 
 interface ModalProps extends AriaModalOverlayProps, ModalStyleProps {}
 
-export function Modal(props: ModalProps): ReactNode {
+export function Modal(props: Readonly<ModalProps>): ReactNode {
 	const { children, className, size, ...rest } = props;
 
 	return (
@@ -72,7 +72,7 @@ export function Modal(props: ModalProps): ReactNode {
 
 interface DialogProps extends AriaDialogProps {}
 
-export function Dialog(props: DialogProps): ReactNode {
+export function Dialog(props: Readonly<DialogProps>): ReactNode {
 	const { children, className, ...rest } = props;
 
 	return (
@@ -87,7 +87,7 @@ export function Dialog(props: DialogProps): ReactNode {
 
 interface DialogHeaderProps extends ComponentPropsWithRef<"header"> {}
 
-export function DialogHeader(props: DialogHeaderProps): ReactNode {
+export function DialogHeader(props: Readonly<DialogHeaderProps>): ReactNode {
 	const { children, className, ...rest } = props;
 
 	return (
@@ -105,7 +105,7 @@ export function DialogHeader(props: DialogHeaderProps): ReactNode {
 
 interface DialogTitleProps extends AriaHeadingProps {}
 
-export function DialogTitle(props: DialogTitleProps): ReactNode {
+export function DialogTitle(props: Readonly<DialogTitleProps>): ReactNode {
 	const { children, className, ...rest } = props;
 
 	return (
@@ -121,7 +121,7 @@ export function DialogTitle(props: DialogTitleProps): ReactNode {
 
 interface DialogDescriptionProps extends AriaTextProps {}
 
-export function DialogDescription(props: DialogDescriptionProps): ReactNode {
+export function DialogDescription(props: Readonly<DialogDescriptionProps>): ReactNode {
 	const { children, className, ...rest } = props;
 
 	return (
@@ -133,7 +133,7 @@ export function DialogDescription(props: DialogDescriptionProps): ReactNode {
 
 interface DialogBodyProps extends ComponentPropsWithRef<"div"> {}
 
-export function DialogBody(props: DialogBodyProps): ReactNode {
+export function DialogBody(props: Readonly<DialogBodyProps>): ReactNode {
 	const { children, className, ...rest } = props;
 
 	return (
@@ -145,7 +145,7 @@ export function DialogBody(props: DialogBodyProps): ReactNode {
 
 interface DialogFooterProps extends ComponentPropsWithRef<"footer"> {}
 
-export function DialogFooter(props: DialogFooterProps): ReactNode {
+export function DialogFooter(props: Readonly<DialogFooterProps>): ReactNode {
 	const { children, className, ...rest } = props;
 
 	return (

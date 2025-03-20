@@ -27,7 +27,7 @@ type CheckBoxStyleProps = GetVariantProps<typeof checkBoxStyles>;
 
 interface CheckBoxProps extends AriaCheckBoxProps, CheckBoxStyleProps {}
 
-export function CheckBox(props: CheckBoxProps): ReactNode {
+export function CheckBox(props: Readonly<CheckBoxProps>): ReactNode {
 	const { children, className, size, ...rest } = props;
 
 	return (
@@ -72,7 +72,7 @@ interface CheckBoxBoxProps
 		Pick<AriaCheckboxRenderProps, "isIndeterminate" | "isSelected">,
 		CheckBoxBoxStyles {}
 
-export function CheckBoxBox(props: CheckBoxBoxProps): ReactNode {
+export function CheckBoxBox(props: Readonly<CheckBoxBoxProps>): ReactNode {
 	const { className, isIndeterminate, isSelected, size, ...rest } = props;
 
 	return (

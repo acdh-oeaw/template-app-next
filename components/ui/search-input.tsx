@@ -12,7 +12,7 @@ import { FieldStatusContext } from "@/components/ui/field-status-context";
 
 interface SearchInputProps extends AriaSearchFieldProps {}
 
-export function SearchInput(props: SearchInputProps): ReactNode {
+export function SearchInput(props: Readonly<SearchInputProps>): ReactNode {
 	const { children, className, ...rest } = props;
 
 	return (
@@ -26,9 +26,9 @@ export function SearchInput(props: SearchInputProps): ReactNode {
 			{composeRenderProps(children, (children, renderProps) => {
 				return (
 					/** @see https://github.com/adobe/react-spectrum/issues/6151 */
-					<FieldStatusContext.Provider value={{ ...renderProps, isRequired: false }}>
+					<FieldStatusContext value={{ ...renderProps, isRequired: false }}>
 						{children}
-					</FieldStatusContext.Provider>
+					</FieldStatusContext>
 				);
 			})}
 		</AriaSearchField>

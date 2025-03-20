@@ -15,7 +15,7 @@ export { AriaMenuTrigger as MenuTrigger };
 
 interface MenuProps<T extends object> extends AriaMenuProps<T> {}
 
-export function Menu<T extends object>(props: MenuProps<T>): ReactNode {
+export function Menu<T extends object>(props: Readonly<MenuProps<T>>): ReactNode {
 	const { children, className, ...rest } = props;
 
 	return (
@@ -37,7 +37,7 @@ interface MenuItemProps<T extends object> extends AriaMenuItemProps<T> {
 	textValue: string;
 }
 
-export function MenuItem<T extends object>(props: MenuItemProps<T>): ReactNode {
+export function MenuItem<T extends object>(props: Readonly<MenuItemProps<T>>): ReactNode {
 	const { children, className, ...rest } = props;
 
 	return (

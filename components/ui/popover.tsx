@@ -12,7 +12,7 @@ import {
 
 interface PopoverProps extends AriaPopoverProps {}
 
-export function Popover(props: PopoverProps): ReactNode {
+export function Popover(props: Readonly<PopoverProps>): ReactNode {
 	const { children, className, ...rest } = props;
 
 	const isArrowVisible = false as boolean; // FIXME:
@@ -46,7 +46,7 @@ export function Popover(props: PopoverProps): ReactNode {
 
 interface OverlayArrowProps extends AriaOverlayArrowProps {}
 
-function OverlayArrow(_props: OverlayArrowProps): ReactNode {
+function OverlayArrow(_props: Readonly<OverlayArrowProps>): ReactNode {
 	return (
 		<AriaOverlayArrow className="group">
 			<svg

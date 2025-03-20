@@ -12,7 +12,7 @@ import { FieldStatusContext } from "@/components/ui/field-status-context";
 
 interface CheckBoxGroupProps extends AriaCheckBoxGroupProps {}
 
-export function CheckBoxGroup(props: CheckBoxGroupProps): ReactNode {
+export function CheckBoxGroup(props: Readonly<CheckBoxGroupProps>): ReactNode {
 	const { children, className, ...rest } = props;
 
 	return (
@@ -24,9 +24,7 @@ export function CheckBoxGroup(props: CheckBoxGroupProps): ReactNode {
 			data-slot="fieldset"
 		>
 			{composeRenderProps(children, (children, renderProps) => {
-				return (
-					<FieldStatusContext.Provider value={renderProps}>{children}</FieldStatusContext.Provider>
-				);
+				return <FieldStatusContext value={renderProps}>{children}</FieldStatusContext>;
 			})}
 		</AriaCheckBoxGroup>
 	);
@@ -34,7 +32,7 @@ export function CheckBoxGroup(props: CheckBoxGroupProps): ReactNode {
 
 interface CheckBoxListProps extends ComponentPropsWithRef<"div"> {}
 
-export function CheckBoxList(props: CheckBoxListProps): ReactNode {
+export function CheckBoxList(props: Readonly<CheckBoxListProps>): ReactNode {
 	const { children, className, ...rest } = props;
 
 	return (
