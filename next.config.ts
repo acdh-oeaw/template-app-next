@@ -16,6 +16,7 @@ const config: Config = {
 		// dynamicIO: true,
 		// ppr: true,
 		useCache: true,
+		viewTransition: true,
 	},
 	headers() {
 		const headers: Awaited<ReturnType<NonNullable<Config["headers"]>>> = [
