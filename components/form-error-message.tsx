@@ -2,7 +2,6 @@ import { cn } from "@acdh-oeaw/style-variants";
 import { Fragment, type ReactNode } from "react";
 
 import type { ActionState, ErrorActionState } from "@/lib/server/actions";
-// import { useRenderProps } from "@/lib/use-render-props";
 
 interface FormErrorMessageProps {
 	children?: ReactNode | ((state: ErrorActionState) => ReactNode);
@@ -12,12 +11,6 @@ interface FormErrorMessageProps {
 
 export function FormErrorMessage(props: Readonly<FormErrorMessageProps>): ReactNode {
 	const { children, className, state, ...rest } = props;
-
-	// TODO: useRenderProps
-	// const renderProps = useRenderProps({
-	// 	...props,
-	// 	values: state,
-	// });
 
 	return (
 		<div

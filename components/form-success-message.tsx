@@ -2,7 +2,6 @@ import { cn } from "@acdh-oeaw/style-variants";
 import { Fragment, type ReactNode } from "react";
 
 import type { ActionState, SuccessActionState } from "@/lib/server/actions";
-// import { useRenderProps } from "@/lib/use-render-props";
 
 interface FormSuccessMessageProps {
 	children?: ReactNode | ((state: SuccessActionState) => ReactNode);
@@ -12,12 +11,6 @@ interface FormSuccessMessageProps {
 
 export function FormSuccessMessage(props: Readonly<FormSuccessMessageProps>): ReactNode {
 	const { children, className, state, ...rest } = props;
-
-	// TODO: useRenderProps
-	// const renderProps = useRenderProps({
-	// 	...props,
-	// 	values: state,
-	// });
 
 	return (
 		<div
