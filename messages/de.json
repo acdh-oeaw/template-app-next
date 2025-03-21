@@ -1,4 +1,9 @@
 {
+	"errors": {
+		"internal-server-error": "Interner Serverfehler.",
+		"invalid-form-fields": "Ungültige oder fehlende Felder.",
+		"too-many-requests": "Zu viele Anfragen."
+	},
 	"AboutPage": {
 		"meta": {
 			"title": "Über das Projekt"

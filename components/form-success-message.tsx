@@ -1,10 +1,11 @@
 import { cn } from "@acdh-oeaw/style-variants";
-import type { ReactNode } from "react";
+import { Fragment, type ReactNode } from "react";
 
-import type { ActionState } from "@/lib/server/actions";
+import type { ActionState, SuccessActionState } from "@/lib/server/actions";
+// import { useRenderProps } from "@/lib/use-render-props";
 
 interface FormSuccessMessageProps {
-	children?: ReactNode | ((state: ActionState) => ReactNode);
+	children?: ReactNode | ((state: SuccessActionState) => ReactNode);
 	className?: string;
 	state: ActionState;
 }
@@ -13,6 +14,10 @@ export function FormSuccessMessage(props: Readonly<FormSuccessMessageProps>): Re
 	const { children, className, state, ...rest } = props;
 
 	// TODO: useRenderProps
+	// const renderProps = useRenderProps({
+	// 	...props,
+	// 	values: state,
+	// });
 
 	return (
 		<div
@@ -21,7 +26,7 @@ export function FormSuccessMessage(props: Readonly<FormSuccessMessageProps>): Re
 			aria-live="polite"
 			className={cn(className, { "sr-only": state.status !== "success" })}
 		>
-			<div key={state.timestamp}>
+			<Fragment key={state.timestamp}>
 				{state.status === "success"
 					? children != null
 						? typeof children === "function"
@@ -29,7 +34,7 @@ export function FormSuccessMessage(props: Readonly<FormSuccessMessageProps>): Re
 							: children
 						: state.message
 					: null}
-			</div>
+			</Fragment>
 		</div>
 	);
 }
