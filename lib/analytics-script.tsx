@@ -1,6 +1,6 @@
 "use client";
 
-import { createUrl } from "@acdh-oeaw/lib";
+import { addTrailingSlash, createUrl } from "@acdh-oeaw/lib";
 import type { NextWebVitalsMetric } from "next/app";
 import Script from "next/script";
 import { useReportWebVitals } from "next/web-vitals";
@@ -31,7 +31,7 @@ export function AnalyticsScript(props: AnalyticsProps): ReactNode {
 		<Fragment>
 			<Script
 				dangerouslySetInnerHTML={{
-					__html: `(${String(createAnalyticsScript)})("${baseUrl.endsWith("/") ? baseUrl : `${baseUrl}/`}", "${String(id)}");`,
+					__html: `const e=window._paq=window._paq??[];e.push(["disableCookies"]),e.push(["enableHeartBeatTimer"]);const s="${addTrailingSlash(baseUrl)}";e.push(["setTrackerUrl",s+"matomo.php"]),e.push(["setSiteId",${String(id)}]);const t=document,a=t.createElement("script"),o=t.getElementsByTagName("script")[0];a.async=!0,a.src=s+"matomo.js",o?.parentNode?.insertBefore(a,o);`,
 				}}
 				id="analytics-script"
 			/>
@@ -40,21 +40,6 @@ export function AnalyticsScript(props: AnalyticsProps): ReactNode {
 			</Suspense>
 		</Fragment>
 	);
-}
-
-function createAnalyticsScript(baseUrl: string, id: number): void {
-	const _paq = (window._paq = window._paq ?? []);
-	_paq.push(["disableCookies"]);
-	_paq.push(["enableHeartBeatTimer"]);
-	const u = baseUrl;
-	_paq.push(["setTrackerUrl", `${u}matomo.php`]);
-	_paq.push(["setSiteId", id]);
-	const d = document,
-		g = d.createElement("script"),
-		s = d.getElementsByTagName("script")[0];
-	g.async = true;
-	g.src = `${u}matomo.js`;
-	s?.parentNode?.insertBefore(g, s);
 }
 
 function PageViewTracker(): ReactNode {
