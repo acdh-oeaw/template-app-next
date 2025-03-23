@@ -545,7 +545,7 @@
 	--animate-popover-bottom-in: 150ms ease-out popover-bottom-in;
 	--animate-popover-bottom-out: 100ms ease-in popover-bottom-out;
 
-	--animate-loading-indicator-in: 300ms ease-out 500ms fade-in, 1000ms linear 500ms spin infinite;
+	--animate-loading-indicator-in: 300ms ease-out 500ms fade-in, 1000ms linear spin infinite;
 
 	@keyframes underlay-in {
 		from {
