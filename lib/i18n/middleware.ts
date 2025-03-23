@@ -7,8 +7,12 @@ import type { Middleware } from "@/lib/server/compose-middlewares";
 const intlMiddleware = createI18nMiddleware(routing);
 
 export const middleware: Middleware = function middleware(request, response) {
-	if (request.method === "GET" && !request.nextUrl.pathname.startsWith("/api")) {
+	if (!request.nextUrl.pathname.startsWith("/api")) {
 		const response = intlMiddleware(request);
+
+		if (request.method !== "GET") {
+			return response;
+		}
 
 		/**
 		 * 'next-intl` v4 adds an `x-default` alternate link for all routes,
