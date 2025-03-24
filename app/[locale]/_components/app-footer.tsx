@@ -57,7 +57,7 @@ export function AppFooter(): ReactNode {
 				<Logo className="h-8 w-auto shrink-0" />
 
 				<nav aria-label="navigation-social-media">
-					<ul className="flex flex-wrap items-center gap-x-6" role="list">
+					<ul className="flex flex-wrap items-center gap-x-6 gap-y-3" role="list">
 						{Object.entries(socialMedia).map(([id, link]) => {
 							const Icon = link.icon;
 
@@ -83,7 +83,10 @@ export function AppFooter(): ReactNode {
 
 			<div className="grid gap-y-8">
 				<nav aria-label={t("navigation-secondary")}>
-					<ul className="flex items-center gap-x-6 text-small text-text-weak" role="list">
+					<ul
+						className="flex flex-wrap items-center gap-x-6 gap-y-3 text-small text-text-weak"
+						role="list"
+					>
 						{Object.entries(links).map(([id, link]) => {
 							return (
 								<li key={id}>
