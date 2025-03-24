@@ -18,6 +18,18 @@ export async function getIntlMessages(locale: IntlLocale) {
 		_social[entry.kind] = entry.href;
 	});
 
+	switch (language) {
+		case "de": {
+			await import("@valibot/i18n/de");
+			break;
+		}
+
+		case "en": {
+			/** Default messages. */
+			break;
+		}
+	}
+
 	const messages = {
 		..._messages,
 		metadata: {
