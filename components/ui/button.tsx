@@ -2,12 +2,15 @@
 
 import { type GetVariantProps, styles } from "@acdh-oeaw/style-variants";
 import { Loader2Icon } from "lucide-react";
-import { Fragment, type ReactNode } from "react";
+import { type ComponentPropsWithRef, Fragment, type ReactNode } from "react";
 import {
 	Button as AriaButton,
 	type ButtonProps as AriaButtonProps,
 	composeRenderProps,
 } from "react-aria-components";
+
+import { Link } from "@/components/link";
+import { NavLink } from "@/components/nav-link";
 
 const buttonStyles = styles({
 	base: "*:data-[slot=icon]:first-child:-ml-1 *:data-[slot=icon]:last-child:-mr-1 interactive isolate inline-flex items-center justify-center gap-x-2 border text-center transition hover:hover-overlay focus-visible:focus-outline *:data-[slot=icon]:shrink-0 forced-colors:disabled:text-[GrayText] pending:opacity-75 pressed:press-overlay",
@@ -123,5 +126,39 @@ export function Button(props: Readonly<ButtonProps>): ReactNode {
 				);
 			})}
 		</AriaButton>
+	);
+}
+
+interface ButtonLinkProps extends ComponentPropsWithRef<typeof Link>, ButtonStyleProps {}
+
+export function ButtonLink(props: ButtonLinkProps): ReactNode {
+	const { children, className, kind, size, variant, ...rest } = props;
+
+	return (
+		<Link
+			{...rest}
+			className={composeRenderProps(className, (className) => {
+				return buttonStyles({ className, kind, size, variant });
+			})}
+		>
+			{children}
+		</Link>
+	);
+}
+
+interface ButtonNavLinkProps extends ComponentPropsWithRef<typeof NavLink>, ButtonStyleProps {}
+
+export function ButtonNavLink(props: ButtonNavLinkProps): ReactNode {
+	const { children, className, kind, size, variant, ...rest } = props;
+
+	return (
+		<NavLink
+			{...rest}
+			className={composeRenderProps(className, (className) => {
+				return buttonStyles({ className, kind, size, variant });
+			})}
+		>
+			{children}
+		</NavLink>
 	);
 }
