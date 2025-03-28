@@ -1,4 +1,4 @@
-import { hasLocale } from "next-intl";
+import { hasLocale, type Timezone } from "next-intl";
 
 export const locales = ["de-AT", "en-GB"] as const;
 
@@ -19,3 +19,5 @@ export type IntlLanguage = IntlLocale extends `${infer Language}-${string}` ? La
 export function getIntlLanguage(locale: IntlLocale): IntlLanguage {
 	return createIntlLocale(locale).language as IntlLanguage;
 }
+
+export const timeZone: Timezone = "UTC";
