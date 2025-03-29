@@ -20,30 +20,17 @@ import { IconButton } from "@/components/ui/icon-button";
 import { Menu, MenuItem } from "@/components/ui/menu";
 import { Popover } from "@/components/ui/popover";
 import { Separator } from "@/components/ui/separator";
-import { usePathname, useRouter } from "@/lib/navigation/navigation";
+import {
+	type NavigationItem,
+	type NavigationLink,
+	usePathname,
+	useRouter,
+} from "@/lib/navigation/navigation";
 import { isCurrentPage } from "@/lib/navigation/use-nav-link";
-
-interface NavigationLink {
-	type: "link";
-	href: string;
-	label: string;
-}
-
-interface NavigationSeparator {
-	type: "separator";
-}
-
-interface NavigationMenu {
-	type: "menu";
-	label: string;
-	children: Record<string, NavigationLink | NavigationSeparator>;
-}
-
-export type NavigationItem = NavigationLink | NavigationSeparator | NavigationMenu;
 
 interface AppNavigationProps {
 	label: string;
-	navigation: { home: NavigationLink } & Record<string, NavigationItem>;
+	navigation: Record<string, NavigationItem> & { home: NavigationLink };
 }
 
 export function AppNavigation(props: Readonly<AppNavigationProps>): ReactNode {
@@ -179,7 +166,7 @@ interface AppNavigationMobileProps {
 	menuCloseLabel: string;
 	menuOpenLabel: string;
 	menuTitleLabel: string;
-	navigation: Record<string, NavigationItem>;
+	navigation: Record<string, NavigationItem> & { home: NavigationLink };
 }
 
 export function AppNavigationMobile(props: Readonly<AppNavigationMobileProps>): ReactNode {

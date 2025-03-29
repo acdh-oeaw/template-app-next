@@ -24,3 +24,21 @@ export type LocaleLinkProps = Omit<ComponentPropsWithRef<typeof Link>, "href"> &
 };
 
 export const LocaleLink = Link as FC<LocaleLinkProps>;
+
+export interface NavigationLink {
+	type: "link";
+	href: string;
+	label: string;
+}
+
+export interface NavigationSeparator {
+	type: "separator";
+}
+
+export interface NavigationMenu {
+	type: "menu";
+	label: string;
+	children: Record<string, NavigationLink | NavigationSeparator>;
+}
+
+export type NavigationItem = NavigationLink | NavigationSeparator | NavigationMenu;

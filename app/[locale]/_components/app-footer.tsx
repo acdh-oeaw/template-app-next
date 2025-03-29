@@ -12,6 +12,7 @@ import {
 import { TouchTarget } from "@/components/ui/touch-target";
 import { useMetadata } from "@/lib/i18n/metadata";
 import { createHref } from "@/lib/navigation/create-href";
+import type { NavigationLink } from "@/lib/navigation/navigation";
 
 export function AppFooter(): ReactNode {
 	const t = useTranslations("AppFooter");
@@ -19,37 +20,43 @@ export function AppFooter(): ReactNode {
 
 	const links = {
 		contact: {
+			type: "link",
 			href: createHref({ pathname: "/contact" }),
 			label: t("links.contact"),
 		},
 		imprint: {
+			type: "link",
 			href: createHref({ pathname: "/imprint" }),
 			label: t("links.imprint"),
 		},
-	} satisfies Record<string, { href: string; label: string }>;
+	} satisfies Record<string, NavigationLink>;
 
 	const socialMedia = {
 		bluesky: {
+			type: "link",
 			href: meta.social.bluesky,
 			label: t("social-media.bluesky"),
 			icon: BlueskyIcon,
 		},
 		mastodon: {
+			type: "link",
 			href: meta.social.mastodon,
 			label: t("social-media.mastodon"),
 			icon: MastodonIcon,
 		},
 		twitter: {
+			type: "link",
 			href: meta.social.twitter,
 			label: t("social-media.twitter"),
 			icon: TwitterIcon,
 		},
 		youtube: {
+			type: "link",
 			href: meta.social.youtube,
 			label: t("social-media.youtube"),
 			icon: YouTubeIcon,
 		},
-	} satisfies Record<string, { href: string; label: string; icon: FC }>;
+	} satisfies Record<string, NavigationLink & { icon: FC }>;
 
 	return (
 		<footer className="layout-grid grid gap-y-6 border-t border-stroke-weak py-12">
