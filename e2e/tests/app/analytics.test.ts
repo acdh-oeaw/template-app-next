@@ -24,7 +24,7 @@ test.describe("analytics service", () => {
 		expect(initialResponse.status()).toBe(204);
 
 		const responsePromise = page.waitForResponse(baseUrl);
-		await page.getByRole("link", { name: i18n.t("AppFooter.links.imprint") }).click();
+		await page.getByRole("link", { name: i18n.t("AppFooter.navigation.items.imprint") }).click();
 		const response = await responsePromise;
 		expect(response.status()).toBe(204);
 	});
