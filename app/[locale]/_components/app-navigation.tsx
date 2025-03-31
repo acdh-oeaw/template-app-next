@@ -2,22 +2,15 @@
 
 import { ChevronDownIcon, ChevronRightIcon, MenuIcon, XIcon } from "lucide-react";
 import { PrefetchKind } from "next/dist/client/components/router-reducer/router-reducer-types";
-import { Fragment, type ReactNode } from "react";
+import { type ComponentPropsWithRef, Fragment, type ReactNode } from "react";
 import { chain } from "react-aria";
-import {
-	Button,
-	Disclosure,
-	DisclosurePanel,
-	Heading,
-	type MenuItemProps,
-	MenuTrigger,
-} from "react-aria-components";
+import { Button, Disclosure, DisclosurePanel, Heading } from "react-aria-components";
 
 import { Logo } from "@/components/logo";
 import { NavLink } from "@/components/nav-link";
 import { Drawer, DrawerTrigger, Modal, ModalOverlay } from "@/components/ui/drawer";
 import { IconButton } from "@/components/ui/icon-button";
-import { Menu, MenuItem } from "@/components/ui/menu";
+import { Menu, MenuItem, MenuTrigger } from "@/components/ui/menu";
 import { Popover } from "@/components/ui/popover";
 import { Separator } from "@/components/ui/separator";
 import {
@@ -51,11 +44,24 @@ export function AppNavigation(props: Readonly<AppNavigationProps>): ReactNode {
 			<ul className="flex flex-wrap text-small" role="list">
 				{Object.entries(navigation).map(([id, item]) => {
 					switch (item.type) {
+						case "action": {
+							return (
+								<li key={id}>
+									<Button
+										className="interactive inline-flex px-4 py-6 text-text-strong hover:hover-overlay focus-visible:focus-outline pressed:press-overlay"
+										onPress={item.onAction}
+									>
+										{item.label}
+									</Button>
+								</li>
+							);
+						}
+
 						case "link": {
 							return (
 								<li key={id}>
 									<NavLink
-										className="interactive inline-flex px-4 py-6 text-text-strong hover:hover-overlay focus-visible:focus-outline aria-[current]:select-overlay-bottom pressed:press-overlay"
+										className="interactive inline-flex px-4 py-6 text-text-strong hover:hover-overlay focus-visible:focus-outline pressed:press-overlay aria-current-page:select-overlay-bottom"
 										href={item.href}
 									>
 										{item.label}
@@ -94,15 +100,19 @@ export function AppNavigation(props: Readonly<AppNavigationProps>): ReactNode {
 											<Menu className="min-w-40" selectedKeys={selectedKeys}>
 												{Object.entries(item.children).map(([id, item]) => {
 													switch (item.type) {
+														case "action": {
+															return (
+																<MenuItem key={id} onAction={item.onAction} textValue={item.label}>
+																	{item.label}
+																</MenuItem>
+															);
+														}
+
 														case "link": {
 															return (
-																<NavigationMenuItem
-																	key={id}
-																	href={item.href}
-																	textValue={item.label}
-																>
+																<MenuLink key={id} href={item.href} textValue={item.label}>
 																	{item.label}
-																</NavigationMenuItem>
+																</MenuLink>
 															);
 														}
 
@@ -130,11 +140,11 @@ export function AppNavigation(props: Readonly<AppNavigationProps>): ReactNode {
 	);
 }
 
-interface NavigationMenuItemProps extends MenuItemProps {
+interface MenuLinkProps extends ComponentPropsWithRef<typeof MenuItem> {
 	href: string;
 }
 
-function NavigationMenuItem(props: Readonly<NavigationMenuItemProps>): ReactNode {
+function MenuLink(props: Readonly<MenuLinkProps>): ReactNode {
 	const { href, onHoverStart } = props;
 
 	const router = useRouter();
@@ -162,37 +172,50 @@ function NavigationMenuItem(props: Readonly<NavigationMenuItemProps>): ReactNode
 }
 
 interface AppNavigationMobileProps {
+	drawerCloseLabel: string;
+	drawerLabel: string;
+	drawerOpenLabel: string;
 	label: string;
-	menuCloseLabel: string;
-	menuOpenLabel: string;
-	menuTitleLabel: string;
 	navigation: Record<string, NavigationItem> & { home: NavigationLink };
 }
 
 export function AppNavigationMobile(props: Readonly<AppNavigationMobileProps>): ReactNode {
-	const { label, menuCloseLabel, menuOpenLabel, menuTitleLabel, navigation } = props;
+	const { drawerCloseLabel, drawerLabel, drawerOpenLabel, label, navigation } = props;
 
 	return (
 		<DrawerTrigger>
 			<nav aria-label={label} className="flex items-center py-3 md:hidden">
-				<IconButton className="-ml-3" kind="tertiary" label={menuOpenLabel} tone="neutral">
+				<IconButton className="-ml-3" kind="tertiary" label={drawerOpenLabel} tone="neutral">
 					<MenuIcon aria-hidden={true} data-slot="icon" />
 				</IconButton>
 			</nav>
 			<ModalOverlay isDismissable={true}>
 				<Modal placement="left">
 					<Drawer>
-						{({ close }) => {
+						{({ close: _close }) => {
+							function close() {
+								/**
+								 * `next/link` does not support pointer events, and `click`
+								 * fires after react aria components' `press` events, therefore
+								 * we delay closing the dialog so the navigation is guaranteed to
+								 * be triggered. practically, this seems only relevant for
+								 * firefox on touch devices.
+								 *
+								 * maybe unnecessary after @see https://github.com/adobe/react-spectrum/pull/7542
+								 */
+								requestAnimationFrame(_close);
+							}
+
 							return (
 								<Fragment>
 									<header className="p-6">
 										<Heading className="sr-only" slot="title">
-											{menuTitleLabel}
+											{drawerLabel}
 										</Heading>
 										<IconButton
 											className="-my-3 -ml-3"
 											kind="tertiary"
-											label={menuCloseLabel}
+											label={drawerCloseLabel}
 											slot="close"
 											tone="neutral"
 										>
@@ -202,24 +225,26 @@ export function AppNavigationMobile(props: Readonly<AppNavigationMobileProps>): 
 									<ul className="text-small" role="list">
 										{Object.entries(navigation).map(([id, item]) => {
 											switch (item.type) {
+												case "action": {
+													return (
+														<li key={id}>
+															<Button
+																className="interactive inline-flex w-full px-6 py-3 text-text-strong hover:hover-overlay focus-visible:focus-outline focus-visible:-focus-outline-offset-2 pressed:press-overlay"
+																onPress={chain(close, item.onAction)}
+															>
+																{item.label}
+															</Button>
+														</li>
+													);
+												}
+
 												case "link": {
 													return (
 														<li key={id}>
 															<NavLink
-																className="interactive inline-flex w-full px-6 py-3 text-text-strong hover:hover-overlay focus-visible:focus-outline focus-visible:-focus-outline-offset-2 aria-[current]:select-overlay-left aria-[current]:hover-overlay pressed:press-overlay"
+																className="interactive inline-flex w-full px-6 py-3 text-text-strong hover:hover-overlay focus-visible:focus-outline focus-visible:-focus-outline-offset-2 pressed:press-overlay aria-current-page:select-overlay-left aria-current-page:hover-overlay"
 																href={item.href}
-																onPress={() => {
-																	/**
-																	 * `next/link` does not support pointer events, and `click`
-																	 * fires after react aria components' `press` events, therefore
-																	 * we delay closing the dialog so the navigation is guaranteed to
-																	 * be triggered. practically, this seems only relevant for
-																	 * firefox on touch devices.
-																	 *
-																	 * maybe unnecessary after @see https://github.com/adobe/react-spectrum/pull/7542
-																	 */
-																	requestAnimationFrame(close);
-																}}
+																onPress={close}
 															>
 																{item.label}
 															</NavLink>
@@ -257,24 +282,26 @@ export function AppNavigationMobile(props: Readonly<AppNavigationMobileProps>): 
 																	<ul role="list">
 																		{Object.entries(item.children).map(([id, item]) => {
 																			switch (item.type) {
+																				case "action": {
+																					return (
+																						<li key={id}>
+																							<Button
+																								className="interactive inline-flex w-full px-6 py-3 text-text-strong hover:hover-overlay focus-visible:focus-outline focus-visible:-focus-outline-offset-2 pressed:press-overlay"
+																								onPress={chain(close, item.onAction)}
+																							>
+																								{item.label}
+																							</Button>
+																						</li>
+																					);
+																				}
+
 																				case "link": {
 																					return (
 																						<li key={id}>
 																							<NavLink
-																								className="interactive inline-flex w-full px-6 py-3 text-text-strong hover:hover-overlay focus-visible:focus-outline focus-visible:-focus-outline-offset-2 aria-[current]:select-overlay-left aria-[current]:bg-fill-brand-weak pressed:press-overlay"
+																								className="interactive inline-flex w-full px-6 py-3 text-text-strong hover:hover-overlay focus-visible:focus-outline focus-visible:-focus-outline-offset-2 pressed:press-overlay aria-current-page:select-overlay-left aria-current-page:bg-fill-brand-weak"
 																								href={item.href}
-																								onPress={() => {
-																									/**
-																									 * `next/link` does not support pointer events, and `click`
-																									 * fires after react aria components' `press` events, therefore
-																									 * we delay closing the dialog so the navigation is guaranteed to
-																									 * be triggered. practically, this seems only relevant for
-																									 * firefox on touch devices.
-																									 *
-																									 * maybe unnecessary after @see https://github.com/adobe/react-spectrum/pull/7542
-																									 */
-																									requestAnimationFrame(close);
-																								}}
+																								onPress={close}
 																							>
 																								{item.label}
 																							</NavLink>
