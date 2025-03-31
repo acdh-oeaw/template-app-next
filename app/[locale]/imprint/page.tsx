@@ -1,6 +1,6 @@
 "use cache";
 
-import { createUrl, createUrlSearchParams, HttpError, request } from "@acdh-oeaw/lib";
+import { createUrl, createUrlSearchParams, request } from "@acdh-oeaw/lib";
 import type { Metadata, ResolvingMetadata } from "next";
 import { notFound } from "next/navigation";
 import { getTranslations, setRequestLocale } from "next-intl/server";
@@ -9,6 +9,7 @@ import type { ReactNode } from "react";
 import { MainContent } from "@/components/ui/main-content";
 import { env } from "@/config/env.config";
 import type { IntlLocale } from "@/lib/i18n/locales";
+import { isHttpError } from "@/lib/server/errors";
 
 interface ImprintPageProps {
 	params: Promise<{
@@ -75,7 +76,7 @@ async function getImprintHtml(locale: IntlLocale): Promise<string> {
 
 		return html;
 	} catch (error) {
-		if (error instanceof HttpError && error.response.status === 404) {
+		if (isHttpError(error) && error.response.status === 404) {
 			notFound();
 		}
 
