@@ -1,6 +1,6 @@
 "use client";
 
-import { ChevronDownIcon, ChevronRightIcon, MenuIcon, XIcon } from "lucide-react";
+import { ChevronDownIcon, MenuIcon, XIcon } from "lucide-react";
 import { PrefetchKind } from "next/dist/client/components/router-reducer/router-reducer-types";
 import { type ComponentPropsWithRef, Fragment, type ReactNode } from "react";
 import { chain } from "react-aria";
@@ -88,16 +88,16 @@ export function AppNavigation(props: Readonly<AppNavigationProps>): ReactNode {
 							return (
 								<li key={id}>
 									<MenuTrigger>
-										<Button className="interactive inline-flex items-center gap-x-2 px-4 py-6 text-text-strong hover:hover-overlay focus-visible:focus-outline pressed:press-overlay">
+										<Button className="group interactive inline-flex items-center gap-x-2 px-4 py-6 text-text-strong hover:hover-overlay focus-visible:focus-outline pressed:press-overlay">
 											{item.label}
 											<ChevronDownIcon
 												aria-hidden={true}
-												className="size-6 shrink-0 text-icon-neutral"
+												className="size-6 shrink-0 text-icon-neutral transition group-aria-expanded:rotate-180"
 												data-slot="icon"
 											/>
 										</Button>
-										<Popover placement="bottom">
-											<Menu className="min-w-40" selectedKeys={selectedKeys} selectionMode="single">
+										<Popover placement="bottom left">
+											<Menu className="min-w-70" selectedKeys={selectedKeys} selectionMode="single">
 												{Object.entries(item.children).map(([id, item]) => {
 													switch (item.type) {
 														case "action": {
@@ -277,9 +277,10 @@ export function AppNavigationMobile(props: Readonly<AppNavigationMobileProps>): 
 																		slot="trigger"
 																	>
 																		{item.label}
-																		<ChevronRightIcon
+																		<ChevronDownIcon
 																			aria-hidden={true}
-																			className="size-5 shrink-0"
+																			className="size-6 shrink-0 text-icon-neutral transition group-expanded:rotate-180"
+																			data-slot="icon"
 																		/>
 																	</Button>
 																</Heading>
