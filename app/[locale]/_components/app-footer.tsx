@@ -22,12 +22,12 @@ export function AppFooter(): ReactNode {
 		contact: {
 			type: "link",
 			href: createHref({ pathname: "/contact" }),
-			label: t("links.contact"),
+			label: t("navigation.items.contact"),
 		},
 		imprint: {
 			type: "link",
 			href: createHref({ pathname: "/imprint" }),
-			label: t("links.imprint"),
+			label: t("navigation.items.imprint"),
 		},
 	} satisfies Record<string, NavigationLink>;
 
@@ -35,25 +35,25 @@ export function AppFooter(): ReactNode {
 		bluesky: {
 			type: "link",
 			href: meta.social.bluesky,
-			label: t("social-media.bluesky"),
+			label: t("navigation-social-media.items.bluesky"),
 			icon: BlueskyIcon,
 		},
 		mastodon: {
 			type: "link",
 			href: meta.social.mastodon,
-			label: t("social-media.mastodon"),
+			label: t("navigation-social-media.items.mastodon"),
 			icon: MastodonIcon,
 		},
 		twitter: {
 			type: "link",
 			href: meta.social.twitter,
-			label: t("social-media.twitter"),
+			label: t("navigation-social-media.items.twitter"),
 			icon: TwitterIcon,
 		},
 		youtube: {
 			type: "link",
 			href: meta.social.youtube,
-			label: t("social-media.youtube"),
+			label: t("navigation-social-media.items.youtube"),
 			icon: YouTubeIcon,
 		},
 	} satisfies Record<string, NavigationLink & { icon: FC }>;
@@ -63,7 +63,7 @@ export function AppFooter(): ReactNode {
 			<div className="grid gap-y-8 xs:flex xs:items-center xs:justify-between">
 				<Logo className="h-8 w-auto shrink-0" />
 
-				<nav aria-label="navigation-social-media">
+				<nav aria-label={t("navigation-social-media.label")}>
 					<ul className="flex flex-wrap items-center gap-x-6 gap-y-3" role="list">
 						{Object.entries(socialMedia).map(([id, link]) => {
 							const Icon = link.icon;
@@ -89,7 +89,7 @@ export function AppFooter(): ReactNode {
 			</div>
 
 			<div className="grid gap-y-8">
-				<nav aria-label={t("navigation-secondary")}>
+				<nav aria-label={t("navigation.label")}>
 					<ul
 						className="flex flex-wrap items-center gap-x-6 gap-y-3 text-small text-text-weak"
 						role="list"

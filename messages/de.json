@@ -12,28 +12,38 @@
 	},
 	"AppFooter": {
 		"creator": "Austrian Centre for Digital Humanities and Cultural Heritage",
-		"links": {
-			"contact": "Kontakt",
-			"imprint": "Impressum"
+		"navigation": {
+			"items": {
+				"contact": "Kontakt",
+				"imprint": "Impressum"
+			},
+			"label": "Sekundär"
 		},
-		"navigation-secondary": "Sekundär",
-		"navigation-social-media": "Social media",
-		"social-media": {
-			"bluesky": "Bluesky",
-			"mastodon": "Mastodon",
-			"twitter": "Twitter",
-			"youtube": "YouTube"
+		"navigation-social-media": {
+			"items": {
+				"bluesky": "Bluesky",
+				"mastodon": "Mastodon",
+				"twitter": "Twitter",
+				"youtube": "YouTube"
+			},
+			"label": "Social media"
 		}
 	},
 	"AppHeader": {
-		"links": {
-			"about": "Über das Projekt",
-			"home": "Startseite"
-		},
-		"navigation-menu": "Navigationsmenü",
-		"navigation-menu-close": "Navigationsmenü schließen",
-		"navigation-menu-open": "Navigationsmenü öffnen",
-		"navigation-primary": "Primär"
+		"navigation": {
+			"drawer": {
+				"close": "Navigationsmenü schließen",
+				"label": "Navigationsmenü",
+				"open": "Navigationsmenü öffnen"
+			},
+			"items": {
+				"about": "Über das Projekt",
+				"documentation": "Dokumentation",
+				"example": "Beispiel",
+				"home": "Startseite"
+			},
+			"label": "Primär"
+		}
 	},
 	"ColorSchemeSwitcher": {
 		"change-color-scheme": "Farbschema ändern",
