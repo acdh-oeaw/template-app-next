@@ -97,12 +97,17 @@ export function AppNavigation(props: Readonly<AppNavigationProps>): ReactNode {
 											/>
 										</Button>
 										<Popover placement="bottom">
-											<Menu className="min-w-40" selectedKeys={selectedKeys}>
+											<Menu className="min-w-40" selectedKeys={selectedKeys} selectionMode="single">
 												{Object.entries(item.children).map(([id, item]) => {
 													switch (item.type) {
 														case "action": {
 															return (
-																<MenuItem key={id} onAction={item.onAction} textValue={item.label}>
+																<MenuItem
+																	key={id}
+																	id={id}
+																	onAction={item.onAction}
+																	textValue={item.label}
+																>
 																	{item.label}
 																</MenuItem>
 															);
@@ -110,14 +115,14 @@ export function AppNavigation(props: Readonly<AppNavigationProps>): ReactNode {
 
 														case "link": {
 															return (
-																<MenuLink key={id} href={item.href} textValue={item.label}>
+																<MenuLink key={id} href={item.href} id={id} textValue={item.label}>
 																	{item.label}
 																</MenuLink>
 															);
 														}
 
 														case "separator": {
-															return <Separator key={id} className="my-1" />;
+															return <Separator key={id} className="my-1" id={id} />;
 														}
 													}
 												})}
