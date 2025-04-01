@@ -48,6 +48,7 @@ const config: Config = [
 				},
 				{
 					name: "next/link",
+					allowImportNames: ["useLinkStatus"],
 					message: "Please use `@/components/link` instead.",
 				},
 				{
