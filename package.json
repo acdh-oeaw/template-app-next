@@ -7,7 +7,7 @@
 		"node": "22.x",
 		"pnpm": "10.x"
 	},
-	"packageManager": "pnpm@10.7.0",
+	"packageManager": "pnpm@10.7.1",
 	"scripts": {
 		"analyze": "BUNDLE_ANALYZER=\"enabled\" next build --no-lint",
 		"build": "next build",
@@ -71,8 +71,8 @@
 		"@playwright/test": "^1.51.1",
 		"@react-aria/optimize-locales-plugin": "1.1.4",
 		"@react-types/shared": "^3.28.0",
-		"@tailwindcss/postcss": "^4.0.17",
-		"@types/node": "^22.13.14",
+		"@tailwindcss/postcss": "^4.1.0",
+		"@types/node": "^22.13.17",
 		"@types/react": "^19.0.12",
 		"@types/react-dom": "^19.0.4",
 		"axe-core": "^4.10.3",
@@ -94,11 +94,11 @@
 		"schema-dts": "^1.1.5",
 		"simple-git-hooks": "^2.12.1",
 		"stylelint": "^16.17.0",
-		"tailwindcss": "^4.0.17",
+		"tailwindcss": "^4.1.0",
 		"tailwindcss-react-aria-components": "2.0.0",
 		"tsx": "^4.19.3",
 		"typescript": "^5.8.2",
-		"typescript-eslint": "^8.28.0"
+		"typescript-eslint": "^8.29.0"
 	},
 	"pnpm": {
 		"onlyBuiltDependencies": [
