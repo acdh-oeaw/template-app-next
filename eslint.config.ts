@@ -44,6 +44,7 @@ const config: Config = [
 				"error",
 				{
 					name: "next/image",
+					allowImportNames: ["StaticImageData"],
 					message: "Please use `@/components/image` or `@/components/server-image` instead.",
 				},
 				{
