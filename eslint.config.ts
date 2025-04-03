@@ -25,7 +25,7 @@ const config: Config = [
 			"check-file/filename-naming-convention": [
 				"error",
 				{
-					"**/*": "KEBAB_CASE",
+					"**/*": "?(_)+([a-z])*([a-z0-9])*(-+([a-z0-9]))",
 				},
 				{ ignoreMiddleExtensions: true },
 			],
