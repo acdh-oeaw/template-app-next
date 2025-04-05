@@ -517,6 +517,11 @@
 	--shadow-overlay: 0px 20px 24px rgb(0 0 0 / 8%), 0px 8px 8px rgb(0 0 0 / 4%);
 	--shadow-raised: 0px 4px 8px rgb(0 0 0 / 4%), 0px 2px 4px rgb(0 0 0 / 8%);
 	--shadow-sunken: inset 0px 1px 4px rgb(0 0 0 / 8%);
+
+	/* FIXME: The "blur" value is calculated differently for `drop-shadow`, so will have to be adjusted. */
+	/* FIXME: Cannot be stacked with comma-separated list, but needs to call `drop-shadow()` for each shadow. */
+	--drop-shadow-overlay: 0px 20px 24px rgb(0 0 0 / 8%), 0px 8px 8px rgb(0 0 0 / 4%);
+	--drop-shadow-raised: 0px 4px 8px rgb(0 0 0 / 4%), 0px 2px 4px rgb(0 0 0 / 8%);
 }
 
 /** Animations. */
