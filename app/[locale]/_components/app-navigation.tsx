@@ -92,7 +92,7 @@ export function AppNavigation(props: Readonly<AppNavigationProps>): ReactNode {
 											{item.label}
 											<ChevronDownIcon
 												aria-hidden={true}
-												className="size-6 shrink-0 text-icon-neutral transition group-aria-expanded:rotate-180"
+												className="size-6 shrink-0 text-icon-neutral transition group-aria-expanded:rotate-x-180"
 												data-slot="icon"
 											/>
 										</Button>
@@ -279,7 +279,7 @@ export function AppNavigationMobile(props: Readonly<AppNavigationMobileProps>): 
 																		{item.label}
 																		<ChevronDownIcon
 																			aria-hidden={true}
-																			className="size-6 shrink-0 text-icon-neutral transition group-expanded:rotate-180"
+																			className="size-6 shrink-0 text-icon-neutral transition group-expanded:rotate-x-180"
 																			data-slot="icon"
 																		/>
 																	</Button>
