@@ -25,7 +25,7 @@ const config: Config = [
 			"check-file/filename-naming-convention": [
 				"error",
 				{
-					"**/*": "KEBAB_CASE",
+					"**/*": "?(_)+([a-z])*([a-z0-9])*(-+([a-z0-9]))",
 				},
 				{ ignoreMiddleExtensions: true },
 			],
@@ -44,10 +44,12 @@ const config: Config = [
 				"error",
 				{
 					name: "next/image",
+					allowImportNames: ["StaticImageData"],
 					message: "Please use `@/components/image` or `@/components/server-image` instead.",
 				},
 				{
 					name: "next/link",
+					allowImportNames: ["useLinkStatus"],
 					message: "Please use `@/components/link` instead.",
 				},
 				{

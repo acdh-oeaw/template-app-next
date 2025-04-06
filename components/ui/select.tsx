@@ -75,7 +75,7 @@ export function SelectValue<T extends object>(props: Readonly<SelectValueProps<T
 			{...rest}
 			className={composeRenderProps(className, (className) => {
 				return cn(
-					"text-small text-text-strong group-disabled:text-text-disabled placeholder-shown:text-text-weak placeholder-shown:italic",
+					"inline-flex items-center gap-x-3 text-small text-text-strong group-disabled:text-text-disabled placeholder-shown:text-text-weak placeholder-shown:italic",
 					className,
 				);
 			})}
