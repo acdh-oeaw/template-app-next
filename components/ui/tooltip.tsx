@@ -15,7 +15,7 @@ export { AriaTooltipTrigger as TooltipTrigger };
 
 interface TooltipProps extends AriaTooltipProps {}
 
-export function Tooltip(props: TooltipProps): ReactNode {
+export function Tooltip(props: Readonly<TooltipProps>): ReactNode {
 	const { children, className, ...rest } = props;
 
 	return (
