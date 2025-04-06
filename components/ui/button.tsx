@@ -120,7 +120,7 @@ export function Button(props: Readonly<ButtonProps>): ReactNode {
 
 				return (
 					<Fragment>
-						{isPending ? <LoadingIndicator data-slot="icon" /> : null}
+						{isPending ? <LoadingIndicator data-slot="icon" delay="none" /> : null}
 						{children}
 					</Fragment>
 				);
