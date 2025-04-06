@@ -17,7 +17,7 @@ export function LocaleSwitcherLoadingIndicator(
 	const { pending: isPending } = useLinkStatus();
 
 	if (isPending) {
-		return <LoadingIndicator />;
+		return <LoadingIndicator delay="none" />;
 	}
 
 	return children;
