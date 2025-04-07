@@ -217,6 +217,31 @@
 		--_color-text-warning: var(--_color-amber-light-1000);
 		--_color-text-weak: var(--_color-grey-light-700);
 
+		/**
+	   * For elements which don't allow `::before` and `::after` pseudo-elements, like `<input>`,
+	   * we need to calculate hover and press colors. In the future, this may become easier with
+	   * native alpha compositing support in css color module level 6.
+     *
+	   * --color-fill-hover: rgb(0 21 128 / 3.9%)
+	   * --color-fill-press: rgb(0 17 102 / 10.2%);
+	   *
+	   * @see https://github.com/w3c/csswg-drafts/issues/8431
+	   */
+		--_color-fill-inverse-strong-hover: rgb(
+			from var(--_color-fill-inverse-strong)
+				calc((0 * 0.039 + r * alpha * (1 - 0.039)) / calc(0.039 + alpha * (1 - 0.039)))
+				calc((21 * 0.039 + g * alpha * (1 - 0.039)) / calc(0.039 + alpha * (1 - 0.039)))
+				calc((128 * 0.039 + b * alpha * (1 - 0.039)) / calc(0.039 + alpha * (1 - 0.039))) /
+				calc(0.039 + alpha * (1 - 0.039))
+		);
+		--_color-fill-inverse-strong-press: rgb(
+			from var(--_color-fill-inverse-strong)
+				calc((0 * 0.102 + r * alpha * (1 - 0.102)) / calc(0.102 + alpha * (1 - 0.102)))
+				calc((17 * 0.102 + g * alpha * (1 - 0.102)) / calc(0.102 + alpha * (1 - 0.102)))
+				calc((102 * 0.102 + b * alpha * (1 - 0.102)) / calc(0.102 + alpha * (1 - 0.102))) /
+				calc(0.102 + alpha * (1 - 0.102))
+		);
+
 		color-scheme: light;
 	}
 
@@ -229,12 +254,15 @@
 		--_color-background-raised: var(--_color-grey-solid-850);
 		--_color-background-sunken: var(--_color-grey-solid-1000);
 
+		--_color-fill-disabled: var(--_color-grey-dark-100);
+		--_color-fill-hover: var(--_color-grey-dark-50);
+		--_color-fill-press: var(--_color-grey-dark-100);
+		--_color-fill-selected: var(--_color-brand-dark-1000);
+
 		--_color-fill-brand-strong: var(--_color-brand-dark-1000);
 		--_color-fill-brand-weak: var(--_color-brand-dark-50);
-		--_color-fill-disabled: var(--_color-grey-dark-100);
 		--_color-fill-error-strong: var(--_color-red-dark-1000);
 		--_color-fill-error-weak: var(--_color-red-dark-50);
-		--_color-fill-hover: var(--_color-grey-dark-50);
 		--_color-fill-information-strong: var(--_color-teal-dark-1000);
 		--_color-fill-information-weak: var(--_color-teal-dark-50);
 		--_color-fill-inverse-disabled: var(--_color-grey-light-100);
@@ -243,8 +271,6 @@
 		--_color-fill-inverse-strong: var(--_color-grey-solid-900);
 		--_color-fill-inverse-weak: var(--_color-grey-light-50);
 		--_color-fill-overlay: var(--_color-grey-light-1000);
-		--_color-fill-press: var(--_color-grey-dark-100);
-		--_color-fill-selected: var(--_color-brand-dark-1000);
 		--_color-fill-strong: var(--_color-grey-dark-1000);
 		--_color-fill-success-strong: var(--_color-green-dark-1000);
 		--_color-fill-success-weak: var(--_color-green-dark-50);
@@ -296,6 +322,31 @@
 		--_color-text-success: var(--_color-green-dark-1000);
 		--_color-text-warning: var(--_color-amber-dark-1000);
 		--_color-text-weak: var(--_color-grey-dark-700);
+
+		/**
+	   * For elements which don't allow `::before` and `::after` pseudo-elements, like `<input>`,
+	   * we need to calculate hover and press colors. In the future, this may become easier with
+	   * native alpha compositing support in css color module level 6.
+     *
+	   * --color-fill-hover: rgb(255 255 255 / 5.9%);
+	   * --color-fill-press: rgb(255 255 255 / 12.2%);
+	   *
+	   * @see https://github.com/w3c/csswg-drafts/issues/8431
+	   */
+		--_color-fill-inverse-strong-hover: rgb(
+			from var(--_color-fill-inverse-strong)
+				calc((255 * 0.059 + r * alpha * (1 - 0.059)) / calc(0.059 + alpha * (1 - 0.059)))
+				calc((255 * 0.059 + g * alpha * (1 - 0.059)) / calc(0.059 + alpha * (1 - 0.059)))
+				calc((255 * 0.059 + b * alpha * (1 - 0.059)) / calc(0.059 + alpha * (1 - 0.059))) /
+				calc(0.059 + alpha * (1 - 0.059))
+		);
+		--_color-fill-inverse-strong-press: rgb(
+			from var(--_color-fill-inverse-strong)
+				calc((255 * 0.122 + r * alpha * (1 - 0.122)) / calc(0.122 + alpha * (1 - 0.122)))
+				calc((255 * 0.122 + g * alpha * (1 - 0.122)) / calc(0.122 + alpha * (1 - 0.122)))
+				calc((255 * 0.122 + b * alpha * (1 - 0.122)) / calc(0.122 + alpha * (1 - 0.122))) /
+				calc(0.122 + alpha * (1 - 0.122))
+		);
 
 		color-scheme: dark;
 	}
@@ -381,6 +432,9 @@
 	--color-text-success: var(--_color-text-success);
 	--color-text-warning: var(--_color-text-warning);
 	--color-text-weak: var(--_color-text-weak);
+
+	--color-fill-inverse-strong-hover: var(--_color-fill-inverse-strong-hover);
+	--color-fill-inverse-strong-press: var(--_color-fill-inverse-strong-press);
 }
 
 /** Font families. */
