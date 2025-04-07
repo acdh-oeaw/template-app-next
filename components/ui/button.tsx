@@ -2,7 +2,7 @@
 
 import { type GetVariantProps, styles } from "@acdh-oeaw/style-variants";
 import { Loader2Icon } from "lucide-react";
-import { type ComponentPropsWithRef, Fragment, type ReactNode } from "react";
+import { type ComponentPropsWithRef, Fragment, type ReactNode, useEffect, useState } from "react";
 import {
 	Button as AriaButton,
 	type ButtonProps as AriaButtonProps,
@@ -108,6 +108,27 @@ interface ButtonProps extends AriaButtonProps, ButtonStyleProps {}
 export function Button(props: Readonly<ButtonProps>): ReactNode {
 	const { children, className, kind, size, tone, variant, ...rest } = props;
 
+	const isPending = props.isPending ?? false;
+	const [isLoadingIndicatorVisible, setIsLoadingIndicatorVisible] = useState(isPending);
+
+	useEffect(() => {
+		let timeout: ReturnType<typeof setTimeout> | null = null;
+
+		if (isPending) {
+			timeout = setTimeout(() => {
+				setIsLoadingIndicatorVisible(true);
+			}, 500);
+		} else {
+			setIsLoadingIndicatorVisible(false);
+		}
+
+		return () => {
+			if (timeout) {
+				clearTimeout(timeout);
+			}
+		};
+	}, [isPending]);
+
 	return (
 		<AriaButton
 			{...rest}
@@ -118,8 +139,13 @@ export function Button(props: Readonly<ButtonProps>): ReactNode {
 			{composeRenderProps(children, (children) => {
 				return (
 					<Fragment>
-						{props.isPending ? (
-							<Loader2Icon aria-hidden={true} className="animate-spin" data-slot="icon" />
+						{props.isPending && isLoadingIndicatorVisible ? (
+							<Loader2Icon
+								aria-hidden={true}
+								className="animate-spin"
+								data-slot="icon"
+								// style={{ visibility: isLoadingIndicatorVisible ? "visible" : "hidden" }}
+							/>
 						) : null}
 						{children}
 					</Fragment>
