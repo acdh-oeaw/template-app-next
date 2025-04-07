@@ -8,6 +8,8 @@ import {
 	type CheckboxProps as AriaCheckBoxProps,
 	type CheckboxRenderProps as AriaCheckboxRenderProps,
 	composeRenderProps,
+	Text as AriaText,
+	type TextProps as AriaTextProps,
 } from "react-aria-components";
 
 const checkBoxStyles = styles({
@@ -44,7 +46,7 @@ export function CheckBox(props: Readonly<CheckBoxProps>): ReactNode {
 				return (
 					<Fragment>
 						<CheckBoxBox isIndeterminate={isIndeterminate} isSelected={isSelected} size={size} />
-						<span data-slot="label">{children}</span>
+						{children}
 					</Fragment>
 				);
 			})}
@@ -92,4 +94,12 @@ export function CheckBoxBox(props: Readonly<CheckBoxBoxProps>): ReactNode {
 			) : null}
 		</div>
 	);
+}
+
+interface CheckBoxLabelProps extends AriaTextProps {}
+
+export function CheckBoxLabel(props: Readonly<CheckBoxLabelProps>): ReactNode {
+	const { children } = props;
+
+	return <AriaText data-slot="label">{children}</AriaText>;
 }
