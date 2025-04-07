@@ -108,6 +108,7 @@ const config: Config = [
 			],
 			// "@typescript-eslint/strict-boolean-expressions": "error",
 			"react/jsx-sort-props": ["error", { reservedFirst: true }],
+			"react-x/prefer-read-only-props": "error",
 		},
 	},
 	...nodeConfig.map((config) => {

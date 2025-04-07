@@ -24,6 +24,7 @@ export function LocaleSwitcherLink(props: Readonly<LocaleSwitcherLinkProps>): Re
 			href={createHref({ pathname, searchParams })}
 			locale={locale}
 			replace={true}
+			scroll={false}
 		>
 			{children}
 		</Link>
@@ -41,6 +42,7 @@ export function LocaleSwitcherLinkFallback(props: Readonly<LocaleSwitcherLinkPro
 			href={createHref({ pathname })}
 			locale={locale}
 			replace={true}
+			scroll={false}
 		>
 			{children}
 		</Link>

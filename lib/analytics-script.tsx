@@ -22,7 +22,7 @@ interface AnalyticsProps {
 	id: number | undefined;
 }
 
-export function AnalyticsScript(props: AnalyticsProps): ReactNode {
+export function AnalyticsScript(props: Readonly<AnalyticsProps>): ReactNode {
 	const { baseUrl, id } = props;
 
 	if (baseUrl == null || id == null) return null;
