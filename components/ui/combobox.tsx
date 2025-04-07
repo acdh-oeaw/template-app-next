@@ -55,7 +55,7 @@ export function ComboBoxTrigger(props: Readonly<ComboBoxTriggerProps>): ReactNod
 						<AriaButton className="absolute top-0 right-3 bottom-0 isolate inline-grid size-8 shrink-0 place-content-center self-center rounded-1 transition">
 							<ChevronDownIcon
 								aria-hidden={true}
-								className="size-6 h-full shrink-0 text-icon-neutral transition group-open:rotate-180 group-invalid:text-icon-error group-disabled:text-icon-disabled forced-colors:text-[ButtonText] forced-colors:group-disabled:text-[GrayText]"
+								className="size-6 h-full shrink-0 text-icon-neutral transition group-open:rotate-x-180 group-invalid:text-icon-error group-disabled:text-icon-disabled forced-colors:text-[ButtonText] forced-colors:group-disabled:text-[GrayText]"
 								data-slot="icon"
 							/>
 						</AriaButton>
