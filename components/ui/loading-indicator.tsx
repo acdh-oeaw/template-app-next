@@ -51,7 +51,7 @@ export function LoadingIndicator(props: Readonly<LoadingIndicatorProps>): ReactN
 					<Fragment>
 						<Loader2Icon
 							aria-hidden={true}
-							className="size-full animate-loading-indicator-in"
+							className="size-full animate-loading-indicator-spin-in"
 							data-slot="icon"
 						/>
 						{children}
