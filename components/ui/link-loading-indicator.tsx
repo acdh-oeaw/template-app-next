@@ -1,3 +1,5 @@
+"use client";
+
 import { useLinkStatus } from "next/link";
 import type { ReactNode } from "react";
 
