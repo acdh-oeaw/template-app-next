@@ -12,6 +12,10 @@ import {
 const loadingIndicatorStyles = styles({
 	base: "shrink-0 text-text-weak",
 	variants: {
+		delay: {
+			default: "",
+			none: "[--animation-delay:0]",
+		},
 		size: {
 			small: "size-6",
 			medium: "size-10",
@@ -19,6 +23,7 @@ const loadingIndicatorStyles = styles({
 		},
 	},
 	defaults: {
+		delay: "default",
 		size: "medium",
 	},
 });
@@ -30,13 +35,13 @@ interface LoadingIndicatorProps
 		LoadingIndicatorStyleProps {}
 
 export function LoadingIndicator(props: Readonly<LoadingIndicatorProps>): ReactNode {
-	const { children, className, size, ...rest } = props;
+	const { children, className, delay, size, ...rest } = props;
 
 	return (
 		<AriaProgressBar
 			{...rest}
 			className={composeRenderProps(className, (className) => {
-				return loadingIndicatorStyles({ className, size });
+				return loadingIndicatorStyles({ className, delay, size });
 			})}
 			data-pending="true"
 			isIndeterminate={true}
@@ -46,7 +51,7 @@ export function LoadingIndicator(props: Readonly<LoadingIndicatorProps>): ReactN
 					<Fragment>
 						<Loader2Icon
 							aria-hidden={true}
-							className="size-full animate-loading-indicator-in"
+							className="size-full animate-loading-indicator-spin-in"
 							data-slot="icon"
 						/>
 						{children}
