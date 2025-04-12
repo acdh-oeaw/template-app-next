@@ -52,7 +52,7 @@ export function Tooltip(props: Readonly<TooltipProps>): ReactNode {
 
 interface TooltipTitleProps extends AriaTextProps {}
 
-export function TooltipTitle(props: TooltipTitleProps): ReactNode {
+export function TooltipTitle(props: Readonly<TooltipTitleProps>): ReactNode {
 	const { children, className, ...rest } = props;
 
 	return (
@@ -64,7 +64,7 @@ export function TooltipTitle(props: TooltipTitleProps): ReactNode {
 
 interface TooltipDescriptionProps extends AriaTextProps {}
 
-export function TooltipDescription(props: TooltipDescriptionProps): ReactNode {
+export function TooltipDescription(props: Readonly<TooltipDescriptionProps>): ReactNode {
 	const { children, className, ...rest } = props;
 
 	return (
