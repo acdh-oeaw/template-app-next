@@ -12,7 +12,7 @@
 		"analyze": "BUNDLE_ANALYZER=\"enabled\" next build --no-lint --turbopack",
 		"build": "next build --turbopack",
 		"dev": "next dev --turbopack",
-		"format:check": "prettier . \"!./@(content|public)/**\" --cache --cache-location ./.prettiercache --check",
+		"format:check": "prettier . --cache --cache-location ./.prettiercache --check",
 		"format:fix": "pnpm run format:check --write",
 		"generate:i18n-message-types": "tsx ./scripts/generate-i18n-message-types.ts",
 		"lint:check": "run-p --continue-on-error \"lint:*:check\"",
@@ -121,7 +121,7 @@
 			"stylelint --cache --fix",
 			"prettier --cache --cache-location ./.prettiercache --write"
 		],
-		"*.!(css|js|ts|tsx),!./@(content|public)/**": "prettier --cache --cache-location ./.prettiercache --ignore-unknown --write"
+		"*.!(css|js|ts|tsx)": "prettier --cache --cache-location ./.prettiercache --ignore-unknown --write"
 	},
 	"postcss": {
 		"plugins": {
