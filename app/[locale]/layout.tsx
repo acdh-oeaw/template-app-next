@@ -3,7 +3,7 @@ import { cn } from "@acdh-oeaw/style-variants";
 import type { Metadata, ResolvingMetadata } from "next";
 import { notFound } from "next/navigation";
 import { getMessages, getTranslations, setRequestLocale } from "next-intl/server";
-import type { ReactNode } from "react";
+import { type ReactNode, Suspense } from "react";
 import { LocalizedStringProvider as Translations } from "react-aria-components/i18n";
 import { jsonLdScriptProps } from "react-schemaorg";
 
@@ -22,7 +22,6 @@ import { ColorSchemeScript } from "@/lib/color-scheme-script";
 import * as fonts from "@/lib/fonts";
 import { type IntlLocale, isValidLocale, locales } from "@/lib/i18n/locales";
 import { getMetadata } from "@/lib/i18n/metadata";
-import { getToastCookie } from "@/lib/server/toast";
 
 interface LocaleLayoutProps {
 	children: ReactNode;
@@ -95,8 +94,6 @@ export default async function LocaleLayout(props: Readonly<LocaleLayoutProps>): 
 	// const clientMessages = pick(messages, ["Error"]);
 	const clientMessages = messages;
 
-	const toast = await getToastCookie();
-
 	return (
 		<html
 			className={cn(
@@ -140,7 +137,9 @@ export default async function LocaleLayout(props: Readonly<LocaleLayoutProps>): 
 					/>
 
 					<ToastRegion />
-					{toast != null ? <ServerToast toast={toast} /> : null}
+					<Suspense>
+						<ServerToast />
+					</Suspense>
 
 					<SkipLink targetId={id}>{t("skip-to-main-content")}</SkipLink>
 

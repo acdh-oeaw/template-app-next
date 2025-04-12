@@ -1,28 +1,14 @@
-"use client";
+import type { ReactNode } from "react";
 
-import { type ReactNode, useEffect } from "react";
+import { ServerToast as ServerToastClient } from "@/components/server-toast.client";
+import { getToastCookie } from "@/lib/server/toast";
 
-import { type ToastContent, toasts } from "@/components/ui/toast";
+export async function ServerToast(): Promise<ReactNode> {
+	const toast = await getToastCookie();
 
-interface ServerToastProps {
-	toast: {
-		content: ToastContent;
-		options?: {
-			timeout?: number;
-		};
-	};
-}
+	if (toast == null) {
+		return null;
+	}
 
-export function ServerToast(props: Readonly<ServerToastProps>): ReactNode {
-	const { toast } = props;
-
-	useEffect(() => {
-		const key = toasts.add(toast.content, toast.options);
-
-		return () => {
-			toasts.close(key);
-		};
-	}, [toast]);
-
-	return null;
+	return <ServerToastClient toast={toast} />;
 }
