@@ -1,5 +1,5 @@
 "use client";
 
-export function exampleAction() {
+export function exampleAction(): void {
 	alert();
 }

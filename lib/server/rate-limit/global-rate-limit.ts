@@ -37,13 +37,13 @@ export async function globalPostRateLimit(): Promise<boolean> {
 	return globalBucket.consume(clientIP, 3);
 }
 
-export async function assertGlobalGetRateLimit() {
+export async function assertGlobalGetRateLimit(): Promise<void> {
 	if (!(await globalGetRateLimit())) {
 		throw new RateLimitError();
 	}
 }
 
-export async function assertGlobalPostRateLimit() {
+export async function assertGlobalPostRateLimit(): Promise<void> {
 	if (!(await globalPostRateLimit())) {
 		throw new RateLimitError();
 	}

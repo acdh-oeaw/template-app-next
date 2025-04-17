@@ -7,7 +7,7 @@ export type Middleware = (
 ) => NextResponse | Promise<NextResponse>;
 
 export function composeMiddleware(...middlewares: Array<Middleware>) {
-	return async (request: NextRequest, event: NextFetchEvent) => {
+	return async (request: NextRequest, event: NextFetchEvent): Promise<NextResponse> => {
 		let response = NextResponse.next();
 
 		for (const middleware of middlewares) {

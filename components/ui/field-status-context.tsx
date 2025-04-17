@@ -16,7 +16,7 @@ interface FieldContextValue {
 
 export const FieldStatusContext = createContext<FieldContextValue | null>(null);
 
-export function useFieldStatus() {
+export function useFieldStatus(): FieldContextValue | null {
 	const value = use(FieldStatusContext);
 
 	return value;
