@@ -13,7 +13,7 @@ import {
 } from "react-aria-components";
 
 const checkBoxStyles = styles({
-	base: "group inline-flex items-center gap-x-3 text-text-strong disabled:text-text-disabled forced-colors:disabled:text-[GrayText]",
+	base: "group relative inline-flex items-center gap-x-3 text-text-strong disabled:text-text-disabled forced-colors:disabled:text-[GrayText]",
 	variants: {
 		size: {
 			small: "text-tiny",
@@ -55,7 +55,7 @@ export function CheckBox(props: Readonly<CheckBoxProps>): ReactNode {
 }
 
 const checkBoxBoxStyles = styles({
-	base: "interactive isolate inline-grid shrink-0 place-content-center rounded-1 border border-stroke-strong bg-fill-inverse-strong text-fill-inverse-strong transition group-invalid:border-stroke-error-strong group-invalid:bg-fill-error-weak group-hover:hover-overlay group-focus-visible:focus-outline group-disabled:border-stroke-disabled group-pressed:press-overlay group-selected:border-transparent group-selected:bg-fill-brand-strong group-selected:group-invalid:bg-fill-error-strong group-selected:group-disabled:bg-fill-disabled forced-colors:group-invalid:text-[Mark] forced-colors:group-disabled:text-[GrayText] forced-colors:group-selected:text-[Highlight]",
+	base: "interactive isolate inline-grid shrink-0 place-content-center rounded-1 border border-stroke-strong bg-fill-inverse-strong text-fill-inverse-strong outline-transparent transition group-invalid:border-stroke-error-strong group-invalid:bg-fill-error-weak group-hover:hover-overlay group-focus-visible:focus-outline group-disabled:border-stroke-disabled group-pressed:press-overlay group-selected:border-transparent group-selected:bg-fill-brand-strong group-selected:group-invalid:bg-fill-error-strong group-selected:group-disabled:bg-fill-disabled forced-colors:group-invalid:text-[Mark] forced-colors:group-disabled:text-[GrayText] forced-colors:group-selected:text-[Highlight]",
 	variants: {
 		size: {
 			small: "size-6 rounded-1 *:data-[slot=icon]:size-4.5 *:data-[slot=icon]:stroke-[2.5]",
