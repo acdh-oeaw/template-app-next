@@ -51,7 +51,7 @@ export function ListBoxItem<T extends object>(props: Readonly<ListBoxItemProps<T
 			{...rest}
 			className={composeRenderProps(className, (className) => {
 				return cn(
-					"interactive isolate inline-flex cursor-default items-center gap-x-3 py-3 pr-12 pl-4 transition will-change-transform forced-color-adjust-none select-none hover:hover-overlay focus-visible:focus-outline focus-visible:-focus-outline-offset-2 disabled:text-text-disabled *:data-[slot=icon]:size-5 *:data-[slot=icon]:shrink-0 *:data-[slot=icon]:text-icon-neutral forced-colors:focus:bg-[Highlight] forced-colors:focus:text-[HighlightText] forced-colors:disabled:text-[GrayText] pressed:press-overlay selected:select-overlay-left selected:bg-fill-brand-weak forced-colors:selected:bg-[Highlight] forced-colors:selected:text-[HighlightText]",
+					"interactive isolate inline-flex cursor-default items-center gap-x-3 py-3 pr-12 pl-4 outline-transparent transition will-change-transform forced-color-adjust-none select-none hover:hover-overlay focus-visible:focus-outline focus-visible:-focus-outline-offset-2 disabled:text-text-disabled *:data-[slot=icon]:size-5 *:data-[slot=icon]:shrink-0 *:data-[slot=icon]:text-icon-neutral forced-colors:focus:bg-[Highlight] forced-colors:focus:text-[HighlightText] forced-colors:disabled:text-[GrayText] pressed:press-overlay selected:select-overlay-left selected:bg-fill-brand-weak forced-colors:selected:bg-[Highlight] forced-colors:selected:text-[HighlightText]",
 					className,
 				);
 			})}
@@ -130,7 +130,13 @@ export function ListBoxEmptyState(props: Readonly<ListBoxEmptyStateProps>): Reac
 	const { children, className, ...rest } = props;
 
 	return (
-		<div {...rest} className={cn("text-center text-text-weak", className)}>
+		<div
+			{...rest}
+			className={cn(
+				"relative isolate inline-flex cursor-default items-center gap-x-3 py-3 pr-12 pl-4 text-text-weak transition will-change-transform forced-color-adjust-none select-none *:data-[slot=icon]:size-5 *:data-[slot=icon]:shrink-0 *:data-[slot=icon]:text-icon-neutral",
+				className,
+			)}
+		>
 			{children}
 		</div>
 	);

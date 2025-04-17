@@ -131,7 +131,7 @@ function FeaturesSection(): ReactNode {
 
 			<div>
 				<Link
-					className="group inline-flex items-center gap-x-2 rounded-0.5 text-small text-text-brand focus-visible:focus-outline"
+					className="group inline-flex items-center gap-x-2 rounded-0.5 text-small text-text-brand outline-transparent focus-visible:focus-outline"
 					href="/"
 				>
 					<span className="underline group-hover:no-underline">See all</span>

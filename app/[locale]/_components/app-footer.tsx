@@ -71,7 +71,7 @@ export function AppFooter(): ReactNode {
 							return (
 								<li key={id} className="shrink-0">
 									<NavLink
-										className="relative inline-block rounded-0.5 focus-visible:focus-outline"
+										className="relative inline-block rounded-0.5 outline-transparent focus-visible:focus-outline"
 										href={link.href}
 									>
 										<TouchTarget />
@@ -98,7 +98,7 @@ export function AppFooter(): ReactNode {
 							return (
 								<li key={id}>
 									<NavLink
-										className="rounded-0.5 hover:underline focus-visible:focus-outline"
+										className="rounded-0.5 outline-transparent hover:underline focus-visible:focus-outline"
 										href={link.href}
 									>
 										{link.label}
@@ -112,7 +112,7 @@ export function AppFooter(): ReactNode {
 				<small className="text-tiny text-text-weak">
 					&copy; {new Date().getUTCFullYear()}{" "}
 					<a
-						className="rounded-0.5 hover:underline focus-visible:focus-outline"
+						className="rounded-0.5 outline-transparent hover:underline focus-visible:focus-outline"
 						href={meta.social.website}
 					>
 						{t("creator")}

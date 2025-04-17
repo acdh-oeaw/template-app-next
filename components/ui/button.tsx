@@ -13,7 +13,7 @@ import { Link } from "@/components/link";
 import { NavLink } from "@/components/nav-link";
 
 const buttonStyles = styles({
-	base: "*:data-[slot=icon]:first-child:-ml-1 *:data-[slot=icon]:last-child:-mr-1 interactive isolate inline-flex items-center justify-center gap-x-2 border text-center transition hover:hover-overlay focus-visible:focus-outline *:data-[slot=icon]:shrink-0 forced-colors:disabled:text-[GrayText] pending:opacity-75 pressed:press-overlay",
+	base: "*:data-[slot=icon]:first-child:-ml-1 *:data-[slot=icon]:last-child:-mr-1 interactive isolate inline-flex items-center justify-center gap-x-2 border text-center outline-transparent transition hover:hover-overlay focus-visible:focus-outline *:data-[slot=icon]:shrink-0 forced-colors:disabled:text-[GrayText] pending:opacity-75 pressed:press-overlay",
 	variants: {
 		kind: {
 			primary:

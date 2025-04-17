@@ -32,9 +32,9 @@ export function AppNavigation(props: Readonly<AppNavigationProps>): ReactNode {
 	const pathname = usePathname();
 
 	return (
-		<nav aria-label={label} className="hidden md:flex md:gap-x-12">
+		<nav aria-label={label} className="hidden lg:flex lg:gap-x-12">
 			<NavLink
-				className="interactive -ml-2 grid shrink-0 place-content-center self-center rounded-2 p-2 focus-visible:focus-outline"
+				className="interactive -ml-2 grid shrink-0 place-content-center self-center rounded-2 p-2 outline-transparent focus-visible:focus-outline"
 				href={navigation.home.href}
 			>
 				<Logo className="h-8 w-auto text-text-strong" />
@@ -48,7 +48,7 @@ export function AppNavigation(props: Readonly<AppNavigationProps>): ReactNode {
 							return (
 								<li key={id}>
 									<Button
-										className="interactive inline-flex px-4 py-6 text-text-strong hover:hover-overlay focus-visible:focus-outline pressed:press-overlay"
+										className="interactive inline-flex px-4 py-6 text-text-strong outline-transparent hover:hover-overlay focus-visible:focus-outline pressed:press-overlay"
 										onPress={item.onAction}
 									>
 										{item.label}
@@ -61,7 +61,7 @@ export function AppNavigation(props: Readonly<AppNavigationProps>): ReactNode {
 							return (
 								<li key={id}>
 									<NavLink
-										className="interactive inline-flex px-4 py-6 text-text-strong hover:hover-overlay focus-visible:focus-outline pressed:press-overlay aria-current-page:select-overlay-bottom"
+										className="interactive inline-flex px-4 py-6 text-text-strong outline-transparent hover:hover-overlay focus-visible:focus-outline pressed:press-overlay aria-current-page:select-overlay-bottom"
 										href={item.href}
 									>
 										{item.label}
@@ -88,7 +88,7 @@ export function AppNavigation(props: Readonly<AppNavigationProps>): ReactNode {
 							return (
 								<li key={id}>
 									<MenuTrigger>
-										<Button className="group interactive inline-flex items-center gap-x-2 px-4 py-6 text-text-strong hover:hover-overlay focus-visible:focus-outline pressed:press-overlay">
+										<Button className="group interactive inline-flex items-center gap-x-2 px-4 py-6 text-text-strong outline-transparent hover:hover-overlay focus-visible:focus-outline pressed:press-overlay">
 											{item.label}
 											<ChevronDownIcon
 												aria-hidden={true}
@@ -189,7 +189,7 @@ export function AppNavigationMobile(props: Readonly<AppNavigationMobileProps>): 
 
 	return (
 		<DrawerTrigger>
-			<nav aria-label={label} className="flex items-center py-3 md:hidden">
+			<nav aria-label={label} className="flex items-center py-3 lg:hidden">
 				<IconButton className="-ml-3" kind="tertiary" label={drawerOpenLabel} tone="neutral">
 					<MenuIcon aria-hidden={true} data-slot="icon" />
 				</IconButton>
@@ -234,7 +234,7 @@ export function AppNavigationMobile(props: Readonly<AppNavigationMobileProps>): 
 													return (
 														<li key={id}>
 															<Button
-																className="interactive inline-flex w-full px-6 py-3 text-text-strong hover:hover-overlay focus-visible:focus-outline focus-visible:-focus-outline-offset-2 pressed:press-overlay"
+																className="interactive inline-flex w-full px-6 py-3 text-text-strong outline-transparent hover:hover-overlay focus-visible:focus-outline focus-visible:-focus-outline-offset-2 pressed:press-overlay"
 																onPress={chain(close, item.onAction)}
 															>
 																{item.label}
@@ -247,7 +247,7 @@ export function AppNavigationMobile(props: Readonly<AppNavigationMobileProps>): 
 													return (
 														<li key={id}>
 															<NavLink
-																className="interactive inline-flex w-full px-6 py-3 text-text-strong hover:hover-overlay focus-visible:focus-outline focus-visible:-focus-outline-offset-2 pressed:press-overlay aria-current-page:select-overlay-left aria-current-page:hover-overlay"
+																className="interactive inline-flex w-full px-6 py-3 text-text-strong outline-transparent hover:hover-overlay focus-visible:focus-outline focus-visible:-focus-outline-offset-2 pressed:press-overlay aria-current-page:select-overlay-left aria-current-page:hover-overlay"
 																href={item.href}
 																onPress={close}
 															>
@@ -273,7 +273,7 @@ export function AppNavigationMobile(props: Readonly<AppNavigationMobileProps>): 
 															<Disclosure className="group">
 																<Heading>
 																	<Button
-																		className="interactive inline-flex w-full items-center justify-between px-6 py-3 text-text-strong group-expanded:hover-overlay hover:hover-overlay focus-visible:focus-outline focus-visible:-focus-outline-offset-2 pressed:press-overlay"
+																		className="interactive inline-flex w-full items-center justify-between px-6 py-3 text-text-strong outline-transparent group-expanded:hover-overlay hover:hover-overlay focus-visible:focus-outline focus-visible:-focus-outline-offset-2 pressed:press-overlay"
 																		slot="trigger"
 																	>
 																		{item.label}
@@ -292,7 +292,7 @@ export function AppNavigationMobile(props: Readonly<AppNavigationMobileProps>): 
 																					return (
 																						<li key={id}>
 																							<Button
-																								className="interactive inline-flex w-full px-6 py-3 text-text-strong hover:hover-overlay focus-visible:focus-outline focus-visible:-focus-outline-offset-2 pressed:press-overlay"
+																								className="interactive inline-flex w-full px-6 py-3 text-text-strong outline-transparent hover:hover-overlay focus-visible:focus-outline focus-visible:-focus-outline-offset-2 pressed:press-overlay"
 																								onPress={chain(close, item.onAction)}
 																							>
 																								{item.label}
@@ -305,7 +305,7 @@ export function AppNavigationMobile(props: Readonly<AppNavigationMobileProps>): 
 																					return (
 																						<li key={id}>
 																							<NavLink
-																								className="interactive inline-flex w-full px-6 py-3 text-text-strong hover:hover-overlay focus-visible:focus-outline focus-visible:-focus-outline-offset-2 pressed:press-overlay aria-current-page:select-overlay-left aria-current-page:bg-fill-brand-weak"
+																								className="interactive inline-flex w-full px-6 py-3 text-text-strong outline-transparent hover:hover-overlay focus-visible:focus-outline focus-visible:-focus-outline-offset-2 pressed:press-overlay aria-current-page:select-overlay-left aria-current-page:bg-fill-brand-weak"
 																								href={item.href}
 																								onPress={close}
 																							>

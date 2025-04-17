@@ -33,7 +33,6 @@ export default async function AboutPage(props: Readonly<AboutPageProps>): Promis
 	const { params } = props;
 
 	const { locale } = await params;
-
 	setRequestLocale(locale);
 
 	const t = await getTranslations("AboutPage");

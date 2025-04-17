@@ -33,7 +33,7 @@ export default function InternalError(props: Readonly<InternalErrorProps>): Reac
 					{t("something-went-wrong")}
 				</h1>
 				<Button
-					className="interactive inline-flex min-h-8 items-center rounded-2 border border-stroke-brand-strong bg-fill-brand-strong px-3 py-1 text-tiny font-strong text-text-inverse-strong shadow-raised hover:hover-overlay focus-visible:focus-outline pressed:press-overlay"
+					className="interactive inline-flex min-h-8 items-center rounded-2 border border-stroke-brand-strong bg-fill-brand-strong px-3 py-1 text-tiny font-strong text-text-inverse-strong shadow-raised outline-transparent hover:hover-overlay focus-visible:focus-outline pressed:press-overlay"
 					isPending={isPending}
 					onPress={() => {
 						startTransition(() => {
