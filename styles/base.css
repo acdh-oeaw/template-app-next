@@ -16,6 +16,11 @@
 		interpolate-size: allow-keywords;
 	}
 
+	::selection {
+		background-color: var(--color-fill-brand-strong);
+		color: var(--color-text-inverse-strong);
+	}
+
 	:focus {
 		/** Transparent outline. */
 		@apply outline-hidden;
