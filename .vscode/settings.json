@@ -19,6 +19,12 @@
 		"*.css": "tailwindcss"
 	},
 	"files.eol": "\n",
+	"files.readonlyInclude": {
+		".next/**": true
+	},
+	"files.watcherExclude": {
+		".next/**": true
+	},
 	"i18n-ally.annotations": false,
 	"i18n-ally.enabledFrameworks": ["next-intl"],
 	"i18n-ally.keepFulfilled": true,
@@ -30,6 +36,9 @@
 	"less.validate": false,
 	"prettier.ignorePath": ".gitignore",
 	"scss.validate": false,
+	"search.exclude": {
+		".next/**": true
+	},
 	"stylelint.enable": true,
 	"stylelint.snippet": ["css", "postcss", "tailwindcss"],
 	"stylelint.validate": ["css", "postcss", "tailwindcss"],
