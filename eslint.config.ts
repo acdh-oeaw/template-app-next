@@ -6,9 +6,9 @@ import reactConfig from "@acdh-oeaw/eslint-config-react";
 // import tailwindcssConfig from "@acdh-oeaw/eslint-config-tailwindcss";
 import gitignore from "eslint-config-flat-gitignore";
 import checkFilePlugin from "eslint-plugin-check-file";
-import type { Config } from "typescript-eslint";
+import { config } from "typescript-eslint";
 
-const config: Config = [
+export default config([
 	gitignore({ strict: false }),
 	...baseConfig,
 	...reactConfig,
@@ -115,6 +115,4 @@ const config: Config = [
 			...config,
 		};
 	}),
-];
-
-export default config;
+]);
