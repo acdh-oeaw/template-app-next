@@ -21,8 +21,8 @@ export async function ServerImage(props: Readonly<ServerImageProps>): Promise<Re
 		width,
 	} = props;
 
-	const loading = _loading ?? (priority ? "eager" : "lazy");
-	const decoding = _decoding ?? (priority || loading === "eager" ? "auto" : "async");
+	const loading = _loading ?? (priority === true ? "eager" : "lazy");
+	const decoding = _decoding ?? (priority === true || loading === "eager" ? "auto" : "async");
 
 	const dimensions =
 		typeof src === "object" || fill === true || (width != null && height != null)

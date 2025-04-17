@@ -115,10 +115,12 @@ export function Button(props: Readonly<ButtonProps>): ReactNode {
 				return buttonStyles({ className, kind, size, tone, variant });
 			})}
 		>
-			{composeRenderProps(children, (children) => {
+			{composeRenderProps(children, (children, renderProps) => {
+				const { isPending } = renderProps;
+
 				return (
 					<Fragment>
-						{props.isPending ? (
+						{isPending ? (
 							<Loader2Icon aria-hidden={true} className="animate-spin" data-slot="icon" />
 						) : null}
 						{children}

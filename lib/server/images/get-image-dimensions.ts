@@ -19,7 +19,8 @@ export async function getImageDimensions(
 
 		const contentType = response.headers.get("content-type");
 
-		if (!contentType?.startsWith("image/")) return null;
+		// eslint-disable-next-line @typescript-eslint/prefer-optional-chain
+		if (contentType == null || !contentType.startsWith("image/")) return null;
 
 		const dimensions =
 			contentType === "image/svg+xml"
