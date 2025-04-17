@@ -43,11 +43,10 @@ const modalStyles = styles({
 	base: "h-full w-full overflow-hidden border border-stroke-weak bg-background-overlay shadow-overlay forced-colors:bg-[Canvas]",
 	variants: {
 		placement: {
-			bottom: "mt-16 self-end entering:animate-slide-bottom-in exiting:animate-slide-bottom-out",
-			left: "mr-16 justify-self-start entering:animate-slide-left-in exiting:animate-slide-left-out",
-			right:
-				"ml-16 justify-self-end entering:animate-slide-right-in exiting:animate-slide-right-out",
-			top: "mb-16 self-start entering:animate-slide-top-in exiting:animate-slide-top-out",
+			bottom: "self-end entering:animate-slide-bottom-in exiting:animate-slide-bottom-out",
+			left: "justify-self-start entering:animate-slide-left-in exiting:animate-slide-left-out",
+			right: "justify-self-end entering:animate-slide-right-in exiting:animate-slide-right-out",
+			top: "self-start entering:animate-slide-top-in exiting:animate-slide-top-out",
 		},
 		size: {
 			small: "",
