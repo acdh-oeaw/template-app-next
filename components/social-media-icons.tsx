@@ -11,6 +11,7 @@ export function BlueskyIcon(props: Readonly<IconProps>): ReactNode {
 		<svg
 			aria-hidden={true}
 			className={className}
+			data-slot="icon"
 			fill="currentColor"
 			height={16}
 			role="img"
@@ -29,6 +30,7 @@ export function EmailIcon(props: Readonly<IconProps>): ReactNode {
 		<svg
 			aria-hidden={true}
 			className={className}
+			data-slot="icon"
 			fill="none"
 			height={16}
 			role="img"
@@ -52,6 +54,7 @@ export function FacebookIcon(props: Readonly<IconProps>): ReactNode {
 		<svg
 			aria-hidden={true}
 			className={className}
+			data-slot="icon"
 			fill="currentColor"
 			height={16}
 			role="img"
@@ -70,6 +73,7 @@ export function FlickrIcon(props: Readonly<IconProps>): ReactNode {
 		<svg
 			aria-hidden={true}
 			className={className}
+			data-slot="icon"
 			fill="currentColor"
 			height={16}
 			role="img"
@@ -88,6 +92,7 @@ export function GitHubIcon(props: Readonly<IconProps>): ReactNode {
 		<svg
 			aria-hidden={true}
 			className={className}
+			data-slot="icon"
 			fill="currentColor"
 			height={16}
 			role="img"
@@ -106,6 +111,7 @@ export function LinkedInIcon(props: Readonly<IconProps>): ReactNode {
 		<svg
 			aria-hidden={true}
 			className={className}
+			data-slot="icon"
 			fill="currentColor"
 			height={16}
 			role="img"
@@ -124,6 +130,7 @@ export function MastodonIcon(props: Readonly<IconProps>): ReactNode {
 		<svg
 			aria-hidden={true}
 			className={className}
+			data-slot="icon"
 			fill="currentColor"
 			height={16}
 			role="img"
@@ -142,6 +149,7 @@ export function OrcidIcon(props: Readonly<IconProps>): ReactNode {
 		<svg
 			aria-hidden={true}
 			className={className}
+			data-slot="icon"
 			fill="currentColor"
 			height={16}
 			role="img"
@@ -160,6 +168,7 @@ export function RssIcon(props: Readonly<IconProps>): ReactNode {
 		<svg
 			aria-hidden={true}
 			className={className}
+			data-slot="icon"
 			fill="currentColor"
 			height={16}
 			role="img"
@@ -178,6 +187,7 @@ export function TwitterIcon(props: Readonly<IconProps>): ReactNode {
 		<svg
 			aria-hidden={true}
 			className={className}
+			data-slot="icon"
 			fill="currentColor"
 			height={16}
 			role="img"
@@ -196,6 +206,7 @@ export function WebsiteIcon(props: Readonly<IconProps>): ReactNode {
 		<svg
 			aria-hidden={true}
 			className={className}
+			data-slot="icon"
 			fill="none"
 			height={16}
 			role="img"
@@ -220,6 +231,7 @@ export function YouTubeIcon(props: Readonly<IconProps>): ReactNode {
 		<svg
 			aria-hidden={true}
 			className={className}
+			data-slot="icon"
 			fill="currentColor"
 			height={16}
 			role="img"
