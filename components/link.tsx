@@ -10,10 +10,9 @@ import {
 	useObjectRef,
 	usePress,
 } from "react-aria";
-import type { LinkProps as AriaLinkProps } from "react-aria-components";
+import { type LinkProps as AriaLinkProps, useRenderProps } from "react-aria-components";
 
 import { LocaleLink, type LocaleLinkProps } from "@/lib/navigation/navigation";
-import { useRenderProps } from "@/lib/use-render-props";
 
 /**
  * Not using `Link` from `react-aria-components` directly, because we want `next/link`'s built-in
