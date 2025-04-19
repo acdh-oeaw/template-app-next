@@ -214,7 +214,7 @@ export function AppNavigationMobile(props: Readonly<AppNavigationMobileProps>): 
 							return (
 								<Fragment>
 									<header className="p-6">
-										<Heading className="sr-only" slot="title">
+										<Heading className="sr-only" data-slot="title" slot="title">
 											{drawerLabel}
 										</Heading>
 										<IconButton

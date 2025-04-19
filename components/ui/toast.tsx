@@ -26,9 +26,9 @@ const toastStyles = styles({
 			neutral: "border-stroke-neutral-weak border-l-stroke-neutral-strong bg-fill-neutral-weak",
 			brand: "border-stroke-brand-weak border-l-stroke-brand-strong bg-fill-brand-weak",
 			"inverse-neutral":
-				"border-transparent border-l-stroke-inverse-strong bg-background-inverse **:[slot=description]:text-text-inverse-weak **:[slot=title]:text-text-inverse-strong",
+				"slot-title:text-text-inverse-strong border-transparent border-l-stroke-inverse-strong bg-background-inverse slot-description:text-text-inverse-weak",
 			"inverse-brand":
-				"border-transparent border-l-stroke-inverse-strong bg-fill-brand-strong **:[slot=description]:text-text-inverse-weak **:[slot=title]:text-text-inverse-strong",
+				"slot-title:text-text-inverse-strong border-transparent border-l-stroke-inverse-strong bg-fill-brand-strong slot-description:text-text-inverse-weak",
 		},
 	},
 	defaults: {},
@@ -74,10 +74,18 @@ export function Toast(props: Readonly<ToastProps>): ReactNode {
 			toast={toast}
 		>
 			<AriaToastContent className="flex min-w-0 flex-1 flex-col gap-y-1">
-				<AriaText className="text-heading-4 font-strong text-text-strong" slot="title">
+				<AriaText
+					className="text-heading-4 font-strong text-text-strong"
+					data-slot="title"
+					slot="title"
+				>
 					{toast.content.title}
 				</AriaText>
-				<AriaText className="text-small text-text-weak empty:hidden" slot="description">
+				<AriaText
+					className="text-small text-text-weak empty:hidden"
+					data-slot="description"
+					slot="description"
+				>
 					{toast.content.description}
 				</AriaText>
 			</AriaToastContent>

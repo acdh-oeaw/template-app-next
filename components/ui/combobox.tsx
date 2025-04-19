@@ -42,7 +42,7 @@ export function ComboBoxTrigger(props: Readonly<ComboBoxTriggerProps>): ReactNod
 			{...rest}
 			className={composeRenderProps(className, (className) => {
 				return cn(
-					"relative isolate inline-flex items-center gap-x-2 *:data-[slot=control]:flex-1 *:data-[slot=control]:pr-12 forced-colors:bg-[Field]",
+					"slot-control:flex-1 slot-control:pr-12 relative isolate inline-flex items-center gap-x-2 forced-colors:bg-[Field]",
 					className,
 				);
 			})}

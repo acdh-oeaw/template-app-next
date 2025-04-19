@@ -1,3 +1,5 @@
+/* stylelint-disable at-rule-empty-line-before */
+
 @import "tailwindcss";
 
 @plugin "tailwindcss-react-aria-components";
@@ -9,3 +11,11 @@
 }
 
 @custom-variant dark (&:where([data-ui-color-scheme="dark"], [data-ui-color-scheme="dark"] *));
+
+@custom-variant slot-control (:where(& [data-slot="control"]));
+@custom-variant slot-description (:where(& [data-slot="description"]));
+@custom-variant slot-error (:where(& [data-slot="error"]));
+@custom-variant slot-field (:where(& [data-slot="field"]));
+@custom-variant slot-fieldset (:where(& [data-slot="fieldset"]));
+@custom-variant slot-icon (:where(& [data-slot="icon"]));
+@custom-variant slot-label (:where(& [data-slot="label"]));

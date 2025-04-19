@@ -93,10 +93,7 @@ export function DialogHeader(props: Readonly<DialogHeaderProps>): ReactNode {
 	return (
 		<header
 			{...rest}
-			className={cn(
-				"grid content-start gap-y-2 *:data-[slot=icon]:mb-2 *:data-[slot=icon]:size-12",
-				className,
-			)}
+			className={cn("grid content-start gap-y-2 slot-icon:mb-2 slot-icon:size-12", className)}
 		>
 			{children}
 		</header>
@@ -125,7 +122,12 @@ export function DialogDescription(props: Readonly<DialogDescriptionProps>): Reac
 	const { children, className, ...rest } = props;
 
 	return (
-		<AriaText {...rest} className={cn("text-small text-text-weak", className)} slot="description">
+		<AriaText
+			{...rest}
+			className={cn("text-small text-text-weak", className)}
+			data-slot="description"
+			slot="description"
+		>
 			{children}
 		</AriaText>
 	);

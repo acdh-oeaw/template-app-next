@@ -13,7 +13,7 @@ import { Link } from "@/components/link";
 import { NavLink } from "@/components/nav-link";
 
 const buttonStyles = styles({
-	base: "*:data-[slot=icon]:first-child:-ml-1 *:data-[slot=icon]:last-child:-mr-1 interactive isolate inline-flex items-center justify-center gap-x-2 border text-center outline-transparent transition hover:hover-overlay focus-visible:focus-outline *:data-[slot=icon]:shrink-0 forced-colors:disabled:text-[GrayText] pending:cursor-not-allowed pressed:press-overlay",
+	base: "slot-icon:first-child:-ml-1 slot-icon:last-child:-mr-1 interactive isolate inline-flex items-center justify-center gap-x-2 border text-center outline-transparent transition hover:hover-overlay focus-visible:focus-outline forced-colors:disabled:text-[GrayText] pending:cursor-not-allowed pressed:press-overlay slot-icon:shrink-0",
 	variants: {
 		kind: {
 			primary:
@@ -42,56 +42,50 @@ const buttonStyles = styles({
 	combinations: [
 		[
 			{ kind: "primary", tone: "brand" },
-			"bg-fill-brand-strong text-text-inverse-strong *:data-[slot=icon]:text-icon-inverse",
+			"bg-fill-brand-strong text-text-inverse-strong slot-icon:text-icon-inverse",
 		],
 		[
 			{ kind: "primary", tone: "neutral" },
-			"bg-fill-strong text-text-inverse-strong *:data-[slot=icon]:text-icon-inverse",
+			"bg-fill-strong text-text-inverse-strong slot-icon:text-icon-inverse",
 		],
 		[
 			{ kind: "primary", tone: "destructive" },
-			"bg-fill-error-strong text-text-inverse-strong *:data-[slot=icon]:text-icon-inverse",
+			"bg-fill-error-strong text-text-inverse-strong slot-icon:text-icon-inverse",
 		],
 		[
 			{ kind: "primary", tone: "inverse" },
-			"bg-fill-inverse-strong text-text-strong *:data-[slot=icon]:text-icon-neutral",
+			"bg-fill-inverse-strong text-text-strong slot-icon:text-icon-neutral",
 		],
 
 		[
 			{ kind: "secondary", tone: "brand" },
-			"border-stroke-brand-strong text-text-brand *:data-[slot=icon]:text-icon-brand",
+			"border-stroke-brand-strong text-text-brand slot-icon:text-icon-brand",
 		],
 		[
 			{ kind: "secondary", tone: "neutral" },
-			"border-stroke-strong text-text-weak *:data-[slot=icon]:text-icon-neutral",
+			"border-stroke-strong text-text-weak slot-icon:text-icon-neutral",
 		],
 		[
 			{ kind: "secondary", tone: "destructive" },
-			"border-stroke-error-strong text-text-error *:data-[slot=icon]:text-icon-error",
+			"border-stroke-error-strong text-text-error slot-icon:text-icon-error",
 		],
 		[
 			{ kind: "secondary", tone: "inverse" },
-			"border-stroke-inverse-strong text-text-inverse-strong *:data-[slot=icon]:text-icon-inverse",
+			"border-stroke-inverse-strong text-text-inverse-strong slot-icon:text-icon-inverse",
 		],
 
-		[{ kind: "tertiary", tone: "brand" }, "text-text-brand *:data-[slot=icon]:text-icon-brand"],
-		[{ kind: "tertiary", tone: "neutral" }, "text-text-weak *:data-[slot=icon]:text-icon-neutral"],
-		[
-			{ kind: "tertiary", tone: "destructive" },
-			"text-text-error *:data-[slot=icon]:text-icon-error",
-		],
-		[
-			{ kind: "tertiary", tone: "inverse" },
-			"text-text-inverse-strong *:data-[slot=icon]:text-icon-inverse",
-		],
+		[{ kind: "tertiary", tone: "brand" }, "text-text-brand slot-icon:text-icon-brand"],
+		[{ kind: "tertiary", tone: "neutral" }, "text-text-weak slot-icon:text-icon-neutral"],
+		[{ kind: "tertiary", tone: "destructive" }, "text-text-error slot-icon:text-icon-error"],
+		[{ kind: "tertiary", tone: "inverse" }, "text-text-inverse-strong slot-icon:text-icon-inverse"],
 
-		[{ size: "small", variant: "default" }, "min-h-8 px-3 py-1 *:data-[slot=icon]:size-4"],
-		[{ size: "medium", variant: "default" }, "min-h-12 px-4 py-2.5 *:data-[slot=icon]:size-5"],
-		[{ size: "large", variant: "default" }, "min-h-14 px-6 py-3 *:data-[slot=icon]:size-6"],
+		[{ size: "small", variant: "default" }, "min-h-8 px-3 py-1 slot-icon:size-4"],
+		[{ size: "medium", variant: "default" }, "min-h-12 px-4 py-2.5 slot-icon:size-5"],
+		[{ size: "large", variant: "default" }, "min-h-14 px-6 py-3 slot-icon:size-6"],
 
-		[{ size: "small", variant: "icon-only" }, "size-8 *:data-[slot=icon]:size-4"],
-		[{ size: "medium", variant: "icon-only" }, "size-12 *:data-[slot=icon]:size-6"],
-		[{ size: "large", variant: "icon-only" }, "size-14 *:data-[slot=icon]:size-6"],
+		[{ size: "small", variant: "icon-only" }, "size-8 slot-icon:size-4"],
+		[{ size: "medium", variant: "icon-only" }, "size-12 slot-icon:size-6"],
+		[{ size: "large", variant: "icon-only" }, "size-14 slot-icon:size-6"],
 	],
 	defaults: {
 		kind: "primary",

@@ -7,7 +7,7 @@ export function FieldLabels(props: Readonly<FieldLabelsProps>): ReactNode {
 	const { children, className, ...rest } = props;
 
 	return (
-		<div {...rest} className={cn("grid content-start *:data-[slot=error]:mt-1", className)}>
+		<div {...rest} className={cn("grid content-start slot-error:mt-1", className)}>
 			{children}
 		</div>
 	);
