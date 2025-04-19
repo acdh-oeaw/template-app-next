@@ -137,6 +137,7 @@ export function DrawerTitle(props: Readonly<DrawerTitleProps>): ReactNode {
 		<AriaHeading
 			{...rest}
 			className={cn("text-heading-3 font-strong text-text-strong", className)}
+			data-slot="title"
 			slot="title"
 		>
 			{children}

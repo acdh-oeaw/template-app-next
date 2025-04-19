@@ -109,6 +109,7 @@ export function DialogTitle(props: Readonly<DialogTitleProps>): ReactNode {
 		<AriaHeading
 			{...rest}
 			className={cn("text-heading-3 font-strong text-text-strong", className)}
+			data-slot="title"
 			slot="title"
 		>
 			{children}

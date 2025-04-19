@@ -1,4 +1,4 @@
-/* stylelint-disable at-rule-empty-line-before */
+/* stylelint-disable comment-empty-line-before */
 
 @import "tailwindcss";
 
@@ -12,6 +12,7 @@
 
 @custom-variant dark (&:where([data-ui-color-scheme="dark"], [data-ui-color-scheme="dark"] *));
 
+/* @custom-variant slot-close (:where(& [data-slot="close"])); */
 @custom-variant slot-control (:where(& [data-slot="control"]));
 @custom-variant slot-description (:where(& [data-slot="description"]));
 @custom-variant slot-error (:where(& [data-slot="error"]));
@@ -19,3 +20,5 @@
 @custom-variant slot-fieldset (:where(& [data-slot="fieldset"]));
 @custom-variant slot-icon (:where(& [data-slot="icon"]));
 @custom-variant slot-label (:where(& [data-slot="label"]));
+@custom-variant slot-title (:where(& [data-slot="title"]));
+/* @custom-variant slot-trigger (:where(& [data-slot="trigger"])); */

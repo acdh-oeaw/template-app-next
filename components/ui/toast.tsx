@@ -26,9 +26,9 @@ const toastStyles = styles({
 			neutral: "border-stroke-neutral-weak border-l-stroke-neutral-strong bg-fill-neutral-weak",
 			brand: "border-stroke-brand-weak border-l-stroke-brand-strong bg-fill-brand-weak",
 			"inverse-neutral":
-				"slot-title:text-text-inverse-strong border-transparent border-l-stroke-inverse-strong bg-background-inverse slot-description:text-text-inverse-weak",
+				"border-transparent border-l-stroke-inverse-strong bg-background-inverse slot-description:text-text-inverse-weak slot-title:text-text-inverse-strong",
 			"inverse-brand":
-				"slot-title:text-text-inverse-strong border-transparent border-l-stroke-inverse-strong bg-fill-brand-strong slot-description:text-text-inverse-weak",
+				"border-transparent border-l-stroke-inverse-strong bg-fill-brand-strong slot-description:text-text-inverse-weak slot-title:text-text-inverse-strong",
 		},
 	},
 	defaults: {},
