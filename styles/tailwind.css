@@ -2,8 +2,6 @@
 
 @plugin "tailwindcss-react-aria-components";
 
-@custom-variant aria-current-page (&[aria-current="page"]);
-
 @custom-variant base {
 	@layer base {
 		@slot;

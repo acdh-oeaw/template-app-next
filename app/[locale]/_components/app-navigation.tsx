@@ -61,7 +61,7 @@ export function AppNavigation(props: Readonly<AppNavigationProps>): ReactNode {
 							return (
 								<li key={id}>
 									<NavLink
-										className="interactive inline-flex px-4 py-6 text-text-strong outline-transparent hover:hover-overlay focus-visible:focus-outline pressed:press-overlay aria-current-page:select-overlay-bottom"
+										className="interactive inline-flex px-4 py-6 text-text-strong outline-transparent hover:hover-overlay focus-visible:focus-outline current:select-overlay-bottom pressed:press-overlay"
 										href={item.href}
 									>
 										{item.label}
@@ -247,7 +247,7 @@ export function AppNavigationMobile(props: Readonly<AppNavigationMobileProps>): 
 													return (
 														<li key={id}>
 															<NavLink
-																className="interactive inline-flex w-full px-6 py-3 text-text-strong outline-transparent hover:hover-overlay focus-visible:focus-outline focus-visible:-focus-outline-offset-2 pressed:press-overlay aria-current-page:select-overlay-left aria-current-page:hover-overlay"
+																className="interactive inline-flex w-full px-6 py-3 text-text-strong outline-transparent hover:hover-overlay focus-visible:focus-outline focus-visible:-focus-outline-offset-2 current:select-overlay-left current:hover-overlay pressed:press-overlay"
 																href={item.href}
 																onPress={close}
 															>
@@ -305,7 +305,7 @@ export function AppNavigationMobile(props: Readonly<AppNavigationMobileProps>): 
 																					return (
 																						<li key={id}>
 																							<NavLink
-																								className="interactive inline-flex w-full px-6 py-3 text-text-strong outline-transparent hover:hover-overlay focus-visible:focus-outline focus-visible:-focus-outline-offset-2 pressed:press-overlay aria-current-page:select-overlay-left aria-current-page:bg-fill-brand-weak"
+																								className="interactive inline-flex w-full px-6 py-3 text-text-strong outline-transparent hover:hover-overlay focus-visible:focus-outline focus-visible:-focus-outline-offset-2 current:select-overlay-left current:bg-fill-brand-weak pressed:press-overlay"
 																								href={item.href}
 																								onPress={close}
 																							>
