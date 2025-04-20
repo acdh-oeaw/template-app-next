@@ -8,13 +8,20 @@ import gitignore from "eslint-config-flat-gitignore";
 import checkFilePlugin from "eslint-plugin-check-file";
 import { config } from "typescript-eslint";
 
-export default config([
+import plugin from "./config/eslint/plugin";
+
+export default config(
 	gitignore({ strict: false }),
-	...baseConfig,
-	...reactConfig,
-	...nextConfig,
-	// ...tailwindcssConfig,
-	...playwrightConfig,
+	{ ignores: ["content/**", "public/**"] },
+	baseConfig,
+	reactConfig,
+	nextConfig,
+	{
+		files: ["**/*.tsx"],
+		extends: [plugin.configs.recommended],
+	},
+	// tailwindcssConfig,
+	playwrightConfig,
 	{
 		plugins: {
 			"check-file": checkFilePlugin,
@@ -109,10 +116,8 @@ export default config([
 			"react-x/prefer-read-only-props": "error",
 		},
 	},
-	...nodeConfig.map((config) => {
-		return {
-			files: ["db/**/*.ts", "lib/server/**/*.ts", "**/_actions/**/*.ts"],
-			...config,
-		};
-	}),
-]);
+	{
+		files: ["db/**/*.ts", "lib/server/**/*.ts", "**/_actions/**/*.ts", "**/_lib/actions/**/*.ts"],
+		extends: [nodeConfig],
+	},
+);

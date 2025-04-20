@@ -138,6 +138,7 @@ function FeaturesSection(): ReactNode {
 					<ArrowRightIcon
 						aria-hidden={true}
 						className="size-5 shrink-0 text-icon-brand transition group-hover:translate-x-1"
+						data-slot="icon"
 					/>
 				</Link>
 			</div>
