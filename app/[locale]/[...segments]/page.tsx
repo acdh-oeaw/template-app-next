@@ -7,6 +7,6 @@ import type { ReactNode } from "react";
  *
  * @see https://nextjs.org/docs/app/api-reference/file-conventions/not-found
  */
-export default function NotFoundPage(): ReactNode {
+export default function NotFoundPage(): Promise<ReactNode> {
 	notFound();
 }
