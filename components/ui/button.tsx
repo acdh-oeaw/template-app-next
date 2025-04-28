@@ -13,7 +13,7 @@ import { Link } from "@/components/link";
 import { NavLink } from "@/components/nav-link";
 
 const buttonStyles = styles({
-	base: "slot-icon:first-child:-ml-1 slot-icon:last-child:-mr-1 interactive isolate inline-flex items-center justify-center gap-x-2 border text-center outline-transparent transition hover:hover-overlay focus-visible:focus-outline forced-colors:disabled:text-[GrayText] pending:cursor-not-allowed pressed:press-overlay slot-icon:shrink-0",
+	base: "interactive isolate inline-flex items-center justify-center gap-x-2 border text-center outline-transparent transition hover:hover-overlay focus-visible:focus-outline forced-colors:disabled:text-[GrayText] pending:cursor-not-allowed pressed:press-overlay slot-icon:shrink-0",
 	variants: {
 		kind: {
 			primary:
@@ -35,7 +35,7 @@ const buttonStyles = styles({
 			inverse: "",
 		},
 		variant: {
-			default: "",
+			default: "slot-icon:first-child:-ml-1 slot-icon:last-child:-mr-1",
 			"icon-only": "",
 		},
 	},
