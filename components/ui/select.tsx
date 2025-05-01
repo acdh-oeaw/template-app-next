@@ -55,7 +55,7 @@ export function SelectTrigger(props: Readonly<SelectTriggerProps>): ReactNode {
 						{children}
 						<ChevronDownIcon
 							aria-hidden={true}
-							className="absolute top-0 right-4 size-6 h-full shrink-0 text-icon-neutral transition group-open:rotate-180 group-invalid:text-icon-error group-disabled:text-icon-disabled forced-colors:text-[ButtonText] forced-colors:group-disabled:text-[GrayText]"
+							className="absolute top-0 right-4 size-6 h-full shrink-0 text-icon-neutral transition group-open:rotate-x-180 group-invalid:text-icon-error group-disabled:text-icon-disabled forced-colors:text-[ButtonText] forced-colors:group-disabled:text-[GrayText]"
 							data-slot="icon"
 						/>
 					</Fragment>
