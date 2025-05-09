@@ -22,13 +22,15 @@ export function SkipLink(props: Readonly<SkipLinkProps>): ReactNode {
 	}
 
 	return (
-		<Link
-			className="fixed z-50 m-1 translate-y-[calc(-100%-0.25rem)] rounded bg-background-inverse px-4 py-3 text-text-inverse-strong outline-transparent transition focus-visible:translate-y-0 focus-visible:focus-outline"
-			href={createHref({ hash: targetId })}
-			id={id}
-			onPress={onPress}
-		>
-			{children}
-		</Link>
+		<div className="fixed z-50 -translate-y-full px-2 py-3 focus-within:translate-y-0">
+			<Link
+				className="inline-flex rounded bg-background-inverse px-4 py-3 text-text-inverse-strong outline-transparent transition focus-visible:focus-outline"
+				href={createHref({ hash: targetId })}
+				id={id}
+				onPress={onPress}
+			>
+				{children}
+			</Link>
+		</div>
 	);
 }
