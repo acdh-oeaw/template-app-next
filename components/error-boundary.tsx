@@ -89,13 +89,13 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundarySt
 
 interface ErrorBoundaryResetButtonProps extends ComponentPropsWithRef<typeof Button> {}
 
-export function ErrorBoundaryResetButton(props: ErrorBoundaryResetButtonProps): ReactNode {
+export function ErrorBoundaryResetButton(props: Readonly<ErrorBoundaryResetButtonProps>): ReactNode {
 	const { children, onPress, ...rest } = props;
 
 	const { reset } = useErrorBoundary();
 
 	return (
-		<Button {...rest} onPress={chain(reset, onPress)}>
+		<Button {...rest} onPress={chain(onPress, reset)}>
 			{children}
 		</Button>
 	);
