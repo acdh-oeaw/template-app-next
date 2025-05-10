@@ -1,7 +1,17 @@
 "use client";
 
 import { assert } from "@acdh-oeaw/lib";
-import { Component, createContext, type ErrorInfo, type ReactNode, use } from "react";
+import { chain } from "@react-aria/utils";
+import {
+	Component,
+	type ComponentPropsWithRef,
+	createContext,
+	type ErrorInfo,
+	type ReactNode,
+	use,
+} from "react";
+
+import { Button } from "@/components/ui/button";
 
 interface ErrorBoundaryContextValue {
 	error: Error;
@@ -75,4 +85,18 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundarySt
 
 		return this.props.children;
 	}
+}
+
+interface ErrorBoundaryResetButtonProps extends ComponentPropsWithRef<typeof Button> {}
+
+export function ErrorBoundaryResetButton(props: ErrorBoundaryResetButtonProps): ReactNode {
+	const { children, onPress, ...rest } = props;
+
+	const { reset } = useErrorBoundary();
+
+	return (
+		<Button {...rest} onPress={chain(reset, onPress)}>
+			{children}
+		</Button>
+	);
 }
