@@ -8,10 +8,12 @@ import {
 	createContext,
 	type ErrorInfo,
 	type ReactNode,
+	startTransition,
 	use,
 } from "react";
 
 import { Button } from "@/components/ui/button";
+import { useRouter } from "@/lib/i18n/navigation";
 
 interface ErrorBoundaryContextValue {
 	error: Error;
@@ -89,13 +91,25 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundarySt
 
 interface ErrorBoundaryResetButtonProps extends ComponentPropsWithRef<typeof Button> {}
 
-export function ErrorBoundaryResetButton(props: Readonly<ErrorBoundaryResetButtonProps>): ReactNode {
+export function ErrorBoundaryResetButton(
+	props: Readonly<ErrorBoundaryResetButtonProps>,
+): ReactNode {
 	const { children, onPress, ...rest } = props;
 
+	const router = useRouter();
 	const { reset } = useErrorBoundary();
 
 	return (
-		<Button {...rest} onPress={chain(onPress, reset)}>
+		<Button
+			{...rest}
+			onPress={() => {
+				startTransition(() => {
+					onPress?.();
+					router.refresh();
+					reset();
+				});
+			}}
+		>
 			{children}
 		</Button>
 	);
