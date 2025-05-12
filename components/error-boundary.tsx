@@ -1,7 +1,6 @@
 "use client";
 
 import { assert } from "@acdh-oeaw/lib";
-import { chain } from "@react-aria/utils";
 import {
 	Component,
 	type ComponentPropsWithRef,
@@ -102,9 +101,9 @@ export function ErrorBoundaryResetButton(
 	return (
 		<Button
 			{...rest}
-			onPress={() => {
+			onPress={(event) => {
 				startTransition(() => {
-					onPress?.();
+					onPress?.(event);
 					router.refresh();
 					reset();
 				});
