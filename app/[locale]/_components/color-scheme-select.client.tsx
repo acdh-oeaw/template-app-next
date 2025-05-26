@@ -20,8 +20,8 @@ export function ColorSchemeSelect(props: Readonly<ColorSchemeSelectProps>): Reac
 
 	const { colorSchemeState, setColorScheme } = useColorScheme();
 
-	function onSelectionChange(key: Key) {
-		const value = key as keyof ColorSchemeSelectProps["items"];
+	function onSelectionChange(key: Key | null) {
+		const value = key as keyof ColorSchemeSelectProps["items"] | null;
 
 		setColorScheme(value === "system" ? null : value);
 	}
