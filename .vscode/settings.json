@@ -5,6 +5,7 @@
 		"source.fixAll": "explicit"
 	},
 	"editor.defaultFormatter": "esbenp.prettier-vscode",
+	"editor.detectIndentation": false,
 	"editor.formatOnSave": true,
 	"editor.inlayHints.enabled": "offUnlessPressed",
 	"editor.linkedEditing": true,
@@ -42,10 +43,7 @@
 	"stylelint.enable": true,
 	"stylelint.snippet": ["css", "postcss", "tailwindcss"],
 	"stylelint.validate": ["css", "postcss", "tailwindcss"],
-	"tailwindCSS.experimental.classRegex": [
-		["cn\\(([^)]*)\\)", "(?:'|\"|`)([^']*)(?:'|\"|`)"],
-		["styles\\(([^)]*)\\)", "[\"'`]([^\"'`]*).*?[\"'`]"]
-	],
+	"tailwindCSS.classFunctions": ["cn", "cva", "cx", "styles"],
 	"tailwindCSS.validate": true,
 	"terminal.integrated.enablePersistentSessions": false,
 	"typescript.enablePromptUseWorkspaceTsdk": true,
@@ -72,5 +70,8 @@
 	"workbench.tree.enableStickyScroll": true,
 	"[markdown]": {
 		"editor.wordWrap": "on"
+	},
+	"[yaml]": {
+		"editor.insertSpaces": true
 	}
 }
