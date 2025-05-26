@@ -23,7 +23,7 @@ const toastStyles = styles({
 			success: "border-stroke-success-weak border-l-stroke-success-strong bg-fill-success-weak",
 			information:
 				"border-stroke-information-weak border-l-stroke-information-strong bg-fill-information-weak",
-			neutral: "border-stroke-neutral-weak border-l-stroke-neutral-strong bg-fill-neutral-weak",
+			neutral: "border-stroke-weak border-l-stroke-strong bg-fill-weak",
 			brand: "border-stroke-brand-weak border-l-stroke-brand-strong bg-fill-brand-weak",
 			"inverse-neutral":
 				"border-transparent border-l-stroke-inverse-strong bg-background-inverse slot-description:text-text-inverse-weak slot-title:text-text-inverse-strong",

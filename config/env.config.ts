@@ -26,7 +26,7 @@ export const env = createEnv({
 		const Schema = v.object({
 			NEXT_PUBLIC_APP_BASE_URL: v.pipe(v.string(), v.url()),
 			NEXT_PUBLIC_BOTS: v.optional(v.picklist(["disabled", "enabled"]), "disabled"),
-			NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION: v.optional(v.string()),
+			NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION: v.optional(v.pipe(v.string(), v.nonEmpty())),
 			NEXT_PUBLIC_IMPRINT_SERVICE_BASE_URL: v.pipe(v.string(), v.url()),
 			NEXT_PUBLIC_MATOMO_BASE_URL: v.optional(v.pipe(v.string(), v.url())),
 			NEXT_PUBLIC_MATOMO_ID: v.optional(

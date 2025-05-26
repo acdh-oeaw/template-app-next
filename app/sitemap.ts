@@ -25,7 +25,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 	paths.forEach((path) => {
 		const route = path.slice(0, -"/page.tsx".length);
 
-		if (route === "[...notfound]") return;
+		if (route === "[...segments]") return;
 
 		const segments = [];
 

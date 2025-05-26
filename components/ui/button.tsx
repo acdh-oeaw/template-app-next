@@ -35,7 +35,7 @@ const buttonStyles = styles({
 			inverse: "",
 		},
 		variant: {
-			default: "slot-icon:first-child:-ml-1 slot-icon:last-child:-mr-1",
+			default: "slot-icon:first:-ml-1 slot-icon:last:-mr-1",
 			"icon-only": "",
 		},
 	},
