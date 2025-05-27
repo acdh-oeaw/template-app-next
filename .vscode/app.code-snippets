@@ -57,8 +57,6 @@
 		"scope": "typescriptreact",
 		"prefix": "next-page-dynamic",
 		"body": [
-			"\"use cache\";",
-			"",
 			"import type { Metadata, ResolvingMetadata } from \"next\";",
 			"import { getTranslations, setRequestLocale } from \"next-intl/server\";",
 			"import type { ReactNode } from \"react\";",
