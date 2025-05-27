@@ -76,9 +76,11 @@ export default async function LocaleLayout(props: Readonly<LocaleLayoutProps>): 
 	const { children, params } = props;
 
 	const { locale } = await params;
+
 	if (!isValidLocale(locale)) {
 		notFound();
 	}
+
 	setRequestLocale(locale);
 
 	const t = await getTranslations("LocaleLayout");

@@ -37,6 +37,7 @@ export default async function ImprintPage(props: Readonly<ImprintPageProps>): Pr
 	const { params } = props;
 
 	const { locale } = await params;
+
 	setRequestLocale(locale);
 
 	const t = await getTranslations("ImprintPage");

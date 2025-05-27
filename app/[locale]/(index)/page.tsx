@@ -41,6 +41,7 @@ export default async function IndexPage(props: Readonly<IndexPageProps>): Promis
 	const { params } = props;
 
 	const { locale } = await params;
+
 	setRequestLocale(locale);
 
 	return (
