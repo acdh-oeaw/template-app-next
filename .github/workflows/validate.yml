@@ -25,6 +25,11 @@ jobs:
         node-version: [22.x]
         os: [ubuntu-24.04]
 
+    # Turborepo remote cache
+    # env:
+    #  TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
+    #  TURBO_TEAM: ${{ vars.TURBO_TEAM }}
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -44,16 +49,16 @@ jobs:
         run: pnpm install --frozen-lockfile
 
       - name: Format
-        run: pnpm run format:check
+        run: pnpm turbo format:check
 
       - name: Lint
-        run: pnpm run lint:check
+        run: pnpm turbo lint:check
 
       - name: Typecheck
-        run: pnpm run types:check
+        run: pnpm turbo types:check
 
       - name: Test
-        run: pnpm run test
+        run: pnpm turbo test
 
       - name: Get playwright version
         run: |
@@ -81,17 +86,8 @@ jobs:
           path: "${{ github.workspace }}/.next/cache"
           key: "${{ matrix.os }}-nextjs-${{ hashFiles('pnpm-lock.yaml') }}"
 
-      - name: Build app
-        run: pnpm run build
-        env:
-          NEXT_PUBLIC_APP_BASE_URL: "http://localhost:3000"
-          NEXT_PUBLIC_IMPRINT_SERVICE_BASE_URL: "${{ vars.NEXT_PUBLIC_IMPRINT_SERVICE_BASE_URL }}"
-          NEXT_PUBLIC_MATOMO_BASE_URL: "${{ vars.NEXT_PUBLIC_MATOMO_BASE_URL }}"
-          NEXT_PUBLIC_MATOMO_ID: "${{ vars.NEXT_PUBLIC_MATOMO_ID }}"
-          NEXT_PUBLIC_REDMINE_ID: "${{ vars.SERVICE_ID }}"
-
-      - name: Run e2e tests
-        run: pnpm run test:e2e
+      - name: Build app and run e2e tests
+        run: pnpm turbo test:e2e
         env:
           NEXT_PUBLIC_APP_BASE_URL: "http://localhost:3000"
           NEXT_PUBLIC_IMPRINT_SERVICE_BASE_URL: "${{ vars.NEXT_PUBLIC_IMPRINT_SERVICE_BASE_URL }}"

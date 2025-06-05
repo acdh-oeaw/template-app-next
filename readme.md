@@ -8,6 +8,7 @@ prerequisites:
 
 - [node.js v22](https://nodejs.org/en/download)
 - [pnpm v10](https://pnpm.io/installation)
+- [turborepo v2](https://turborepo.com/docs/getting-started/installation)
 
 > [!TIP]
 >
@@ -56,7 +57,7 @@ pnpm install
 run a development server on [http://localhost:3000](http://localhost:3000):
 
 ```bash
-pnpm run dev
+turbo dev
 ```
 
 > [!TIP]
@@ -69,15 +70,14 @@ pnpm run dev
 generate a production build and run end-to-end tests with:
 
 ```bash
-pnpm run build
-pnpm run test:e2e
+turbo test:e2e
 ```
 
 visual snapshot tests should be run in the template's devcontainer - or a comparable debian bookworm
 based linux environment -, and can be updated with:
 
 ```bash
-pnpm run test:e2e:update-snapshots
+turbo test:e2e:update-snapshots
 ```
 
 ## how to deploy
@@ -139,6 +139,29 @@ working setup.
       [`variant/with-rss-feed`](https://github.com/acdh-oeaw/template-app-next/tree/variant/with-rss-feed)
       branch, ensure [`app/[locale]/rss.xml/route.ts`](./app/[locale]/rss.xml/route.ts) generates
       feed entries.
+
+## tasks
+
+tasks can be run directly with `turbo` (e.g. `turbo build`) when `turborepo` is installed globally,
+otherwise use `pnpm turbo` (e.g. `pnpm turbo build`).
+
+- `build`: build application
+- `dev`: run development server
+- `format:check`: check formatting issues
+- `format:fix`: check and fix formatting issues
+- `i18n:check`: check for missing or unused i18n strings
+- `lint:check`: check code and style issues
+- `lint:fix`: check and fix code and style issues
+- `lint:code:check`: check code issues
+- `lint:code:fix`: check and fix code issues
+- `lint:styles:check`: check style issues
+- `lint:styles:fix`: check and fix style issues
+- `start`: preview production build
+- `test`: run unit tests
+- `test:e2e`: run end-to-end tests
+- `test:e2e:update-snapshots`: run end-to-end tests and update visual snapshots
+- `types:check`: check for type issues
+- `validate`: check formatting, lint and type issues, and run full test suite
 
 ## template variants
 
