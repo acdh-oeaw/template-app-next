@@ -16,14 +16,8 @@ on:
 jobs:
   validate:
     name: Validate
-    runs-on: ${{ matrix.os }}
+    runs-on: ubuntu-24.04
     timeout-minutes: 60
-
-    strategy:
-      fail-fast: true
-      matrix:
-        node-version: [22.x]
-        os: [ubuntu-24.04]
 
     steps:
       - name: Checkout repository
@@ -34,10 +28,10 @@ jobs:
       - name: Install pnpm
         uses: pnpm/action-setup@v4
 
-      - name: Use Node.js ${{ matrix.node-version }}
+      - name: Use node.js
         uses: actions/setup-node@v4
         with:
-          node-version: ${{ matrix.node-version }}
+          node-version: 22.x
 
       - name: Get pnpm store path
         id: pnpm-store-path
@@ -50,12 +44,9 @@ jobs:
         id: cache-pnpm-store
         with:
           path: "${{ steps.pnpm-store-path.outputs.PNPM_STORE_PATH }}"
-          key:
-            "pnpm-store-${{ matrix.os }}-${{ matrix.node-version }}-${{ hashFiles('pnpm-lock.yaml')
-            }}"
+          key: "pnpm-store-${{ hashFiles('pnpm-lock.yaml') }}"
           restore-keys: |
-            pnpm-store-${{ matrix.os }}-${{ matrix.node-version }}-
-            pnpm-store-${{ matrix.os }}-
+            pnpm-store-
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
@@ -84,9 +75,7 @@ jobs:
         id: cache-playwright-browsers
         with:
           path: "~/.cache/ms-playwright"
-          key:
-            "playwright-browsers-${{ matrix.os }}-${{
-            steps.playwright-version.outputs.PLAYWRIGHT_VERSION }}"
+          key: "playwright-browsers-${{ steps.playwright-version.outputs.PLAYWRIGHT_VERSION }}"
 
       - name: Install playwright browsers
         if: steps.cache-playwright-browsers.outputs.cache-hit != 'true'
@@ -102,13 +91,10 @@ jobs:
           path: "${{ github.workspace }}/.next/cache"
           # Commit sha is added so the cache entry is updated on every build.
           # @see https://github.com/vercel/next.js/pull/27362#issuecomment-884574388
-          key:
-            "nextjs-${{ matrix.os }}-${{ matrix.node-version }}-${{ hashFiles('pnpm-lock.yaml')
-            }}-${{ github.sha }}"
+          key: "nextjs-${{ hashFiles('pnpm-lock.yaml') }}-${{ github.sha }}"
           restore-keys: |
-            nextjs-${{ matrix.os }}-${{ matrix.node-version }}-${{ hashFiles('pnpm-lock.yaml') }}-
-            nextjs-${{ matrix.os }}-${{ matrix.node-version }}-
-            nextjs-${{ matrix.os }}-
+            nextjs-${{ hashFiles('pnpm-lock.yaml') }}-
+            nextjs-
 
       - name: Build app
         run: pnpm run build
