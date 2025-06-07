@@ -43,13 +43,13 @@ jobs:
         id: pnpm-store-path
         run: |
           PNPM_STORE_PATH=$(pnpm store path)
-          echo "PNPM_STORE_PATH=${PNPM_STORE_PATH}" >> $GITHUB_ENV
+          echo "PNPM_STORE_PATH=${PNPM_STORE_PATH}" >> $GITHUB_OUTPUT
 
       - name: Cache dependencies
         uses: actions/cache@v4
         id: cache-pnpm-store
         with:
-          path: "${{ env.PNPM_STORE_PATH }}"
+          path: "${{ steps.pnpm-store-path.outputs.PNPM_STORE_PATH }}"
           key:
             "pnpm-store-${{ matrix.os }}-${{ matrix.node-version }}-${{ hashFiles('pnpm-lock.yaml')
             }}"
@@ -76,15 +76,17 @@ jobs:
         id: playwright-version
         run: |
           PLAYWRIGHT_VERSION=$(pnpm ls @playwright/test --json | jq --raw-output '.[0].devDependencies["@playwright/test"].version')
-          echo "PLAYWRIGHT_VERSION=${PLAYWRIGHT_VERSION}" >> $GITHUB_ENV
-          echo "PLAYWRIGHT_DOCKER_IMAGE=mcr.microsoft.com/playwright:v${PLAYWRIGHT_VERSION}-noble" >> $GITHUB_ENV
+          echo "PLAYWRIGHT_VERSION=${PLAYWRIGHT_VERSION}" >> $GITHUB_OUTPUT
+          echo "PLAYWRIGHT_DOCKER_IMAGE=mcr.microsoft.com/playwright:v${PLAYWRIGHT_VERSION}-noble" >> $GITHUB_OUTPUT
 
       - name: Cache playwright browsers
         uses: actions/cache@v4
         id: cache-playwright-browsers
         with:
           path: "~/.cache/ms-playwright"
-          key: "playwright-browsers-${{ matrix.os }}-${{ env.PLAYWRIGHT_VERSION }}"
+          key:
+            "playwright-browsers-${{ matrix.os }}-${{
+            steps.playwright-version.outputs.PLAYWRIGHT_VERSION }}"
 
       - name: Install playwright browsers
         if: steps.cache-playwright-browsers.outputs.cache-hit != 'true'
