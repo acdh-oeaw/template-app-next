@@ -1,14 +1,11 @@
 name: Setup
 
-description: Check out repository, set up node.js and pnpm, install dependencies
+description: Set up node.js and pnpm, and install dependencies
 
 runs:
   using: composite
 
   steps:
-    - name: Check out repository
-      uses: actions/checkout@v4
-
     # Necessary because `actions/setup-node` does not yet support `corepack`.
     # @see https://github.com/actions/setup-node/issues/531
     - name: Install pnpm
@@ -34,3 +31,7 @@ runs:
         key: "pnpm-store-${{ hashFiles('pnpm-lock.yaml') }}"
         restore-keys: |
           pnpm-store-
+
+    - name: Install dependencies
+      shell: sh
+      run: pnpm install --frozen-lockfile

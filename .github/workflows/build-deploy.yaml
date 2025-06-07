@@ -46,6 +46,7 @@ jobs:
     steps:
       - name: Generate public URL
         id: public_url
+        shell: sh
         run: |
           if [ -z "${{ vars.PUBLIC_URL }}" ]; then
             PUBLIC_URL="https://${{ needs.env.outputs.app_name }}.${{ vars.KUBE_INGRESS_BASE_DOMAIN }}"

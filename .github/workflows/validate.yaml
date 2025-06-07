@@ -23,11 +23,15 @@ jobs:
       playwright-version: ${{ steps.playwright-version.outputs.PLAYWRIGHT_VERSION }}
 
     steps:
-      - name: Setup
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up node.js and pnpm, and install dependencies
         uses: ./github/actions/setup
 
       - name: Get playwright version
         id: playwright-version
+        shell: sh
         run: |
           PLAYWRIGHT_VERSION=$(pnpm ls @playwright/test --json | jq --raw-output '.[0].devDependencies["@playwright/test"].version')
           echo "PLAYWRIGHT_VERSION=${PLAYWRIGHT_VERSION}" >> $GITHUB_OUTPUT
@@ -38,22 +42,26 @@ jobs:
     timeout-minutes: 60
 
     steps:
-      - name: Setup
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up node.js and pnpm, and install dependencies
         uses: ./github/actions/setup
 
-      - name: Install dependencies
-        run: pnpm install --frozen-lockfile
-
       - name: Format
+        shell: sh
         run: pnpm run format:check
 
       - name: Lint
+        shell: sh
         run: pnpm run lint:check
 
       - name: Typecheck
+        shell: sh
         run: pnpm run types:check
 
       - name: Test
+        shell: sh
         run: pnpm run test
 
   e2e:
@@ -65,11 +73,14 @@ jobs:
     timeout-minutes: 60
 
     steps:
-      - name: Setup
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up node.js and pnpm, and install dependencies
         uses: ./github/actions/setup
 
       # https://nextjs.org/docs/pages/building-your-application/deploying/ci-build-caching#github-actions
-      - name: Cache Next.js build output
+      - name: Cache next.js build output
         uses: actions/cache@v4
         with:
           path: "${{ github.workspace }}/.next/cache"
@@ -81,6 +92,7 @@ jobs:
             nextjs-
 
       - name: Build app
+        shell: sh
         run: pnpm run build
         env:
           NEXT_PUBLIC_APP_BASE_URL: "http://localhost:3000"
@@ -90,6 +102,7 @@ jobs:
           NEXT_PUBLIC_REDMINE_ID: "${{ vars.SERVICE_ID }}"
 
       - name: Run e2e tests
+        shell: sh
         run: pnpm run test:e2e
         env:
           NEXT_PUBLIC_APP_BASE_URL: "http://localhost:3000"
