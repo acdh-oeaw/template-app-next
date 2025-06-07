@@ -50,8 +50,11 @@ jobs:
         id: cache-pnpm-store
         with:
           path: "${{ env.PNPM_STORE_PATH }}"
-          key: "pnpm-store-${{ matrix.os }}-${{ hashFiles('pnpm-lock.yaml') }}"
+          key:
+            "pnpm-store-${{ matrix.os }}-${{ matrix.node-version }}-${{ hashFiles('pnpm-lock.yaml')
+            }}"
           restore-keys: |
+            pnpm-store-${{ matrix.os }}-${{ matrix.node-version }}-
             pnpm-store-${{ matrix.os }}-
 
       - name: Install dependencies
@@ -97,9 +100,12 @@ jobs:
           path: "${{ github.workspace }}/.next/cache"
           # Commit sha is added so the cache entry is updated on every build.
           # @see https://github.com/vercel/next.js/pull/27362#issuecomment-884574388
-          key: "nextjs-${{ matrix.os }}-${{ hashFiles('pnpm-lock.yaml') }}-${{ github.sha }}"
+          key:
+            "nextjs-${{ matrix.os }}-${{ matrix.node-version }}-${{ hashFiles('pnpm-lock.yaml')
+            }}-${{ github.sha }}"
           restore-keys: |
-            nextjs-${{ matrix.os }}-${{ hashFiles('pnpm-lock.yaml') }}-
+            nextjs-${{ matrix.os }}-${{ matrix.node-version }}-${{ hashFiles('pnpm-lock.yaml') }}-
+            nextjs-${{ matrix.os }}-${{ matrix.node-version }}-
             nextjs-${{ matrix.os }}-
 
       - name: Build app
