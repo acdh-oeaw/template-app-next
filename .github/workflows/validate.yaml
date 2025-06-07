@@ -38,6 +38,15 @@ jobs:
       - name: Test
         run: pnpm run test
 
+  e2e:
+    name: End-to-end tests
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+
+    steps:
+      - name: Setup
+        uses: ./github/actions/setup
+
       - name: Get playwright version
         id: playwright-version
         run: |
@@ -99,7 +108,7 @@ jobs:
   build-deploy:
     name: Build and deploy
     if: ${{ github.event_name == 'push' }}
-    needs: [validate]
+    needs: [validate, e2e]
     uses: ./.github/workflows/build-deploy.yaml
     secrets: inherit
     # https://docs.github.com/en/actions/using-workflows/reusing-workflows#access-and-permissions
