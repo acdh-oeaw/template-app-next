@@ -5,17 +5,17 @@ concurrency:
   cancel-in-progress: true
 
 on:
-  workflow_dispatch:
   pull_request:
     branches:
       - main
   push:
     branches:
       - main
+  workflow_dispatch:
 
 jobs:
   config:
-    name: Configuration
+    name: Configure
     runs-on: ubuntu-24.04
     timeout-minutes: 60
 
@@ -56,16 +56,20 @@ jobs:
         shell: sh
         run: pnpm run lint:check
 
-      - name: Typecheck
+      - name: Check types
         shell: sh
         run: pnpm run types:check
 
-      - name: Test
+      - name: Check i18n
+        shell: sh
+        run: pnpm run i18n:check
+
+      - name: Run unit tests
         shell: sh
         run: pnpm run test
 
-  e2e:
-    name: End-to-end tests
+  test-e2e:
+    name: Run e2e tests
     needs: [config]
     runs-on: ubuntu-24.04
     container:
@@ -101,6 +105,7 @@ jobs:
           NEXT_PUBLIC_MATOMO_BASE_URL: "${{ vars.NEXT_PUBLIC_MATOMO_BASE_URL }}"
           NEXT_PUBLIC_MATOMO_ID: "${{ vars.NEXT_PUBLIC_MATOMO_ID }}"
           NEXT_PUBLIC_REDMINE_ID: "${{ vars.SERVICE_ID }}"
+          NEXT_TELEMETRY_DISABLED: "1"
 
       - name: Run e2e tests
         shell: sh
@@ -123,7 +128,7 @@ jobs:
   build-deploy:
     name: Build and deploy
     if: ${{ github.event_name == 'push' }}
-    needs: [validate, e2e]
+    needs: [validate, test-e2e]
     uses: ./.github/workflows/build-deploy.yaml
     secrets: inherit
     # https://docs.github.com/en/actions/using-workflows/reusing-workflows#access-and-permissions
