@@ -70,7 +70,7 @@ jobs:
 
   test-e2e:
     name: Run e2e tests
-    needs: [config]
+    needs: [config, validate]
     runs-on: ubuntu-24.04
     container:
       image: mcr.microsoft.com/playwright:v${{ needs.config.outputs.playwright-version }}-noble
