@@ -15,6 +15,9 @@ runs:
       uses: actions/setup-node@v4
       with:
         node-version: 22.x
+        # Not using the built-in caching, because this does not currently set `restore-keys`.
+        # @see https://github.com/actions/setup-node/issues/1120
+        # cache: pnpm
 
     - name: Get pnpm store path
       id: pnpm-store-path
