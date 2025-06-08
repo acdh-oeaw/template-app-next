@@ -16,8 +16,6 @@
 		"format:fix": "pnpm run format:check --write",
 		"i18n:check": "i18n-check --format next-intl --locales ./messages/ --source en --unused ./app/ ./components/",
 		"i18n:prepare": "tsx ./scripts/generate-i18n-message-types.ts",
-		"lint:check": "run-p --continue-on-error \"lint:*:check\"",
-		"lint:fix": "run-p --continue-on-error \"lint:*:fix\"",
 		"lint:code:check": "eslint . --cache",
 		"lint:code:fix": "pnpm run lint:code:check --fix",
 		"lint:styles:check": "stylelint \"./**/*.css\" --cache --ignore-path ./.gitignore",
@@ -32,8 +30,7 @@
 		"test:e2e:install": "playwright install --with-deps",
 		"test:e2e:ui": "playwright test --ui",
 		"test:e2e:update-snapshots": "playwright test --update-snapshots",
-		"types:check": "tsc --noEmit",
-		"validate": "run-p format:check lint:check types:check test test:e2e"
+		"types:check": "tsc --noEmit"
 	},
 	"dependencies": {
 		"@acdh-oeaw/lib": "^0.3.2",
@@ -99,6 +96,7 @@
 		"tailwindcss": "^4.1.7",
 		"tailwindcss-react-aria-components": "^2.0.0",
 		"tsx": "^4.19.4",
+		"turbo": "^2.5.4",
 		"typescript": "^5.8.3",
 		"typescript-eslint": "^8.32.1"
 	},

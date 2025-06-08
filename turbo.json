@@ -1,0 +1,42 @@
+{
+	"$schema": "https://turborepo.com/schema.json",
+	"tasks": {
+		"build": {
+			"env": ["BUILD_MODE"],
+			"inputs": ["$TURBO_DEFAULT$", ".env", ".env.*"],
+			"outputs": ["./.next/**", "!./.next/cache/**", "./out/**"]
+		},
+		"dev": {
+			"cache": false,
+			"persistent": true
+		},
+		"format:check": {},
+		"format:fix": {},
+		"i18n:check": {},
+		"lint:check": {
+			"dependsOn": ["lint:code:check", "lint:styles:check"]
+		},
+		"lint:fix": {
+			"dependsOn": ["lint:code:fix", "lint:styles:fix"]
+		},
+		"lint:code:check": {},
+		"lint:code:fix": {},
+		"lint:styles:check": {},
+		"lint:styles:fix": {},
+		"start": {
+			"dependsOn": ["build"]
+		},
+		"test": {},
+		"test:e2e": {
+			"dependsOn": ["build"]
+		},
+		"test:e2e:update-snapshots": {
+			"dependsOn": ["build"]
+		},
+		"types:check": {},
+		"validate": {
+			"dependsOn": ["format:check", "lint:check", "types:check", "test", "test:e2e"]
+		}
+	},
+	"ui": "tui"
+}
