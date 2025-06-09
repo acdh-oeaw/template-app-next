@@ -1,0 +1,40 @@
+name: Setup
+
+description: Set up node.js and pnpm, and install dependencies
+
+runs:
+  using: composite
+
+  steps:
+    # Necessary because `actions/setup-node` does not yet support `corepack`.
+    # @see https://github.com/actions/setup-node/issues/531
+    - name: Install pnpm
+      uses: pnpm/action-setup@v4
+
+    - name: Use node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: 22.x
+        # Not using the built-in caching, because this does not currently set `restore-keys`.
+        # @see https://github.com/actions/setup-node/issues/1120
+        # cache: pnpm
+
+    - name: Get pnpm store path
+      id: pnpm-store-path
+      shell: sh
+      run: |
+        PNPM_STORE_PATH=$(pnpm store path)
+        echo "PNPM_STORE_PATH=${PNPM_STORE_PATH}" >> $GITHUB_OUTPUT
+
+    - name: Cache dependencies
+      uses: actions/cache@v4
+      id: cache-pnpm-store
+      with:
+        path: "${{ steps.pnpm-store-path.outputs.PNPM_STORE_PATH }}"
+        key: "pnpm-store-${{ hashFiles('pnpm-lock.yaml') }}"
+        restore-keys: |
+          pnpm-store-
+
+    - name: Install dependencies
+      shell: sh
+      run: pnpm install --frozen-lockfile
