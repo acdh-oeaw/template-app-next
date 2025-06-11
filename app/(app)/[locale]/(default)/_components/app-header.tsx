@@ -1,10 +1,13 @@
 import { useTranslations } from "next-intl";
 import type { ReactNode } from "react";
 
-import { exampleAction } from "@/app/[locale]/_client-actions/navigation";
-import { AppNavigation, AppNavigationMobile } from "@/app/[locale]/_components/app-navigation";
-import { ColorSchemeSwitcher } from "@/app/[locale]/_components/color-scheme-switcher";
-import { LocaleSwitcher } from "@/app/[locale]/_components/locale-switcher";
+import { ColorSchemeSwitcher } from "@/app/(app)/[locale]/_components/color-scheme-switcher";
+import { LocaleSwitcher } from "@/app/(app)/[locale]/_components/locale-switcher";
+import { exampleAction } from "@/app/(app)/[locale]/(default)/_client-actions/navigation";
+import {
+	AppNavigation,
+	AppNavigationMobile,
+} from "@/app/(app)/[locale]/(default)/_components/app-navigation";
 import { createHref } from "@/lib/navigation/create-href";
 import type { NavigationItem } from "@/lib/navigation/navigation";
 
