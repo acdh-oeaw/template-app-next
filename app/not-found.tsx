@@ -37,7 +37,7 @@ export default async function NotFoundPage(): Promise<ReactNode> {
 			className={cn(
 				fonts.body.variable,
 				fonts.heading.variable,
-				fonts.mono.variable,
+				fonts.code.variable,
 				"bg-background-base text-text-strong antialiased",
 			)}
 			lang={defaultLocale}
