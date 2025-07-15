@@ -10,15 +10,15 @@ import { expand } from "dotenv-expand";
  * available to the vs code plugin as well.
  */
 for (const envFilePath of [".env.test.local", ".env.local", ".env.test", ".env"]) {
-	expand(dotenv({ path: join(process.cwd(), envFilePath) }));
+	expand(dotenv({ path: join(process.cwd(), envFilePath), quiet: true }));
 }
 
 const port = 3000;
 const baseUrl = `http://localhost:${String(port)}`;
 
 export default defineConfig({
-	testDir: "./e2e",
-	snapshotDir: "./e2e/snapshots",
+	testDir: "../e2e",
+	snapshotDir: "../e2e/snapshots",
 	fullyParallel: true,
 	forbidOnly: isCI,
 	retries: isCI ? 2 : 0,

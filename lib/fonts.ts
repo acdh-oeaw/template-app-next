@@ -16,9 +16,9 @@ export const heading = Inter({
 	variable: "--_font-heading",
 });
 
-export const mono = Fira_Code({
+export const code = Fira_Code({
 	display: "swap",
 	preload: false,
 	subsets: ["latin", "latin-ext"],
-	variable: "--_font-mono",
+	variable: "--_font-code",
 });

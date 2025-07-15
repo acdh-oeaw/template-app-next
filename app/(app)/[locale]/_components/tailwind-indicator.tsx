@@ -6,7 +6,7 @@ export function TailwindIndicator(): ReactNode {
 	if (env.NODE_ENV !== "development") return null;
 
 	return (
-		<div className="fixed right-5 bottom-5 z-10 grid size-9 cursor-default place-content-center rounded-full bg-background-inverse font-mono text-tiny font-strong text-text-inverse-strong shadow-raised select-none">
+		<div className="fixed right-5 bottom-5 z-10 grid size-9 cursor-default place-content-center rounded-full bg-background-inverse font-code text-tiny font-strong text-text-inverse-strong shadow-raised select-none">
 			<span className="xs:hidden">{"2xs"}</span>
 			<span className="max-xs:hidden sm:hidden">{"xs"}</span>
 			<span className="max-sm:hidden md:hidden">{"sm"}</span>
