@@ -13,9 +13,16 @@ const config: Config = {
 		ignoreDuringBuilds: true,
 	},
 	experimental: {
+		browserDebugInfoInTerminal: true,
+		devtoolSegmentExplorer: true,
+		// clientSegmentCache: true,
 		// dynamicIO: true,
+		// globalNotFound: true,
+		optimizeRouterScrolling: true,
 		// ppr: true,
 		reactCompiler: true,
+		// turbopackPersistentCaching: true,
+		// typedRoutes: true,
 		useCache: true,
 	},
 	headers() {

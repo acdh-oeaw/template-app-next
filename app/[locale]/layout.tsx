@@ -101,7 +101,7 @@ export default async function LocaleLayout(props: Readonly<LocaleLayoutProps>): 
 			className={cn(
 				fonts.body.variable,
 				fonts.heading.variable,
-				fonts.mono.variable,
+				fonts.code.variable,
 				"bg-background-base text-text-strong antialiased",
 			)}
 			lang={locale}

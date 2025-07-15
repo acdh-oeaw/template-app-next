@@ -126,7 +126,7 @@
 		color: var(--color-typography-strong);
 		font-weight: var(--font-weight-strong);
 		font-size: var(--text-tiny);
-		font-family: var(--font-mono);
+		font-family: var(--font-code);
 	}
 
 	& :where(pre) {
@@ -139,7 +139,7 @@
 		color: var(--color-text-inverse-strong);
 		font-weight: var(--font-weight-weak);
 		font-size: var(--text-tiny);
-		font-family: var(--font-mono);
+		font-family: var(--font-code);
 		line-height: var(--text-small--line-height);
 	}
 
