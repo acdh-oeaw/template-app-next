@@ -5,7 +5,7 @@ import type { ReactNode } from "react";
 
 export const ColorSchemeSelect = dynamic(
 	() => {
-		return import("@/app/[locale]/_components/color-scheme-select.client").then((module) => {
+		return import("@/app/(app)/[locale]/_components/color-scheme-select.client").then((module) => {
 			return { default: module.ColorSchemeSelect };
 		});
 	},

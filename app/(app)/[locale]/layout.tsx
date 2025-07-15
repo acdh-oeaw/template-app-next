@@ -7,11 +7,8 @@ import { type ReactNode, Suspense } from "react";
 import { LocalizedStringProvider as Translations } from "react-aria-components/i18n";
 import { jsonLdScriptProps } from "react-schemaorg";
 
-import { AppFooter } from "@/app/[locale]/_components/app-footer";
-import { AppHeader } from "@/app/[locale]/_components/app-header";
-import { AppLayout } from "@/app/[locale]/_components/app-layout";
-import { Providers } from "@/app/[locale]/_components/providers";
-import { TailwindIndicator } from "@/app/[locale]/_components/tailwind-indicator";
+import { Providers } from "@/app/(app)/[locale]/_components/providers";
+import { TailwindIndicator } from "@/app/(app)/[locale]/_components/tailwind-indicator";
 import { ServerToast } from "@/components/server-toast";
 import { id } from "@/components/ui/main-content";
 import { SkipLink } from "@/components/ui/skip-link";
@@ -145,11 +142,7 @@ export default async function LocaleLayout(props: Readonly<LocaleLayoutProps>): 
 
 					<SkipLink targetId={id}>{t("skip-to-main-content")}</SkipLink>
 
-					<AppLayout>
-						<AppHeader />
-						{children}
-						<AppFooter />
-					</AppLayout>
+					{children}
 				</Providers>
 
 				<TailwindIndicator />
