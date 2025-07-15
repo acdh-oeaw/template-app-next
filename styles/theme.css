@@ -389,7 +389,7 @@
 
 	--font-body: var(--_font-body, var(--font-sans));
 	--font-heading: var(--_font-heading, var(--font-body));
-	--font-mono: var(--_font-mono, var(--font-mono));
+	--font-code: var(--_font-code, var(--font-mono));
 }
 
 /** Font size tokens. */
