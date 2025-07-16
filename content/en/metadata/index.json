@@ -1,15 +1,23 @@
 {
-	"description": "ACDH-CH Application template",
-	"title": "ACDH-CH App",
+	"description": "ACDH Application template",
+	"title": "ACDH App",
 	"manifest": {
-		"description": "ACDH-CH Application template",
-		"name": "ACDH-CH App",
-		"short-name": "ACDH-CH App"
+		"description": "ACDH Application template",
+		"name": "ACDH App",
+		"short-name": "ACDH App"
 	},
 	"social": [
 		{
 			"kind": "bluesky",
-			"href": "https://bsky.app/profile/acdh-ch-oeaw.bsky.social"
+			"href": "https://bsky.app/profile/acdh-oeaw.bsky.social"
+		},
+		{
+			"kind": "instagram",
+			"href": "https://www.instagram.com/acdh_oeaw/"
+		},
+		{
+			"kind": "linkedin",
+			"href": "https://www.linkedin.com/company/acdh"
 		},
 		{
 			"kind": "mastodon",
@@ -25,7 +33,7 @@
 		},
 		{
 			"kind": "youtube",
-			"href": "https://www.youtube.com/channel/UCgaEMaMbPkULYRI5u6gvG-w"
+			"href": "https://www.youtube.com/@acdh-ch5185"
 		}
 	]
 }

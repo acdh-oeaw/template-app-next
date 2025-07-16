@@ -64,7 +64,7 @@
 		"title": "Impressum"
 	},
 	"IndexPage": {
-		"badge": "ACDH-CH frontend team",
+		"badge": "ACDH frontend team",
 		"lead-in": "Dies ist eine mit Next.js 15 erstellte Startervorlage. Sie umfasst Internationalisierung, Dark Mode und End-to-End-Tests.",
 		"title": "Anwendungs-Template"
 	},
