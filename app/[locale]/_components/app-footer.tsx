@@ -5,6 +5,8 @@ import { Logo } from "@/components/logo";
 import { NavLink } from "@/components/nav-link";
 import {
 	BlueskyIcon,
+	InstagramIcon,
+	LinkedInIcon,
 	MastodonIcon,
 	TwitterIcon,
 	YouTubeIcon,
@@ -37,6 +39,18 @@ export function AppFooter(): ReactNode {
 			href: meta.social.bluesky,
 			label: t("navigation-social-media.items.bluesky"),
 			icon: BlueskyIcon,
+		},
+		instagram: {
+			type: "link",
+			href: meta.social.instagram,
+			label: t("navigation-social-media.items.instagram"),
+			icon: InstagramIcon,
+		},
+		linkedin: {
+			type: "link",
+			href: meta.social.linkedin,
+			label: t("navigation-social-media.items.linkedin"),
+			icon: LinkedInIcon,
 		},
 		mastodon: {
 			type: "link",

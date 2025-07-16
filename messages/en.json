@@ -22,6 +22,8 @@
 		"navigation-social-media": {
 			"items": {
 				"bluesky": "Bluesky",
+				"instagram": "Instagram",
+				"linkedin": "LinkedIn",
 				"mastodon": "Mastodon",
 				"twitter": "Twitter",
 				"youtube": "YouTube"
