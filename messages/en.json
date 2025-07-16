@@ -22,6 +22,8 @@
 		"navigation-social-media": {
 			"items": {
 				"bluesky": "Bluesky",
+				"instagram": "Instagram",
+				"linkedin": "LinkedIn",
 				"mastodon": "Mastodon",
 				"twitter": "Twitter",
 				"youtube": "YouTube"
@@ -64,7 +66,7 @@
 		"title": "Imprint"
 	},
 	"IndexPage": {
-		"badge": "ACDH-CH frontend team",
+		"badge": "ACDH frontend team",
 		"lead-in": "This is a starter template built with Next.js 15. It includes internationalisation, dark mode, and end-to-end testing.",
 		"title": "Application template"
 	},

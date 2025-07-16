@@ -27,11 +27,11 @@ environment variable prefixed with `NEXT_PUBLIC_`, and
 
 the default template accepts the following variables:
 
-- `NEXT_PUBLIC_REDMINE_ID` (required): service issue for this application in the acdh-ch
+- `NEXT_PUBLIC_REDMINE_ID` (required): service issue for this application in the acdh
   [redmine](https://redmine.acdh.oeaw.ac.at) issue tracker.
 - `NEXT_PUBLIC_APP_BASE_URL` (required): the base url for this application. the default of
   "http://localhost:3000" should be fine for local development.
-- `NEXT_PUBLIC_IMPRINT_SERVICE_BASE_URL` (required): the base url for the acdh-ch imprint service,
+- `NEXT_PUBLIC_IMPRINT_SERVICE_BASE_URL` (required): the base url for the acdh imprint service,
   which uses `NEXT_PUBLIC_REDMINE_ID` to fetch the imprint text.
 - `NEXT_PUBLIC_BOTS` (required): whether this website can be indexed by web crawlers like the google
   bot. supported values are "disabled" and "enabled", defaults to "disabled".
@@ -82,24 +82,22 @@ pnpm run test:e2e:update-snapshots
 
 ## how to deploy
 
-- ask a sysadmin to create a new acdh-ch kubernetes project.
+- ask a sysadmin to create a new acdh kubernetes project.
 - create a new namespace in that project via [rancher](https://rancher.acdh-dev.oeaw.ac.at), and set
   the `KUBE_NAMESPACE` github variable to that namespace
 - adjust the [`app_name`](./.github/workflows/build-deploy.yml#L36), which will be the name of the
   deployment in the above namespace.
 - set the `PUBLIC_URL` github variable to the application's public url (e.g.
-  "https://my-app.acdh-ch-dev.oeaw.ac.at"), and set the `KUBE_INGRESS_BASE_DOMAIN` to the public
-  url's base domain (e.g. "acdh-ch-dev.oeaw.ac.at"). `PUBLIC_URL` should match
-  `NEXT_PUBLIC_APP_BASE_URL`.
-- when deploying to a production domain (i.e. a domain not ending in "acdh-ch-dev.oeaw.ac.at"), set
+  "https://my-app.acdh-dev.oeaw.ac.at"), and set the `KUBE_INGRESS_BASE_DOMAIN` to the public url's
+  base domain (e.g. "acdh-dev.oeaw.ac.at"). `PUBLIC_URL` should match `NEXT_PUBLIC_APP_BASE_URL`.
+- when deploying to a production domain (i.e. a domain not ending in "acdh-dev.oeaw.ac.at"), set
   `HELM_UPGRADE_EXTRA_ARGS` to
   `--set 'ingress.annotations.cert-manager\.io/cluster-issuer=acdh-prod'` for "acdh.oeaw.ac.at"
   domains, or to `--set 'ingress.annotations.cert-manager\.io/cluster-issuer=letsencrypt-prod'` for
   any other non-oeaw domains, and ensure `KUBE_INGRESS_BASE_DOMAIN` is set correctly.
-- if you haven't yet, create a service issue in the acdh-ch
-  [redmine](https://redmine.acdh.oeaw.ac.at) issue tracker, and set the `SERVICE_ID` github variable
-  to the issue number. this should match the `NEXT_PUBLIC_REDMINE_ID` variable in your `.env.local`
-  file.
+- if you haven't yet, create a service issue in the acdh [redmine](https://redmine.acdh.oeaw.ac.at)
+  issue tracker, and set the `SERVICE_ID` github variable to the issue number. this should match the
+  `NEXT_PUBLIC_REDMINE_ID` variable in your `.env.local` file.
 - ensure required build args (prefixed with `NEXT_PUBLIC_`) are referenced in both the
   [`Dockerfile`](./Dockerfile), as well as the [validation](./.github/workflows/validate.yml) and
   [deployment](./.github/workflows/build-deploy.yml) pipelines, and set as
@@ -116,7 +114,7 @@ pnpm run test:e2e:update-snapshots
   public.
 - the `NEXT_PUBLIC_BOTS` variable defaults to "disabled", which signals to web crawlers that the
   website should not be indexed. when deploying to a production domain (i.e. a domain not ending in
-  "acdh-ch-dev.oeaw.ac.at") this should be set to "enabled".
+  "acdh-dev.oeaw.ac.at") this should be set to "enabled".
 
 if everything is set up correctly, every git push to the `main` branch will create a new deployment
 if the validation pipeline passes.
