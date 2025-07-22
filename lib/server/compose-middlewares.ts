@@ -8,13 +8,18 @@ export type Middleware = (
 
 export function composeMiddleware(...middlewares: Array<Middleware>) {
 	return async (request: NextRequest, event: NextFetchEvent): Promise<NextResponse> => {
-		let response = NextResponse.next();
+		const response = NextResponse.next();
 
 		for (const middleware of middlewares) {
-			response = await middleware(request, response, event);
+			/**
+			 * Middleware functions should mutate and return the shared `response` object, or
+			 * short-circuit the middleware stack by returning `NextResponse.redirect()`,
+			 * `NextResponse.rewrite()` or `new NextResponse()`.
+			 */
+			const middleWareResponse = await middleware(request, response, event);
 
-			if (response.status >= 300 || response.headers.has("x-middleware-rewrite")) {
-				return response;
+			if (middleWareResponse !== response) {
+				return middleWareResponse;
 			}
 		}
 
