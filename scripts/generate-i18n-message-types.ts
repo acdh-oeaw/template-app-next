@@ -11,7 +11,7 @@ import createI18nPlugin from "next-intl/plugin";
  */
 createI18nPlugin({
 	experimental: {
-		/** @see https://v4.next-intl.dev/docs/workflows/typescript#messages-arguments */
+		/** @see https://next-intl.dev/docs/workflows/typescript#messages-arguments */
 		createMessagesDeclaration: ["./content/en/metadata/index.json", "./messages/en.json"],
 	},
 })();
