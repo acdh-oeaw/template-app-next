@@ -33,6 +33,8 @@ ARG NEXT_PUBLIC_REDMINE_ID
 # disable validation for runtime environment variables
 ENV ENV_VALIDATION=public
 
+ENV SKIP_INSTALL_SIMPLE_GIT_HOOKS=1
+
 RUN pnpm install --frozen-lockfile --offline
 
 ENV BUILD_MODE=standalone
