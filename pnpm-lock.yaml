@@ -31,9 +31,6 @@ importers:
       client-only:
         specifier: ^0.0.1
         version: 0.0.1
-      fast-glob:
-        specifier: ^3.3.3
-        version: 3.3.3
       image-dimensions:
         specifier: ^2.3.0
         version: 2.3.0
