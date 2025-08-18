@@ -2,11 +2,8 @@
 # labs version is needed for `COPY --exclude`.
 # @see https://docs.docker.com/reference/dockerfile/#copy---exclude
 
-# using alpine base image to avoid `sharp` memory leaks.
-# @see https://sharp.pixelplumbing.com/install#linux-memory-allocator
-
 # build
-FROM node:22-alpine AS build
+FROM node:22-slim AS build
 
 RUN corepack enable
 
@@ -46,7 +43,13 @@ ENV NEXT_TELEMETRY_DISABLED=1
 RUN pnpm run build
 
 # serve
-FROM node:22-alpine AS serve
+FROM node:22-slim AS serve
+
+# @see https://sharp.pixelplumbing.com/install/#linux-memory-allocator
+RUN apt-get update && apt-get install --force-yes -yy \
+  libjemalloc1 \
+  && rm -rf /var/lib/apt/lists/*
+ENV LD_PRELOAD=/usr/lib/x86_64-linux-gnu/libjemalloc.so.1
 
 RUN mkdir /app && chown -R node:node /app
 WORKDIR /app
