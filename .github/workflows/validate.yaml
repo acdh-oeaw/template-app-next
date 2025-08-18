@@ -1,0 +1,137 @@
+name: Validate
+
+concurrency:
+  group: "${{ github.workflow }}-${{ github.ref }}-validate"
+  cancel-in-progress: true
+
+on:
+  pull_request:
+    branches:
+      - main
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  config:
+    name: Configure
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+
+    outputs:
+      playwright-version: ${{ steps.playwright-version.outputs.PLAYWRIGHT_VERSION }}
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up node.js and pnpm, and install dependencies
+        uses: ./.github/actions/setup
+
+      - name: Get playwright version
+        id: playwright-version
+        shell: sh
+        run: |
+          PLAYWRIGHT_VERSION=$(pnpm ls @playwright/test --json | jq --raw-output '.[0].devDependencies["@playwright/test"].version')
+          echo "PLAYWRIGHT_VERSION=${PLAYWRIGHT_VERSION}" >> $GITHUB_OUTPUT
+
+  validate:
+    name: Validate
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up node.js and pnpm, and install dependencies
+        uses: ./.github/actions/setup
+
+      - name: Format
+        shell: sh
+        run: pnpm run format:check
+
+      - name: Lint
+        shell: sh
+        run: pnpm run lint:check
+
+      - name: Check types
+        shell: sh
+        run: pnpm run types:check
+
+      - name: Check i18n
+        shell: sh
+        run: pnpm run i18n:check
+
+      - name: Run unit tests
+        shell: sh
+        run: pnpm run test
+
+  test-e2e:
+    name: Run e2e tests
+    needs: [config, validate]
+    runs-on: ubuntu-24.04
+    container:
+      image: mcr.microsoft.com/playwright:v${{ needs.config.outputs.playwright-version }}-noble
+      options: --user 1001
+    timeout-minutes: 60
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up node.js and pnpm, and install dependencies
+        uses: ./.github/actions/setup
+
+      # https://nextjs.org/docs/pages/building-your-application/deploying/ci-build-caching#github-actions
+      - name: Cache next.js build output
+        uses: actions/cache@v4
+        with:
+          path: "${{ github.workspace }}/.next/cache"
+          # Commit sha is added so the cache entry is updated on every build.
+          # @see https://github.com/vercel/next.js/pull/27362#issuecomment-884574388
+          key: "nextjs-${{ hashFiles('pnpm-lock.yaml') }}-${{ github.sha }}"
+          restore-keys: |
+            nextjs-${{ hashFiles('pnpm-lock.yaml') }}-
+            nextjs-
+
+      - name: Build app
+        shell: sh
+        run: pnpm run build
+        env:
+          NEXT_PUBLIC_APP_BASE_URL: "http://localhost:3000"
+          NEXT_PUBLIC_IMPRINT_SERVICE_BASE_URL: "${{ vars.NEXT_PUBLIC_IMPRINT_SERVICE_BASE_URL }}"
+          NEXT_PUBLIC_MATOMO_BASE_URL: "${{ vars.NEXT_PUBLIC_MATOMO_BASE_URL }}"
+          NEXT_PUBLIC_MATOMO_ID: "${{ vars.NEXT_PUBLIC_MATOMO_ID }}"
+          NEXT_PUBLIC_REDMINE_ID: "${{ vars.SERVICE_ID }}"
+          NEXT_TELEMETRY_DISABLED: "1"
+
+      - name: Run e2e tests
+        shell: sh
+        run: pnpm run test:e2e
+        env:
+          NEXT_PUBLIC_APP_BASE_URL: "http://localhost:3000"
+          NEXT_PUBLIC_IMPRINT_SERVICE_BASE_URL: "${{ vars.NEXT_PUBLIC_IMPRINT_SERVICE_BASE_URL }}"
+          NEXT_PUBLIC_MATOMO_BASE_URL: "${{ vars.NEXT_PUBLIC_MATOMO_BASE_URL }}"
+          NEXT_PUBLIC_MATOMO_ID: "${{ vars.NEXT_PUBLIC_MATOMO_ID }}"
+          NEXT_PUBLIC_REDMINE_ID: "${{ vars.SERVICE_ID }}"
+
+      - name: Upload playwright report
+        uses: actions/upload-artifact@v4
+        if: ${{ !cancelled() }}
+        with:
+          name: playwright-report
+          path: playwright-report/
+          retention-days: 30
+
+  build-deploy:
+    name: Build and deploy
+    if: ${{ github.event_name == 'push' }}
+    needs: [validate, test-e2e]
+    uses: ./.github/workflows/build-deploy.yaml
+    secrets: inherit
+    # https://docs.github.com/en/actions/using-workflows/reusing-workflows#access-and-permissions
+    permissions:
+      contents: read
+      packages: write
