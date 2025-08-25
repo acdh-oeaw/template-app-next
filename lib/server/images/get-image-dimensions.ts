@@ -42,9 +42,13 @@ export async function getImageDimensions(
 	return dimensions ?? null;
 }
 
-const widthRegex = /<svg[^>]*\swidth=['"](\d+)['"]/i;
-const heightRegex = /<svg[^>]*\sheight=['"](\d+)['"]/i;
-const viewBoxRegex = /<svg[^>]*\sviewBox=['"](\d+) (\d+) (\d+) (\d+)['"]/i;
+const float = "(?:\\d+\\.)?\\d+";
+const heightRegex = new RegExp(`<svg[^>]*\\sheight=['"](${float})['"]`, "i");
+const widthRegex = new RegExp(`<svg[^>]*\\swidth=['"](${float})['"]`, "i");
+const viewBoxRegex = new RegExp(
+	`<svg[^>]*\\sviewBox=['"](${float}) (${float}) (${float}) (${float})['"]`,
+	"i",
+);
 
 async function getSvgDimensions(stream: ReadableStream<Uint8Array>) {
 	const chunks = [];
