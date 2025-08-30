@@ -15,12 +15,13 @@ export async function MetadataImage(props: Readonly<MetadataImageProps>): Promis
 	const { locale, size, title } = props;
 
 	/**
-	 * FIXME: Variable fonts are currently not supported by `satori`.
+	 * Variable fonts are currently not supported by `satori`.
 	 *
 	 * @see https://github.com/vercel/satori/issues/162
 	 */
-	const fontPath = join(process.cwd(), "public", "assets", "fonts", "inter-semibold.ttf");
-	const font = await readFile(fontPath);
+	const font = await readFile(
+		join(process.cwd(), "public", "assets", "fonts", "inter-semibold.ttf"),
+	);
 
 	/** @see https://nextjs.org/docs/app/api-reference/file-conventions/metadata/opengraph-image#using-nodejs-runtime-with-local-assets */
 	// const imagePath = join(process.cwd(), image);
@@ -56,6 +57,8 @@ export async function MetadataImage(props: Readonly<MetadataImageProps>): Promis
 						fontSize: 48,
 						textAlign: "center",
 						textWrap: "balance",
+						/** @see https://github.com/vercel/satori/issues/498 */
+						wordBreak: "break-word",
 					}}
 				>
 					{title}
