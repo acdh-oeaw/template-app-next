@@ -1,9 +1,43 @@
 import { readFile } from "node:fs/promises";
 import { join } from "node:path";
 
+import { log } from "@acdh-oeaw/lib";
 import { ImageResponse } from "next/og";
 
 import type { IntlLocale } from "@/lib/i18n/locales";
+
+type ImageResponseOptions = NonNullable<ConstructorParameters<typeof ImageResponse>[1]>;
+
+async function getFonts(): Promise<ImageResponseOptions["fonts"]> {
+	"use cache";
+
+	try {
+		/**
+		 * FIXME: Variable fonts are currently not supported by `satori`.
+		 *
+		 * @see https://github.com/vercel/satori/issues/162
+		 */
+		const fontPath = join(process.cwd(), "public", "assets", "fonts", "inter-semibold.ttf");
+		const uint8 = await readFile(fontPath);
+		/* `use cache` supports `ArrayBuffer` but not `Uint8Array`. */
+		const font = uint8.buffer.slice(uint8.byteOffset, uint8.byteOffset + uint8.byteLength);
+
+		const fonts = [
+			{
+				data: font,
+				name: "Inter",
+				style: "normal",
+				weight: 600,
+			},
+		] satisfies ImageResponseOptions["fonts"];
+
+		return fonts;
+	} catch (error) {
+		log.error("Failed to load fonts for opengraph images.\n", String(error));
+
+		return [];
+	}
+}
 
 interface MetadataImageProps {
 	locale: IntlLocale;
@@ -14,13 +48,7 @@ interface MetadataImageProps {
 export async function MetadataImage(props: Readonly<MetadataImageProps>): Promise<ImageResponse> {
 	const { locale, size, title } = props;
 
-	/**
-	 * FIXME: Variable fonts are currently not supported by `satori`.
-	 *
-	 * @see https://github.com/vercel/satori/issues/162
-	 */
-	const fontPath = join(process.cwd(), "public", "assets", "fonts", "inter-semibold.ttf");
-	const font = await readFile(fontPath);
+	const fonts = await getFonts();
 
 	/** @see https://nextjs.org/docs/app/api-reference/file-conventions/metadata/opengraph-image#using-nodejs-runtime-with-local-assets */
 	// const imagePath = join(process.cwd(), image);
@@ -64,14 +92,7 @@ export async function MetadataImage(props: Readonly<MetadataImageProps>): Promis
 		),
 		{
 			...size,
-			fonts: [
-				{
-					data: font,
-					name: "Inter",
-					style: "normal",
-					weight: 600,
-				},
-			],
+			fonts,
 		},
 	);
 }
