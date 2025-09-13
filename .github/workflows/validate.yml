@@ -47,7 +47,10 @@ jobs:
         run: pnpm run format:check
 
       - name: Lint
-        run: pnpm run lint:check
+        run: pnpm run lint:oxlint:check --format=github
+
+      - name: ESLint
+        run: pnpm run lint:eslint:check
 
       - name: Typecheck
         run: pnpm run types:check

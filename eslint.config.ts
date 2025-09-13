@@ -8,6 +8,7 @@ import reactConfig from "@acdh-oeaw/eslint-config-react";
 import tailwindConfig from "@acdh-oeaw/eslint-config-tailwindcss";
 import gitignore from "eslint-config-flat-gitignore";
 import checkFilePlugin from "eslint-plugin-check-file";
+import oxlint from "eslint-plugin-oxlint";
 import { config } from "typescript-eslint";
 
 import plugin from "./config/eslint/plugin";
@@ -129,4 +130,5 @@ export default config(
 		files: ["db/**/*.ts", "lib/server/**/*.ts", "**/_actions/**/*.ts", "**/_lib/actions/**/*.ts"],
 		extends: [nodeConfig],
 	},
+	oxlint.buildFromOxlintConfigFile("./.oxlintrc.json"),
 );
