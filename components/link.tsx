@@ -25,7 +25,8 @@ import { LocaleLink, type LocaleLinkProps } from "@/lib/navigation/navigation";
  */
 
 interface LinkProps
-	extends Pick<
+	extends
+		Pick<
 			LocaleLinkProps,
 			"aria-current" | "href" | "id" | "locale" | "prefetch" | "replace" | "scroll" | "shallow"
 		>,
