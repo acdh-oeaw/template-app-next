@@ -1,4 +1,4 @@
-import type { NextProxy,ProxyConfig } from "next/server";
+import type { NextProxy, ProxyConfig } from "next/server";
 
 import { middleware as i18nMiddlware } from "@/lib/i18n/middleware";
 import { composeMiddleware } from "@/lib/server/compose-middlewares";
