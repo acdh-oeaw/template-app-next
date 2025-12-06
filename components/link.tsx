@@ -25,7 +25,8 @@ import { LocaleLink, type LocaleLinkProps } from "@/lib/navigation/navigation";
  */
 
 interface LinkProps
-	extends Pick<
+	extends
+		Pick<
 			LocaleLinkProps,
 			"aria-current" | "href" | "id" | "locale" | "prefetch" | "replace" | "scroll" | "shallow"
 		>,
@@ -40,13 +41,14 @@ export function Link(props: Readonly<LinkProps>): ReactNode {
 	const ref = useRef<HTMLAnchorElement | HTMLSpanElement>(null);
 	const linkRef = useObjectRef(
 		useMemo(() => {
+			// eslint-disable-next-line react-hooks/refs
 			return mergeRefs(forwardedRef, ref);
 		}, [forwardedRef, ref]),
 	);
 
-	const isDisabled = props.isDisabled === true;
-	const isCurrent = Boolean(props["aria-current"]);
-	const isLinkElement = Boolean(props.href) && !isDisabled;
+	const isDisabled = interactionProps.isDisabled === true;
+	const isCurrent = Boolean(interactionProps["aria-current"]);
+	const isLinkElement = Boolean(interactionProps.href) && !isDisabled;
 	const ElementType: ElementType = isLinkElement ? LocaleLink : "span";
 
 	const { focusableProps } = useFocusable(interactionProps, linkRef);

@@ -29,7 +29,6 @@
 		minmax(calc(var(--padding-inline) - var(--column-gap)), 1fr);
 	column-gap: var(--column-gap);
 
-	/* stylelint-disable-next-line order/order */
 	@variant sm {
 		--max-content-width: 100%;
 		--column-count: 8;

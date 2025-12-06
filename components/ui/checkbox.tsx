@@ -70,7 +70,8 @@ const checkBoxBoxStyles = styles({
 type CheckBoxBoxStyles = GetVariantProps<typeof checkBoxBoxStyles>;
 
 interface CheckBoxBoxProps
-	extends ComponentPropsWithRef<"div">,
+	extends
+		ComponentPropsWithRef<"div">,
 		Pick<AriaCheckboxRenderProps, "isIndeterminate" | "isSelected">,
 		CheckBoxBoxStyles {}
 

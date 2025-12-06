@@ -45,6 +45,7 @@ export const toasts = new AriaToastQueue<ToastContent>({
 	wrapUpdate(fn) {
 		if ("startViewTransition" in document) {
 			document.startViewTransition(() => {
+				// eslint-disable-next-line @eslint-react/dom/no-flush-sync
 				flushSync(fn);
 			});
 		} else {
@@ -67,7 +68,6 @@ export function Toast(props: Readonly<ToastProps>): ReactNode {
 				return toastStyles({ className, tone: toast.content.tone });
 			})}
 			style={{
-				// @ts-expect-error @see https://developer.chrome.com/blog/view-transitions-update-io24#view-transition-class
 				viewTransitionClass: "toast",
 				viewTransitionName: toast.key,
 			}}

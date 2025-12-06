@@ -6,15 +6,15 @@ import nodeConfig from "@acdh-oeaw/eslint-config-node";
 import playwrightConfig from "@acdh-oeaw/eslint-config-playwright";
 import reactConfig from "@acdh-oeaw/eslint-config-react";
 import tailwindConfig from "@acdh-oeaw/eslint-config-tailwindcss";
+import { defineConfig, globalIgnores } from "eslint/config";
 import gitignore from "eslint-config-flat-gitignore";
 import checkFilePlugin from "eslint-plugin-check-file";
-import { config } from "typescript-eslint";
 
 import plugin from "./config/eslint/plugin";
 
-export default config(
+export default defineConfig(
 	gitignore({ strict: false }),
-	{ ignores: ["content/**", "public/**"] },
+	globalIgnores(["content/**", "public/**"]),
 	baseConfig,
 	reactConfig,
 	nextConfig,
@@ -28,7 +28,8 @@ export default config(
 	},
 	{
 		files: ["**/*.tsx"],
-		extends: [plugin.configs.recommended],
+		// eslint-disable-next-line @typescript-eslint/no-explicit-any
+		extends: [plugin.configs.recommended as any],
 	},
 	playwrightConfig,
 	{
@@ -122,7 +123,7 @@ export default config(
 			],
 			// "@typescript-eslint/strict-boolean-expressions": "error",
 			"react/jsx-sort-props": ["error", { reservedFirst: true }],
-			"react-x/prefer-read-only-props": "error",
+			"@eslint-react/prefer-read-only-props": "error",
 		},
 	},
 	{

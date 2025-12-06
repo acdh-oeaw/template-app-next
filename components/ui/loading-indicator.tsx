@@ -31,8 +31,7 @@ const loadingIndicatorStyles = styles({
 type LoadingIndicatorStyleProps = GetVariantProps<typeof loadingIndicatorStyles>;
 
 interface LoadingIndicatorProps
-	extends Omit<AriaProgressBarProps, "isIndeterminate">,
-		LoadingIndicatorStyleProps {}
+	extends Omit<AriaProgressBarProps, "isIndeterminate">, LoadingIndicatorStyleProps {}
 
 export function LoadingIndicator(props: Readonly<LoadingIndicatorProps>): ReactNode {
 	const { children, className, delay, size, ...rest } = props;

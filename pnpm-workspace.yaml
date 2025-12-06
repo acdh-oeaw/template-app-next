@@ -1,9 +1,12 @@
 ignoredBuiltDependencies:
   - unrs-resolver
+
 onlyBuiltDependencies:
+  - '@swc/core'
   - '@tailwindcss/oxide'
   - esbuild
   - sharp
   - simple-git-hooks
+
 patchedDependencies:
   next: patches/next.patch

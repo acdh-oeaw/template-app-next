@@ -17,6 +17,7 @@ export const middleware: Middleware = function middleware(request, response) {
 
 		const origin = URL.parse(originHeader);
 
+		// eslint-disable-next-line @typescript-eslint/prefer-optional-chain
 		if (origin == null || origin.host !== hostHeader) {
 			return new NextResponse(null, { status: 403 });
 		}

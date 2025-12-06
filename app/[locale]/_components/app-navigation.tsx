@@ -170,6 +170,7 @@ function MenuLink(props: Readonly<MenuLinkProps>): ReactNode {
 		<MenuItem
 			{...props}
 			// @ts-expect-error @see https://github.com/adobe/react-spectrum/issues/7453
+			// eslint-disable-next-line @eslint-react/prefer-destructuring-assignment
 			onFocus={chain(prefetch, props.onFocus)}
 			onHoverStart={chain(prefetch, onHoverStart)}
 		/>

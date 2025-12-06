@@ -67,7 +67,7 @@ export default async function AboutPage(props: Readonly<AboutPageProps>): Promis
 						alt=""
 						height={400}
 						/** Preload image because it's the largest contentful paint (lcp) element. */
-						priority={true}
+						preload={true}
 						src="https://picsum.photos/600/400"
 						unoptimized={true}
 						width={600}

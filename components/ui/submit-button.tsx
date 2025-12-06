@@ -5,8 +5,10 @@ import { useFormStatus } from "react-dom";
 
 import { Button } from "@/components/ui/button";
 
-interface SubmitButtonProps
-	extends Omit<ComponentPropsWithRef<typeof Button>, "isPending" | "type"> {}
+interface SubmitButtonProps extends Omit<
+	ComponentPropsWithRef<typeof Button>,
+	"isPending" | "type"
+> {}
 
 export function SubmitButton(props: Readonly<SubmitButtonProps>): ReactNode {
 	const { children, ...rest } = props;

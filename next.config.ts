@@ -6,24 +6,13 @@ import createI18nPlugin from "next-intl/plugin";
 import { env } from "@/config/env.config";
 
 const config: Config = {
+	allowedDevOrigins: ["127.0.0.1"],
+	// cacheComponents: true,
 	/** Compression should be handled by nginx reverse proxy. */
 	compress: false,
-	eslint: {
-		dirs: [process.cwd()],
-		ignoreDuringBuilds: true,
-	},
 	experimental: {
 		browserDebugInfoInTerminal: true,
-		devtoolSegmentExplorer: true,
-		// clientSegmentCache: true,
-		// dynamicIO: true,
-		// globalNotFound: true,
-		optimizeRouterScrolling: true,
-		// ppr: true,
-		reactCompiler: true,
-		// turbopackPersistentCaching: true,
-		// typedRoutes: true,
-		useCache: true,
+		globalNotFound: true,
 	},
 	headers() {
 		const headers: Awaited<ReturnType<NonNullable<Config["headers"]>>> = [
@@ -47,6 +36,8 @@ const config: Config = {
 		},
 	},
 	output: env.BUILD_MODE,
+	reactCompiler: true,
+	// typedRoutes: true,
 	typescript: {
 		ignoreBuildErrors: true,
 	},

@@ -1,12 +1,12 @@
-import type { MiddlewareConfig, NextMiddleware } from "next/server";
+import type { NextProxy, ProxyConfig } from "next/server";
 
 import { middleware as i18nMiddlware } from "@/lib/i18n/middleware";
 import { composeMiddleware } from "@/lib/server/compose-middlewares";
 import { middleware as csrfMiddlware } from "@/lib/server/csrf/csrf-middleware";
 
-export const middleware: NextMiddleware = composeMiddleware(csrfMiddlware, i18nMiddlware);
+export const proxy: NextProxy = composeMiddleware(csrfMiddlware, i18nMiddlware);
 
-export const config: MiddlewareConfig = {
+export const config: ProxyConfig = {
 	matcher: [
 		"/",
 		/**
