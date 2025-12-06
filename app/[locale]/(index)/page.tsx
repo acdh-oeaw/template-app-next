@@ -108,7 +108,7 @@ function FeaturesSection(): ReactNode {
 									className="size-full border-b border-stroke-weak object-cover"
 									height={300}
 									/** Preload image because it's the largest contentful paint (lcp) element. */
-									priority={true}
+									preload={true}
 									src="https://picsum.photos/400/300"
 									unoptimized={true}
 									width={400}

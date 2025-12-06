@@ -1,47 +1,79 @@
 /* eslint-disable no-restricted-syntax */
 
-import { log } from "@acdh-oeaw/lib";
-import { createEnv } from "@acdh-oeaw/validate-env/next";
+import { err, isErr, ok } from "@acdh-oeaw/lib";
+import { createEnv, ValidationError } from "@acdh-oeaw/validate-env/next";
 import * as v from "valibot";
 
-export const env = createEnv({
-	system(input) {
-		const Schema = v.object({
-			NODE_ENV: v.optional(v.picklist(["development", "production", "test"]), "production"),
-		});
+const result = createEnv({
+	schemas: {
+		system(environment) {
+			const schema = v.object({
+				NODE_ENV: v.optional(v.picklist(["development", "production", "test"]), "production"),
+			});
 
-		return v.parse(Schema, input);
-	},
-	private(input) {
-		const Schema = v.object({
-			BUILD_MODE: v.optional(v.picklist(["export", "standalone"])),
-			BUNDLE_ANALYZER: v.optional(v.picklist(["disabled", "enabled"]), "disabled"),
-			CI: v.optional(v.pipe(v.unknown(), v.transform(Boolean), v.boolean())),
-			NEXT_RUNTIME: v.optional(v.picklist(["edge", "nodejs"])),
-		});
+			const result = v.safeParse(schema, environment);
 
-		return v.parse(Schema, input);
-	},
-	public(input) {
-		const Schema = v.object({
-			NEXT_PUBLIC_APP_BASE_URL: v.pipe(v.string(), v.url()),
-			NEXT_PUBLIC_BOTS: v.optional(v.picklist(["disabled", "enabled"]), "disabled"),
-			NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION: v.optional(v.pipe(v.string(), v.nonEmpty())),
-			NEXT_PUBLIC_IMPRINT_SERVICE_BASE_URL: v.pipe(v.string(), v.url()),
-			NEXT_PUBLIC_MATOMO_BASE_URL: v.optional(v.pipe(v.string(), v.url())),
-			NEXT_PUBLIC_MATOMO_ID: v.optional(
-				v.pipe(v.string(), v.transform(Number), v.number(), v.integer(), v.minValue(1)),
-			),
-			NEXT_PUBLIC_REDMINE_ID: v.pipe(
-				v.string(),
-				v.transform(Number),
-				v.number(),
-				v.integer(),
-				v.minValue(1),
-			),
-		});
+			if (!result.success) {
+				return err(
+					new ValidationError(
+						`Invalid or missing environment variables.\n${v.summarize(result.issues)}`,
+					),
+				);
+			}
 
-		return v.parse(Schema, input);
+			return ok(result.output);
+		},
+		private(environment) {
+			const schema = v.object({
+				BUILD_MODE: v.optional(v.picklist(["export", "standalone"])),
+				BUNDLE_ANALYZER: v.optional(v.picklist(["disabled", "enabled"]), "disabled"),
+				CI: v.optional(v.pipe(v.unknown(), v.transform(Boolean), v.boolean())),
+				NEXT_RUNTIME: v.optional(v.picklist(["edge", "nodejs"])),
+			});
+
+			const result = v.safeParse(schema, environment);
+
+			if (!result.success) {
+				return err(
+					new ValidationError(
+						`Invalid or missing environment variables.\n${v.summarize(result.issues)}`,
+					),
+				);
+			}
+
+			return ok(result.output);
+		},
+		public(environment) {
+			const schema = v.object({
+				NEXT_PUBLIC_APP_BASE_URL: v.pipe(v.string(), v.url()),
+				NEXT_PUBLIC_BOTS: v.optional(v.picklist(["disabled", "enabled"]), "disabled"),
+				NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION: v.optional(v.pipe(v.string(), v.nonEmpty())),
+				NEXT_PUBLIC_IMPRINT_SERVICE_BASE_URL: v.pipe(v.string(), v.url()),
+				NEXT_PUBLIC_MATOMO_BASE_URL: v.optional(v.pipe(v.string(), v.url())),
+				NEXT_PUBLIC_MATOMO_ID: v.optional(
+					v.pipe(v.string(), v.transform(Number), v.number(), v.integer(), v.minValue(1)),
+				),
+				NEXT_PUBLIC_REDMINE_ID: v.pipe(
+					v.string(),
+					v.transform(Number),
+					v.number(),
+					v.integer(),
+					v.minValue(1),
+				),
+			});
+
+			const result = v.safeParse(schema, environment);
+
+			if (!result.success) {
+				return err(
+					new ValidationError(
+						`Invalid or missing environment variables.\n${v.summarize(result.issues)}`,
+					),
+				);
+			}
+
+			return ok(result.output);
+		},
 	},
 	environment: {
 		BUILD_MODE: process.env.BUILD_MODE,
@@ -61,18 +93,11 @@ export const env = createEnv({
 		v.optional(v.picklist(["disabled", "enabled", "public"]), "enabled"),
 		process.env.ENV_VALIDATION,
 	),
-	onError(error) {
-		if (v.isValiError(error)) {
-			const message = "Invalid environment variables";
-
-			log.error(`${message}:`, v.flatten(error.issues).nested);
-
-			const validationError = new Error(message);
-			delete validationError.stack;
-
-			throw validationError;
-		}
-
-		throw error;
-	},
 });
+
+if (isErr(result)) {
+	delete result.error.stack;
+	throw result.error;
+}
+
+export const env = result.value;

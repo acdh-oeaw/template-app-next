@@ -20,7 +20,7 @@ export function ColorSchemeSelect(props: Readonly<ColorSchemeSelectProps>): Reac
 
 	const { colorSchemeState, setColorScheme } = useColorScheme();
 
-	function onSelectionChange(key: Key | null) {
+	function onChange(key: Key | null) {
 		const value = key as keyof ColorSchemeSelectProps["items"] | null;
 
 		setColorScheme(value === "system" ? null : value);
@@ -37,12 +37,7 @@ export function ColorSchemeSelect(props: Readonly<ColorSchemeSelectProps>): Reac
 	const Icon = icons[colorSchemeState.colorScheme];
 
 	return (
-		<Select
-			aria-label={label}
-			name="color-scheme"
-			onSelectionChange={onSelectionChange}
-			selectedKey={selectedKey}
-		>
+		<Select aria-label={label} name="color-scheme" onChange={onChange} value={selectedKey}>
 			<IconButton kind="tertiary" label={<SelectValue className="sr-only" />} tone="neutral">
 				<Icon aria-hidden={true} data-slot="icon" />
 			</IconButton>

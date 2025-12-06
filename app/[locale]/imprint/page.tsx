@@ -1,5 +1,3 @@
-"use cache";
-
 import { createUrl, createUrlSearchParams, request } from "@acdh-oeaw/lib";
 import type { Metadata, ResolvingMetadata } from "next";
 import { notFound } from "next/navigation";
@@ -55,6 +53,7 @@ export default async function ImprintPage(props: Readonly<ImprintPageProps>): Pr
 			</section>
 
 			<section
+				// eslint-disable-next-line @eslint-react/dom/no-dangerously-set-innerhtml
 				dangerouslySetInnerHTML={{ __html: html }}
 				className="relative layout-subgrid typography content-max-w-text border-t border-stroke-weak py-16 xs:py-20"
 			/>

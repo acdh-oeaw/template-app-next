@@ -1,9 +1,9 @@
 import { join } from "node:path";
 
 import { defineConfig, devices } from "@playwright/test";
-import { isCI } from "ci-info";
 import { config as dotenv } from "dotenv";
 import { expand } from "dotenv-expand";
+import isCI from "is-in-ci";
 
 /**
  * Reading `.env` files here instead of using `dotenv-cli` so environment variables are

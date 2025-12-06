@@ -26,7 +26,6 @@
 		font-size: var(--text-small);
 		line-height: var(--text-small--line-height);
 
-		/* stylelint-disable-next-line order/order */
 		@variant xs {
 			font-size: var(--text-heading-4);
 			line-height: var(--text-heading-4--line-height);
