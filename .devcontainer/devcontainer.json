@@ -1,19 +1,33 @@
 {
-	"name": "Next.js",
-	"image": "ghcr.io/acdh-oeaw/devcontainer-frontend:24",
+	"name": "template-app-next",
+	"dockerComposeFile": ["docker-compose.yaml"],
+	"service": "app",
+	"workspaceFolder": "/workspace",
+	"postCreateCommand": {
+		// "global": "pnpm add --global bun turborepo",
+		"init": "pnpm install && pnpm exec playwright install"
+	},
 	"customizations": {
 		"vscode": {
 			"extensions": [
 				"bradlc.vscode-tailwindcss",
-				"dbaeumer.vscode-eslint",
-				"editorconfig.editorconfig",
-				"esbenp.prettier-vscode",
+				"EditorConfig.EditorConfig",
 				"github.vscode-github-actions",
-				"lokalise.i18n-ally",
 				"mikestead.dotenv",
+				"mrorz.language-gettext",
 				"ms-playwright.playwright",
-				"stylelint.vscode-stylelint"
+				"oven.bun-vscode",
+				"oxc.oxc-vscode",
+				"stylelint.vscode-stylelint",
+				"TypeScriptTeam.native-preview"
 			]
 		}
-	}
+	},
+	"forwardPorts": [3000],
+	"portsAttributes": {
+		"3000": {
+			"label": "App"
+		}
+	},
+	"remoteUser": "bun"
 }

@@ -1,5 +1,4 @@
 blank_issues_enabled: false
-# contact_links:
-#   - name:
-#     url:
-#     about:
+contact_links:
+  - name: ACDH Helpdesk
+    about: Please contact acdh-helpdesk@oeaw.ac.at if you require support.

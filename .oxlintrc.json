@@ -1,0 +1,45 @@
+{
+	"$schema": "./node_modules/oxlint/configuration_schema.json",
+	"categories": {
+		"correctness": "error",
+		"suspicious": "warn"
+	},
+	"env": {
+		"builtin": true,
+		"browser": true,
+		"node": true
+	},
+	"ignorePatterns": ["contents/", "e2e/snapshots/", "public/"],
+	"jsPlugins": [
+		{ "name": "better-tailwindcss", "specifier": "eslint-plugin-better-tailwindcss" },
+		{ "name": "playwright", "specifier": "eslint-plugin-playwright" },
+		{ "name": "regexp", "specifier": "eslint-plugin-regexp" }
+	],
+	"options": {
+		"reportUnusedDisableDirectives": "error",
+		"typeAware": true,
+		"typeCheck": true
+	},
+	"plugins": [
+		"eslint",
+		"import",
+		"jsx-a11y",
+		"nextjs",
+		"node",
+		"oxc",
+		"promise",
+		"react",
+		"typescript",
+		"unicorn",
+		"vitest"
+	],
+	"rules": {
+		"no-restricted-imports": ["error", { "patterns": [{ "group": ["./*", "../*"] }] }]
+	},
+	"settings": {
+		"better-tailwindcss": {
+			"entryPoint": "./styles/index.css"
+		}
+	},
+	"overrides": []
+}

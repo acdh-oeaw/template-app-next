@@ -5,13 +5,13 @@ concurrency:
   cancel-in-progress: ${{ github.ref != 'refs/heads/main' }}
 
 on:
-  workflow_dispatch:
   pull_request:
     branches:
       - main
   push:
     branches:
       - main
+  workflow_dispatch:
 
 jobs:
   validate:
@@ -27,38 +27,53 @@ jobs:
 
     env:
       NEXT_PUBLIC_APP_BASE_URL: "http://localhost:3000"
-      NEXT_PUBLIC_IMPRINT_SERVICE_BASE_URL: "${{ vars.NEXT_PUBLIC_IMPRINT_SERVICE_BASE_URL }}"
-      NEXT_PUBLIC_MATOMO_BASE_URL: "${{ vars.NEXT_PUBLIC_MATOMO_BASE_URL }}"
-      NEXT_PUBLIC_MATOMO_ID: "${{ vars.NEXT_PUBLIC_MATOMO_ID }}"
-      NEXT_PUBLIC_REDMINE_ID: "${{ vars.SERVICE_ID }}"
+      NEXT_PUBLIC_APP_IMPRINT_CUSTOM_CONFIG: "disabled"
+      NEXT_PUBLIC_APP_IMPRINT_SERVICE_BASE_URL: "${{ vars.NEXT_PUBLIC_IMPRINT_SERVICE_BASE_URL }}"
+      NEXT_PUBLIC_APP_MATOMO_BASE_URL: "${{ vars.NEXT_PUBLIC_MATOMO_BASE_URL }}"
+      NEXT_PUBLIC_APP_MATOMO_ID: "${{ vars.NEXT_PUBLIC_APP_MATOMO_ID }}"
+      NEXT_PUBLIC_APP_SERVICE_ID: "${{ vars.APP_SERVICE_ID }}"
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v6
 
       - name: Install pnpm
-        uses: pnpm/action-setup@v4
+        uses: pnpm/action-setup@v6
+        with:
+          cache: true
 
-      - name: Use Node.js ${{ matrix.node-version }}
+      - name: Use node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v6
         with:
           node-version: ${{ matrix.node-version }}
-          cache: "pnpm"
+
+      - name: Install bun globally
+        run: pnpm add --global bun
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
       - name: Format
-        run: pnpm run format:check
+        run: bun run format:check
 
       - name: Lint
-        run: pnpm run lint:check
+        run: bun run lint:check
 
       - name: Typecheck
-        run: pnpm run types:check
+        run: bun run types:check
 
       - name: Test
-        run: pnpm run test
+        run: bun run test
+
+      # https://nextjs.org/docs/pages/building-your-application/deploying/ci-build-caching#github-actions
+      - name: Cache Next.js build output
+        uses: actions/cache@v5
+        with:
+          path: "${{ github.workspace }}/apps/app/.next/cache"
+          key: "${{ matrix.os }}-${{ matrix.node-version }}-nextjs-${{ hashFiles('pnpm-lock.yaml') }}"
+
+      - name: Build app
+        run: bun run build
 
       - name: Get playwright version
         run: |
@@ -66,11 +81,12 @@ jobs:
           echo "PLAYWRIGHT_VERSION=$PLAYWRIGHT_VERSION" >> $GITHUB_ENV
 
       - name: Cache playwright browsers
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         id: cache-playwright-browsers
         with:
           path: "~/.cache/ms-playwright"
-          key: "${{ matrix.os }}-playwright-browsers-${{ env.PLAYWRIGHT_VERSION }}"
+          key: "${{ matrix.os }}-${{ matrix.node-version }}-playwright-browsers-${{
+            env.PLAYWRIGHT_VERSION }}"
 
       - name: Install playwright browsers
         if: steps.cache-playwright-browsers.outputs.cache-hit != 'true'
@@ -79,20 +95,10 @@ jobs:
         if: steps.cache-playwright-browsers.outputs.cache-hit == 'true'
         run: pnpm exec playwright install-deps
 
-      # https://nextjs.org/docs/pages/building-your-application/deploying/ci-build-caching#github-actions
-      - name: Cache Next.js build output
-        uses: actions/cache@v4
-        with:
-          path: "${{ github.workspace }}/.next/cache"
-          key: "${{ matrix.os }}-nextjs-${{ hashFiles('pnpm-lock.yaml') }}"
-
-      - name: Build app
-        run: pnpm run build
-
       - name: Run e2e tests
-        run: pnpm run test:e2e
+        run: bun run test:e2e
 
-      - uses: actions/upload-artifact@v5
+      - uses: actions/upload-artifact@v7
         if: ${{ !cancelled() }}
         with:
           name: playwright-report

@@ -1,0 +1,11 @@
+{
+	"creator": "ACDH",
+	"description": "Template App Next.js",
+	"title": "Template App Next.js",
+	"manifest": {
+		"description": "Template App Next.js",
+		"name": "Template App Next.js",
+		"short-name": "Template App Next.js"
+	},
+	"social": []
+}

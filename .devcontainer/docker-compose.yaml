@@ -1,0 +1,12 @@
+services:
+  app:
+    # image: ghcr.io/acdh-oeaw/devcontainer-frontend:24
+    build: .
+    container_name: template-app-next-devcontainer
+    volumes:
+      - ..:/workspace:cached
+    command: sleep infinity
+
+networks:
+  default:
+    name: template-app-next

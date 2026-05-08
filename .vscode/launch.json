@@ -1,24 +1,13 @@
 {
+	"version": "0.2.0",
 	"configurations": [
 		{
-			"name": "Apps: Web (server-side)",
+			"type": "bun",
 			"request": "launch",
-			"runtimeArgs": ["run", "dev"],
-			"runtimeExecutable": "pnpm",
-			"skipFiles": ["<node_internals>/**"],
-			"type": "node"
-		},
-		{
-			"name": "Apps: Web (client-side)",
-			"type": "chrome",
-			"request": "launch",
-			"url": "http://localhost:3000"
-		}
-	],
-	"compounds": [
-		{
-			"name": "Apps: Web",
-			"configurations": ["Apps: Web (server-side)", "Apps: Web (client-side)"]
+			"name": "Debug script",
+			"program": "${file}",
+			"cwd": "${workspaceFolder}",
+			"stopOnEntry": false
 		}
 	]
 }

@@ -9,115 +9,148 @@ on:
   workflow_dispatch:
 
 jobs:
-  env:
-    name: Generate environment variables
+  config:
+    name: Detect changed apps
     runs-on: ubuntu-24.04
-    steps:
-      - name: Derive environment from git ref
-        id: environment
-        run: |
-          if [ "${{ github.ref }}" = "refs/heads/main" ]; then
-            ENVIRONMENT="production"
-            APP_NAME_SUFFIX=""
-          elif [ "${{ github.ref }}" = "refs/heads/develop" ]; then
-            ENVIRONMENT="development"
-            APP_NAME_SUFFIX="-development"
-          elif [ "${{github.event_name}}" = "pull_request" ]; then
-            ENVIRONMENT="pr/${{ github.event.pull_request.number }}"
-            APP_NAME_SUFFIX="-pr-${{ github.event.pull_request.number }}"
-          else
-            exit 1
-          fi
 
-          echo "ENVIRONMENT=$ENVIRONMENT" >> $GITHUB_OUTPUT
-          echo "APP_NAME_SUFFIX=$APP_NAME_SUFFIX" >> $GITHUB_OUTPUT
     outputs:
-      environment: "${{ steps.environment.outputs.ENVIRONMENT }}"
-      app_name: "frontend${{ steps.environment.outputs.APP_NAME_SUFFIX }}"
-      registry: "ghcr.io"
-      image: "${{ github.repository }}"
+      matrix: ${{ steps.changes.outputs.matrix }}
+      has_changes: ${{ steps.changes.outputs.has_changes }}
+      repository: ${{ steps.repository.outputs.repository }}
 
-  vars:
-    name: Generate public url
-    needs: [env]
-    runs-on: ubuntu-24.04
-    environment:
-      name: "${{ needs.env.outputs.environment }}"
     steps:
-      - name: Generate public URL
-        id: public_url
-        run: |
-          if [ -z "${{ vars.PUBLIC_URL }}" ]; then
-            PUBLIC_URL="https://${{ needs.env.outputs.app_name }}.${{ vars.KUBE_INGRESS_BASE_DOMAIN }}"
-          else
-            PUBLIC_URL="${{ vars.PUBLIC_URL }}"
-          fi
+      - name: Checkout repository
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+          filter: "blob:none"
 
-          echo "PUBLIC_URL=$PUBLIC_URL" >> $GITHUB_OUTPUT
-    outputs:
-      public_url: "${{ steps.public_url.outputs.PUBLIC_URL }}"
+      - name: Install pnpm
+        uses: pnpm/action-setup@v6
+        with:
+          cache: true
+
+      - name: Use node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: 24.x
+
+      - name: Set lowercase repository name
+        id: repository
+        run: echo "repository=$(echo '${{ github.repository }}' | tr '[:upper:]' '[:lower:]')" >> $GITHUB_OUTPUT
+
+      - name: Detect affected apps
+        id: changes
+        env:
+          # @see {@link https://github.com/vercel/turborepo/issues/9320#issuecomment-2499219314}
+          TURBO_SCM_BASE: ${{ github.event_name == 'pull_request' && github.event.pull_request.base.sha || github.event.before }}
+          ALL_APPS: |
+            [
+              {
+                "name": "app",
+                "image": "app",
+                "environment": "production",
+                "public_url": "${{ vars.NEXT_PUBLIC_APP_BASE_URL }}",
+                "service_id": "${{ vars.APP_SERVICE_ID }}"
+              }
+            ]
+        run: |
+          set -eux
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            MATRIX=$(echo "$ALL_APPS" | jq -c '.')
+          else
+            AFFECTED=$(
+              pnpm dlx turbo query affected --packages --filter './apps/*' \
+              2>/dev/null || echo '{"data":{"affectedPackages":{"items":[]}}}'
+            )
+            NAMES=$(echo "$AFFECTED" | jq -c '[.data.affectedPackages.items[] | .name | sub("^@dariah-eric/"; "")]')
+            MATRIX=$(echo "$ALL_APPS" | jq -c --argjson names "$NAMES" '[.[] | select(.name as $n | $names | index($n))]')
+          fi
+          echo "matrix=${MATRIX}" >> "$GITHUB_OUTPUT"
+          if [ "$MATRIX" = "[]" ]; then
+            echo "has_changes=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "has_changes=true" >> "$GITHUB_OUTPUT"
+          fi
 
   build:
-    name: Build and push docker image
-    needs: [env, vars]
+    name: Build and push docker images
+    needs: [config]
+    if: needs.config.outputs.has_changes == 'true'
     runs-on: ubuntu-24.04
+    timeout-minutes: 60
+
     permissions:
       contents: read
       packages: write
-    environment:
-      name: "${{ needs.env.outputs.environment }}"
+
+    strategy:
+      fail-fast: true
+      matrix:
+        target: ${{ fromJSON(needs.config.outputs.matrix) }}
+      max-parallel: 1
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v6
 
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
+      - name: Set up docker buildx
+        uses: docker/setup-buildx-action@v4
 
-      - name: Log in to the Container registry
-        uses: docker/login-action@v3
+      - name: Sign in to the container registry
+        uses: docker/login-action@v4
         with:
-          registry: "${{ needs.env.outputs.registry }}"
+          registry: "ghcr.io"
           username: "${{ github.actor }}"
           password: "${{ secrets.GITHUB_TOKEN }}"
 
-      - name: Extract metadata (tags, labels) for Docker
+      - name: Extract metadata (tags, labels) for docker image
         id: meta
-        uses: docker/metadata-action@v5
+        uses: docker/metadata-action@v6
         with:
-          images: "${{ needs.env.outputs.registry }}/${{ needs.env.outputs.image }}"
+          images: "ghcr.io/${{ needs.config.outputs.repository }}-${{ matrix.target.image }}"
           tags: |
             type=raw,value={{sha}}
             type=ref,event=branch
 
-      - name: Build and push Docker image
-        uses: docker/build-push-action@v6
+      - name: Build and push docker image
+        uses: docker/build-push-action@v7
         with:
           context: .
+          target: "${{ matrix.target.image }}"
           push: true
           tags: "${{ steps.meta.outputs.tags }}"
           labels: "${{ steps.meta.outputs.labels }}"
           build-args: |
-            "NEXT_PUBLIC_APP_BASE_URL=${{ needs.vars.outputs.public_url }}"
-            "NEXT_PUBLIC_BOTS=${{ vars.NEXT_PUBLIC_BOTS }}"
-            "NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION=${{ vars.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION }}"
-            "NEXT_PUBLIC_IMPRINT_SERVICE_BASE_URL=${{ vars.NEXT_PUBLIC_IMPRINT_SERVICE_BASE_URL }}"
-            "NEXT_PUBLIC_MATOMO_BASE_URL=${{ vars.NEXT_PUBLIC_MATOMO_BASE_URL }}"
-            "NEXT_PUBLIC_MATOMO_ID=${{ vars.NEXT_PUBLIC_MATOMO_ID }}"
-            "NEXT_PUBLIC_REDMINE_ID=${{ vars.SERVICE_ID }}"
+            "NEXT_PUBLIC_APP_BASE_URL=${{ vars.NEXT_PUBLIC_APP_BASE_URL }}"
+            "NEXT_PUBLIC_APP_BOTS=${{ vars.NEXT_PUBLIC_APP_BOTS }}"
+            "NEXT_PUBLIC_APP_GOOGLE_SITE_VERIFICATION=${{ vars.NEXT_PUBLIC_APP_GOOGLE_SITE_VERIFICATION }}"
+            "NEXT_PUBLIC_APP_IMPRINT_CUSTOM_CONFIG=disabled"
+            "NEXT_PUBLIC_APP_IMPRINT_SERVICE_BASE_URL=${{ vars.NEXT_PUBLIC_IMPRINT_SERVICE_BASE_URL }}"
+            "NEXT_PUBLIC_APP_MATOMO_BASE_URL=${{ vars.NEXT_PUBLIC_MATOMO_BASE_URL }}"
+            "NEXT_PUBLIC_APP_MATOMO_ID=${{ vars.NEXT_PUBLIC_APP_MATOMO_ID }}"
+          secrets:
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
   deploy:
-    name: Deploy docker image
-    needs: [env, vars, build]
-    uses: acdh-oeaw/gl-autodevops-minimal-port/.github/workflows/deploy.yml@main
+    name: Deploy docker images
+    needs: [config, build]
+    if: needs.config.outputs.has_changes == 'true'
+    uses: dariah-eric/gl-autodevops-minimal-port/.github/workflows/deploy.yml@main
     secrets: inherit
+
+    strategy:
+      fail-fast: true
+      matrix:
+        target: ${{ fromJSON(needs.config.outputs.matrix) }}
+      max-parallel: 1
+
     with:
-      environment: "${{ needs.env.outputs.environment }}"
-      DOCKER_TAG: "${{ needs.env.outputs.registry }}/${{ needs.env.outputs.image }}"
-      APP_NAME: "${{ needs.env.outputs.app_name }}"
-      APP_ROOT: "/"
-      SERVICE_ID: "${{ vars.SERVICE_ID }}"
-      PUBLIC_URL: "${{ needs.vars.outputs.public_url }}"
       default_port: "3000"
+      environment: "${{ matrix.target.environment }}"
+      APP_NAME: "${{ matrix.target.image }}"
+      APP_ROOT: "/"
+      DOCKER_TAG: "ghcr.io/${{ github.repository }}-${{ matrix.target.image }}"
+      PUBLIC_URL: "${{ matrix.target.public_url }}"
+      SERVICE_ID: "${{ matrix.target.service_id }}"

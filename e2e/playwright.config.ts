@@ -1,0 +1,89 @@
+import { join } from "node:path";
+
+import { config as dotenv } from "@dotenvx/dotenvx";
+import { defineConfig, devices } from "@playwright/test";
+import isCI from "is-in-ci";
+import * as v from "valibot";
+
+/**
+ * Reading `.env` files here instead of using `dotenvx run` so environment variables are available to the vscode plugin
+ * as well.
+ */
+dotenv({
+	path: [".env.test.local", ".env.local", ".env.test", ".env"].map((filePath) =>
+		join(import.meta.dirname, "..", filePath),
+	),
+	ignore: ["MISSING_ENV_FILE"],
+	quiet: true,
+});
+
+const env = v.parse(
+	v.object({
+		PLAYWRIGHT_TEST_APP_BASE_URL: v.optional(v.pipe(v.string(), v.url())),
+		PORT: v.optional(v.pipe(v.string(), v.toNumber(), v.integer(), v.minValue(1)), "3000"),
+	}),
+	process.env,
+);
+
+const remoteBaseUrl = env.PLAYWRIGHT_TEST_APP_BASE_URL;
+const port = env.PORT;
+const localBaseUrl = `http://localhost:${String(port)}`;
+const baseURL = remoteBaseUrl ?? localBaseUrl;
+const webServer = remoteBaseUrl
+	? undefined
+	: {
+			command: `pnpm run start --port ${String(port)}`,
+			url: localBaseUrl,
+			reuseExistingServer: !isCI,
+		};
+
+const config = defineConfig({
+	testDir: "../e2e/",
+	snapshotDir: "../e2e/snapshots/",
+	fullyParallel: true,
+	forbidOnly: isCI,
+	retries: isCI ? 2 : 0,
+	maxFailures: 10,
+	workers: isCI ? 1 : undefined,
+	reporter: isCI ? [["github"], ["html", { open: "never" }]] : [["html"]],
+	use: {
+		baseURL,
+		screenshot: "on-first-failure",
+		trace: "on-first-retry",
+	},
+	projects: [
+		{
+			name: "chromium",
+			use: { ...devices["Desktop Chrome"], channel: "chromium" },
+		},
+		{
+			name: "firefox",
+			use: { ...devices["Desktop Firefox"] },
+		},
+		{
+			name: "webkit",
+			use: { ...devices["Desktop Safari"] },
+		},
+		/** Test against mobile viewports. */
+		// {
+		//     name: "Mobile Chrome",
+		//     use: { ...devices["Pixel 5"] },
+		// },
+		// {
+		//     name: "Mobile Safari",
+		//     use: { ...devices["iPhone 12"] },
+		// },
+		/** Test against branded browsers. */
+		// {
+		//     name: "Microsoft Edge",
+		//     use: { ...devices["Desktop Edge"], channel: "msedge" },
+		// },
+		// {
+		//     name: "Google Chrome",
+		//     use: { ...devices["Desktop Chrome"], channel: "chrome" },
+		// },
+	],
+	webServer,
+});
+
+export default config;
