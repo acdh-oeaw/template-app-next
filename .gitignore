@@ -9,12 +9,15 @@ node_modules/
 .env.keys
 .env.local
 .env.*.local
+/docker/.env
 
 # caches
-.eslintcache
-.prettiercache
+.cache/
 .stylelintcache
 *.tsbuildinfo
+
+# turborepo
+.turbo/
 
 # performance profiles
 *.cpuprofile
@@ -35,14 +38,36 @@ next-env.d.ts
 out/
 
 # i18n
-/content/**/*.d.json.ts
-/messages/**/*.d.json.ts
+*.d.json.ts
+
+# package build artefacts
+dist/
+
+# self-signed certificates
+certificates/
 
 # test
-/coverage/
+coverage/
 
 # playwright
-/blob-report/
-/playwright/.cache/
-/playwright-report/
-/test-results/
+.auth/
+.playwright/
+.playwright-cli/
+blob-report/
+playwright/.cache/
+playwright-report/
+test-results/
+
+# storybook
+storybook-static/
+
+# ai
+.agents/
+.claude/
+.codex
+.pi/
+.playwright-cli/
+AGENTS.md
+CLAUDE.md
+opensrc/
+skills-lock.json

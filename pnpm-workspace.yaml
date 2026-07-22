@@ -1,12 +1,13 @@
-ignoredBuiltDependencies:
-  - unrs-resolver
+allowBuilds:
+  '@parcel/watcher': true
+  '@swc/core': true
+  esbuild: true
+  lefthook: true
+  sharp: true
 
-onlyBuiltDependencies:
-  - '@swc/core'
-  - '@tailwindcss/oxide'
-  - esbuild
-  - sharp
-  - simple-git-hooks
+minimumReleaseAge: 720
 
 patchedDependencies:
   next: patches/next.patch
+
+shellEmulator: true

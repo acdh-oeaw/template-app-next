@@ -1,19 +1,46 @@
 {
-	"$schema": "https://json.schemastore.org/tsconfig",
-	"extends": "@acdh-oeaw/tsconfig",
+	"$schema": "https://www.schemastore.org/tsconfig",
+	"extends": "./configs/typescript/base",
 	"compilerOptions": {
+		"allowArbitraryExtensions": true,
+		"allowImportingTsExtensions": true,
+		"allowJs": false,
+		"checkJs": false,
+		"composite": true,
+		"declaration": true,
+		"erasableSyntaxOnly": true,
+		"exactOptionalPropertyTypes": false,
+		"incremental": true,
+		"isolatedDeclarations": false,
+		"isolatedModules": true,
+		"jsx": "react-jsx",
+		"lib": ["dom", "esnext"],
+		"module": "preserve",
+		"moduleDetection": "force",
+		"noEmit": true,
+		"noFallthroughCasesInSwitch": true,
+		"noImplicitReturns": true,
+		"noPropertyAccessFromIndexSignature": false,
+		"noUncheckedIndexedAccess": true,
+		"noUncheckedSideEffectImports": true,
 		"paths": {
 			"@/*": ["./*"]
 		},
-		"plugins": [{ "name": "next" }]
+		"plugins": [{ "name": "next" }],
+		"resolveJsonModule": true,
+		"skipLibCheck": true,
+		"strict": true,
+		"target": "esnext",
+		"types": ["bun", "nodemailer", "react", "react-dom"],
+		"verbatimModuleSyntax": true
 	},
 	"include": [
-		"./next-env.d.ts",
-		"./**/*.js",
 		"./**/*.ts",
 		"./**/*.tsx",
+		"./next-env.d.ts",
 		"./types/**/*.d.ts",
-		".next/types/**/*.ts"
+		"./.next/types/**/*.ts",
+		"./.next/dev/types/**/*.ts"
 	],
-	"exclude": [".next", "content", "node_modules", "out", "public"]
+	"exclude": ["./dist/", "./node_modules/", "./out/", "./public/", "./storybook-static/"]
 }

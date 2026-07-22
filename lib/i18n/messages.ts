@@ -1,44 +1,54 @@
-import type metadata from "@/content/en/metadata/index.json";
-import { getIntlLanguage, type IntlLocale } from "@/lib/i18n/locales";
-import type messages from "@/messages/en.json";
+import { keyBy } from "@acdh-oeaw/lib";
 
-type Messages = typeof messages;
-type Metadata = typeof metadata;
-type SocialMediaKind = Metadata["social"][number]["kind"];
+import { type IntlLocale, getIntlLanguage } from "@/lib/i18n/locales";
+import type metadataMessages from "@/messages/metadata/en/index.json";
 
-export async function getIntlMessages(locale: IntlLocale) {
+type Metadata = typeof metadataMessages;
+type SocialMedia = Metadata["social"];
+type SocialMediaMetadata = {
+	[Kind in SocialMedia[number]["kind"]]: Extract<SocialMedia[number], { kind: Kind }>;
+};
+
+export interface IntlMessages {
+	metadata: Omit<Metadata, "social"> & { social: SocialMediaMetadata };
+}
+
+export async function getIntlMessages(locale: IntlLocale): Promise<IntlMessages> {
 	const language = getIntlLanguage(locale);
 
-	const _messages = (await import(`@/messages/${language}.json`)) as Messages;
-	const _metadata = (await import(`@/content/${language}/metadata/index.json`)) as Metadata;
+	// oxlint-disable-next-line typescript/no-unsafe-assignment
+	const [{ default: extracted }, { default: metadata }, { default: ui }] = await Promise.all([
+		import(`@/messages/${language}.po`),
+		import(`@/messages/metadata/${language}/index.json`),
+		import(`@dariah-eric/ui/i18n/${language}`),
+	]);
 
-	const _social: Record<string, string> = {};
-
-	_metadata.social.forEach((entry) => {
-		_social[entry.kind] = entry.href;
-	});
+	// oxlint-disable-next-line typescript/no-unsafe-member-access, typescript/no-unsafe-type-assertion
+	const social = keyBy(metadata.social as SocialMedia, (item) => item.kind);
 
 	switch (language) {
-		case "de": {
-			await import("@valibot/i18n/de");
-			break;
-		}
+		// case "de": {
+		// 	await import("@valibot/i18n/de");
+		// 	break;
+		// }
 
+		// oxlint-disable-next-line typescript/no-unnecessary-condition
 		case "en": {
 			/** Default messages. */
 			break;
 		}
 	}
 
+	// oxlint-disable-next-line typescript/no-unsafe-type-assertion
 	const messages = {
-		..._messages,
+		...extracted,
+		...ui,
+		// oxlint-disable-next-line typescript/no-unsafe-assignment
 		metadata: {
-			..._metadata,
-			social: _social as Record<SocialMediaKind, string>,
+			...metadata,
+			social,
 		},
-	};
+	} as IntlMessages;
 
 	return messages;
 }
-
-export type IntlMessages = Awaited<ReturnType<typeof getIntlMessages>>;
