@@ -1,0 +1,23 @@
+msgid ""
+msgstr ""
+"Language: en\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: @eloqnt/format-po\n"
+"X-Message-Key: msgctxt\n"
+
+#: app/[locale]/(index)/page.tsx
+msgctxt "N015Sp"
+msgid "Hello, World!"
+msgstr "Hello, World!"
+
+#: app/[locale]/imprint/page.tsx
+msgctxt "xYJkOZ"
+msgid "Imprint"
+msgstr "Imprint"
+
+#: app/[locale]/not-found.tsx
+#: app/global-not-found.tsx
+msgctxt "QRccCM"
+msgid "Page not found"
+msgstr "Page not found"

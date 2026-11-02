@@ -1,0 +1,22 @@
+{
+	"$schema": "./node_modules/lefthook/schema.json",
+	"pre-commit": {
+		"parallel": false,
+		"jobs": [
+			{
+				"name": "lint",
+				"run": "bun lint --fix --staged --type-check"
+			},
+			{
+				"name": "stylelint",
+				"glob": "*.css",
+				"run": "bun stylelint --fix {staged_files}",
+				"stage_fixed": true
+			},
+			{
+				"name": "format",
+				"run": "bun fmt --staged"
+			}
+		]
+	}
+}

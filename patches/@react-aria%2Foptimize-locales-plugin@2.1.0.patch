@@ -1,0 +1,13 @@
+diff --git a/LocalesPlugin.js b/LocalesPlugin.js
+index 3ce42ab3d6ba36832e9eea06d595a1ece333da87..5e4809da5111e9688f37c13b4364a8b6775d1b89 100644
+--- a/LocalesPlugin.js
++++ b/LocalesPlugin.js
+@@ -23,7 +23,7 @@ const REACT_ARIA_PACKAGES = [
+ ];
+ const LOCALE_EXTENSIONS = ['json', 'mjs', 'js', 'cjs'];
+ 
+-const LOCALES_GLOB = `**/{${REACT_ARIA_PACKAGES.join(',')}}/**/??-??.{${LOCALE_EXTENSIONS.join(',')}}`;
++const LOCALES_GLOB = `**/{${REACT_ARIA_PACKAGES.join(',')}}/**/[a-z][a-z]-[A-Z][A-Z].{${LOCALE_EXTENSIONS.join(',')}}`;
+ 
+ const localeSpecifierRegex = /[a-z]{2}-[A-Z]{2}/;
+ const sourcePathRegex =

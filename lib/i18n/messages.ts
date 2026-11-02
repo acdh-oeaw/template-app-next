@@ -1,44 +1,12 @@
-import type metadata from "@/content/en/metadata/index.json";
-import { getIntlLanguage, type IntlLocale } from "@/lib/i18n/locales";
-import type messages from "@/messages/en.json";
+import type { AbstractIntlMessages } from "next-intl";
 
-type Messages = typeof messages;
-type Metadata = typeof metadata;
-type SocialMediaKind = Metadata["social"][number]["kind"];
+import { getLanguage, type Locale } from "#/configs/i18n.config.ts";
 
-export async function getIntlMessages(locale: IntlLocale) {
-	const language = getIntlLanguage(locale);
-
-	const _messages = (await import(`@/messages/${language}.json`)) as Messages;
-	const _metadata = (await import(`@/content/${language}/metadata/index.json`)) as Metadata;
-
-	const _social: Record<string, string> = {};
-
-	_metadata.social.forEach((entry) => {
-		_social[entry.kind] = entry.href;
-	});
-
-	switch (language) {
-		case "de": {
-			await import("@valibot/i18n/de");
-			break;
-		}
-
-		case "en": {
-			/** Default messages. */
-			break;
-		}
-	}
-
-	const messages = {
-		..._messages,
-		metadata: {
-			..._metadata,
-			social: _social as Record<SocialMediaKind, string>,
-		},
+export async function getMessages(locale: Locale): Promise<AbstractIntlMessages> {
+	/** @see {@link https://github.com/vercel/next.js/issues/97533} */
+	const { default: messages } = (await import(`../../messages/${getLanguage(locale)}.po`)) as {
+		default: AbstractIntlMessages;
 	};
 
 	return messages;
 }
-
-export type IntlMessages = Awaited<ReturnType<typeof getIntlMessages>>;

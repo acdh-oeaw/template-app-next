@@ -1,20 +1,18 @@
 import { hasLocale } from "next-intl";
 import { getRequestConfig } from "next-intl/server";
+import * as rootParams from "next/root-params";
 
-import { formats } from "@/lib/i18n/formats";
-import { timeZone } from "@/lib/i18n/locales";
-import { getIntlMessages } from "@/lib/i18n/messages";
-import { routing } from "@/lib/i18n/routing";
+import { timeZone } from "#/configs/i18n.config.ts";
+import { getMessages } from "#/lib/i18n/messages.ts";
+import { routing } from "#/lib/i18n/routing.ts";
 
-export default getRequestConfig(async ({ requestLocale }) => {
-	const requestedLocale = await requestLocale;
-	const locale = hasLocale(routing.locales, requestedLocale)
-		? requestedLocale
-		: routing.defaultLocale;
-	const messages = await getIntlMessages(locale);
+export default getRequestConfig(async (params) => {
+	const requested = params.locale ?? (await rootParams.locale());
+	const locale = hasLocale(routing.locales, requested) ? requested : routing.defaultLocale;
+
+	const messages = await getMessages(locale);
 
 	return {
-		formats,
 		locale,
 		messages,
 		timeZone,

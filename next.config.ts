@@ -1,68 +1,51 @@
-import createBundleAnalyzerPlugin from "@next/bundle-analyzer";
-import localesPlugin from "@react-aria/optimize-locales-plugin";
-import type { NextConfig as Config } from "next";
-import createI18nPlugin from "next-intl/plugin";
+import optimizeLocales from "@react-aria/optimize-locales-plugin";
+import type { NextConfig } from "next";
+import createNextIntlPlugin from "next-intl/plugin";
 
-import { env } from "@/config/env.config";
+import { defaultLocale, getLanguage, locales } from "#/configs/i18n.config.ts";
 
-const config: Config = {
-	allowedDevOrigins: ["127.0.0.1"],
-	// cacheComponents: true,
-	/** Compression should be handled by nginx reverse proxy. */
-	compress: false,
+const languages = Array.from(new Set(locales.map(getLanguage)));
+
+/** React Aria only ships some regional variants (e.g. "en-US" but not "en-GB"), and the plugin matches regions exactly. */
+const localeOptimization = optimizeLocales.turbopack([
+	{ condition: "browser", locales: [] },
+	{ condition: { not: "browser" }, locales: languages },
+]);
+
+const config: NextConfig = {
 	experimental: {
-		browserDebugInfoInTerminal: true,
+		agentFeedback: true,
 		globalNotFound: true,
+		turbopackRustReactCompiler: true,
 	},
-	headers() {
-		const headers: Awaited<ReturnType<NonNullable<Config["headers"]>>> = [
-			/** @see https://nextjs.org/docs/app/building-your-application/deploying#streaming-and-suspense */
-			{
-				source: "/:path*{/}?",
-				headers: [
-					{
-						key: "X-Accel-Buffering",
-						value: "no",
-					},
-				],
-			},
-		];
-
-		return Promise.resolve(headers);
-	},
-	logging: {
-		fetches: {
-			fullUrl: true,
-		},
-	},
-	output: env.BUILD_MODE,
+	cacheComponents: true,
+	output: process.env.BUILD_MODE === "standalone" ? "standalone" : undefined,
+	partialPrefetching: true,
 	reactCompiler: true,
-	// typedRoutes: true,
-	typescript: {
-		ignoreBuildErrors: true,
-	},
-	webpack(config, { isServer }) {
-		/**
-		 * @see https://react-spectrum.adobe.com/react-aria/ssr.html#nextjs-app-router
-		 */
-		if (!isServer) {
-			// eslint-disable-next-line @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access
-			config.plugins.push(localesPlugin.webpack({ locales: [] }));
-		}
-
-		// eslint-disable-next-line @typescript-eslint/no-unsafe-return
-		return config;
+	turbopack: {
+		rules: {
+			"*.css": {
+				loaders: ["@tailwindcss/turbopack"],
+				as: "*.css",
+			},
+			...localeOptimization.rules,
+		},
 	},
 };
 
-const plugins: Array<(config: Config) => Config> = [
-	createBundleAnalyzerPlugin({ enabled: env.BUNDLE_ANALYZER === "enabled" }),
-	createI18nPlugin({
-		experimental: {
-			/** @see https://next-intl.dev/docs/workflows/typescript#messages-arguments */
-			createMessagesDeclaration: ["./content/en/metadata/index.json", "./messages/en.json"],
-		},
+const plugins: Array<(config: NextConfig) => NextConfig> = [
+	createNextIntlPlugin({
 		requestConfig: "./lib/i18n/request.ts",
+		experimental: {
+			extract: true,
+			messages: {
+				format: "po",
+				locales: languages,
+				path: "./messages",
+				sourceLocale: getLanguage(defaultLocale),
+			},
+			srcPath: ["./app", "./components", "./lib"],
+		},
 	}),
 ];
 

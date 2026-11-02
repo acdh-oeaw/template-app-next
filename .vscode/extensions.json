@@ -1,13 +1,11 @@
 {
 	"recommendations": [
 		"bradlc.vscode-tailwindcss",
-		"dbaeumer.vscode-eslint",
 		"editorconfig.editorconfig",
-		"esbenp.prettier-vscode",
 		"github.vscode-github-actions",
-		"lokalise.i18n-ally",
 		"mikestead.dotenv",
-		"ms-playwright.playwright",
-		"stylelint.vscode-stylelint"
+		"stylelint.vscode-stylelint",
+		"tamasfe.even-better-toml",
+		"typescriptteam.native-preview"
 	]
 }

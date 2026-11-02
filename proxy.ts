@@ -1,20 +1,11 @@
-import type { NextProxy, ProxyConfig } from "next/server";
+import createMiddleware from "next-intl/middleware";
 
-import { middleware as i18nMiddlware } from "@/lib/i18n/middleware";
-import { composeMiddleware } from "@/lib/server/compose-middlewares";
-import { middleware as csrfMiddlware } from "@/lib/server/csrf/csrf-middleware";
+import { routing } from "#/lib/i18n/routing.ts";
 
-export const proxy: NextProxy = composeMiddleware(csrfMiddlware, i18nMiddlware);
+export default createMiddleware(routing);
 
-export const config: ProxyConfig = {
+export const config = {
 	matcher: [
-		"/",
-		/**
-		 * Next.js does not support arbitrary expressions for `matcher`.
-		 *
-		 * @see https://github.com/vercel/next.js/issues/56398
-		 */
-		"/(de|en)/:path*",
-		"/api/:path*",
+		"/((?!api/|_next/|_vercel/|.*\\.(?:avif|css|csv|gif|ico|jpe?g|js|json|pdf|png|svg|txt|webmanifest|webp|woff2?|xml)$).*)",
 	],
 };

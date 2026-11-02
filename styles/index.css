@@ -1,7 +1,25 @@
-@import "./tailwind.css";
-@import "./breakpoints.css";
-@import "./theme.css";
-@import "./base.css";
-@import "./interactions.css";
-@import "./layout.css";
-@import "./typography.css";
+@import "tailwindcss";
+
+@plugin "tailwindcss-react-aria-components";
+
+@theme {
+	--font-body: var(--font-noto-sans);
+	--font-heading: var(--font-noto-sans);
+	--font-code: var(--font-fira-code);
+	--default-font-family: var(--font-body);
+	--default-mono-font-family: var(--font-code);
+}
+
+@layer base {
+	:where(h1, h2, h3, h4, h5, h6) {
+		font-family: var(--font-heading);
+	}
+}
+
+:root {
+	block-size: 100%;
+}
+
+body {
+	block-size: 100%;
+}

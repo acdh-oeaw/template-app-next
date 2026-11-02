@@ -1,0 +1,10 @@
+#:schema https://www.schemastore.org/bunfig.json
+
+[fmt]
+config = "./configs/oxfmt.config.ts"
+
+[lint]
+config = "./configs/oxlint.config.ts"
+
+[run]
+bun = true
