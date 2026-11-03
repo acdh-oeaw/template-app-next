@@ -20,14 +20,22 @@ const restrictedPaths = [
 
 const config = {
 	extends: [bunDefaults],
+	plugins: [...bunDefaults.plugins, "node"],
 	options: {
 		typeAware: true,
 	},
 	rules: {
 		"@typescript-eslint/no-empty-object-type": ["error", { allowInterfaces: "with-single-extends" }],
 		"no-restricted-imports": ["error", { paths: restrictedPaths }],
+		"node/no-process-env": ["error", { allowedVariables: ["NODE_ENV"] }],
 	},
 	overrides: [
+		{
+			files: [path.join(root, "lib/env/**"), path.join(root, "scripts/env-sync.ts")],
+			rules: {
+				"node/no-process-env": "off",
+			},
+		},
 		{
 			files: [path.join(root, "app/**"), path.join(root, "components/**")],
 			rules: {

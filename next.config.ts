@@ -1,8 +1,10 @@
 import optimizeLocales from "@react-aria/optimize-locales-plugin";
 import type { NextConfig } from "next";
 import createNextIntlPlugin from "next-intl/plugin";
+import { PHASE_DEVELOPMENT_SERVER } from "next/constants";
 
 import { defaultLocale, getLanguage, locales } from "#/configs/i18n.config.ts";
+import { assertPublicEnv, createServerEnv } from "#/lib/env/parse.ts";
 
 const languages = Array.from(new Set(locales.map(getLanguage)));
 
@@ -11,27 +13,6 @@ const localeOptimization = optimizeLocales.turbopack([
 	{ condition: "browser", locales: [] },
 	{ condition: { not: "browser" }, locales: languages },
 ]);
-
-const config: NextConfig = {
-	experimental: {
-		agentFeedback: true,
-		globalNotFound: true,
-		turbopackRustReactCompiler: true,
-	},
-	cacheComponents: true,
-	output: process.env.BUILD_MODE === "standalone" ? "standalone" : undefined,
-	partialPrefetching: true,
-	reactCompiler: true,
-	turbopack: {
-		rules: {
-			"*.css": {
-				loaders: ["@tailwindcss/turbopack"],
-				as: "*.css",
-			},
-			...localeOptimization.rules,
-		},
-	},
-};
 
 const plugins: Array<(config: NextConfig) => NextConfig> = [
 	createNextIntlPlugin({
@@ -49,6 +30,38 @@ const plugins: Array<(config: NextConfig) => NextConfig> = [
 	}),
 ];
 
-export default plugins.reduce((config, plugin) => {
-	return plugin(config);
-}, config);
+export default function createConfig(phase: string): NextConfig {
+	const env = createServerEnv();
+
+	const publicEnv = phase === PHASE_DEVELOPMENT_SERVER || env.ENV_VALIDATION === "enabled" ? assertPublicEnv() : null;
+
+	const config: NextConfig = {
+		experimental: {
+			agentFeedback: true,
+			globalNotFound: true,
+			turbopackRustReactCompiler: true,
+		},
+		cacheComponents: true,
+		compiler: {
+			define: {
+				__PUBLIC_ENV__: JSON.stringify(publicEnv),
+			},
+		},
+		output: env.BUILD_MODE,
+		partialPrefetching: true,
+		reactCompiler: true,
+		turbopack: {
+			rules: {
+				"*.css": {
+					loaders: ["@tailwindcss/turbopack"],
+					as: "*.css",
+				},
+				...localeOptimization.rules,
+			},
+		},
+	};
+
+	return plugins.reduce((config, plugin) => {
+		return plugin(config);
+	}, config);
+}

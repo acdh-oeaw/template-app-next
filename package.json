@@ -10,14 +10,15 @@
 	"scripts": {
 		"build": "next build",
 		"dev": "next dev",
+		"env:sync": "bun scripts/env-sync.ts",
 		"format:check": "bun fmt --check",
 		"format:fix": "bun fmt",
 		"lint:check": "bun lint",
 		"lint:fix": "bun lint --fix",
-		"prepare": "bun run types:prepare",
+		"prepare": "bun run env:sync && bun run types:prepare",
 		"start": "next start",
 		"types:check": "bun check",
-		"types:prepare": "next typegen"
+		"types:prepare": "ENV_VALIDATION=disabled next typegen"
 	},
 	"dependencies": {
 		"clsx": "^2.1.1",
@@ -25,7 +26,9 @@
 		"next-intl": "^4.14.9",
 		"react": "^19.3.1",
 		"react-aria-components": "^1.22.1",
-		"react-dom": "^19.3.1"
+		"react-dom": "^19.3.1",
+		"server-only": "^0.0.1",
+		"valibot": "^1.5.0"
 	},
 	"devDependencies": {
 		"@react-aria/optimize-locales-plugin": "^2.1.0",
@@ -34,7 +37,7 @@
 		"@types/react": "^19.3.0",
 		"@types/react-dom": "^19.3.0",
 		"lefthook": "^2.2.2",
-		"stylelint": "^18.0.0-next.0",
+		"stylelint": "^18.0.0",
 		"stylelint-order": "^8.1.2",
 		"tailwindcss": "^4.3.3",
 		"tailwindcss-react-aria-components": "^2.2.0",

@@ -23,9 +23,10 @@ ENV BUILD_MODE=standalone
 ENV NODE_ENV=production
 ENV NEXT_TELEMETRY_DISABLED=1
 
-# to mount secrets which need to be available at build time
+# public and build-time environment variables are passed as a single `.env` file secret.
 # @see https://docs.docker.com/build/building/secrets/
-RUN bun run build
+RUN --mount=type=secret,id=dotenv,target=/app/.env.production.local \
+	bun run build
 
 # serve
 FROM oven/bun:1.4.4-alpine AS serve

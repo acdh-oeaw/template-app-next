@@ -6,6 +6,7 @@ import { notFound } from "next/navigation";
 import type { ReactNode } from "react";
 
 import { HtmlDocument } from "#/components/html-document.tsx";
+import { env } from "#/lib/env/public.ts";
 import { routing } from "#/lib/i18n/routing.ts";
 import { getDefaultOpenGraph } from "#/lib/metadata/create-page-metadata.ts";
 import { getSiteMetadata } from "#/lib/metadata/site-metadata.ts";
@@ -32,7 +33,7 @@ export async function generateMetadata(props: Omit<Readonly<LocaleLayoutProps>, 
 	const meta = await getSiteMetadata(locale);
 
 	return {
-		metadataBase: process.env.NEXT_PUBLIC_APP_BASE_URL,
+		metadataBase: env.NEXT_PUBLIC_APP_BASE_URL,
 		title: {
 			default: meta.title,
 			template: `%s | ${meta.title}`,

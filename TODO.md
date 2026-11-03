@@ -9,7 +9,6 @@
   - [ ] JSON-LD (`WebSite`, with social links as `sameAs`)
   - [ ] Validate `content/*/metadata.json` once there is a validation library (see environment variables)
   - [ ] OpenGraph images
-  - [ ] `NEXT_PUBLIC_*` build args (at least the app base URL) in the `Dockerfile`
 - [ ] Not-found pages are not server-rendered: `/en/nope` returns 404 with an empty `__next_error__` shell, and the
       localized not-found UI only renders client-side. Not caused by `partialPrefetching`, probably `cacheComponents`.
 - [ ] Playwright setup
@@ -25,10 +24,11 @@
 ## Missing
 
 - [ ] README
+  - [ ] Point to `configs/env.config.ts` as the place where environment variables are defined, and to `bun run env:sync`
 - [ ] CI workflows (validate, build and deploy)
+  - [ ] Pass public and build-time environment variables to `docker build` as the `dotenv` secret
   - [ ] Explore deploying with `kubectl` and/or `helm` directly, instead of the reusable
         `acdh-oeaw/gl-autodevops-minimal-port` workflow
-- [ ] Environment variables: `.env` example and validation
 - [ ] `test` script and test setup
 - [ ] App shell: layout, header, footer, navigation, locale switcher, color scheme switcher
   - [ ] Footer: hardcoded links to imprint and accessibility declaration, social links from `getSiteMetadata()`
