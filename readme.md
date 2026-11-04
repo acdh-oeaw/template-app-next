@@ -78,8 +78,9 @@ Remove it once [oven-sh/bun#47916](https://github.com/oven-sh/bun/issues/47916) 
 
 ## License
 
-The source code is licensed under the [MIT license](license.txt), except for the files in
-[`assets/images/logos/`](assets/images/logos/), which belong to their respective owners and are not covered by it (see
-the [license notice](assets/images/logos/license.txt) in that folder).
+The source code is licensed under the [MIT license](license.txt). Logos are not covered by it: they belong to their
+respective owners, and are listed in the [license notice](assets/images/logos/license.txt). This applies to the files in
+[`assets/images/logos/`](assets/images/logos/), and to the icons in `app/` and `public/`.
 
-Add partner and funder logos to that folder, and import them from there rather than putting them in `public/`.
+Add logos to that folder, and import them from there rather than putting them in `public/`. When adding an icon to
+`app/` or `public/`, add it to the license notice.

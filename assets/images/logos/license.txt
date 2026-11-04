@@ -1,7 +1,17 @@
-The files in this folder are not covered by the MIT license of this repository.
+The files in this folder, and the following icons, are not covered by the MIT
+license of this repository:
+
+- app/apple-icon.png
+- app/favicon.ico
+- app/icon.svg
+- public/android-chrome-192x192.png
+- public/android-chrome-512x512.png
+- public/icon-maskable.svg
 
 All logos are the property and/or trademarks of their respective owners. They
-are included only to identify the partners and funders of this project, and no
-rights to use, copy, modify or distribute them are granted.
+are included only to identify this project, the organisations behind it, and
+its partners and funders, and no rights to use, copy, modify or distribute them
+are granted.
 
-If you fork or reuse this repository, you must remove or replace these files.
+If you fork or reuse this repository, you must remove or replace these files,
+unless their owners have authorised you to use them.
