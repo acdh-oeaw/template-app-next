@@ -29,9 +29,11 @@ function redact(issue: v.BaseIssue<unknown>): string {
 		return issue.message;
 	}
 
-	const expected = issue.expected != null ? `: Expected ${issue.expected}` : "";
+	if (issue.expected != null) {
+		return `Invalid value: Expected ${issue.expected}`;
+	}
 
-	return `Invalid value${expected}`;
+	return `Invalid value: Failed \`${issue.type}\` check`;
 }
 
 function getPath(issue: v.BaseIssue<unknown>, key?: string): string {

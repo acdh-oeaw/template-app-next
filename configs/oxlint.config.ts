@@ -18,6 +18,11 @@ const restrictedPaths = [
 	},
 ];
 
+const envParsePath = {
+	name: "#/lib/env/parse.ts",
+	message: "Import `env` from `#/lib/env/server.ts` or `#/lib/env/public.ts`.",
+};
+
 const config = {
 	extends: [bunDefaults],
 	plugins: [...bunDefaults.plugins, "node"],
@@ -26,7 +31,7 @@ const config = {
 	},
 	rules: {
 		"@typescript-eslint/no-empty-object-type": ["error", { allowInterfaces: "with-single-extends" }],
-		"no-restricted-imports": ["error", { paths: restrictedPaths }],
+		"no-restricted-imports": ["error", { paths: [...restrictedPaths, envParsePath] }],
 		"node/no-process-env": ["error", { allowedVariables: ["NODE_ENV"] }],
 	},
 	overrides: [
@@ -42,10 +47,16 @@ const config = {
 				"no-restricted-imports": [
 					"error",
 					{
-						paths: restrictedPaths,
+						paths: [...restrictedPaths, envParsePath],
 						patterns: [{ group: ["#/configs/*", "**/configs/*"], message: "Import from `#/lib/*` instead." }],
 					},
 				],
+			},
+		},
+		{
+			files: [path.join(root, "next.config.ts"), path.join(root, "instrumentation.ts"), path.join(root, "lib/env/**")],
+			rules: {
+				"no-restricted-imports": ["error", { paths: restrictedPaths }],
 			},
 		},
 	],

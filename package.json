@@ -9,16 +9,16 @@
 	},
 	"scripts": {
 		"build": "next build",
-		"dev": "next dev",
+		"dev": "BUN_OPTIONS=--no-env-file next dev",
 		"env:sync": "bun scripts/env-sync.ts",
 		"format:check": "bun fmt --check",
 		"format:fix": "bun fmt",
 		"lint:check": "bun lint",
 		"lint:fix": "bun lint --fix",
-		"prepare": "bun run env:sync && bun run types:prepare",
+		"prepare": "bun run --sequential env:sync types:prepare",
 		"start": "next start",
 		"types:check": "bun check",
-		"types:prepare": "ENV_VALIDATION=disabled next typegen"
+		"types:prepare": "next typegen"
 	},
 	"dependencies": {
 		"clsx": "^2.1.1",

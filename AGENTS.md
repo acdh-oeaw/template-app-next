@@ -7,6 +7,7 @@ Use Bun instead of Node.js, npm, pnpm or yarn.
 - Use `bun check` instead of `tsc --noEmit`
 - Use `bun lint` and `bun fmt` instead of `eslint` and `prettier`
 - Environment variables from `.env` files are loaded automatically, so don't use `dotenv`
+- The `dev` script sets `BUN_OPTIONS=--no-env-file`, so `next dev` loads `.env` files itself and reloads them on change (see https://github.com/oven-sh/bun/issues/47916)
 
 ## Patched dependencies
 

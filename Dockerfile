@@ -25,8 +25,12 @@ ENV NEXT_TELEMETRY_DISABLED=1
 
 # public and build-time environment variables are passed as a single `.env` file secret.
 # @see https://docs.docker.com/build/building/secrets/
-RUN --mount=type=secret,id=dotenv,target=/app/.env.production.local \
-	bun run build
+# secrets do not invalidate the build cache, so the sha256 hash of the secret is passed as `DOTENV_HASH` build arg.
+# @see https://github.com/moby/buildkit/issues/2547#issuecomment-1005052682
+ARG DOTENV_HASH
+RUN --mount=type=secret,id=dotenv,target=/app/.env.production.local,required=true \
+	echo "${DOTENV_HASH:?build arg is required}  .env.production.local" | sha256sum -c - \
+	&& bun run build
 
 # serve
 FROM oven/bun:1.4.4-alpine AS serve

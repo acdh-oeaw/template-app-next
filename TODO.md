@@ -26,7 +26,7 @@
 - [ ] README
   - [ ] Point to `configs/env.config.ts` as the place where environment variables are defined, and to `bun run env:sync`
 - [ ] CI workflows (validate, build and deploy)
-  - [ ] Pass public and build-time environment variables to `docker build` as the `dotenv` secret
+  - [ ] Pass public and build-time environment variables to `docker build` as the `dotenv` secret, and its sha256 hash as the `DOTENV_HASH` build arg
   - [ ] Explore deploying with `kubectl` and/or `helm` directly, instead of the reusable
         `acdh-oeaw/gl-autodevops-minimal-port` workflow
 - [ ] `test` script and test setup

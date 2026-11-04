@@ -17,15 +17,6 @@ export const serverEnvSchema = v.object({
 	BUILD_MODE: v.optional(
 		v.pipe(v.picklist(["standalone"]), v.description("Output mode of `next build`, set in the `Dockerfile`.")),
 	),
-	ENV_VALIDATION: v.optional(
-		v.pipe(
-			v.picklist(["enabled", "disabled"]),
-			v.description(
-				"Set to `disabled` to skip validating and inlining public environment variables in `next typegen`. Ignored by `next dev`.",
-			),
-		),
-		"enabled",
-	),
 	NEXT_SERVER_ACTIONS_ENCRYPTION_KEY: v.optional(
 		v.pipe(
 			v.string(),
