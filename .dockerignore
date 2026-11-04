@@ -1,43 +1,27 @@
-# dependencies
-node_modules/
+*
 
-# build output
-.next/
-out/
+!app/
+!components/
+!configs/
+!content/
+!lib/
+!messages/
+!patches/
+!public/
+!styles/
+!types/
 
-# git
-.git/
-.gitattributes
-# must be allowed because `tailwindcss` v4 uses `.gitignore` to determine which
-# files and folders can be skipped by the compiler.
-# .gitignore
+!bun.lock
+!bunfig.toml
+!instrumentation.ts
+!next.config.ts
+!package.json
+!proxy.ts
+!tsconfig.json
 
-# github
-.github/
-
-# editor settings
-.vscode/
-.idea/
-
-# docker
-Dockerfile
-.dockerignore
-
-# environment variables
-.env
-.env.*
-
-# caches
-*.tsbuildinfo
-.stylelintcache
-
-# tests
-coverage/
-playwright-report/
-test-results/
-
-# misc
-.DS_Store
-.editorconfig
-*.log
-*.pem
+**/.DS_Store
+**/.env
+**/.env.*
+**/*.log
+**/*.pem
+**/*.tsbuildinfo

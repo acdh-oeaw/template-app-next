@@ -41,6 +41,9 @@
       the `nextjs` and `jsx-a11y` plugins
 - [ ] Review the stylelint setup in `dariah-eric/dariah-website` and decide what to copy
 - [ ] Scope messages passed to `NextIntlClientProvider` once there are client components
+- [ ] Re-check Tailwind CSS source detection in the Docker build once the template has more code: the `.dockerignore`
+      allowlist excludes `.gitignore`, which is fine since Tailwind v4.1.6 ignores `.next/` by default
+      (tailwindlabs/tailwindcss#17892), but compare build time and CSS output with and without `.gitignore`
 - [ ] Typed navigation: reimplement the ideas from `dariah-website` (Next.js patch plus `lib/navigation/*`) from
       scratch rather than copying
   - [ ] `href()` helper
