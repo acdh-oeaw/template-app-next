@@ -1,6 +1,6 @@
 # template-app-next
 
-Template for Next.js apps at ACDH-CH, using Bun.
+Template for Next.js apps at ACDH, using Bun.
 
 ## Getting started
 
@@ -75,3 +75,11 @@ two undocumented behaviours. After upgrading, check that:
 
 The `dev` script sets `BUN_OPTIONS=--no-env-file`, so that Next.js, not Bun, loads `.env` files and can reload them.
 Remove it once [oven-sh/bun#47916](https://github.com/oven-sh/bun/issues/47916) is fixed.
+
+## License
+
+The source code is licensed under the [MIT license](license.txt), except for the files in
+[`assets/images/logos/`](assets/images/logos/), which belong to their respective owners and are not covered by it (see
+the [license notice](assets/images/logos/license.txt) in that folder).
+
+Add partner and funder logos to that folder, and import them from there rather than putting them in `public/`.

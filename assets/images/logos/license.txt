@@ -1,0 +1,7 @@
+The files in this folder are not covered by the MIT license of this repository.
+
+All logos are the property and/or trademarks of their respective owners. They
+are included only to identify the partners and funders of this project, and no
+rights to use, copy, modify or distribute them are granted.
+
+If you fork or reuse this repository, you must remove or replace these files.

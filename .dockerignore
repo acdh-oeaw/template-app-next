@@ -1,6 +1,7 @@
 *
 
 !app/
+!assets/
 !components/
 !configs/
 !content/
