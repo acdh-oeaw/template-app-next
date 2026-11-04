@@ -11,6 +11,10 @@ bun run dev
 
 `bun install` also creates `.env.local` (see [Environment variables](#environment-variables)) and generates route types.
 
+The `prepare` script sets `BUN_OPTIONS=--bun`, because `run.bun` in `bunfig.toml` doesn't apply to lifecycle scripts, so
+`next typegen` would run with Node.js. Remove it once [oven-sh/bun#44584](https://github.com/oven-sh/bun/issues/44584)
+is fixed.
+
 ## Environment variables
 
 All environment variables are defined as Valibot schemas in [`configs/env.config.ts`](configs/env.config.ts), which is the

@@ -15,7 +15,7 @@
 		"format:fix": "bun fmt",
 		"lint:check": "bun lint",
 		"lint:fix": "bun lint --fix",
-		"prepare": "bun run --sequential env:sync types:prepare",
+		"prepare": "BUN_OPTIONS=--bun bun run --sequential env:sync types:prepare",
 		"start": "next start",
 		"types:check": "bun check",
 		"types:prepare": "next typegen"
