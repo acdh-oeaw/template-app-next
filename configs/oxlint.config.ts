@@ -32,7 +32,7 @@ const config = {
 	rules: {
 		"@typescript-eslint/no-empty-object-type": ["error", { allowInterfaces: "with-single-extends" }],
 		"no-restricted-imports": ["error", { paths: [...restrictedPaths, envParsePath] }],
-		"node/no-process-env": ["error", { allowedVariables: ["NODE_ENV"] }],
+		"node/no-process-env": ["error", { allowedVariables: ["CI", "NODE_ENV"] }],
 	},
 	overrides: [
 		{

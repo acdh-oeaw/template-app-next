@@ -11,7 +11,7 @@
   - [ ] OpenGraph images
 - [ ] Not-found pages are not server-rendered: `/en/nope` returns 404 with an empty `__next_error__` shell, and the
       localized not-found UI only renders client-side. Not caused by `partialPrefetching`, probably `cacheComponents`.
-- [ ] Playwright setup
+- [x] Playwright setup
   - [ ] Accessibility checks with `axe-core` and/or screen reader tests with `guidepup`
 - [ ] Browser e2e test for the not-found pages (curl only sees status codes, because of the client-rendered shell)
   - [ ] `/en/does-not-exist`: 404 with the localized `app/[locale]/not-found.tsx`, via the `[...rest]` catch-all

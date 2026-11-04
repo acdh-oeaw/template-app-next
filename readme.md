@@ -30,6 +30,16 @@ Don't read `process.env` directly, the linter only allows it in `lib/env/`.
 `bun run env:sync` adds missing variables to `.env.local`, with their descriptions and generated development values.
 It never changes existing entries, unless you pass `--force`, which overwrites the whole file.
 
+## End-to-end tests
+
+End-to-end tests live in `e2e/` and run with Playwright in Chromium, Firefox and WebKit, against a production build
+started by Playwright, or an already running server on port 3000.
+
+```sh
+bun run test:e2e:install
+bun run test:e2e
+```
+
 ## Docker
 
 [`.dockerignore`](.dockerignore) is an allowlist: when the build needs a new top-level file or folder, add it there.

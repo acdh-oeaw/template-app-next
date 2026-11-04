@@ -8,3 +8,6 @@ config = "./configs/oxlint.config.ts"
 
 [run]
 bun = true
+
+[test]
+pathIgnorePatterns = ["e2e/**"]
