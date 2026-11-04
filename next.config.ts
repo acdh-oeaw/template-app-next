@@ -33,6 +33,9 @@ const plugins: Array<(config: NextConfig) => NextConfig> = [
 export default function createConfig(phase: string): NextConfig {
 	const env = createServerEnv();
 
+	/** Read by Next.js directly from `process.env`, so validate it when loading the config. */
+	void env.NEXT_SERVER_ACTIONS_ENCRYPTION_KEY;
+
 	const define: Record<string, string> =
 		phase === PHASE_DEVELOPMENT_SERVER || phase === PHASE_PRODUCTION_BUILD
 			? {

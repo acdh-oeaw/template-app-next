@@ -1,5 +1,6 @@
 import * as v from "valibot";
 
+import { base64ByteLength } from "#/lib/env/actions.ts";
 import { generate } from "#/lib/env/generate.ts";
 
 /** Available in client and server code, inlined at build time. */
@@ -21,8 +22,9 @@ export const serverEnvSchema = v.object({
 		v.pipe(
 			v.string(),
 			v.base64(),
+			base64ByteLength(16, 24, 32),
 			v.description(
-				"Key to encrypt server function ids, must be the same for all instances of the app. Only read by `next build`.",
+				"AES-GCM key to encrypt server function ids and closures, must be the same for all instances of the app. Stored in the build output by `next build`, and takes precedence over it when set at runtime.",
 			),
 			v.metadata({ dev: generate.base64(32) }),
 		),
