@@ -98,3 +98,6 @@ respective owners, and are listed in the [license notice](assets/images/logos/li
 
 Add logos to that folder, and import them from there rather than putting them in `public/`. When adding an icon to
 `app/` or `public/`, add it to the license notice.
+
+Fonts are downloaded at build time, are not part of this repository, and are licensed under the
+[SIL Open Font License](https://openfontlicense.org).
