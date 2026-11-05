@@ -13,11 +13,16 @@
       localized not-found UI only renders client-side. Not caused by `partialPrefetching`, probably `cacheComponents`.
 - [x] Playwright setup
   - [ ] Accessibility checks with `axe-core` and/or screen reader tests with `guidepup`
-- [ ] Browser e2e test for the not-found pages (curl only sees status codes, because of the client-rendered shell)
+- [ ] Browser e2e test for the not-found and error pages in `e2e/errors.test.ts` (curl only sees status codes, because
+      of the client-rendered shell)
   - [ ] `/en/does-not-exist`: 404 with the localized `app/[locale]/not-found.tsx`, via the `[...rest]` catch-all
-  - [ ] Invalid locale, e.g. `/x.png`: 404 with `global-not-found.tsx`, not Next's default not-found page
+  - [ ] `/de/does-not-exist`: same, with the German message
+  - [ ] Invalid locale, e.g. `/x.png`: 404 with `global-not-found.tsx`, not Next's default not-found page. Always renders
+        in the default locale, also for German visitors
   - [ ] `/en-GB`: redirected to `/en/en-GB` by the proxy, then 404
-- [ ] Browser e2e test for canonical urls: content must only be reachable under the language prefix (`/en/*`), never
+  - [ ] Error page, once it exists
+- [ ] Browser e2e test for light and dark mode, with Playwright's `colorScheme` option
+- [x] Browser e2e test for canonical urls: content must only be reachable under the language prefix (`/en/*`), never
       under the internal locale (`/en-GB/*`) that the proxy rewrites to. Currently `/en-GB/*` redirects to
       `/en/en-GB/*`, also for RSC requests. Pages using `createPageMetadata()` emit a matching `<link rel="canonical">`.
 

@@ -36,6 +36,12 @@ const config = {
 	},
 	overrides: [
 		{
+			files: ["**/playwright.config.ts"],
+			rules: {
+				"node/no-process-env": ["error", { allowedVariables: ["CI", "PORT"] }],
+			},
+		},
+		{
 			files: [path.join(root, "lib/env/**"), path.join(root, "scripts/env-sync.ts")],
 			rules: {
 				"node/no-process-env": "off",

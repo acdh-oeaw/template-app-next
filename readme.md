@@ -33,7 +33,7 @@ It never changes existing entries, unless you pass `--force`, which overwrites t
 ## End-to-end tests
 
 End-to-end tests live in `e2e/` and run with Playwright in Chromium, Firefox and WebKit, against a production build
-started by Playwright, or an already running server on port 3000.
+started by Playwright, or an already running server on port 3000. Set `PORT` to use a different port.
 
 ```sh
 bun run test:e2e:install
