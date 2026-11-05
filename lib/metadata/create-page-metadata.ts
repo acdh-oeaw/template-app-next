@@ -1,13 +1,12 @@
 import type { Metadata } from "next";
 import { getLocale } from "next-intl/server";
 
-import { defaultLocale, type Locale, locales } from "#/lib/i18n/locales.ts";
+import { getAlternateLanguages, type Href } from "#/lib/i18n/get-alternate-languages.ts";
+import { type Locale, locales } from "#/lib/i18n/locales.ts";
 import { getPathname } from "#/lib/i18n/navigation.ts";
 import { getSiteMetadata, type SiteMetadata } from "#/lib/metadata/site-metadata.ts";
 
 type OpenGraph = NonNullable<Metadata["openGraph"]>;
-
-type Href = Parameters<typeof getPathname>[0]["href"];
 
 function toOpenGraphLocale(locale: Locale): string {
 	return locale.replace("-", "_");
@@ -43,18 +42,12 @@ export async function createPageMetadata(params: Readonly<CreatePageMetadataPara
 
 	const canonical = getPathname({ locale, href });
 
-	const languages: Record<string, string> = {};
-	for (const alternate of locales) {
-		languages[alternate] = getPathname({ locale: alternate, href });
-	}
-	languages["x-default"] = getPathname({ locale: defaultLocale, href });
-
 	return {
 		...(title != null ? { title } : {}),
 		...(description != null ? { description } : {}),
 		alternates: {
 			canonical,
-			languages,
+			languages: getAlternateLanguages(href),
 		},
 		openGraph: {
 			...getDefaultOpenGraph(meta, locale),
