@@ -1,3 +1,7 @@
 {
-	"js/ts.experimental.useTsgo": true
+	"files.associations": {
+		"*.css": "tailwindcss"
+	},
+	"js/ts.experimental.useTsgo": true,
+	"stylelint.validate": ["css", "postcss", "tailwindcss"]
 }
