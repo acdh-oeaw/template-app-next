@@ -5,7 +5,7 @@
 - [ ] Site metadata
   - [x] Localized `generateMetadata` in `app/[locale]/layout.tsx` (title template, description, `metadataBase`)
   - [x] `manifest.ts`
-  - [ ] `robots.ts`, `sitemap.ts`
+  - [x] `robots.ts`, `sitemap.ts`
   - [ ] JSON-LD (`WebSite`, with social links as `sameAs`)
   - [ ] Validate `content/*/metadata.json` once there is a validation library (see environment variables)
   - [ ] OpenGraph images
@@ -53,4 +53,6 @@
       scratch rather than copying
   - [ ] `href()` helper
   - [ ] `search-params.ts` convention
+  - [ ] Derive the static pages in `app/sitemap.ts` from typed routes, or type check the list against `AppRoutes` from
+        `.next/types/routes.d.ts`, so that new pages cannot be forgotten
 - [ ] Clean up leftover `.gitignore` entries (`.pnpm-store/`, `/docker/.env`, `.turbo/`, ...)
