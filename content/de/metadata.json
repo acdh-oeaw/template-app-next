@@ -1,0 +1,34 @@
+{
+	"title": "ACDH-App",
+	"description": "ACDH-Anwendungsvorlage",
+	"manifest": {
+		"name": "ACDH-App",
+		"shortName": "ACDH-App"
+	},
+	"social": [
+		{
+			"kind": "bluesky",
+			"href": "https://bsky.app/profile/acdh-oeaw.bsky.social"
+		},
+		{
+			"kind": "instagram",
+			"href": "https://www.instagram.com/acdh_oeaw/"
+		},
+		{
+			"kind": "linkedin",
+			"href": "https://www.linkedin.com/company/acdh"
+		},
+		{
+			"kind": "mastodon",
+			"href": "https://fedihum.org/@acdhch_oeaw"
+		},
+		{
+			"kind": "website",
+			"href": "https://www.oeaw.ac.at/acdh"
+		},
+		{
+			"kind": "youtube",
+			"href": "https://www.youtube.com/@acdh-ch5185"
+		}
+	]
+}
