@@ -63,7 +63,6 @@ export default function createConfig(phase: string): NextConfig {
 			rules: {
 				"*.css": {
 					loaders: ["@tailwindcss/turbopack"],
-					as: "*.css",
 				},
 				...localeOptimization.rules,
 			},
