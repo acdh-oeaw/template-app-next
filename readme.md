@@ -90,6 +90,9 @@ When a test fails, the Playwright report is uploaded as a workflow artifact.
 
 [`.dockerignore`](.dockerignore) is an allowlist: when the build needs a new top-level file or folder, add it there.
 
+The Bun version is passed as `BUN_VERSION` build arg, and has no default: it comes from `devEngines` in `package.json`,
+without the caret.
+
 Public and build-time variables are passed to `docker build` as a single `dotenv` secret. Secrets don't invalidate the
 build cache, so the sha256 hash of the secret must be passed as `DOTENV_HASH` build arg, and the build fails if it
 doesn't match.
@@ -97,6 +100,7 @@ doesn't match.
 ```sh
 docker build \
   --secret id=dotenv,src=.env.production.local \
+  --build-arg BUN_VERSION="$(jq -r '.devEngines.runtime.version | ltrimstr("^")' package.json)" \
   --build-arg DOTENV_HASH="$(sha256sum .env.production.local | cut -d " " -f 1)" \
   .
 ```
@@ -104,6 +108,9 @@ docker build \
 In GitHub Actions:
 
 ```yaml
+- id: config
+  run: echo "bun-version=$(jq -r '.devEngines.runtime.version | ltrimstr("^")' package.json)" >> "$GITHUB_OUTPUT"
+
 - id: dotenv
   env:
     NEXT_PUBLIC_APP_BASE_URL: ${{ vars.NEXT_PUBLIC_APP_BASE_URL }}
@@ -118,7 +125,9 @@ In GitHub Actions:
 - uses: docker/build-push-action@v7
   with:
     secret-files: dotenv=${{ steps.dotenv.outputs.file }}
-    build-args: DOTENV_HASH=${{ steps.dotenv.outputs.hash }}
+    build-args: |
+      BUN_VERSION=${{ steps.config.outputs.bun-version }}
+      DOTENV_HASH=${{ steps.dotenv.outputs.hash }}
 ```
 
 Server variables that are only read at runtime are passed to the container, not to `docker build`.

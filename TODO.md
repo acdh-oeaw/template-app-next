@@ -34,7 +34,8 @@
 - [ ] CI workflows
   - [x] Validate
   - [ ] Build and deploy
-  - [ ] Pass public and build-time environment variables to `docker build` as the `dotenv` secret, and its sha256 hash as the `DOTENV_HASH` build arg
+  - [ ] Pass public and build-time environment variables to `docker build` as the `dotenv` secret, its sha256 hash as
+        the `DOTENV_HASH` build arg, and the Bun version from `devEngines` as the `BUN_VERSION` build arg
   - [ ] Explore deploying with `kubectl` and/or `helm` directly, instead of the reusable
         `acdh-oeaw/gl-autodevops-minimal-port` workflow
 - [ ] `test` script and test setup

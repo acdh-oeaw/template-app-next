@@ -3,8 +3,11 @@
 # using alpine base image to avoid `sharp` memory leaks.
 # @see https://sharp.pixelplumbing.com/install#linux-memory-allocator
 
+# no default, so that `devEngines` in `package.json` stays the single source of truth for the version.
+ARG BUN_VERSION
+
 # build
-FROM oven/bun:1.4.4-alpine AS build
+FROM oven/bun:${BUN_VERSION:?required}-alpine AS build
 
 WORKDIR /app
 
@@ -33,7 +36,7 @@ RUN --mount=type=secret,id=dotenv,target=/app/.env.production.local,required=tru
 	&& bun run build
 
 # serve
-FROM oven/bun:1.4.4-alpine AS serve
+FROM oven/bun:${BUN_VERSION}-alpine AS serve
 
 WORKDIR /app
 
