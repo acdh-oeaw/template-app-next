@@ -32,6 +32,8 @@ test("hello world", () => {
 
 Use `bun run test:e2e` to run the Playwright tests in `e2e/`. Set `PORT` if port 3000 is taken, because Playwright reuses whatever server is listening there.
 
+Import `test` from `#/e2e/lib/fixtures.ts`, not from `@playwright/test`. It fails tests which use `page` on uncaught exceptions, console errors and failed same-origin requests, including hydration errors. Tests which expect errors list them with `test.use({ allowedErrors })`.
+
 Locate elements by aria role with `getByRole`, not by element name with `locator("h1")`. `bun lint` enforces this with `playwright/no-raw-locators`.
 
 - `cacheComponents` keeps previous pages in the DOM with `display: none` after client navigations. `getByRole` ignores hidden elements, plain locators also match them

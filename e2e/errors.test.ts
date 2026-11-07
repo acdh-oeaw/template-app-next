@@ -1,7 +1,8 @@
-import { expect, type Page, test } from "@playwright/test";
+import { expect, type Page } from "@playwright/test";
 
 import de from "#/content/de/metadata.json";
 import en from "#/content/en/metadata.json";
+import { test, thrownErrors } from "#/e2e/lib/fixtures.ts";
 
 const english = { lang: "en-GB", heading: "Page not found", site: en.title };
 const german = { lang: "de-AT", heading: "Seite nicht gefunden", site: de.title };
@@ -81,6 +82,8 @@ const errorPages = [
 ];
 
 test.describe("error pages", () => {
+	test.use({ allowedErrors: thrownErrors });
+
 	for (const { prefix, lang, heading, retry } of errorPages) {
 		test(`client errors render the ${lang} page`, async ({ page }) => {
 			await page.goto(`${prefix}/e2e/client-error`);

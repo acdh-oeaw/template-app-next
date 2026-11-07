@@ -55,6 +55,26 @@ const config = {
 					},
 				],
 				"playwright/prefer-native-locators": "error",
+				"no-restricted-imports": [
+					"error",
+					{
+						paths: [
+							...restrictedPaths,
+							envParsePath,
+							{
+								name: "@playwright/test",
+								importNames: ["test"],
+								message: "Import `test` from `#/e2e/lib/fixtures.ts`, which fails tests on browser errors.",
+							},
+						],
+					},
+				],
+			},
+		},
+		{
+			files: [path.join(root, "e2e/lib/fixtures.ts")],
+			rules: {
+				"no-restricted-imports": ["error", { paths: [...restrictedPaths, envParsePath] }],
 			},
 		},
 		{

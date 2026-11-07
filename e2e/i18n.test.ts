@@ -1,4 +1,6 @@
-import { expect, test } from "@playwright/test";
+import { expect } from "@playwright/test";
+
+import { test } from "#/e2e/lib/fixtures.ts";
 
 const pathnames = ["/en", "/en/imprint", "/de", "/de/imprint"];
 

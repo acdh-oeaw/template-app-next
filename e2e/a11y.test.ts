@@ -1,5 +1,7 @@
 import AxeBuilder from "@axe-core/playwright";
-import { expect, type Page, test } from "@playwright/test";
+import { expect, type Page } from "@playwright/test";
+
+import { test, thrownErrors } from "#/e2e/lib/fixtures.ts";
 
 const tags = ["wcag2a", "wcag2aa", "wcag21a", "wcag21aa", "wcag22aa", "best-practice"];
 
@@ -30,15 +32,19 @@ for (const colorScheme of ["light", "dark"] as const) {
 			});
 		}
 
-		for (const pathname of errorPages) {
-			test(`error page for ${pathname} has no violations`, async ({ page }) => {
-				await page.goto(pathname);
-				await page.getByRole("button", { name: "Throw error" }).click();
+		test.describe("error pages", () => {
+			test.use({ allowedErrors: thrownErrors });
 
-				await expect(page.getByRole("button", { name: "Throw error" })).toHaveCount(0);
+			for (const pathname of errorPages) {
+				test(`error page for ${pathname} has no violations`, async ({ page }) => {
+					await page.goto(pathname);
+					await page.getByRole("button", { name: "Throw error" }).click();
 
-				expect(await getViolations(page)).toEqual([]);
-			});
-		}
+					await expect(page.getByRole("button", { name: "Throw error" })).toHaveCount(0);
+
+					expect(await getViolations(page)).toEqual([]);
+				});
+			}
+		});
 	});
 }

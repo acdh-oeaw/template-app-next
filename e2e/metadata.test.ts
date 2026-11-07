@@ -1,7 +1,8 @@
-import { expect, type Page, test } from "@playwright/test";
+import { expect, type Page } from "@playwright/test";
 
 import de from "#/content/de/metadata.json";
 import en from "#/content/en/metadata.json";
+import { test } from "#/e2e/lib/fixtures.ts";
 
 const locales = [
 	{ prefix: "/en", lang: "en-GB", og: "en_GB", alternate: "de_AT", meta: en, imprint: "Imprint" },
