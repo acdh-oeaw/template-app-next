@@ -2,6 +2,7 @@ import { clsx } from "clsx/lite";
 import type { ReactNode } from "react";
 import { isRTL } from "react-aria-components/I18nProvider";
 
+import { ColorSchemeScript } from "#/components/color-scheme/color-scheme-script.tsx";
 import { Providers } from "#/components/providers.tsx";
 import type { Locale } from "#/lib/i18n/locales.ts";
 import { firaCode, notoSans } from "#/styles/fonts.ts";
@@ -15,7 +16,16 @@ export function HtmlDocument(props: Readonly<HtmlDocumentProps>): ReactNode {
 	const { children, locale } = props;
 
 	return (
-		<html className={clsx(notoSans.variable, firaCode.variable)} dir={isRTL(locale) ? "rtl" : "ltr"} lang={locale}>
+		<html
+			className={clsx(notoSans.variable, firaCode.variable)}
+			dir={isRTL(locale) ? "rtl" : "ltr"}
+			lang={locale}
+			/** `ColorSchemeScript` sets `data-color-scheme` before hydration. */
+			suppressHydrationWarning={true}
+		>
+			<head>
+				<ColorSchemeScript />
+			</head>
 			<body>
 				<Providers locale={locale}>{children}</Providers>
 			</body>

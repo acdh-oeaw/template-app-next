@@ -21,3 +21,23 @@ msgstr "Impressum"
 msgctxt "QRccCM"
 msgid "Page not found"
 msgstr "Seite nicht gefunden"
+
+#: components/color-scheme/color-scheme-switcher.tsx
+msgctxt "-CwN9C"
+msgid "System"
+msgstr "System"
+
+#: components/color-scheme/color-scheme-switcher.tsx
+msgctxt "3cc4Ct"
+msgid "Light"
+msgstr "Hell"
+
+#: components/color-scheme/color-scheme-switcher.tsx
+msgctxt "tOdNiY"
+msgid "Dark"
+msgstr "Dunkel"
+
+#: components/color-scheme/color-scheme-switcher.tsx
+msgctxt "DxgBSX"
+msgid "Color scheme"
+msgstr "Farbschema"

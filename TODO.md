@@ -18,10 +18,11 @@
   - [ ] `/en/does-not-exist`: 404 with the localized `app/[locale]/not-found.tsx`, via the `[...rest]` catch-all
   - [ ] `/de/does-not-exist`: same, with the German message
   - [ ] Invalid locale, e.g. `/x.png`: 404 with `global-not-found.tsx`, not Next's default not-found page. Always renders
-        in the default locale, also for German visitors
+        in the default locale, also for German visitors. Currently renders Next's default page, without our styles or
+        `ColorSchemeScript`, so it ignores the stored color scheme
   - [ ] `/en-GB`: redirected to `/en/en-GB` by the proxy, then 404
   - [ ] Error page, once it exists
-- [ ] Browser e2e test for light and dark mode, with Playwright's `colorScheme` option
+- [x] Browser e2e test for light and dark mode, with Playwright's `colorScheme` option
 - [x] Browser e2e test for canonical urls: content must only be reachable under the language prefix (`/en/*`), never
       under the internal locale (`/en-GB/*`) that the proxy rewrites to. Currently `/en-GB/*` redirects to
       `/en/en-GB/*`, also for RSC requests. Pages using `createPageMetadata()` emit a matching `<link rel="canonical">`.
@@ -37,6 +38,8 @@
 - [ ] `test` script and test setup
 - [ ] App shell: layout, header, footer, navigation, locale switcher, color scheme switcher
   - [ ] Footer: hardcoded links to imprint and accessibility declaration, social links from `getSiteMetadata()`
+  - [x] Color scheme switcher in `components/color-scheme/`
+    - [ ] Move `<ColorSchemeSwitcher />` from the home page to the header, once it exists
   - [ ] Browser e2e test for client navigation with `instant()` from `@next/playwright`, once there are links and dynamic
         content. Pair positive assertions with a negative one like `toHaveCount(0)`, because nothing is held back when
         the testing API is missing

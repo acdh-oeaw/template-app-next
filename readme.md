@@ -30,6 +30,17 @@ Don't read `process.env` directly, the linter only allows it in `lib/env/`.
 `bun run env:sync` adds missing variables to `.env.local`, with their descriptions and generated development values.
 It never changes existing entries, unless you pass `--force`, which overwrites the whole file.
 
+## Color scheme
+
+The switcher in [`components/color-scheme/`](components/color-scheme/) offers system, light and dark, and is unstyled.
+The choice is stored in `localStorage`, because reading a cookie would make the root layout dynamic. An inline script
+sets `data-color-scheme` on `<html>` before first paint, and that attribute is the single source of truth for the
+switcher.
+
+To remove it, delete `components/color-scheme/` and `e2e/color-scheme.test.ts`, remove `<ColorSchemeScript />` and
+`suppressHydrationWarning` from `components/html-document.tsx`, `<ColorSchemeSwitcher />` from the home page, and the
+`data-color-scheme` rules from `styles/index.css`.
+
 ## End-to-end tests
 
 End-to-end tests live in `e2e/` and run with Playwright in Chromium, Firefox and WebKit, against a production build
