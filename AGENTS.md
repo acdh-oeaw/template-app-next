@@ -62,6 +62,11 @@ Use `bun check` to type check the project. It reads `tsconfig.json` and reports 
 - Use `xstate` only for flows that outgrow a reducer, like multi-step processes with guards or async side effects. Ask before adding it as a dependency
 - Prefer composition over configuration: pass content through `children` or slot props rather than adding config props that switch what a component renders
 
+## Commits
+
+- Keep commits atomic: one logical change per commit, including its tests and docs. Each commit should work on its own, so a change and what it depends on go in the same commit
+- Don't mix unrelated changes, even when they are already staged together. Split them, or ask
+
 ## Documentation
 
 For more information, read the Bun docs in `node_modules/bun-types/docs/**.mdx`.
