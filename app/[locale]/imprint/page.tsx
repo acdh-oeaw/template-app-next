@@ -16,9 +16,5 @@ export async function generateMetadata(): Promise<Metadata> {
 export default function ImprintPage(_props: Readonly<ImprintPageProps>): ReactNode {
 	const t = useTranslations();
 
-	return (
-		<main>
-			<h1>{t("Imprint")}</h1>
-		</main>
-	);
+	return <h1>{t("Imprint")}</h1>;
 }

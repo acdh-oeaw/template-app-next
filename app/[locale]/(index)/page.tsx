@@ -13,9 +13,5 @@ export async function generateMetadata(): Promise<Metadata> {
 export default function IndexPage(_props: Readonly<IndexPageProps>): ReactNode {
 	const t = useTranslations();
 
-	return (
-		<main>
-			<h1>{t("Hello, World!")}</h1>
-		</main>
-	);
+	return <h1>{t("Hello, World!")}</h1>;
 }

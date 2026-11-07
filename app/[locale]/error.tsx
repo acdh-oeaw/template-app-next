@@ -1,7 +1,7 @@
 "use client";
 
 import { useExtracted as useTranslations } from "next-intl";
-import type { ReactNode } from "react";
+import { Fragment, type ReactNode } from "react";
 
 interface ErrorPageProps {
 	error: unknown;
@@ -14,7 +14,7 @@ export default function ErrorPage(props: Readonly<ErrorPageProps>): ReactNode {
 	const t = useTranslations();
 
 	return (
-		<main>
+		<Fragment>
 			<title>{t("Something went wrong")}</title>
 			<h1>{t("Something went wrong")}</h1>
 			<button
@@ -25,6 +25,6 @@ export default function ErrorPage(props: Readonly<ErrorPageProps>): ReactNode {
 			>
 				{t("Try again")}
 			</button>
-		</main>
+		</Fragment>
 	);
 }

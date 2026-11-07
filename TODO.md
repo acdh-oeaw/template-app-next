@@ -16,7 +16,6 @@
 - [x] Playwright setup
   - [x] Accessibility checks with `axe-core` in `e2e/a11y.test.ts`
   - [ ] Screen reader tests with `guidepup`
-- [ ] Browser e2e test for light and dark mode, with Playwright's `colorScheme` option
 - [x] Browser e2e test for canonical urls: content must only be reachable under the language prefix (`/en/*`), never
       under the internal locale (`/en-GB/*`) that the proxy rewrites to. Currently `/en-GB/*` redirects to
       `/en/en-GB/*`, also for RSC requests. Pages using `createPageMetadata()` emit a matching `<link rel="canonical">`.
@@ -30,9 +29,9 @@
   - [ ] Explore deploying with `kubectl` and/or `helm` directly, instead of the reusable
         `acdh-oeaw/gl-autodevops-minimal-port` workflow
 - [ ] `test` script and test setup
-- [ ] App shell: layout, header, footer, navigation, locale switcher, color scheme switcher
-  - [ ] Footer: hardcoded links to imprint and accessibility declaration, social links from `getSiteMetadata()`
-  - [ ] Browser e2e test for client navigation with `instant()` from `@next/playwright`, once there are links and dynamic
+- [x] App shell: layout, header, footer, navigation, locale switcher, color scheme switcher (basic, not designed yet)
+  - [ ] Footer: link to the accessibility declaration, once the page exists
+  - [ ] Browser e2e test for client navigation with `instant()` from `@next/playwright`, once there is dynamic
         content. Pair positive assertions with a negative one like `toHaveCount(0)`, because nothing is held back when
         the testing API is missing
     - [ ] Enable `experimental.exposeTestingApiInProductionBuild` for test builds only, with the `TEST_BUILD` variable

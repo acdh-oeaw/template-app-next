@@ -22,6 +22,8 @@ msgid "Try again"
 msgstr "Try again"
 
 #: app/[locale]/imprint/page.tsx
+#: components/app-footer.tsx
+#: components/app-header.tsx
 msgctxt "xYJkOZ"
 msgid "Imprint"
 msgstr "Imprint"
@@ -30,3 +32,63 @@ msgstr "Imprint"
 msgctxt "QRccCM"
 msgid "Page not found"
 msgstr "Page not found"
+
+#: components/app-footer.tsx
+msgctxt "sy-pv5"
+msgid "Email"
+msgstr "Email"
+
+#: components/app-footer.tsx
+msgctxt "JkLHGw"
+msgid "Website"
+msgstr "Website"
+
+#: components/app-footer.tsx
+msgctxt "7oFrM6"
+msgid "Legal"
+msgstr "Legal"
+
+#: components/app-footer.tsx
+msgctxt "ZEEVQX"
+msgid "Social media"
+msgstr "Social media"
+
+#: components/app-header.tsx
+msgctxt "2sRCsy"
+msgid "Skip to main content"
+msgstr "Skip to main content"
+
+#: components/app-header.tsx
+msgctxt "EFTSMc"
+msgid "Main"
+msgstr "Main"
+
+#: components/app-header.tsx
+msgctxt "ejEGdx"
+msgid "Home"
+msgstr "Home"
+
+#: components/color-scheme-switcher.tsx
+msgctxt "-CwN9C"
+msgid "System"
+msgstr "System"
+
+#: components/color-scheme-switcher.tsx
+msgctxt "3cc4Ct"
+msgid "Light"
+msgstr "Light"
+
+#: components/color-scheme-switcher.tsx
+msgctxt "tOdNiY"
+msgid "Dark"
+msgstr "Dark"
+
+#: components/color-scheme-switcher.tsx
+msgctxt "DxgBSX"
+msgid "Color scheme"
+msgstr "Color scheme"
+
+#: components/locale-switcher.tsx
+msgctxt "y1Z3or"
+msgid "Language"
+msgstr "Language"

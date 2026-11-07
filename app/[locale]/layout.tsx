@@ -5,6 +5,8 @@ import { hasLocale } from "next-intl";
 import { notFound } from "next/navigation";
 import type { ReactNode } from "react";
 
+import { AppFooter } from "#/components/app-footer.tsx";
+import { AppHeader } from "#/components/app-header.tsx";
 import { HtmlDocument } from "#/components/html-document.tsx";
 import { env } from "#/lib/env/public.ts";
 import { routing } from "#/lib/i18n/routing.ts";
@@ -52,5 +54,13 @@ export default async function LocaleLayout(props: Readonly<LocaleLayoutProps>): 
 		notFound();
 	}
 
-	return <HtmlDocument locale={locale}>{children}</HtmlDocument>;
+	return (
+		<HtmlDocument locale={locale}>
+			<AppHeader />
+			<main className="p-4 outline-none" id="main-content" tabIndex={-1}>
+				{children}
+			</main>
+			<AppFooter locale={locale} />
+		</HtmlDocument>
+	);
 }

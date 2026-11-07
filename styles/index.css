@@ -21,6 +21,14 @@
 	color-scheme: light dark;
 }
 
+:root[data-color-scheme="light"] {
+	color-scheme: light;
+}
+
+:root[data-color-scheme="dark"] {
+	color-scheme: dark;
+}
+
 /* Explicit colors, because `axe-core` assumes a white background when it is transparent. */
 body {
 	background-color: Canvas;

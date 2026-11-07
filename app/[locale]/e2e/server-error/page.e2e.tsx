@@ -1,5 +1,5 @@
 import { connection } from "next/server";
-import { type ReactNode, Suspense } from "react";
+import { Fragment, type ReactNode, Suspense } from "react";
 
 async function ThrowError(): Promise<ReactNode> {
 	await connection();
@@ -9,11 +9,11 @@ async function ThrowError(): Promise<ReactNode> {
 
 export default function ServerErrorPage(): ReactNode {
 	return (
-		<main>
+		<Fragment>
 			<h1>Server error</h1>
 			<Suspense>
 				<ThrowError />
 			</Suspense>
-		</main>
+		</Fragment>
 	);
 }

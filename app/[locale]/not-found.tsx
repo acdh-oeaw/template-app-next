@@ -12,9 +12,5 @@ export async function generateMetadata(): Promise<Metadata> {
 export default function NotFoundPage(): ReactNode {
 	const t = useTranslations();
 
-	return (
-		<main>
-			<h1>{t("Page not found")}</h1>
-		</main>
-	);
+	return <h1>{t("Page not found")}</h1>;
 }
