@@ -30,6 +30,32 @@ Don't read `process.env` directly, the linter only allows it in `lib/env/`.
 `bun run env:sync` adds missing variables to `.env.local`, with their descriptions and generated development values.
 It never changes existing entries, unless you pass `--force`, which overwrites the whole file.
 
+## App shell
+
+The header and footer are rendered in [`app/[locale]/layout.tsx`](app/[locale]/layout.tsx), and each page renders its own
+`<MainContent>`.
+
+That file is the root layout, so a nested layout cannot remove the shell. If some pages need a different one, like a
+full-height page with its own scroll area and a different footer, move the current shell into a route group:
+
+```
+app/[locale]/
+  layout.tsx            html, providers, metadata
+  (default)/
+    layout.tsx          current shell: min-h-full, header, footer
+    (index)/page.tsx
+    imprint/page.tsx
+    [...rest]/page.tsx
+    not-found.tsx
+  (fullscreen)/
+    layout.tsx          h-full shell, different footer
+    viewer/page.tsx
+```
+
+Move `[...rest]` and `not-found.tsx` as well, so that not-found pages keep the shell. If `next build` then fails with
+type errors in `.next/dev/types/validator.ts`, delete that file: it still points to the old paths, and
+`bun run types:prepare` does not update it.
+
 ## Color scheme
 
 The switcher in [`components/color-scheme/`](components/color-scheme/) offers system, light and dark, and is unstyled.
@@ -38,7 +64,7 @@ sets `data-color-scheme` on `<html>` before first paint, and that attribute is t
 switcher.
 
 To remove it, delete `components/color-scheme/` and `e2e/color-scheme.test.ts`, remove `<ColorSchemeScript />` and
-`suppressHydrationWarning` from `components/html-document.tsx`, `<ColorSchemeSwitcher />` from the home page, and the
+`suppressHydrationWarning` from `components/html-document.tsx`, `<ColorSchemeSwitcher />` from `components/header.tsx`, and the
 `data-color-scheme` rules from `styles/index.css`.
 
 ## End-to-end tests

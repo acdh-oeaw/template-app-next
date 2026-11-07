@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { useExtracted as useTranslations } from "next-intl";
 import type { ReactNode } from "react";
 
-import { ColorSchemeSwitcher } from "#/components/color-scheme/color-scheme-switcher.tsx";
+import { MainContent } from "#/components/main-content.tsx";
 import { createPageMetadata } from "#/lib/metadata/create-page-metadata.ts";
 
 interface IndexPageProps extends PageProps<"/[locale]"> {}
@@ -15,9 +15,8 @@ export default function IndexPage(_props: Readonly<IndexPageProps>): ReactNode {
 	const t = useTranslations();
 
 	return (
-		<main>
+		<MainContent>
 			<h1>{t("Hello, World!")}</h1>
-			<ColorSchemeSwitcher />
-		</main>
+		</MainContent>
 	);
 }

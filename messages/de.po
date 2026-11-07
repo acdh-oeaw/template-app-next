@@ -12,6 +12,7 @@ msgid "Hello, World!"
 msgstr "Hallo, Welt!"
 
 #: app/[locale]/imprint/page.tsx
+#: components/footer.tsx
 msgctxt "xYJkOZ"
 msgid "Imprint"
 msgstr "Impressum"
@@ -41,3 +42,8 @@ msgstr "Dunkel"
 msgctxt "DxgBSX"
 msgid "Color scheme"
 msgstr "Farbschema"
+
+#: components/skip-link.tsx
+msgctxt "2sRCsy"
+msgid "Skip to main content"
+msgstr "Zum Hauptinhalt springen"

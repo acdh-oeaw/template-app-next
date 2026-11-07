@@ -5,7 +5,10 @@ import { hasLocale } from "next-intl";
 import { notFound } from "next/navigation";
 import type { ReactNode } from "react";
 
+import { Footer } from "#/components/footer.tsx";
+import { Header } from "#/components/header.tsx";
 import { HtmlDocument } from "#/components/html-document.tsx";
+import { SkipLink } from "#/components/skip-link.tsx";
 import { env } from "#/lib/env/public.ts";
 import { routing } from "#/lib/i18n/routing.ts";
 import { getDefaultOpenGraph } from "#/lib/metadata/create-page-metadata.ts";
@@ -52,5 +55,14 @@ export default async function LocaleLayout(props: Readonly<LocaleLayoutProps>): 
 		notFound();
 	}
 
-	return <HtmlDocument locale={locale}>{children}</HtmlDocument>;
+	return (
+		<HtmlDocument locale={locale}>
+			<div className="grid min-h-full grid-rows-[auto_1fr_auto]">
+				<SkipLink />
+				<Header locale={locale} />
+				{children}
+				<Footer />
+			</div>
+		</HtmlDocument>
+	);
 }

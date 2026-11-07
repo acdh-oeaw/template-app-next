@@ -36,10 +36,10 @@
   - [ ] Explore deploying with `kubectl` and/or `helm` directly, instead of the reusable
         `acdh-oeaw/gl-autodevops-minimal-port` workflow
 - [ ] `test` script and test setup
-- [ ] App shell: layout, header, footer, navigation, locale switcher, color scheme switcher
-  - [ ] Footer: hardcoded links to imprint and accessibility declaration, social links from `getSiteMetadata()`
+- [ ] App shell: `components/header.tsx`, `components/footer.tsx`, rendered in `app/[locale]/layout.tsx`
+  - [ ] Navigation, locale switcher
+  - [ ] Footer: link to the accessibility declaration, social links from `getSiteMetadata()`
   - [x] Color scheme switcher in `components/color-scheme/`
-    - [ ] Move `<ColorSchemeSwitcher />` from the home page to the header, once it exists
   - [ ] Browser e2e test for client navigation with `instant()` from `@next/playwright`, once there are links and dynamic
         content. Pair positive assertions with a negative one like `toHaveCount(0)`, because nothing is held back when
         the testing API is missing
