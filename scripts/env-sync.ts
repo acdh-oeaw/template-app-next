@@ -1,3 +1,5 @@
+import { parseArgs } from "node:util";
+
 import * as v from "valibot";
 
 import { publicEnvSchema, serverEnvSchema } from "#/configs/env.config.ts";
@@ -5,13 +7,21 @@ import { getAnnotations } from "#/lib/env/annotations.ts";
 
 const filePath = ".env.local";
 
-const sections: Array<{ title: string; schema: v.ObjectSchema<v.ObjectEntries, undefined> }> = [
+const headingRule = `# ${"=".repeat(78)}`;
+
+const sections: Array<{
+	title: string;
+	description: string;
+	schema: v.ObjectSchema<v.ObjectEntries, undefined>;
+}> = [
 	{
-		title: "Public: inlined into client and server bundles at build time.",
+		title: "PUBLIC",
+		description: "Inlined into client and server bundles at build time.",
 		schema: publicEnvSchema,
 	},
 	{
-		title: "Server: must be provided at runtime, and at build time when read while prerendering.",
+		title: "SERVER",
+		description: "Must be provided at runtime, and at build time when read while prerendering.",
 		schema: serverEnvSchema,
 	},
 ];
@@ -92,7 +102,11 @@ async function main(): Promise<void> {
 		return;
 	}
 
-	const force = process.argv.includes("--force");
+	const { values } = parseArgs({
+		args: Bun.argv.slice(2),
+		options: { force: { type: "boolean", default: false } },
+	});
+	const force = values.force;
 
 	const file = Bun.file(filePath);
 	const exists = await file.exists();
@@ -104,7 +118,9 @@ async function main(): Promise<void> {
 
 	if (content === "") {
 		lines.push(
-			"# Generated from `configs/env.config.ts` by `bun run env:sync`, which only appends missing variables.",
+			"# Generated from `configs/env.config.ts` by `bun run env:sync`.",
+			"#",
+			"# Running `bun run env:sync` again only appends missing variables.",
 			"# `bun run env:sync --force` overwrites this file, including all values.",
 			"# Commented out variables are optional, or have a default in the schema.",
 		);
@@ -127,7 +143,7 @@ async function main(): Promise<void> {
 		}
 
 		if (content === "") {
-			lines.push("", `# --- ${section.title}`);
+			lines.push("", headingRule, `# ${section.title}`, `# ${section.description}`, headingRule);
 		}
 		lines.push(...block);
 	}

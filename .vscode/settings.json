@@ -3,5 +3,6 @@
 		"*.css": "tailwindcss"
 	},
 	"js/ts.experimental.useTsgo": true,
+	"js/ts.tsdk.path": "node_modules/typescript",
 	"stylelint.validate": ["css", "postcss", "tailwindcss"]
 }

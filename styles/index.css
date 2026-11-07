@@ -3,23 +3,37 @@
 @plugin "tailwindcss-react-aria-components";
 
 @theme {
-	--font-body: var(--font-noto-sans);
-	--font-heading: var(--font-noto-sans);
-	--font-code: var(--font-fira-code);
+	--font-body: var(--font-noto-sans), var(--font-sans);
+	--font-heading: var(--font-noto-sans), var(--font-sans);
+	--font-code: var(--font-fira-code), var(--font-mono);
 	--default-font-family: var(--font-body);
 	--default-mono-font-family: var(--font-code);
+
+	--color-canvas: light-dark(var(--color-white), var(--color-neutral-950));
+	--color-canvas-text: light-dark(var(--color-neutral-950), var(--color-neutral-50));
 }
 
 @layer base {
+	:root {
+		block-size: 100%;
+		color-scheme: light dark;
+	}
+
+	:root[data-color-scheme="light"] {
+		color-scheme: light;
+	}
+
+	:root[data-color-scheme="dark"] {
+		color-scheme: dark;
+	}
+
+	body {
+		background-color: var(--color-canvas);
+		block-size: 100%;
+		color: var(--color-canvas-text);
+	}
+
 	:where(h1, h2, h3, h4, h5, h6) {
 		font-family: var(--font-heading);
 	}
-}
-
-:root {
-	block-size: 100%;
-}
-
-body {
-	block-size: 100%;
 }

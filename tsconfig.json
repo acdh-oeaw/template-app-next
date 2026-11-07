@@ -18,7 +18,7 @@
 		"noUncheckedIndexedAccess": true,
 		"noUnusedLocals": false,
 		"noUnusedParameters": false,
-		/** @see {@link https://github.com/oven-sh/bun/issues/28995} */
+		// @see https://github.com/oven-sh/bun/issues/28995
 		"paths": {
 			"#/*": ["./*"]
 		},

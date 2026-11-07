@@ -44,6 +44,12 @@ Use `bun check` to type check the project. It reads `tsconfig.json` and reports 
 - `bun check src/index.ts` checks one file and what it imports
 - Route types (`PageProps`, `LayoutProps`) are generated into `.next/types` by `bun run types:prepare`, which runs on `bun install`
 
+## CSS
+
+- Put all CSS in a cascade layer, like `@layer base`, so utilities can override it
+- Separate primitive tokens (raw values, like `--color-neutral-950`) from semantic tokens (their purpose, like `--color-canvas-text`). Components use semantic tokens only
+- Define color tokens that differ between color schemes with `light-dark()`, not with `dark:` variants. The `data-color-scheme` attribute on `<html>` overrides the system preference
+
 ## Documentation
 
 For more information, read the Bun docs in `node_modules/bun-types/docs/**.mdx`.
