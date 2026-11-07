@@ -55,6 +55,8 @@ export default function createConfig(phase: string): NextConfig {
 		compiler: {
 			define,
 		},
+		/** Keeps the `*.e2e.tsx` routes and their generated types out of regular builds. */
+		distDir: env.TEST_BUILD === "true" ? ".next/test" : ".next",
 		output: env.BUILD_MODE,
 		/** Routes for error pages in e2e tests only exist in test builds, as `*.e2e.tsx` files. */
 		pageExtensions: ["tsx", "ts", "jsx", "js", ...(env.TEST_BUILD === "true" ? ["e2e.tsx"] : [])],

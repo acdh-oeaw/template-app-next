@@ -6,6 +6,9 @@ import { expect, test as base } from "@playwright/test";
  */
 export const thrownErrors = /Test error|Minified React error #441|^console error: Error$/;
 
+/** WebKit reports prefetches which are cancelled by leaving the page as uncaught exceptions. */
+const ignoredErrors = /\?_rsc=\S+ due to access control checks/;
+
 interface Options {
 	/** Console errors and uncaught exceptions which are expected in a test, e.g. when it throws on purpose. */
 	allowedErrors: RegExp | null;
@@ -21,7 +24,7 @@ export const test = base.extend<Options>({
 		const documents = new Set<string>();
 
 		function report(problem: string): void {
-			if (allowedErrors?.test(problem) !== true) {
+			if (allowedErrors?.test(problem) !== true && !ignoredErrors.test(problem)) {
 				problems.push(problem);
 			}
 		}

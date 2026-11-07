@@ -30,6 +30,14 @@
 		"types": ["bun", "react", "react-dom"],
 		"verbatimModuleSyntax": true
 	},
-	"include": ["**/*.ts", "**/*.tsx", ".next/types/**/*.ts", ".next/dev/types/**/*.ts"],
-	"exclude": ["dist", "node_modules", "out", "public", "storybook-static"]
+	/** Next.js adds the `.next/test` entries in test builds, which are excluded to keep test routes out of route types. */
+	"include": [
+		"**/*.ts",
+		"**/*.tsx",
+		".next/types/**/*.ts",
+		".next/dev/types/**/*.ts",
+		".next/test/types/**/*.ts",
+		".next/test/dev/types/**/*.ts"
+	],
+	"exclude": [".next/test", "dist", "node_modules", "out", "public", "storybook-static"]
 }
