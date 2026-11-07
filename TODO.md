@@ -14,7 +14,8 @@
       `[locale]` root layout, `not-found.tsx` and a catch-all route, with and without `cacheComponents`. Recorded as
       `test.fail()` in `e2e/errors.test.ts`, which flags itself once fixed.
 - [x] Playwright setup
-  - [ ] Accessibility checks with `axe-core` and/or screen reader tests with `guidepup`
+  - [x] Accessibility checks with `axe-core` in `e2e/a11y.test.ts`
+  - [ ] Screen reader tests with `guidepup`
 - [ ] Browser e2e test for light and dark mode, with Playwright's `colorScheme` option
 - [x] Browser e2e test for canonical urls: content must only be reachable under the language prefix (`/en/*`), never
       under the internal locale (`/en-GB/*`) that the proxy rewrites to. Currently `/en-GB/*` redirects to

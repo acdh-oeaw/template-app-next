@@ -18,8 +18,12 @@
 
 :root {
 	block-size: 100%;
+	color-scheme: light dark;
 }
 
+/* Explicit colors, because `axe-core` assumes a white background when it is transparent. */
 body {
+	background-color: Canvas;
 	block-size: 100%;
+	color: CanvasText;
 }
