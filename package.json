@@ -17,6 +17,8 @@
 		"lint:fix": "bun lint --fix",
 		"prepare": "BUN_OPTIONS=--bun bun run --sequential env:sync types:prepare",
 		"start": "next start",
+		"styles:check": "stylelint \"styles/**/*.css\"",
+		"styles:fix": "stylelint --fix \"styles/**/*.css\"",
 		"test:e2e": "playwright test --config ./configs/playwright.config.ts",
 		"test:e2e:install": "playwright install --with-deps",
 		"test:e2e:ui": "playwright test --config ./configs/playwright.config.ts --ui",

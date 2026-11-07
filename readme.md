@@ -77,6 +77,15 @@ bun run test:e2e:install
 bun run test:e2e
 ```
 
+## Continuous integration
+
+[`.github/workflows/validate.yaml`](.github/workflows/validate.yaml) runs static checks and end-to-end tests on pull
+requests and pushes to `main`. [`.github/actions/setup`](.github/actions/setup/action.yaml) installs dependencies, and
+the Bun version from `devEngines` in `package.json`, without the caret.
+
+`bun run env:sync` does nothing in CI, so add variables that are required for the build to the `env` of the `e2e` job.
+When a test fails, the Playwright report is uploaded as a workflow artifact.
+
 ## Docker
 
 [`.dockerignore`](.dockerignore) is an allowlist: when the build needs a new top-level file or folder, add it there.

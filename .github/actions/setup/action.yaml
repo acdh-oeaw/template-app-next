@@ -1,0 +1,17 @@
+name: Setup
+description: Install Bun and project dependencies.
+
+runs:
+  using: composite
+  steps:
+    # `setup-bun` does not read `devEngines`. Removing the caret runs the exact minimum version, not the latest match.
+    - id: config
+      shell: bash
+      run: echo "bun-version=$(jq -r '.devEngines.runtime.version | ltrimstr("^")' package.json)" >> "$GITHUB_OUTPUT"
+
+    - uses: oven-sh/setup-bun@v2
+      with:
+        bun-version: ${{ steps.config.outputs.bun-version }}
+
+    - shell: bash
+      run: bun install --frozen-lockfile

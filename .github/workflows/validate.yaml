@@ -1,0 +1,75 @@
+name: Validate
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+permissions:
+  contents: read
+
+env:
+  NEXT_TELEMETRY_DISABLED: 1
+  # `runs-on` cannot read `env`, so it uses this value through the yaml anchor.
+  RUNNER_IMAGE: &runner-image ubuntu-26.04
+
+jobs:
+  check:
+    name: Lint, format and type check
+    runs-on: *runner-image
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+
+      - uses: ./.github/actions/setup
+
+      - parallel:
+          - run: bun run format:check
+          - run: bun run lint:check
+          - run: bun run styles:check
+          - run: bun run types:check
+
+  e2e:
+    name: End-to-end tests
+    runs-on: *runner-image
+    timeout-minutes: 30
+    env:
+      # `bun run env:sync` does not create `.env.local` in CI.
+      NEXT_PUBLIC_APP_BASE_URL: http://localhost:3000
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+
+      - uses: ./.github/actions/setup
+
+      - uses: actions/cache@v6
+        with:
+          path: ~/.cache/ms-playwright
+          key: playwright-${{ env.RUNNER_IMAGE }}-${{ hashFiles('node_modules/@playwright/test/package.json') }}
+
+      # system dependencies are not cached, so this also needs to run on a cache hit.
+      - run: bun run test:e2e:install
+
+      - uses: actions/cache@v6
+        with:
+          path: .next/cache
+          key: next-${{ env.RUNNER_IMAGE }}-${{ hashFiles('bun.lock') }}-${{ github.sha }}
+          restore-keys: next-${{ env.RUNNER_IMAGE }}-${{ hashFiles('bun.lock') }}-
+
+      - run: bun run test:e2e
+
+      - uses: actions/upload-artifact@v7
+        if: ${{ failure() }}
+        with:
+          name: playwright-report
+          path: playwright-report/
+          retention-days: 7
