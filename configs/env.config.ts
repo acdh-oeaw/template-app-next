@@ -18,6 +18,12 @@ export const serverEnvSchema = v.object({
 	BUILD_MODE: v.optional(
 		v.pipe(v.picklist(["standalone"]), v.description("Output mode of `next build`, set in the `Dockerfile`.")),
 	),
+	TEST_BUILD: v.optional(
+		v.pipe(
+			v.picklist(["true"]),
+			v.description("Includes the `*.e2e.tsx` test routes in `next build`, set by Playwright."),
+		),
+	),
 	NEXT_SERVER_ACTIONS_ENCRYPTION_KEY: v.optional(
 		v.pipe(
 			v.string(),

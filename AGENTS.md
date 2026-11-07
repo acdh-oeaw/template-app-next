@@ -37,6 +37,8 @@ Locate elements by aria role with `getByRole`, not by element name with `locator
 - `cacheComponents` keeps previous pages in the DOM with `display: none` after client navigations. `getByRole` ignores hidden elements, plain locators also match them
 - Elements without an aria role, like those in `<head>`, can use `locator()`. Add these selectors to `allowed` in `configs/oxlint.config.ts`
 
+Routes which only exist for tests use the `.e2e.tsx` page extension, for example `page.e2e.tsx`. `next.config.ts` only enables it when `TEST_BUILD` is set, which Playwright does, so these routes are not part of production builds.
+
 ## Type checking
 
 Use `bun check` to type check the project. It reads `tsconfig.json` and reports the same errors as `tsc`.

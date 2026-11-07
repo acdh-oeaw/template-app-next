@@ -49,7 +49,6 @@ export default function createConfig(phase: string): NextConfig {
 	const config: NextConfig = {
 		experimental: {
 			agentFeedback: true,
-			globalNotFound: true,
 			turbopackRustReactCompiler: true,
 		},
 		cacheComponents: true,
@@ -57,8 +56,27 @@ export default function createConfig(phase: string): NextConfig {
 			define,
 		},
 		output: env.BUILD_MODE,
+		/** Routes for error pages in e2e tests only exist in test builds, as `*.e2e.tsx` files. */
+		pageExtensions: ["tsx", "ts", "jsx", "js", ...(env.TEST_BUILD === "true" ? ["e2e.tsx"] : [])],
 		partialPrefetching: true,
 		reactCompiler: true,
+		rewrites() {
+			return Promise.resolve({
+				beforeFiles: [],
+				afterFiles: [
+					/**
+					 * Every pathname matches the `[locale]` segment, so `notFound()` in the root layout would show the default
+					 * Next.js page for invalid locales. Rewrite them to the catch-all route in the default locale instead. Only
+					 * runs for pathnames which did not match a file or a static route.
+					 */
+					{
+						source: `/:segment((?!(?:${locales.join("|")})(?:/|$))[^/]+)/:rest*`,
+						destination: `/${defaultLocale}/:segment/:rest*`,
+					},
+				],
+				fallback: [],
+			});
+		},
 		turbopack: {
 			rules: {
 				"*.css": {

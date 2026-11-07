@@ -10,17 +10,11 @@
   - [ ] Validate `content/*/metadata.json` once there is a validation library (see environment variables)
   - [ ] OpenGraph images
 - [ ] Not-found pages are not server-rendered: `/en/nope` returns 404 with an empty `__next_error__` shell, and the
-      localized not-found UI only renders client-side. Not caused by `partialPrefetching`, probably `cacheComponents`.
+      localized not-found UI only renders client-side. Not caused by this app: also happens in a minimal app with only a
+      `[locale]` root layout, `not-found.tsx` and a catch-all route, with and without `cacheComponents`. Recorded as
+      `test.fail()` in `e2e/errors.test.ts`, which flags itself once fixed.
 - [x] Playwright setup
   - [ ] Accessibility checks with `axe-core` and/or screen reader tests with `guidepup`
-- [ ] Browser e2e test for the not-found and error pages in `e2e/errors.test.ts` (curl only sees status codes, because
-      of the client-rendered shell)
-  - [ ] `/en/does-not-exist`: 404 with the localized `app/[locale]/not-found.tsx`, via the `[...rest]` catch-all
-  - [ ] `/de/does-not-exist`: same, with the German message
-  - [ ] Invalid locale, e.g. `/x.png`: 404 with `global-not-found.tsx`, not Next's default not-found page. Always renders
-        in the default locale, also for German visitors
-  - [ ] `/en-GB`: redirected to `/en/en-GB` by the proxy, then 404
-  - [ ] Error page, once it exists
 - [ ] Browser e2e test for light and dark mode, with Playwright's `colorScheme` option
 - [x] Browser e2e test for canonical urls: content must only be reachable under the language prefix (`/en/*`), never
       under the internal locale (`/en-GB/*`) that the proxy rewrites to. Currently `/en-GB/*` redirects to
@@ -40,9 +34,8 @@
   - [ ] Browser e2e test for client navigation with `instant()` from `@next/playwright`, once there are links and dynamic
         content. Pair positive assertions with a negative one like `toHaveCount(0)`, because nothing is held back when
         the testing API is missing
-    - [ ] Enable `experimental.exposeTestingApiInProductionBuild` for test builds only, with an `EXPOSE_TESTING_API`
-          variable in `configs/env.config.ts`, set in Playwright's `webServer.env` and never in the `Dockerfile`
-- [ ] Pages: imprint (placeholder only), accessibility declaration, error, loading
+    - [ ] Enable `experimental.exposeTestingApiInProductionBuild` for test builds only, with the `TEST_BUILD` variable
+- [ ] Pages: imprint (placeholder only), accessibility declaration, loading
 - [ ] Devcontainer, issue templates
 
 ## Maybe
@@ -60,4 +53,5 @@
   - [ ] `search-params.ts` convention
   - [ ] Derive the static pages in `app/sitemap.ts` from typed routes, or type check the list against `AppRoutes` from
         `.next/types/routes.d.ts`, so that new pages cannot be forgotten
+- [ ] Localize `app/global-error.tsx`: it replaces the root layout, so it has no locale or translations
 - [ ] Clean up leftover `.gitignore` entries (`.pnpm-store/`, `/docker/.env`, `.turbo/`, ...)

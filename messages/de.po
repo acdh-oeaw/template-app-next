@@ -11,13 +11,22 @@ msgctxt "N015Sp"
 msgid "Hello, World!"
 msgstr "Hallo, Welt!"
 
+#: app/[locale]/error.tsx
+msgctxt "JqiqNj"
+msgid "Something went wrong"
+msgstr "Etwas ist schiefgelaufen"
+
+#: app/[locale]/error.tsx
+msgctxt "FazwRl"
+msgid "Try again"
+msgstr "Erneut versuchen"
+
 #: app/[locale]/imprint/page.tsx
 msgctxt "xYJkOZ"
 msgid "Imprint"
 msgstr "Impressum"
 
 #: app/[locale]/not-found.tsx
-#: app/global-not-found.tsx
 msgctxt "QRccCM"
 msgid "Page not found"
 msgstr "Seite nicht gefunden"
