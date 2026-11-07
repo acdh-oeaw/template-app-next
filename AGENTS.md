@@ -50,6 +50,18 @@ Use `bun check` to type check the project. It reads `tsconfig.json` and reports 
 - Separate primitive tokens (raw values, like `--color-neutral-950`) from semantic tokens (their purpose, like `--color-canvas-text`). Components use semantic tokens only
 - Define color tokens that differ between color schemes with `light-dark()`, not with `dark:` variants. The `data-color-scheme` attribute on `<html>` overrides the system preference
 
+## Pages
+
+- Each page renders its own main landmark with `<MainContent>` from `components/main-content.tsx`, not with `<main>`, because it is the target of the skip link. This includes `not-found`, `error` and `loading` pages. The layout only renders the header and footer
+
+## React
+
+- Avoid booleans for application state: name the states instead, like `status: "idle" | "loading" | "error"` rather than `isLoading` and `isError`, also when there are only two. Boolean props are fine when they mirror an html attribute or a third-party prop, like `disabled` or `isDisabled`
+- Name booleans with an `is` or `has` prefix, like `isDisabled` or `hasError`. Html attributes keep their own names, like `disabled`
+- Model state explicitly when it has several related values or meaningful transitions, like loading, success and error: use `useReducer` with a discriminated union rather than several `useState` calls, so impossible states cannot be represented. `useState` is fine for a single independent value
+- Use `xstate` only for flows that outgrow a reducer, like multi-step processes with guards or async side effects. Ask before adding it as a dependency
+- Prefer composition over configuration: pass content through `children` or slot props rather than adding config props that switch what a component renders
+
 ## Documentation
 
 For more information, read the Bun docs in `node_modules/bun-types/docs/**.mdx`.
