@@ -42,7 +42,7 @@ for (const { prefix, lang, og, alternate, meta, imprint } of locales) {
 				const url = await getMeta(page, "og:url").getAttribute("content");
 				expect(url).toMatch(/^https?:\/\//);
 				expect(new URL(url ?? "", baseURL).pathname).toBe(pathname);
-				expect(url).toBe(await page.locator('head link[rel="canonical"]').getAttribute("href"));
+				await expect(page.locator('head link[rel="canonical"]')).toHaveAttribute("href", url ?? "");
 			});
 		}
 	});

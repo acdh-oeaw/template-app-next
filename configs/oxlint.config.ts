@@ -1,6 +1,8 @@
 import * as path from "node:path";
 import { fileURLToPath } from "node:url";
 
+import playwright from "eslint-plugin-playwright";
+
 import bunDefaults from "#/configs/oxlint/bun-defaults.ts";
 
 const root = path.dirname(fileURLToPath(import.meta.resolve("#/package.json")));
@@ -26,6 +28,7 @@ const envParsePath = {
 const config = {
 	extends: [bunDefaults],
 	plugins: [...bunDefaults.plugins, "node"],
+	jsPlugins: ["eslint-plugin-playwright"],
 	options: {
 		typeAware: true,
 	},
@@ -35,6 +38,25 @@ const config = {
 		"node/no-process-env": ["error", { allowedVariables: ["CI", "NODE_ENV"] }],
 	},
 	overrides: [
+		{
+			files: [path.join(root, "e2e/**")],
+			rules: {
+				...playwright.configs["flat/recommended"].rules,
+				"playwright/no-raw-locators": [
+					"error",
+					{
+						/** Document metadata has no aria role, so these can only be selected by element. */
+						allowed: [
+							"html",
+							'head link[rel="alternate"][hreflang]',
+							'head link[rel="canonical"]',
+							'head meta[name="robots"]',
+						],
+					},
+				],
+				"playwright/prefer-native-locators": "error",
+			},
+		},
 		{
 			files: ["**/playwright.config.ts"],
 			rules: {

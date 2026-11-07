@@ -28,6 +28,15 @@ test("hello world", () => {
 });
 ```
 
+## End-to-end tests
+
+Use `bun run test:e2e` to run the Playwright tests in `e2e/`. Set `PORT` if port 3000 is taken, because Playwright reuses whatever server is listening there.
+
+Locate elements by aria role with `getByRole`, not by element name with `locator("h1")`. `bun lint` enforces this with `playwright/no-raw-locators`.
+
+- `cacheComponents` keeps previous pages in the DOM with `display: none` after client navigations. `getByRole` ignores hidden elements, plain locators also match them
+- Elements without an aria role, like those in `<head>`, can use `locator()`. Add these selectors to `allowed` in `configs/oxlint.config.ts`
+
 ## Type checking
 
 Use `bun check` to type check the project. It reads `tsconfig.json` and reports the same errors as `tsc`.

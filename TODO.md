@@ -37,6 +37,11 @@
 - [ ] `test` script and test setup
 - [ ] App shell: layout, header, footer, navigation, locale switcher, color scheme switcher
   - [ ] Footer: hardcoded links to imprint and accessibility declaration, social links from `getSiteMetadata()`
+  - [ ] Browser e2e test for client navigation with `instant()` from `@next/playwright`, once there are links and dynamic
+        content. Pair positive assertions with a negative one like `toHaveCount(0)`, because nothing is held back when
+        the testing API is missing
+    - [ ] Enable `experimental.exposeTestingApiInProductionBuild` for test builds only, with an `EXPOSE_TESTING_API`
+          variable in `configs/env.config.ts`, set in Playwright's `webServer.env` and never in the `Dockerfile`
 - [ ] Pages: imprint (placeholder only), accessibility declaration, error, loading
 - [ ] Devcontainer, issue templates
 
