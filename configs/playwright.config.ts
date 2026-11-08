@@ -35,7 +35,24 @@ export default defineConfig({
 	},
 	projects: [
 		{ name: "chromium", use: { ...devices["Desktop Chrome"] } },
-		{ name: "firefox", use: { ...devices["Desktop Firefox"] } },
+		{
+			name: "firefox",
+			use: {
+				...devices["Desktop Firefox"],
+				launchOptions: {
+					firefoxUserPrefs: {
+						/**
+						 * Prerendered pages are sent with `stale-while-revalidate`, so when another tab has cached a page, Firefox
+						 * serves it from the cache and revalidates it in the background. Playwright reports the revalidation as a
+						 * navigation that never finishes, and later actions hang waiting for it.
+						 *
+						 * @see {@link https://github.com/microsoft/playwright/issues/43995}
+						 */
+						"network.http.stale_while_revalidate.enabled": false,
+					},
+				},
+			},
+		},
 		{ name: "webkit", use: { ...devices["Desktop Safari"] } },
 	],
 });
