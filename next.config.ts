@@ -50,6 +50,7 @@ export default function createConfig(phase: string): NextConfig {
 		experimental: {
 			agentFeedback: true,
 			globalNotFound: true,
+			strictRouteTypes: true,
 			turbopackRustReactCompiler: true,
 		},
 		cacheComponents: true,
@@ -66,6 +67,11 @@ export default function createConfig(phase: string): NextConfig {
 				},
 				...localeOptimization.rules,
 			},
+		},
+		typedRoutes: false,
+		typescript: {
+			/** Type checking runs separately with `bun run types:check`, so `next build` does not repeat it. */
+			ignoreBuildErrors: true,
 		},
 	};
 
