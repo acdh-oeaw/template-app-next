@@ -62,6 +62,13 @@ Use `bun check` to type check the project. It reads `tsconfig.json` and reports 
 - Use `xstate` only for flows that outgrow a reducer, like multi-step processes with guards or async side effects. Ask before adding it as a dependency
 - Prefer composition over configuration: pass content through `children` or slot props rather than adding config props that switch what a component renders
 
+## Code comments
+
+- Only add a comment when something needs explanation, like a non-obvious reason or constraint. Don't restate what the code does
+- Keep comments concise
+- For workarounds, link to the upstream issue where appropriate, with `@see {@link url}`, so the workaround can be removed once the issue is fixed
+- Avoid comments that easily get out of sync with the code, like ones that repeat values or describe other files, and don't document the discussion or history that led to the code. That belongs in the commit message
+
 ## Commits
 
 - Keep commits atomic: one logical change per commit, including its tests and docs. Each commit should work on its own, so a change and what it depends on go in the same commit
