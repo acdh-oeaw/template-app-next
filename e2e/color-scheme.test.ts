@@ -9,7 +9,7 @@ function getRadio(page: Page, name: string) {
 async function select(page: Page, name: string): Promise<void> {
 	await expect(getRadio(page, name)).toBeEnabled();
 	/** The input is visually hidden, so click the label like a user. */
-	await page.getByRole("radiogroup").getByText(name, { exact: true }).click();
+	await page.getByRole("contentinfo").getByRole("radiogroup").getByText(name, { exact: true }).click();
 	await expect(getRadio(page, name)).toBeChecked();
 }
 
