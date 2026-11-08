@@ -61,6 +61,7 @@ Use `bun check` to type check the project. It reads `tsconfig.json` and reports 
 - Model state explicitly when it has several related values or meaningful transitions, like loading, success and error: use `useReducer` with a discriminated union rather than several `useState` calls, so impossible states cannot be represented. `useState` is fine for a single independent value
 - Use `xstate` only for flows that outgrow a reducer, like multi-step processes with guards or async side effects. Ask before adding it as a dependency
 - Prefer composition over configuration: pass content through `children` or slot props rather than adding config props that switch what a component renders
+- Choose the element by behavior, not by looks: a link navigates, a button performs an action. A link can look like a button and a button like a link, by sharing style functions (like `buttonStyles()`) that return class names, not with polymorphic props like `<Button href>` or `as="a"`. Links cannot be disabled, so something that needs a disabled state is a button
 
 ## Code comments
 
