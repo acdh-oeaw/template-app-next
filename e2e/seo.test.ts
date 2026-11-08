@@ -1,6 +1,6 @@
 import { type APIRequestContext, expect, test } from "@playwright/test";
 
-const pathnames = ["/en", "/en/imprint", "/de", "/de/imprint"];
+const pathnames = ["/en", "/en/about", "/en/imprint", "/de", "/de/about", "/de/imprint"];
 
 interface SitemapEntry {
 	url: string;

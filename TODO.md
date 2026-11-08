@@ -48,7 +48,13 @@
         `acdh-oeaw/gl-autodevops-minimal-port` workflow
 - [ ] `test` script and test setup
 - [ ] App shell: `components/header.tsx`, `components/footer.tsx`, rendered in `app/[locale]/layout.tsx`
-  - [ ] Navigation
+  - [x] Navigation
+  - [ ] Mobile navigation: the menu button goes inside the navigation landmark, so it is found when navigating by
+        landmarks
+  - [ ] Navigation menus (nested items): add a `kind` to `NavigationItem`. React Aria collection components with `href`
+        items, like `Menu`, need a `RouterProvider` for client navigation
+  - [ ] `IconButton` component, once there is a first icon button: requires an accessible name, hides the icon from
+        screen readers, and uses a `touch-area` utility, which enlarges the hit area with a pseudo-element
   - [x] Locale switcher
   - [ ] Footer: link to the accessibility declaration, social links from `getSiteMetadata()`
   - [x] Color scheme switcher in `components/color-scheme/`

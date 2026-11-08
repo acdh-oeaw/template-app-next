@@ -5,7 +5,7 @@ import { getAlternateLanguages, type Href } from "#/lib/i18n/get-alternate-langu
 import { locales } from "#/lib/i18n/locales.ts";
 import { getPathname } from "#/lib/i18n/navigation.ts";
 
-const pages: Array<Href> = ["/", "/imprint"];
+const pages: Array<Href> = ["/", "/about", "/imprint"];
 
 /** Only set `lastModified` to a real content date, never `new Date()`: crawlers ignore unreliable values. */
 export default function sitemap(): MetadataRoute.Sitemap {

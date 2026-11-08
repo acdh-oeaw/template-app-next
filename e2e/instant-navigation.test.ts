@@ -2,7 +2,10 @@ import { instant } from "@next/playwright";
 import { expect, type Locator, type Page, test } from "@playwright/test";
 
 function getLocaleLink(page: Page, name: string): Locator {
-	return page.getByRole("banner").getByRole("navigation").getByRole("link", { name, exact: true });
+	return page
+		.getByRole("banner")
+		.getByRole("navigation", { name: /^(Language|Sprache)$/ })
+		.getByRole("link", { name, exact: true });
 }
 
 test.describe("instant navigation", () => {

@@ -1,7 +1,7 @@
 import { expect, type Locator, type Page, test } from "@playwright/test";
 
 function getSwitcher(page: Page): Locator {
-	return page.getByRole("banner").getByRole("navigation");
+	return page.getByRole("banner").getByRole("navigation", { name: /^(Language|Sprache)$/ });
 }
 
 function getLink(page: Page, name: string): Locator {

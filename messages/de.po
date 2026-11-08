@@ -11,6 +11,12 @@ msgctxt "N015Sp"
 msgid "Hello, World!"
 msgstr "Hallo, Welt!"
 
+#: app/[locale]/about/page.tsx
+#: lib/navigation/main-navigation.ts
+msgctxt "g5pX-a"
+msgid "About"
+msgstr "Über uns"
+
 #: app/[locale]/imprint/page.tsx
 #: components/footer.tsx
 msgctxt "xYJkOZ"
@@ -48,7 +54,17 @@ msgctxt "y1Z3or"
 msgid "Language"
 msgstr "Sprache"
 
+#: components/navigation/main-navigation.tsx
+msgctxt "EFTSMc"
+msgid "Main"
+msgstr "Hauptnavigation"
+
 #: components/skip-link.tsx
 msgctxt "2sRCsy"
 msgid "Skip to main content"
 msgstr "Zum Hauptinhalt springen"
+
+#: lib/navigation/main-navigation.ts
+msgctxt "ejEGdx"
+msgid "Home"
+msgstr "Startseite"
