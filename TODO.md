@@ -13,6 +13,11 @@
       localized not-found UI only renders client-side. Not caused by `partialPrefetching`, probably `cacheComponents`.
 - [x] Playwright setup
   - [ ] Accessibility checks with `axe-core` and/or screen reader tests with `guidepup`
+  - [ ] Mock upstream apis, once the app reads from one, to test error states: point the api base url at a small Bun mock
+        server with an env variable, so it works for `next build` and at request time; `page.route()` for browser
+        requests; unit tests for mapping errors to ui. Not `experimental.testProxy`: undocumented, no new features
+        since 2024, only mocks request-time fetches (not prerendered or `"use cache"` data), and makes the server send
+        requests to whatever port a test header names
 - [ ] Browser e2e test for the not-found and error pages in `e2e/errors.test.ts` (curl only sees status codes, because
       of the client-rendered shell)
   - [ ] `/en/does-not-exist`: 404 with the localized `app/[locale]/not-found.tsx`, via the `[...rest]` catch-all
