@@ -7,7 +7,7 @@
   - [x] `manifest.ts`
   - [x] `robots.ts`, `sitemap.ts`
   - [ ] JSON-LD (`WebSite`, with social links as `sameAs`)
-  - [ ] Validate `content/*/metadata.json` once there is a validation library (see environment variables)
+  - [x] Validate `content/*/metadata.json`
   - [ ] OpenGraph images
 - [ ] Not-found pages are not server-rendered: `/en/nope` returns 404 with an empty `__next_error__` shell, and the
       localized not-found UI only renders client-side. Not caused by `partialPrefetching`, probably `cacheComponents`.
