@@ -11,8 +11,10 @@
   - [ ] OpenGraph images
 - [ ] Not-found pages are not server-rendered: `/en/nope` returns 404 with an empty `__next_error__` shell, and the
       localized not-found UI only renders client-side. Not caused by `partialPrefetching`, probably `cacheComponents`.
+      `e2e/accessibility.test.ts` waits for the client render, because the shell has no `lang`, title or landmarks
 - [x] Playwright setup
-  - [ ] Accessibility checks with `axe-core` and/or screen reader tests with `guidepup`
+  - [x] Accessibility checks with `axe-core`
+  - [ ] Screen reader tests with `guidepup`
   - [ ] Mock upstream apis, once the app reads from one, to test error states: point the api base url at a small Bun mock
         server with an env variable, so it works for `next build` and at request time; `page.route()` for browser
         requests; unit tests for mapping errors to ui. Not `experimental.testProxy`: undocumented, no new features
