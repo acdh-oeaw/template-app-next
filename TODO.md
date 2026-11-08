@@ -96,4 +96,7 @@
   - [ ] `search-params.ts` convention
   - [ ] Derive the static pages in `app/sitemap.ts` from typed routes, or type check the list against `AppRoutes` from
         `.next/types/routes.d.ts`, so that new pages cannot be forgotten
+- [ ] After updating `@react-aria/optimize-locales-plugin` past 2.1.0, re-create our patch, and decide whether it should
+      keep `locales: readonly string[]` in the Turbopack rule type, which upstream relaxed to `string[]` to satisfy
+      Next.js's `JSONValue` (adobe/react-spectrum#10889, unreleased). `bun check` passes with the readonly type today
 - [ ] Clean up leftover `.gitignore` entries (`.pnpm-store/`, `/docker/.env`, `.turbo/`, ...)
