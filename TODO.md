@@ -31,6 +31,9 @@
 - [x] Browser e2e test for canonical urls: content must only be reachable under the language prefix (`/en/*`), never
       under the internal locale (`/en-GB/*`) that the proxy rewrites to. Currently `/en-GB/*` redirects to
       `/en/en-GB/*`, also for RSC requests. Pages using `createPageMetadata()` emit a matching `<link rel="canonical">`.
+- [ ] Remove `lib/browser/defer-message-port-messages-in-bfcache.ts` once Firefox fixes
+      https://bugzilla.mozilla.org/show_bug.cgi?id=2077455. Playwright cannot test bfcache restores, so check manually in
+      a production build: leave the site with a mouse click on a React Aria link, go back, then follow a client link
 
 ## Missing
 
