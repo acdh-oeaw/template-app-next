@@ -68,7 +68,7 @@ test.describe("skip link", () => {
 		await activateSkipLink(page);
 		await expect(page.getByRole("main")).toBeFocused();
 
-		await page.getByRole("banner").getByRole("link").click();
+		await page.getByRole("banner").getByRole("link", { name: "ACDH App" }).click();
 		await expect(page.getByRole("heading", { level: 1, name: "Hello, World!" })).toBeVisible();
 		await activateSkipLink(page);
 		await expect(page.getByRole("main")).toBeFocused();

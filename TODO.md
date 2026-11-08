@@ -40,7 +40,8 @@
         `acdh-oeaw/gl-autodevops-minimal-port` workflow
 - [ ] `test` script and test setup
 - [ ] App shell: `components/header.tsx`, `components/footer.tsx`, rendered in `app/[locale]/layout.tsx`
-  - [ ] Navigation, locale switcher
+  - [ ] Navigation
+  - [x] Locale switcher
   - [ ] Footer: link to the accessibility declaration, social links from `getSiteMetadata()`
   - [x] Color scheme switcher in `components/color-scheme/`
   - [ ] Browser e2e test for client navigation with `instant()` from `@next/playwright`, once there are links and dynamic

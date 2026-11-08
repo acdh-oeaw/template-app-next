@@ -27,8 +27,8 @@ test.describe("app shell", () => {
 		await expect(page).toHaveURL(/\/de\/imprint$/);
 		await expect(page.getByRole("heading", { level: 1, name: "Impressum" })).toBeVisible();
 
-		await page.getByRole("banner").getByRole("link").click();
+		await page.getByRole("banner").getByRole("link", { name: "ACDH-App" }).click();
 		await expect(page).toHaveURL(/\/de$/);
-		await expect(page.getByRole("banner").getByRole("link")).toBeVisible();
+		await expect(page.getByRole("banner").getByRole("link", { name: "ACDH-App" })).toBeVisible();
 	});
 });

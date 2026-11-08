@@ -43,6 +43,11 @@ msgctxt "DxgBSX"
 msgid "Color scheme"
 msgstr "Color scheme"
 
+#: components/locale-switcher/locale-switcher-links.tsx
+msgctxt "y1Z3or"
+msgid "Language"
+msgstr "Language"
+
 #: components/skip-link.tsx
 msgctxt "2sRCsy"
 msgid "Skip to main content"
