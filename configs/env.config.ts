@@ -18,6 +18,14 @@ export const serverEnvSchema = v.object({
 	BUILD_MODE: v.optional(
 		v.pipe(v.picklist(["standalone"]), v.description("Output mode of `next build`, set in the `Dockerfile`.")),
 	),
+	BUILD_TARGET: v.optional(
+		v.pipe(
+			v.picklist(["e2e"]),
+			v.description(
+				"Purpose of `next build`, set by the end-to-end tests. `e2e` includes the instant navigation testing API, so never set it for a user-facing deployment.",
+			),
+		),
+	),
 	NEXT_SERVER_ACTIONS_ENCRYPTION_KEY: v.optional(
 		v.pipe(
 			v.string(),

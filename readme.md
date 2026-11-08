@@ -72,6 +72,11 @@ To remove it, delete `components/color-scheme/` and `e2e/color-scheme.test.ts`, 
 End-to-end tests live in `e2e/` and run with Playwright in Chromium, Firefox and WebKit, against a production build
 started by Playwright, or an already running server on port 3000. Set `PORT` to use a different port.
 
+The `instant()` helper from `@next/playwright` asserts what is visible immediately on a page load or client navigation,
+before request-time content streams in. It needs the testing API, which `next dev` includes, and `next build` only with
+`BUILD_TARGET=e2e`. Playwright sets this for the build it starts, so an already running production server must be
+built with it too.
+
 ```sh
 bun run test:e2e:install
 bun run test:e2e

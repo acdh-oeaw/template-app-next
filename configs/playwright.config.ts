@@ -23,7 +23,7 @@ export default defineConfig({
 	webServer: {
 		command: "bun run --sequential build start",
 		cwd: "..",
-		env: { PORT: String(port) },
+		env: { BUILD_TARGET: "e2e", PORT: String(port) },
 		url: baseURL,
 		timeout: 3 * 60 * 1000,
 		reuseExistingServer: !isCI,

@@ -49,6 +49,7 @@ export default function createConfig(phase: string): NextConfig {
 	const config: NextConfig = {
 		experimental: {
 			agentFeedback: true,
+			exposeTestingApiInProductionBuild: env.BUILD_TARGET === "e2e",
 			globalNotFound: true,
 			strictRouteTypes: true,
 			turbopackRustReactCompiler: true,

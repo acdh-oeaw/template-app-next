@@ -47,8 +47,10 @@
   - [ ] Browser e2e test for client navigation with `instant()` from `@next/playwright`, once there are links and dynamic
         content. Pair positive assertions with a negative one like `toHaveCount(0)`, because nothing is held back when
         the testing API is missing
-    - [ ] Enable `experimental.exposeTestingApiInProductionBuild` for test builds only, with an `EXPOSE_TESTING_API`
-          variable in `configs/env.config.ts`, set in Playwright's `webServer.env` and never in the `Dockerfile`
+    - [x] Enable `experimental.exposeTestingApiInProductionBuild` for test builds only, with `BUILD_TARGET=e2e` in
+          `configs/env.config.ts`, set in Playwright's `webServer.env` and never in the `Dockerfile`
+    - [x] `e2e/instant-navigation.test.ts` with positive assertions for the existing pages
+    - [ ] Negative assertions, once a page has request-time content
 - [ ] Focus management and announcements after client navigation. Next.js has no API to choose where focus goes, or
       what screen readers announce, after a navigation. A locale switch replaces the root layout and drops focus to
       `<body>`, which the locale switcher works around with module state. Design the API we wish existed upstream, and
