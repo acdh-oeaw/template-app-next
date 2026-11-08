@@ -4,8 +4,9 @@ import { useExtracted as useTranslations, useLocale } from "next-intl";
 import { useSearchParams } from "next/navigation";
 import { Fragment, type ReactNode, Suspense, useEffect, useRef } from "react";
 
+import { Link } from "#/components/link.tsx";
 import { getLanguage, type Locale, locales } from "#/lib/i18n/locales.ts";
-import { Link, usePathname } from "#/lib/i18n/navigation.ts";
+import { usePathname } from "#/lib/i18n/navigation.ts";
 
 /**
  * Each locale is named in its own language, so these are not translated. Not derived with `Intl.DisplayNames`, which

@@ -1,8 +1,8 @@
 import type { ReactNode } from "react";
 
+import { Link } from "#/components/link.tsx";
 import { LocaleSwitcher } from "#/components/locale-switcher/locale-switcher.tsx";
 import type { Locale } from "#/lib/i18n/locales.ts";
-import { Link } from "#/lib/i18n/navigation.ts";
 import { getSiteMetadata } from "#/lib/metadata/site-metadata.ts";
 
 interface HeaderProps {
