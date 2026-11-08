@@ -49,6 +49,17 @@
         the testing API is missing
     - [ ] Enable `experimental.exposeTestingApiInProductionBuild` for test builds only, with an `EXPOSE_TESTING_API`
           variable in `configs/env.config.ts`, set in Playwright's `webServer.env` and never in the `Dockerfile`
+- [ ] Focus management and announcements after client navigation. Next.js has no API to choose where focus goes, or
+      what screen readers announce, after a navigation. A locale switch replaces the root layout and drops focus to
+      `<body>`, which the locale switcher works around with module state. Design the API we wish existed upstream, and
+      carry it as a local patch until it is merged
+  - [ ] Research: current Next.js behaviour (route announcer, scroll and focus handling, layout boundaries), other
+        routers (React Router, TanStack Router, SvelteKit, Astro view transitions), and recommendations (the Fable
+        Tech Labs user testing of client routing by Marcy Sutton)
+  - [ ] Cases: link to a new page, same-page hash or search param change, back and forward, a navigation from a control
+        that should keep focus (like a locale or filter switcher), form submission, not-found and error pages
+  - [ ] API design, write it up before building it, and consider proposing it upstream
+  - [ ] Implement as a patch, replace the workaround in `components/locale-switcher/`, and add e2e tests
 - [ ] Pages: imprint (placeholder only), accessibility declaration, error, loading
 - [ ] Devcontainer, issue templates
 
