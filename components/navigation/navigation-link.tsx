@@ -31,7 +31,7 @@ function CurrentNavigationLink(props: Readonly<NavigationLinkProps>): ReactNode 
 	const pathname = usePathname();
 
 	return (
-		<Link aria-current={getAriaCurrent(pathname, href)} className="aria-[current]:underline" href={href}>
+		<Link aria-current={getAriaCurrent(pathname, href)} className="block aria-[current]:underline" href={href}>
 			{children}
 		</Link>
 	);
@@ -47,7 +47,7 @@ export function NavigationLink(props: Readonly<NavigationLinkProps>): ReactNode 
 	return (
 		<Suspense
 			fallback={
-				<Link className="aria-[current]:underline" href={href}>
+				<Link className="block aria-[current]:underline" href={href}>
 					{children}
 				</Link>
 			}

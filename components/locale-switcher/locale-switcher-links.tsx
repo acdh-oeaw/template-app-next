@@ -67,7 +67,7 @@ function LocaleLinks(props: Readonly<LocaleLinksProps>): ReactNode {
 							<Link
 								ref={isCurrent ? currentLinkRef : undefined}
 								aria-current={isCurrent ? "page" : undefined}
-								className="aria-[current=page]:underline"
+								className="block aria-[current=page]:underline"
 								href={href}
 								locale={locale}
 								onClick={() => {
