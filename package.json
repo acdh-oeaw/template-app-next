@@ -8,6 +8,7 @@
 		"#/*": "./*"
 	},
 	"scripts": {
+		"analyze": "next analyze",
 		"build": "next build",
 		"dev": "BUN_OPTIONS=--no-env-file next dev",
 		"env:sync": "bun scripts/env-sync.ts",
