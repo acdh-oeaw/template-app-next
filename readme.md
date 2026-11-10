@@ -102,11 +102,16 @@ Public and build-time variables are passed to `docker build` as a single `dotenv
 build cache, so the sha256 hash of the secret must be passed as `DOTENV_HASH` build arg, and the build fails if it
 doesn't match.
 
+The deployment id for [version skew protection](https://nextjs.org/docs/app/guides/self-hosting#version-skew) is
+passed as `NEXT_DEPLOYMENT_ID` build arg. It must change whenever the build output does, so it combines the git commit
+hash with the hash of the `dotenv` secret, which is shortened because the deployment id is added to asset urls.
+
 ```sh
 docker build \
   --secret id=dotenv,src=.env.production.local \
   --build-arg BUN_VERSION="$(jq -r '.devEngines.runtime.version | ltrimstr("^")' package.json)" \
   --build-arg DOTENV_HASH="$(sha256sum .env.production.local | cut -d " " -f 1)" \
+  --build-arg NEXT_DEPLOYMENT_ID="$(git rev-parse HEAD)-$(sha256sum .env.production.local | cut -c 1-12)" \
   .
 ```
 
@@ -126,6 +131,7 @@ In GitHub Actions:
       "$NEXT_PUBLIC_APP_BASE_URL" "$NEXT_SERVER_ACTIONS_ENCRYPTION_KEY" > "$file"
     echo "file=$file" >> "$GITHUB_OUTPUT"
     echo "hash=$(sha256sum "$file" | cut -d " " -f 1)" >> "$GITHUB_OUTPUT"
+    echo "deployment-id=${{ github.sha }}-$(sha256sum "$file" | cut -c 1-12)" >> "$GITHUB_OUTPUT"
 
 - uses: docker/build-push-action@v7
   with:
@@ -133,6 +139,7 @@ In GitHub Actions:
     build-args: |
       BUN_VERSION=${{ steps.config.outputs.bun-version }}
       DOTENV_HASH=${{ steps.dotenv.outputs.hash }}
+      NEXT_DEPLOYMENT_ID=${{ steps.dotenv.outputs.deployment-id }}
 ```
 
 Server variables that are only read at runtime are passed to the container, not to `docker build`.

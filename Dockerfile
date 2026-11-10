@@ -31,6 +31,10 @@ ENV NEXT_TELEMETRY_DISABLED=1
 # secrets do not invalidate the build cache, so the sha256 hash of the secret is passed as `DOTENV_HASH` build arg.
 # @see https://github.com/moby/buildkit/issues/2547#issuecomment-1005052682
 ARG DOTENV_HASH
+# enables version skew protection.
+# @see https://nextjs.org/docs/app/guides/self-hosting#version-skew
+ARG NEXT_DEPLOYMENT_ID
+ENV NEXT_DEPLOYMENT_ID="${NEXT_DEPLOYMENT_ID:?build arg is required}"
 RUN --mount=type=secret,id=dotenv,target=/app/.env.production.local,required=true \
 	echo "${DOTENV_HASH:?build arg is required}  .env.production.local" | sha256sum -c - \
 	&& bun run build
