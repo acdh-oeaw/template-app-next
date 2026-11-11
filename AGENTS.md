@@ -32,6 +32,8 @@ test("hello world", () => {
 
 Use `bun run test:e2e` to run the Playwright tests in `e2e/`. Set `PORT` if port 3000 is taken, because Playwright reuses whatever server is listening there.
 
+Add an end-to-end test for behavior that depends on the browser or the framework, like routing, i18n, focus management, metadata or accessibility. Use `bun test` for logic that runs without them, like utilities and reducers. Don't mock Next.js or React Aria to unit test a component. Test what the app configures and composes, not what its dependencies already guarantee, like keyboard handling in React Aria or date formatting in next-intl. An exception is a workaround for a bug in a dependency: test the behavior it fixes, so the test fails if an upgrade breaks it.
+
 Locate elements by aria role with `getByRole`, not by element name with `locator("h1")`. `bun lint` enforces this with `playwright/no-raw-locators`.
 
 - `cacheComponents` keeps previous pages in the DOM with `display: none` after client navigations. `getByRole` ignores hidden elements, plain locators also match them
