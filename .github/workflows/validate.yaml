@@ -6,6 +6,11 @@ on:
     branches:
       - main
   workflow_dispatch:
+    inputs:
+      update-snapshots:
+        description: Update visual snapshots and upload them as a workflow artifact
+        type: boolean
+        default: false
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -65,7 +70,14 @@ jobs:
           key: next-${{ env.RUNNER_IMAGE }}-${{ hashFiles('bun.lock') }}-${{ github.sha }}
           restore-keys: next-${{ env.RUNNER_IMAGE }}-${{ hashFiles('bun.lock') }}-
 
-      - run: bun run test:e2e
+      - run: bun run test:e2e ${{ inputs.update-snapshots && '--update-snapshots=changed' || '' }}
+
+      - uses: actions/upload-artifact@v7
+        if: ${{ !cancelled() && inputs.update-snapshots }}
+        with:
+          name: snapshots
+          path: e2e/snapshots/
+          retention-days: 7
 
       - uses: actions/upload-artifact@v7
         if: ${{ failure() }}

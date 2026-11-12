@@ -82,6 +82,15 @@ bun run test:e2e:install
 bun run test:e2e
 ```
 
+Visual snapshots from `toHaveScreenshot()` depend on the operating system, fonts and browser builds, so they are only
+compared in CI, and local runs skip these assertions. To create or update them, push the branch, then run the following
+command with the [GitHub CLI](https://cli.github.com) installed. It runs the workflow with `update-snapshots`, waits for
+it, and replaces `e2e/snapshots/` with the result for you to review and commit.
+
+```sh
+bun run test:e2e:update-snapshots
+```
+
 ## Continuous integration
 
 [`.github/workflows/validate.yaml`](.github/workflows/validate.yaml) runs static checks and end-to-end tests on pull

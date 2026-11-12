@@ -13,6 +13,9 @@ export default defineConfig({
 	testDir: "../e2e",
 	outputDir: "../test-results",
 	snapshotPathTemplate: "{testDir}/snapshots/{testFilePath}-snapshots/{arg}-{projectName}-{platform}{ext}",
+	/** Snapshots differ between machines, so baselines are only created and compared on the ci runner. */
+	ignoreSnapshots: !isCI,
+	updateSnapshots: "none",
 
 	fullyParallel: true,
 	workers: isCI ? 1 : undefined,
