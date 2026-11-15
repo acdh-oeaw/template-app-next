@@ -42,10 +42,35 @@ jobs:
           - run: bun run styles:check
           - run: bun run types:check
 
+  config:
+    name: Read configuration
+    runs-on: *runner-image
+    timeout-minutes: 5
+    outputs:
+      playwright-version: ${{ steps.config.outputs.playwright-version }}
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+          sparse-checkout: package.json
+          sparse-checkout-cone-mode: false
+
+      - id: config
+        run: echo "playwright-version=$(jq -r '.devDependencies["@playwright/test"]' package.json)" >> "$GITHUB_OUTPUT"
+
   e2e:
     name: End-to-end tests
+    needs: [config]
     runs-on: *runner-image
     timeout-minutes: 30
+    # The image pins browsers, system dependencies and fonts, so visual snapshots do not change with runner image updates
+    # and can be reproduced locally with `bun run test:e2e:docker`. `container.image` is evaluated before any step runs,
+    # so the version is read in a separate job. Keep in sync with `scripts/e2e-docker.ts`.
+    # @see {@link https://playwright.dev/docs/ci#via-containers}
+    container:
+      image: mcr.microsoft.com/playwright:v${{ needs.config.outputs.playwright-version }}-resolute
+      # The runner user, which owns the checked-out workspace.
+      options: --user 1001
     env:
       # `bun run env:sync` does not create `.env.local` in CI.
       NEXT_PUBLIC_APP_BASE_URL: http://localhost:3000
@@ -55,14 +80,6 @@ jobs:
           persist-credentials: false
 
       - uses: ./.github/actions/setup
-
-      - uses: actions/cache@v6
-        with:
-          path: ~/.cache/ms-playwright
-          key: playwright-${{ env.RUNNER_IMAGE }}-${{ hashFiles('node_modules/@playwright/test/package.json') }}
-
-      # system dependencies are not cached, so this also needs to run on a cache hit.
-      - run: bun run test:e2e:install
 
       - uses: actions/cache@v6
         with:
