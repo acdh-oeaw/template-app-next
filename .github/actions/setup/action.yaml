@@ -5,14 +5,12 @@ runs:
   using: composite
   steps:
     # `setup-bun` needs `unzip`, which the playwright container image does not have, and the container user cannot install
-    # it, so this installs bun from npm into a user prefix instead.
+    # it, so this installs bun from npm into a user prefix instead. npm resolves the range or dist-tag from `devEngines`.
     # @see {@link https://github.com/oven-sh/setup-bun/issues/55}
-    #
-    # `bun lint` is only available in canary builds. Install the minimum version from `devEngines` once a release
-    # includes it.
     - shell: bash
       run: |
-        npm install --global --prefix "$RUNNER_TEMP/bun" --no-fund --no-audit bun@canary
+        version=$(node --print 'require("./package.json").devEngines.runtime.version')
+        npm install --global --prefix "$RUNNER_TEMP/bun" --no-fund --no-audit "bun@$version"
         echo "$RUNNER_TEMP/bun/bin" >> "$GITHUB_PATH"
 
     - shell: bash

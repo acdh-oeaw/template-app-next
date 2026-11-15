@@ -16,7 +16,6 @@ const pkg = v.parse(packageJsonSchema, await Bun.file("package.json").json());
 
 // Keep in sync with `.github/workflows/validate.yaml`.
 const image = `mcr.microsoft.com/playwright:v${pkg.devDependencies["@playwright/test"]}-resolute`;
-const bunVersion = pkg.devEngines.runtime.version.replace(/^\^/, "");
 
 const volumePrefix = basename(process.cwd())
 	.toLowerCase()
@@ -28,9 +27,7 @@ const script = `
 set -e
 trap 'chown -R ${owner} e2e/snapshots test-results playwright-report 2>/dev/null || true' EXIT
 export PATH="$HOME/.local/bin:$PATH"
-if [ "$(bun --version 2>/dev/null)" != "${bunVersion}" ]; then
-	npm install --global --prefix "$HOME/.local" --silent bun@${bunVersion}
-fi
+npm install --global --prefix "$HOME/.local" --no-fund --no-audit --loglevel=error "bun@$BUN_VERSION"
 bun install --frozen-lockfile --ignore-scripts
 bun run types:prepare
 bun run test:e2e "$@"
@@ -47,6 +44,8 @@ const proc = Bun.spawn(
 		// CI runs on x64, and rendering can differ on arm64.
 		"--platform=linux/amd64",
 		"--env=PLAYWRIGHT_CONTAINER=true",
+		// A range or dist-tag, which npm resolves like ci does.
+		`--env=BUN_VERSION=${pkg.devEngines.runtime.version}`,
 		`--volume=${process.cwd()}:/work`,
 		// Native dependencies and build output differ from the host, so they live in volumes.
 		`--volume=${volumePrefix}-e2e-node-modules:/work/node_modules`,
