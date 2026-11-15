@@ -60,7 +60,7 @@ const config = {
 		{
 			files: ["**/playwright.config.ts"],
 			rules: {
-				"node/no-process-env": ["error", { allowedVariables: ["CI", "PORT"] }],
+				"node/no-process-env": ["error", { allowedVariables: ["CI", "PLAYWRIGHT_CONTAINER", "PORT"] }],
 			},
 		},
 		{

@@ -4,14 +4,14 @@ description: Install Bun and project dependencies.
 runs:
   using: composite
   steps:
-    # `setup-bun` does not read `devEngines`. It resolves ranges to the newest matching release.
-    - id: config
-      shell: bash
-      run: echo "bun-version=$(jq -r '.devEngines.runtime.version' package.json)" >> "$GITHUB_OUTPUT"
-
-    - uses: oven-sh/setup-bun@v2
-      with:
-        bun-version: ${{ steps.config.outputs.bun-version }}
+    # `setup-bun` needs `unzip`, which the playwright container image does not have, and the container user cannot install
+    # it, so this installs bun from npm into a user prefix instead. npm resolves the range or dist-tag from `devEngines`.
+    # @see {@link https://github.com/oven-sh/setup-bun/issues/55}
+    - shell: bash
+      run: |
+        version=$(node --print 'require("./package.json").devEngines.runtime.version')
+        npm install --global --prefix "$RUNNER_TEMP/bun" --no-fund --no-audit "bun@$version"
+        echo "$RUNNER_TEMP/bun/bin" >> "$GITHUB_PATH"
 
     - shell: bash
       run: bun install --frozen-lockfile

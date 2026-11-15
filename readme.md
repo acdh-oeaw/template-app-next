@@ -83,9 +83,22 @@ bun run test:e2e
 ```
 
 Visual snapshots from `toHaveScreenshot()` depend on the operating system, fonts and browser builds, so they are only
-compared in CI, and local runs skip these assertions. To create or update them, push the branch, then run the following
-command with the [GitHub CLI](https://cli.github.com) installed. It runs the workflow with `update-snapshots`, waits for
-it, and replaces `e2e/snapshots/` with the result for you to review and commit.
+compared in the [Playwright container image](https://playwright.dev/docs/docker) that CI runs in, and other local runs
+skip these assertions. With [Docker](https://docs.docker.com/get-started/get-docker/) installed, run the tests in the
+same image, passing arguments through to `playwright test`:
+
+```sh
+bun run test:e2e:docker
+bun run test:e2e:docker --update-snapshots=changed
+bun run test:e2e:docker e2e/navigation.test.ts --project chromium
+```
+
+`node_modules`, `.next` and the Bun cache for the container live in Docker volumes, so the first run takes longer. The
+image tag is derived from the `@playwright/test` version, which is therefore pinned to an exact version.
+
+Without Docker, push the branch, then run the following command with the [GitHub CLI](https://cli.github.com) installed.
+It runs the workflow with `update-snapshots`, waits for it, and replaces `e2e/snapshots/` with the result for you to
+review and commit.
 
 ```sh
 bun run test:e2e:update-snapshots

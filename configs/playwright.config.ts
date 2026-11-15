@@ -8,13 +8,15 @@ const port = v.parse(
 const baseURL = `http://localhost:${String(port)}`;
 
 const isCI = process.env.CI === "true";
+/** Set by `scripts/e2e-docker.ts`, which runs tests in the same container image as ci. */
+const isPlaywrightContainer = process.env.PLAYWRIGHT_CONTAINER === "true";
 
 export default defineConfig({
 	testDir: "../e2e",
 	outputDir: "../test-results",
 	snapshotPathTemplate: "{testDir}/snapshots/{testFilePath}-snapshots/{arg}-{projectName}-{platform}{ext}",
-	/** Snapshots differ between machines, so baselines are only created and compared on the ci runner. */
-	ignoreSnapshots: !isCI,
+	/** Snapshots differ between machines, so baselines are only created and compared in the ci container image. */
+	ignoreSnapshots: !isCI && !isPlaywrightContainer,
 	updateSnapshots: "none",
 
 	fullyParallel: true,
