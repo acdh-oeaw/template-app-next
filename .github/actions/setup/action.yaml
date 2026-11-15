@@ -4,11 +4,14 @@ description: Install Bun and project dependencies.
 runs:
   using: composite
   steps:
-    # `bun lint` is only available in canary builds. Install the minimum version from `devEngines` once a release
-    # includes it.
+    # `setup-bun` does not read `devEngines`. It resolves ranges to the newest matching release.
+    - id: config
+      shell: bash
+      run: echo "bun-version=$(jq -r '.devEngines.runtime.version' package.json)" >> "$GITHUB_OUTPUT"
+
     - uses: oven-sh/setup-bun@v2
       with:
-        bun-version: canary
+        bun-version: ${{ steps.config.outputs.bun-version }}
 
     - shell: bash
       run: bun install --frozen-lockfile

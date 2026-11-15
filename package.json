@@ -60,19 +60,19 @@
 	"devEngines": {
 		"packageManager": {
 			"name": "bun",
-			"version": "^1.4.4",
+			"version": "canary",
 			"onFail": "download"
 		},
 		"runtime": {
 			"name": "bun",
-			"version": "^1.4.4",
+			"version": "canary",
 			"onFail": "download"
 		}
 	},
 	"engines": {
 		"runtime": {
 			"name": "bun",
-			"version": "^1.4.4",
+			"version": "canary",
 			"onFail": "download"
 		}
 	},

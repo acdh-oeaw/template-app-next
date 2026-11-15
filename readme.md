@@ -98,7 +98,7 @@ To download the snapshots of a run that has already finished, for example after 
 
 [`.github/workflows/validate.yaml`](.github/workflows/validate.yaml) runs static checks and end-to-end tests on pull
 requests and pushes to `main`. [`.github/actions/setup`](.github/actions/setup/action.yaml) installs dependencies, and
-the Bun version from `devEngines` in `package.json`, without the caret.
+the Bun version from `devEngines` in `package.json`. This is `canary` until a Bun release includes `bun lint`.
 
 `bun run env:sync` does nothing in CI, so add variables that are required for the build to the `env` of the `e2e` job.
 When a test fails, the Playwright report is uploaded as a workflow artifact.
@@ -107,8 +107,8 @@ When a test fails, the Playwright report is uploaded as a workflow artifact.
 
 [`.dockerignore`](.dockerignore) is an allowlist: when the build needs a new top-level file or folder, add it there.
 
-The Bun version is passed as `BUN_VERSION` build arg, and has no default: it comes from `devEngines` in `package.json`,
-without the caret.
+The Bun version is passed as `BUN_VERSION` build arg, and has no default: it comes from `devEngines` in `package.json`.
+Image tags are exact versions or `canary`, so a range resolves to the newest matching release with `bun pm view`.
 
 Public and build-time variables are passed to `docker build` as a single `dotenv` secret. Secrets don't invalidate the
 build cache, so the sha256 hash of the secret must be passed as `DOTENV_HASH` build arg, and the build fails if it
@@ -119,9 +119,12 @@ passed as `NEXT_DEPLOYMENT_ID` build arg. It must change whenever the build outp
 hash with the hash of the `dotenv` secret, which is shortened because the deployment id is added to asset urls.
 
 ```sh
+bun_version="$(jq -r '.devEngines.runtime.version' package.json)"
+[ "$bun_version" = canary ] || bun_version="$(bun pm view "bun@$bun_version" version)"
+
 docker build \
   --secret id=dotenv,src=.env.production.local \
-  --build-arg BUN_VERSION="$(jq -r '.devEngines.runtime.version | ltrimstr("^")' package.json)" \
+  --build-arg BUN_VERSION="$bun_version" \
   --build-arg DOTENV_HASH="$(sha256sum .env.production.local | cut -d " " -f 1)" \
   --build-arg NEXT_DEPLOYMENT_ID="$(git rev-parse HEAD)-$(sha256sum .env.production.local | cut -c 1-12)" \
   .
@@ -131,7 +134,10 @@ In GitHub Actions:
 
 ```yaml
 - id: config
-  run: echo "bun-version=$(jq -r '.devEngines.runtime.version | ltrimstr("^")' package.json)" >> "$GITHUB_OUTPUT"
+  run: |
+    bun_version="$(jq -r '.devEngines.runtime.version' package.json)"
+    [ "$bun_version" = canary ] || bun_version="$(bun pm view "bun@$bun_version" version)"
+    echo "bun-version=$bun_version" >> "$GITHUB_OUTPUT"
 
 - id: dotenv
   env:
