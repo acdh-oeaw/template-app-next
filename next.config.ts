@@ -55,6 +55,10 @@ export default function createConfig(phase: string): NextConfig {
 			turbopackRustReactCompiler: true,
 		},
 		cacheComponents: true,
+		logging: {
+			/** Probes hit the health checks every few seconds. */
+			incomingRequests: { ignore: [/^\/api\/health\/(?:live|ready)$/] },
+		},
 		compiler: {
 			define,
 		},

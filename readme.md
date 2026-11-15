@@ -169,6 +169,21 @@ In GitHub Actions:
 
 Server variables that are only read at runtime are passed to the container, not to `docker build`.
 
+Kubernetes probes use `/api/health/live` and `/api/health/ready`, which respond with `200` while the server is up.
+Liveness failures restart the container, so the liveness endpoint only checks the process itself. Readiness failures
+stop traffic to the pod, so checks for dependencies like a database belong in the readiness endpoint.
+
+```yaml
+livenessProbe:
+  httpGet:
+    path: /api/health/live
+    port: 3000
+readinessProbe:
+  httpGet:
+    path: /api/health/ready
+    port: 3000
+```
+
 ## Upgrading Next.js
 
 Public variables are inlined with a getter on `compiler.define` in [`next.config.ts`](next.config.ts), which relies on
