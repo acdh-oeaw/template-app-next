@@ -1,6 +1,7 @@
 import { cp, mkdtemp, rm } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
+import { parseArgs } from "node:util";
 
 import { $ } from "bun";
 import * as v from "valibot";
@@ -8,6 +9,8 @@ import * as v from "valibot";
 const workflow = "validate.yaml";
 const artifactName = "snapshots";
 const snapshotsDir = "e2e/snapshots";
+
+const runIdSchema = v.pipe(v.string(), v.toNumber(), v.integer(), v.minValue(1));
 
 const runsSchema = v.array(v.object({ databaseId: v.number(), createdAt: v.string() }));
 
@@ -31,7 +34,7 @@ async function findRun(branch: string, commit: string, dispatchedAt: Date): Prom
 	throw new Error("Timed out waiting for the workflow run to start.");
 }
 
-async function main(): Promise<void> {
+async function dispatch(): Promise<number> {
 	const branch = (await $`git branch --show-current`.text()).trim();
 	const commit = (await $`git rev-parse HEAD`.text()).trim();
 	const remoteCommit = (await $`git ls-remote origin refs/heads/${branch}`.text()).split("\t")[0];
@@ -51,6 +54,13 @@ async function main(): Promise<void> {
 	if (exitCode !== 0) {
 		console.warn(`Workflow run ${String(runId)} failed, downloading snapshots anyway.`);
 	}
+
+	return runId;
+}
+
+async function main(): Promise<void> {
+	const { values } = parseArgs({ options: { run: { type: "string" } } });
+	const runId = values.run != null ? v.parse(runIdSchema, values.run) : await dispatch();
 
 	const downloadDir = await mkdtemp(join(tmpdir(), "snapshots-"));
 	try {

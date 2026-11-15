@@ -91,6 +91,9 @@ it, and replaces `e2e/snapshots/` with the result for you to review and commit.
 bun run test:e2e:update-snapshots
 ```
 
+To download the snapshots of a run that has already finished, for example after a failed download, pass its id with
+`--run <id>`.
+
 ## Continuous integration
 
 [`.github/workflows/validate.yaml`](.github/workflows/validate.yaml) runs static checks and end-to-end tests on pull
