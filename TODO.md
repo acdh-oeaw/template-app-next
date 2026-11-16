@@ -9,9 +9,22 @@
   - [ ] JSON-LD (`WebSite`, with social links as `sameAs`)
   - [x] Validate `content/*/metadata.json`
   - [ ] OpenGraph images
-- [ ] Not-found pages are not server-rendered: `/en/nope` returns 404 with an empty `__next_error__` shell, and the
-      localized not-found UI only renders client-side. Not caused by `partialPrefetching`, probably `cacheComponents`.
-      `e2e/accessibility.test.ts` waits for the client render, because the shell has no `lang`, title or landmarks
+- [ ] Not-found behavior (measured on Next.js 16.4.5 production builds)
+  - [ ] `notFound()` in a page or layout is not server-rendered: 404 with an empty `__next_error__` shell (no `lang`,
+        title or landmarks), and the localized `not-found.tsx` only renders client-side
+        (https://github.com/vercel/next.js/issues/99287). A fix is proposed in
+        https://github.com/vercel/next.js/pull/100648, but it leaves fallback-param routes (params not returned by
+        `generateStaticParams`) unchanged with `cacheComponents`
+  - [ ] `notFound()` for params not returned by `generateStaticParams` responds with 200 on the first request, and 404
+        once cached (https://github.com/vercel/next.js/issues/98518, closed without a fix)
+  - [ ] Unmatched urls below a locale prefix render `global-not-found.tsx` in the default locale, also for
+        `/de/does-not-exist`. Localizing it needs the locale from a request header, but `headers()` there makes every
+        route partially prerendered, also inside `<Suspense>` or in `generateMetadata`. The alternative, a `[...rest]`
+        catch-all calling `notFound()`, gets the empty shell above and interferes with parallel routes
+  - [ ] Invalid locales the proxy skips, like `/x.png`, render Next's unstyled default 404, because `notFound()` in the
+        root layout does not use `global-not-found.tsx` (https://github.com/vercel/next.js/issues/86095, closed as a
+        duplicate of https://github.com/vercel/next.js/issues/85446). Workaround:
+        a root `app/not-found.tsx` with its own `<html>` instead of `global-not-found.tsx`, but still client-rendered
 - [x] Playwright setup
   - [x] Accessibility checks with `axe-core`
   - [ ] Screen reader tests with `guidepup`
@@ -22,9 +35,9 @@
         requests to whatever port a test header names
 - [ ] Browser e2e test for the not-found and error pages in `e2e/errors.test.ts` (curl only sees status codes, because
       of the client-rendered shell)
-  - [ ] `/en/does-not-exist`: 404 with the localized `app/[locale]/not-found.tsx`, via the `[...rest]` catch-all
-  - [ ] `/de/does-not-exist`: same, with the German message
-  - [ ] Invalid locale, e.g. `/x.png`: 404 with `global-not-found.tsx`, not Next's default not-found page. Always renders
+  - [ ] `/en/does-not-exist`: 404 with `global-not-found.tsx`, server-rendered
+  - [ ] A page calling `notFound()`: 404 with the localized `app/[locale]/not-found.tsx`
+  - [ ] Invalid locale, e.g. `/x.png`: 404 with our not-found page, not Next's default not-found page. Always renders
         in the default locale, also for German visitors. Currently renders Next's default page, without our styles or
         `ColorSchemeScript`, so it ignores the stored color scheme
   - [ ] `/en-GB`: redirected to `/en/en-GB` by the proxy, then 404

@@ -45,14 +45,14 @@ app/[locale]/
     layout.tsx          current shell: min-h-full, header, footer
     (index)/page.tsx
     imprint/page.tsx
-    [...rest]/page.tsx
     not-found.tsx
   (fullscreen)/
     layout.tsx          h-full shell, different footer
     viewer/page.tsx
 ```
 
-Move `[...rest]` and `not-found.tsx` as well, so that not-found pages keep the shell. If `next build` then fails with
+Move `not-found.tsx` as well, so that pages calling `notFound()` keep the shell. Urls that match no route render
+[`app/global-not-found.tsx`](app/global-not-found.tsx), which renders the shell itself. If `next build` then fails with
 type errors in `.next/dev/types/validator.ts`, delete that file: it still points to the old paths, and
 `bun run types:prepare` does not update it.
 

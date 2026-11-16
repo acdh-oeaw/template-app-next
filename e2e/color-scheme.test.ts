@@ -101,7 +101,7 @@ test.describe("color scheme", () => {
 		await expect(page.locator("html")).toHaveAttribute("data-color-scheme", "light");
 	});
 
-	test("is applied on not-found pages, which are rendered on the client", async ({ page }) => {
+	test("is applied on not-found pages", async ({ page }) => {
 		await page.addInitScript((key) => {
 			localStorage.setItem(key, "light");
 		}, storageKey);

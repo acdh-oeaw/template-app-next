@@ -12,8 +12,6 @@ for (const colorScheme of ["light", "dark"] as const) {
 		for (const pathname of pathnames) {
 			test(`${pathname} has no detectable violations`, async ({ page }) => {
 				await page.goto(pathname);
-				/** Not-found pages are not server-rendered yet, so wait for the client to render them. */
-				await expect(page.getByRole("main")).toBeVisible();
 
 				const results = await new AxeBuilder({ page }).withTags(tags).analyze();
 
