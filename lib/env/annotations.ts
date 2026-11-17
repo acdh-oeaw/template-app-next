@@ -19,13 +19,13 @@ export interface EnvAnnotations {
 export function getAnnotations(schema: v.GenericSchema): EnvAnnotations {
 	let current = schema as Schema;
 	let description = v.getDescription(current);
-	let metadata = v.getMetadata(current);
+	let { dev } = v.getMetadata(current);
 	let defaultValue = current.default;
 
 	while (current.wrapped != null) {
 		current = current.wrapped;
 		description ??= v.getDescription(current);
-		metadata = { ...v.getMetadata(current), ...metadata };
+		dev ??= v.getMetadata(current).dev;
 		defaultValue ??= current.default;
 	}
 
@@ -41,6 +41,6 @@ export function getAnnotations(schema: v.GenericSchema): EnvAnnotations {
 					? { kind: "dynamic" }
 					: { kind: "static", value: defaultValue },
 		description,
-		dev: metadata.dev,
+		dev,
 	};
 }

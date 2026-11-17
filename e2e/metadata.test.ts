@@ -48,14 +48,16 @@ for (const { prefix, lang, og, alternate, meta, imprint } of locales) {
 	});
 }
 
-test("manifest uses the default locale", async ({ request }) => {
-	const response = await request.get("/manifest.webmanifest");
-	expect(response.status()).toBe(200);
+test.describe("manifest", () => {
+	test("uses the default locale", async ({ request }) => {
+		const response = await request.get("/manifest.webmanifest");
+		expect(response.status()).toBe(200);
 
-	expect(await response.json()).toMatchObject({
-		name: en.manifest.name,
-		short_name: en.manifest.shortName,
-		description: en.description,
-		start_url: "/en",
+		expect(await response.json()).toMatchObject({
+			name: en.manifest.name,
+			short_name: en.manifest.shortName,
+			description: en.description,
+			start_url: "/en",
+		});
 	});
 });

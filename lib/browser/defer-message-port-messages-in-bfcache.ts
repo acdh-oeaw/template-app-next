@@ -14,7 +14,7 @@ export function deferMessagePortMessagesInBfcache(): void {
 		return;
 	}
 
-	// oxlint-disable-next-line typescript/unbound-method -- called with `Reflect.apply`
+	// eslint-disable-next-line typescript/unbound-method -- called with `Reflect.apply`
 	const postMessage = MessagePort.prototype.postMessage;
 
 	let pending: Array<() => void> | null = null;

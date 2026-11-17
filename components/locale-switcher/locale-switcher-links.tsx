@@ -1,6 +1,6 @@
 "use client";
 
-import { useExtracted as useTranslations, useLocale } from "next-intl";
+import { useLocale, useExtracted as useTranslations } from "next-intl";
 import { useSearchParams } from "next/navigation";
 import { Fragment, type ReactNode, Suspense, useEffect, useRef } from "react";
 

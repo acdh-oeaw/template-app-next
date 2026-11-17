@@ -22,9 +22,7 @@ async function findRun(branch: string, commit: string, dispatchedAt: Date): Prom
 
 		const output: unknown =
 			await $`gh run list --workflow ${workflow} --branch ${branch} --commit ${commit} --event workflow_dispatch --json databaseId,createdAt`.json();
-		const run = v.parse(runsSchema, output).find((run) => {
-			return new Date(run.createdAt) >= dispatchedAt;
-		});
+		const run = v.parse(runsSchema, output).find((run) => new Date(run.createdAt) >= dispatchedAt);
 
 		if (run != null) {
 			return run.databaseId;

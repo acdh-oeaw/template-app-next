@@ -8,7 +8,7 @@ export function SkipLink(): ReactNode {
 
 	return (
 		<a
-			className="sr-only focus:not-sr-only focus:fixed focus:start-2 focus:top-2 focus:z-50 focus:bg-canvas focus:p-2 focus:text-canvas-text"
+			className="not-focus:sr-only focus:fixed focus:inset-s-2 focus:inset-bs-2 focus:z-50 focus:bg-canvas focus:p-2 focus:text-canvas-text"
 			href={`#${mainContentId}`}
 		>
 			{t("Skip to main content")}

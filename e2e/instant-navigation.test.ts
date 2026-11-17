@@ -29,9 +29,7 @@ test.describe("instant navigation", () => {
 
 		await instant(page, async () => {
 			await page.getByRole("contentinfo").getByRole("link", { name: "Imprint" }).click();
-			await page.waitForURL((url) => {
-				return url.pathname === "/en/imprint";
-			});
+			await page.waitForURL((url) => url.pathname === "/en/imprint");
 
 			await expect(page.getByRole("heading", { level: 1, name: "Imprint" })).toBeVisible();
 		});
@@ -42,9 +40,7 @@ test.describe("instant navigation", () => {
 
 		await instant(page, async () => {
 			await getLocaleLink(page, "Deutsch (German)").click();
-			await page.waitForURL((url) => {
-				return url.pathname === "/de/imprint";
-			});
+			await page.waitForURL((url) => url.pathname === "/de/imprint");
 
 			await expect(page.getByRole("heading", { level: 1, name: "Impressum" })).toBeVisible();
 		});

@@ -36,7 +36,7 @@ test.describe("skip link", () => {
 		await getSkipLink(page).focus();
 		const after = await page.getByRole("banner").boundingBox();
 
-		expect(after).toEqual(before);
+		expect(after).toStrictEqual(before);
 	});
 
 	test("moves focus to the main content", async ({ page }) => {

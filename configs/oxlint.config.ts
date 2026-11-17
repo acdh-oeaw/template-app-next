@@ -1,11 +1,11 @@
-import * as path from "node:path";
-import { fileURLToPath } from "node:url";
-
-import playwright from "eslint-plugin-playwright";
-
-import bunDefaults from "#/configs/oxlint/bun-defaults.ts";
-
-const root = path.dirname(fileURLToPath(import.meta.resolve("#/package.json")));
+import { base } from "#/configs/oxlint/base.ts";
+import { bunTest } from "#/configs/oxlint/bun-test.ts";
+import { nextjs } from "#/configs/oxlint/nextjs.ts";
+import { fromRoot } from "#/configs/oxlint/paths.ts";
+import { playwright } from "#/configs/oxlint/playwright.ts";
+import { react, settings as reactSettings } from "#/configs/oxlint/react.ts";
+import { regexp } from "#/configs/oxlint/regexp.ts";
+import { tailwindcss, settings as tailwindcssSettings } from "#/configs/oxlint/tailwindcss.ts";
 
 const restrictedPaths = [
 	{
@@ -18,6 +18,21 @@ const restrictedPaths = [
 		importNames: ["getTranslations"],
 		message: 'Use `import { getExtracted as getTranslations } from "next-intl/server"`.',
 	},
+	{
+		name: "next/router",
+		message: "Use `next/navigation`.",
+	},
+];
+
+const restrictedPatterns = [
+	{
+		group: ["next/dist/**"],
+		message: "Use a public entrypoint instead of Next.js internals.",
+	},
+	{
+		group: ["./**", "../**"],
+		message: "Use a subpath import (`#/*`).",
+	},
 ];
 
 const envParsePath = {
@@ -25,66 +40,89 @@ const envParsePath = {
 	message: "Import `env` from `#/lib/env/server.ts` or `#/lib/env/public.ts`.",
 };
 
+const configsPattern = {
+	group: ["#/configs/*"],
+	message: "Import from `#/lib/*` instead.",
+};
+
+/**
+ * Every rule is configured explicitly, so no rule is enabled by its category. `categories`, `env` and `settings` are
+ * not inherited through `extends`, and rule options are replaced, not merged, so these are all declared here.
+ */
 const config = {
-	extends: [bunDefaults],
-	plugins: [...bunDefaults.plugins, "node"],
-	jsPlugins: ["eslint-plugin-playwright"],
+	categories: {
+		correctness: "off",
+		nursery: "off",
+		pedantic: "off",
+		perf: "off",
+		restriction: "off",
+		style: "off",
+		suspicious: "off",
+	},
+	extends: [base, bunTest, nextjs, playwright, react, regexp, tailwindcss],
+	env: {
+		browser: true,
+		builtin: true,
+	},
 	options: {
+		reportUnusedDisableDirectives: "error",
 		typeAware: true,
 	},
+	settings: {
+		react: reactSettings,
+		tailwindcss: tailwindcssSettings,
+	},
 	rules: {
-		"@typescript-eslint/no-empty-object-type": ["error", { allowInterfaces: "with-single-extends" }],
-		"no-restricted-imports": ["error", { paths: [...restrictedPaths, envParsePath] }],
-		"node/no-process-env": ["error", { allowedVariables: ["CI", "NODE_ENV"] }],
+		"no-restricted-imports": ["error", { paths: [...restrictedPaths, envParsePath], patterns: restrictedPatterns }],
 	},
 	overrides: [
 		{
-			files: [path.join(root, "e2e/**")],
+			files: [fromRoot("app/**"), fromRoot("components/**")],
 			rules: {
-				...playwright.configs["flat/recommended"].rules,
-				"playwright/no-raw-locators": [
+				"no-restricted-imports": [
 					"error",
-					{
-						/** Document metadata has no aria role, so these can only be selected by element. */
-						allowed: [
-							"html",
-							'head link[rel="alternate"][hreflang]',
-							'head link[rel="canonical"]',
-							'head meta[name="robots"]',
-						],
-					},
+					{ paths: [...restrictedPaths, envParsePath], patterns: [...restrictedPatterns, configsPattern] },
 				],
-				"playwright/prefer-native-locators": "error",
 			},
 		},
 		{
-			files: ["**/playwright.config.ts"],
+			files: [fromRoot("next.config.ts"), fromRoot("instrumentation.ts"), fromRoot("lib/env/**")],
+			rules: {
+				"no-restricted-imports": ["error", { paths: restrictedPaths, patterns: restrictedPatterns }],
+			},
+		},
+		{
+			/** A glob without a slash matches the file name in any directory. */
+			files: ["*.config.ts", fromRoot("lib/i18n/request.ts")],
+			rules: {
+				"import/no-default-export": "off",
+			},
+		},
+		{
+			files: ["playwright.config.ts"],
 			rules: {
 				"node/no-process-env": ["error", { allowedVariables: ["CI", "PORT"] }],
 			},
 		},
 		{
-			files: [path.join(root, "lib/env/**"), path.join(root, "scripts/env-sync.ts")],
+			files: [fromRoot("lib/env/**"), fromRoot("scripts/env-sync.ts")],
 			rules: {
 				"node/no-process-env": "off",
 			},
 		},
 		{
-			files: [path.join(root, "app/**"), path.join(root, "components/**")],
+			files: [fromRoot("scripts/**")],
 			rules: {
-				"no-restricted-imports": [
-					"error",
-					{
-						paths: [...restrictedPaths, envParsePath],
-						patterns: [{ group: ["#/configs/*", "**/configs/*"], message: "Import from `#/lib/*` instead." }],
-					},
-				],
+				"no-console": "off",
+				"node/no-top-level-await": "off",
 			},
 		},
+		/** Tests and scripts run steps in sequence on purpose, and match short, throwaway patterns. */
 		{
-			files: [path.join(root, "next.config.ts"), path.join(root, "instrumentation.ts"), path.join(root, "lib/env/**")],
+			files: [fromRoot("e2e/**"), fromRoot("scripts/**")],
 			rules: {
-				"no-restricted-imports": ["error", { paths: restrictedPaths }],
+				"no-await-in-loop": "off",
+				"prefer-named-capture-group": "off",
 			},
 		},
 	],

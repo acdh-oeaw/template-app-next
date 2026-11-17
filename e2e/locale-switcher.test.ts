@@ -149,7 +149,7 @@ test.describe("locale switcher", () => {
 		await page.goto("/en/imprint?q=1");
 		await expect(getLink(page, "Deutsch (German)")).toHaveAttribute("href", "/de/imprint?q=1");
 
-		expect(errors).toEqual([]);
+		expect(errors).toStrictEqual([]);
 	});
 
 	test.describe("in the static shell", () => {

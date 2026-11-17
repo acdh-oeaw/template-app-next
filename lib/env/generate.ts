@@ -4,13 +4,9 @@ function randomBytes(length: number): Uint8Array {
 
 export const generate = {
 	base64(length: number): () => string {
-		return () => {
-			return randomBytes(length).toBase64();
-		};
+		return () => randomBytes(length).toBase64();
 	},
 	hex(length: number): () => string {
-		return () => {
-			return randomBytes(length).toHex();
-		};
+		return () => randomBytes(length).toHex();
 	},
 };

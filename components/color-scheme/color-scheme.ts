@@ -71,14 +71,14 @@ export function applyStoredColorScheme(): void {
 	}
 }
 
-export function subscribeToStoredColorScheme(): () => void {
-	function onStorage(event: StorageEvent): void {
-		/** The key is `null` when the whole storage was cleared. */
-		if (event.key === storageKey || event.key === null) {
-			applyStoredColorScheme();
-		}
+function onStorage(event: StorageEvent): void {
+	/** The key is `null` when the whole storage was cleared. */
+	if (event.key === storageKey || event.key === null) {
+		applyStoredColorScheme();
 	}
+}
 
+export function subscribeToStoredColorScheme(): () => void {
 	window.addEventListener("storage", onStorage);
 
 	return () => {

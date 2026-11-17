@@ -13,11 +13,7 @@ function parseSitemap(xml: string): Array<SitemapEntry> {
 
 		return {
 			url: /<loc>(.*?)<\/loc>/.exec(entry)?.[1] ?? "",
-			alternates: Object.fromEntries(
-				Array.from(links, ([, hreflang = "", href = ""]) => {
-					return [hreflang, href];
-				}),
-			),
+			alternates: Object.fromEntries(Array.from(links, ([, hreflang = "", href = ""]) => [hreflang, href])),
 		};
 	});
 }
@@ -57,11 +53,9 @@ test.describe("sitemap.xml", () => {
 		expect(response.headers()["content-type"]).toContain("application/xml");
 
 		const entries = await getSitemap(request);
-		const listed = entries.map((entry) => {
-			return new URL(entry.url).pathname;
-		});
+		const listed = entries.map((entry) => new URL(entry.url).pathname);
 
-		expect(listed.toSorted()).toEqual(pathnames.toSorted());
+		expect(listed.toSorted()).toStrictEqual(pathnames.toSorted());
 	});
 
 	test("alternates are reciprocal", async ({ request }) => {
@@ -71,12 +65,10 @@ test.describe("sitemap.xml", () => {
 			expect(Object.values(entry.alternates)).toContain(entry.url);
 
 			for (const [hreflang, href] of Object.entries(entry.alternates)) {
-				const alternate = entries.find((candidate) => {
-					return candidate.url === href;
-				});
+				const alternate = entries.find((candidate) => candidate.url === href);
 
 				expect(alternate, `${hreflang} alternate of ${entry.url}`).toBeDefined();
-				expect(alternate?.alternates).toEqual(entry.alternates);
+				expect(alternate?.alternates).toStrictEqual(entry.alternates);
 			}
 		}
 	});
@@ -84,9 +76,7 @@ test.describe("sitemap.xml", () => {
 	for (const pathname of pathnames) {
 		test(`${pathname} matches the page metadata`, async ({ page, request }) => {
 			const entries = await getSitemap(request);
-			const entry = entries.find((candidate) => {
-				return new URL(candidate.url).pathname === pathname;
-			});
+			const entry = entries.find((candidate) => new URL(candidate.url).pathname === pathname);
 
 			const response = await page.goto(pathname);
 			expect(response?.status()).toBe(200);
@@ -95,13 +85,11 @@ test.describe("sitemap.xml", () => {
 			await expect(page.locator('head link[rel="canonical"]')).toHaveAttribute("href", entry?.url ?? "");
 			await expect(page.locator('head meta[name="robots"]')).toHaveCount(0);
 
-			const alternates = await page.locator('head link[rel="alternate"][hreflang]').evaluateAll((links) => {
-				return links.map((link) => {
-					return [link.getAttribute("hreflang"), link.getAttribute("href")];
-				});
-			});
+			const alternates = await page
+				.locator('head link[rel="alternate"][hreflang]')
+				.evaluateAll((links) => links.map((link) => [link.getAttribute("hreflang"), link.getAttribute("href")]));
 
-			expect(Object.fromEntries(alternates)).toEqual(entry?.alternates);
+			expect(Object.fromEntries(alternates)).toStrictEqual(entry?.alternates);
 		});
 	}
 });

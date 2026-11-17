@@ -17,11 +17,7 @@ function isBuildPhase(): boolean {
 }
 
 function readAll(schema: v.ObjectSchema<v.ObjectEntries, undefined>): Record<string, string | undefined> {
-	return Object.fromEntries(
-		Object.keys(schema.entries).map((key) => {
-			return [key, read(key)];
-		}),
-	);
+	return Object.fromEntries(Object.keys(schema.entries).map((key) => [key, read(key)]));
 }
 
 function redact(issue: v.BaseIssue<unknown>): string {
@@ -37,9 +33,7 @@ function redact(issue: v.BaseIssue<unknown>): string {
 }
 
 function getPath(issue: v.BaseIssue<unknown>, key?: string): string {
-	const path = (issue.path ?? []).map((item) => {
-		return String(item.key);
-	});
+	const path = (issue.path ?? []).map((item) => String(item.key));
 
 	return (key != null ? [key, ...path] : path).join(".");
 }
@@ -55,9 +49,7 @@ function format(issues: ReadonlyArray<v.BaseIssue<unknown>>, entries: v.ObjectEn
 	}
 
 	return Array.from(groups, ([path, group]) => {
-		const lines = group.map((issue) => {
-			return `× ${redact(issue)}`;
-		});
+		const lines = group.map((issue) => `× ${redact(issue)}`);
 
 		if (path !== "") {
 			lines.push(`  → at ${path}`);

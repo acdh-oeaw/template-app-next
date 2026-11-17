@@ -20,10 +20,8 @@ export function getDefaultOpenGraph(meta: SiteMetadata, locale: Locale): OpenGra
 		description: meta.description,
 		locale: toOpenGraphLocale(locale),
 		alternateLocale: locales
-			.filter((alternate) => {
-				return alternate !== locale;
-			})
-			.map(toOpenGraphLocale),
+			.filter((alternate) => alternate !== locale)
+			.map((alternate) => toOpenGraphLocale(alternate)),
 	};
 }
 
@@ -43,8 +41,8 @@ export async function createPageMetadata(params: Readonly<CreatePageMetadataPara
 	const canonical = getPathname({ locale, href });
 
 	return {
-		...(title != null ? { title } : {}),
-		...(description != null ? { description } : {}),
+		...(title != null && { title }),
+		...(description != null && { description }),
 		alternates: {
 			canonical,
 			languages: getAlternateLanguages(href),

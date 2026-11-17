@@ -18,13 +18,11 @@ export async function MainNavigation(props: Readonly<MainNavigationProps>): Prom
 	return (
 		<nav aria-label={t("Main")}>
 			<ul className="flex flex-wrap gap-4">
-				{items.map((item) => {
-					return (
-						<li key={item.href}>
-							<NavigationLink href={item.href}>{item.label}</NavigationLink>
-						</li>
-					);
-				})}
+				{items.map((item) => (
+					<li key={item.href}>
+						<NavigationLink href={item.href}>{item.label}</NavigationLink>
+					</li>
+				))}
 			</ul>
 		</nav>
 	);

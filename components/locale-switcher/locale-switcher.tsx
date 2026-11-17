@@ -12,9 +12,7 @@ function getGlosses(currentLocale: Locale): Record<Locale, string | undefined> {
 	const displayNames = new Intl.DisplayNames(currentLocale, { type: "language" });
 
 	return Object.fromEntries(
-		locales.map((locale) => {
-			return [locale, locale !== currentLocale ? displayNames.of(getLanguage(locale)) : undefined];
-		}),
+		locales.map((locale) => [locale, locale !== currentLocale ? displayNames.of(getLanguage(locale)) : undefined]),
 	) as Record<Locale, string | undefined>;
 }
 

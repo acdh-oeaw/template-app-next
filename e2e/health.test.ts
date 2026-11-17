@@ -7,7 +7,7 @@ test.describe("health checks", () => {
 			const response = await request.get(pathname, { maxRedirects: 0 });
 			expect(response.status()).toBe(200);
 			expect(response.headers()["cache-control"]).toContain("no-store");
-			expect(await response.json()).toEqual({ status: "ok" });
+			expect(await response.json()).toStrictEqual({ status: "ok" });
 		});
 	}
 });

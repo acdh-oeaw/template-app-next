@@ -1,4 +1,4 @@
-import AxeBuilder from "@axe-core/playwright";
+import { AxeBuilder } from "@axe-core/playwright";
 import { expect, test } from "@playwright/test";
 
 const pathnames = ["/en", "/en/about", "/en/imprint", "/en/does-not-exist", "/de", "/de/about", "/de/imprint"];
@@ -15,7 +15,7 @@ for (const colorScheme of ["light", "dark"] as const) {
 
 				const results = await new AxeBuilder({ page }).withTags(tags).analyze();
 
-				expect(results.violations).toEqual([]);
+				expect(results.violations).toStrictEqual([]);
 			});
 		}
 	});

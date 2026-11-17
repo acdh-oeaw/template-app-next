@@ -33,7 +33,7 @@ const config: Config = {
 		"declaration-block-no-duplicate-properties": [true, { ignore: ["consecutive-duplicates-with-different-syntaxes"] }],
 		"declaration-block-no-shorthand-property-overrides": true,
 		"declaration-property-value-keyword-no-deprecated": true,
-		"declaration-property-value-no-unknown": [true, { ignoreProperties: { "/.+/": [/--(alpha|spacing|theme)\(/] } }],
+		"declaration-property-value-no-unknown": [true, { ignoreProperties: { "/.+/": [/--(?:alpha|spacing|theme)\(/] } }],
 		"font-family-no-duplicate-names": true,
 		"font-family-no-missing-generic-family-keyword": true,
 		"function-calc-no-unspaced-operator": true,

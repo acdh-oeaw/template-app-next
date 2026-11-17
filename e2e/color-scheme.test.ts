@@ -22,9 +22,7 @@ test.describe("color scheme", () => {
 		await expect(getRadio(page, "System")).toBeChecked();
 		await expect(page.locator("html")).not.toHaveAttribute("data-color-scheme");
 
-		const isDark = await page.evaluate(() => {
-			return matchMedia("(prefers-color-scheme: dark)").matches;
-		});
+		const isDark = await page.evaluate(() => matchMedia("(prefers-color-scheme: dark)").matches);
 		expect(isDark).toBe(true);
 	});
 
@@ -47,9 +45,7 @@ test.describe("color scheme", () => {
 		await select(page, "System");
 
 		await expect(page.locator("html")).not.toHaveAttribute("data-color-scheme");
-		const stored = await page.evaluate((key) => {
-			return localStorage.getItem(key);
-		}, storageKey);
+		const stored = await page.evaluate((key) => localStorage.getItem(key), storageKey);
 		expect(stored).toBeNull();
 	});
 
@@ -57,9 +53,7 @@ test.describe("color scheme", () => {
 		await page.addInitScript((key) => {
 			localStorage.setItem(key, "light");
 		}, storageKey);
-		await page.route("**/_next/static/**/*.js", (route) => {
-			return route.abort();
-		});
+		await page.route("**/_next/static/**/*.js", (route) => route.abort());
 
 		await page.goto("/en");
 
@@ -126,6 +120,6 @@ test.describe("color scheme", () => {
 		await page.goto("/en");
 		await select(page, "Dark");
 
-		expect(errors).toEqual([]);
+		expect(errors).toStrictEqual([]);
 	});
 });

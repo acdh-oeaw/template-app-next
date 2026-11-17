@@ -6,7 +6,7 @@ import { PHASE_DEVELOPMENT_SERVER, PHASE_PRODUCTION_BUILD } from "next/constants
 import { defaultLocale, getLanguage, locales } from "#/configs/i18n.config.ts";
 import { assertPublicEnv, createServerEnv } from "#/lib/env/parse.ts";
 
-const languages = Array.from(new Set(locales.map(getLanguage)));
+const languages = Array.from(new Set(locales.map((locale) => getLanguage(locale))));
 
 /** React Aria only ships some regional variants (e.g. "en-US" but not "en-GB"), and the plugin matches regions exactly. */
 const localeOptimization = optimizeLocales.turbopack([
@@ -80,7 +80,5 @@ export default function createConfig(phase: string): NextConfig {
 		},
 	};
 
-	return plugins.reduce((config, plugin) => {
-		return plugin(config);
-	}, config);
+	return plugins.reduce((config, plugin) => plugin(config), config);
 }

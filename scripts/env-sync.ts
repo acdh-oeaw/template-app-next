@@ -68,9 +68,7 @@ function render(key: string, entry: v.GenericSchema): { lines: Array<string>; ha
 		}
 	}
 	if (allowed != null) {
-		const values = allowed.map((value) => {
-			return JSON.stringify(value);
-		});
+		const values = allowed.map((value) => JSON.stringify(value));
 		lines.push(`# Allowed: ${values.join(" | ")}`);
 	}
 	if (defaultValue.kind === "dynamic") {
@@ -159,16 +157,14 @@ async function main(): Promise<void> {
 		console.log(`\`${filePath}\` is up to date.`);
 	}
 
-	const missing = sections.flatMap((section) => {
-		return Object.entries(section.schema.entries)
+	const missing = sections.flatMap((section) =>
+		Object.entries(section.schema.entries)
 			.filter(([key, entry]) => {
 				const value = force ? undefined : process.env[key];
 				return isRequired(entry) && !written.has(key) && (value == null || value === "");
 			})
-			.map(([key]) => {
-				return key;
-			});
-	});
+			.map(([key]) => key),
+	);
 
 	if (missing.length > 0) {
 		console.warn(`Missing required environment variables: ${missing.join(", ")}.`);

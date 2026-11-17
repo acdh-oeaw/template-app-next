@@ -37,7 +37,7 @@ Add an end-to-end test for behavior that depends on the browser or the framework
 Locate elements by aria role with `getByRole`, not by element name with `locator("h1")`. `bun lint` enforces this with `playwright/no-raw-locators`.
 
 - `cacheComponents` keeps previous pages in the DOM with `display: none` after client navigations. `getByRole` ignores hidden elements, plain locators also match them
-- Elements without an aria role, like those in `<head>`, can use `locator()`. Add these selectors to `allowed` in `configs/oxlint.config.ts`
+- Elements without an aria role, like those in `<head>`, can use `locator()`. Add these selectors to `allowed` in `configs/oxlint/playwright.ts`
 
 ## Type checking
 
@@ -45,6 +45,12 @@ Use `bun check` to type check the project. It reads `tsconfig.json` and reports 
 
 - `bun check src/index.ts` checks one file and what it imports
 - Route types (`PageProps`, `LayoutProps`) are generated into `.next/types` by `bun run types:prepare`, which runs on `bun install`
+
+## Linting
+
+`configs/oxlint/` sets every rule explicitly, with all categories off. `bun test configs` fails when a Bun upgrade adds a rule, or when a rule is set by an alias, like `typescript/no-unused-vars` for `no-unused-vars`, which would override the rule's other setting.
+
+- Relative globs in `overrides` resolve against `configs/`. Use `fromRoot()` for paths outside `configs/`, and a glob without a slash, like `*.config.ts`, to match a file name in any directory. Absolute globs don't match files inside `configs/`
 
 ## CSS
 

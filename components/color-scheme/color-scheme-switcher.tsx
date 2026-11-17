@@ -3,7 +3,7 @@
 import { useExtracted as useTranslations } from "next-intl";
 import { type ReactNode, Suspense, use, useSyncExternalStore } from "react";
 import { Label } from "react-aria-components/Label";
-import { Radio, RadioGroup } from "react-aria-components/RadioGroup";
+import { RadioButton, RadioField, RadioGroup } from "react-aria-components/RadioGroup";
 import { browser } from "react-dom";
 
 import {
@@ -42,13 +42,11 @@ function ColorSchemeRadioGroup(props: Readonly<ColorSchemeRadioGroupProps>): Rea
 			value={value ?? null}
 		>
 			<Label>{t("Color scheme")}</Label>
-			{colorSchemes.map((colorScheme) => {
-				return (
-					<Radio key={colorScheme} className="inline-flex selected:underline" value={colorScheme}>
-						{labels[colorScheme]}
-					</Radio>
-				);
-			})}
+			{colorSchemes.map((colorScheme) => (
+				<RadioField key={colorScheme} value={colorScheme}>
+					<RadioButton className="inline-flex selected:underline">{labels[colorScheme]}</RadioButton>
+				</RadioField>
+			))}
 		</RadioGroup>
 	);
 }
