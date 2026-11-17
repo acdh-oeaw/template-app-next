@@ -12,7 +12,8 @@ export const react = {
 		"react/capitalized-calls": "error",
 		"react/checked-requires-onchange-or-readonly": "warn",
 		"react/component-hook-factories": "off",
-		"react/config": "error",
+		/** `bun lint` runs the React Compiler with fixed options, so this never reports. */
+		"react/config": "off",
 		"react/default-props-match-prop-types": "off",
 		"react/destructuring-assignment": "off",
 		"react/display-name": "off",
@@ -28,7 +29,8 @@ export const react = {
 		"react/forbid-prop-types": "off",
 		"react/forward-ref-uses-ref": "error",
 		"react/function-component-definition": "error",
-		"react/gating": "error",
+		/** `bun lint` runs the React Compiler without dynamic gating, so this never reports. */
+		"react/gating": "off",
 		"react/globals": "error",
 		"react/hook-use-state": "warn",
 		"react/hooks": "error",
