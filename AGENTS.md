@@ -76,6 +76,13 @@ Use `bun check` to type check the project. It reads `tsconfig.json` and reports 
 
 - Keep commits atomic: one logical change per commit, including its tests and docs. Each commit should work on its own, so a change and what it depends on go in the same commit
 - Don't mix unrelated changes, even when they are already staged together. Split them, or ask
+- Start commit subjects in lowercase, without a conventional commits prefix like `feat:`. Names keep their case, like `Next.js`
+
+## Pull requests
+
+- Pull requests are squash merged, so the pr title becomes the commit subject on `main`. Write it like a commit subject
+- Keep each pull request to one logical change, since it is squashed into one commit
+- In the description, explain what the change does and why: what a reviewer can't see in the diff, like the motivation for a design decision or the alternatives considered. Leave out anything not relevant to the change itself
 
 ## Documentation
 
