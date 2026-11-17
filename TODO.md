@@ -112,4 +112,7 @@
 - [ ] After updating `@react-aria/optimize-locales-plugin` past 2.1.0, re-create our patch, and decide whether it should
       keep `locales: readonly string[]` in the Turbopack rule type, which upstream relaxed to `string[]` to satisfy
       Next.js's `JSONValue` (adobe/react-spectrum#10889, unreleased). `bun check` passes with the readonly type today
+- [ ] Remove `fallback: []` from `firaCode` in `styles/fonts.ts` once https://github.com/vercel/next.js/pull/101397
+      is in a stable release (it is in `16.5.0-canary.53`). Check that a Turbopack build emits no `Fira Code Fallback`
+      face
 - [ ] Clean up leftover `.gitignore` entries (`.pnpm-store/`, `/docker/.env`, `.turbo/`, ...)
