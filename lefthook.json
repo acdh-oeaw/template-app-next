@@ -5,7 +5,11 @@
 		"jobs": [
 			{
 				"name": "lint",
-				"run": "bun lint --fix --staged --type-check"
+				"run": "bun lint --fix --staged"
+			},
+			{
+				"name": "types",
+				"run": "bun check"
 			},
 			{
 				"name": "stylelint",
