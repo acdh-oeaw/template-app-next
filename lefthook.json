@@ -9,7 +9,8 @@
 			},
 			{
 				"name": "types",
-				"run": "bun check"
+				"glob": "*.{ts,tsx}",
+				"run": "bun check {staged_files}"
 			},
 			{
 				"name": "stylelint",
