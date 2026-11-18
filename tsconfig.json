@@ -4,21 +4,28 @@
 		"allowArbitraryExtensions": true,
 		"allowImportingTsExtensions": true,
 		"allowJs": false,
+		"erasableSyntaxOnly": true,
 		"exactOptionalPropertyTypes": false,
 		"incremental": true,
 		"isolatedModules": true,
 		"jsx": "react-jsx",
-		"lib": ["dom", "esnext"],
+		/** `es2023` is the highest lib that all `browserslist` targets in `package.json` support. */
+		"lib": ["dom", "es2023"],
 		"module": "preserve",
 		"moduleDetection": "force",
 		"noEmit": true,
 		"noFallthroughCasesInSwitch": true,
 		"noImplicitOverride": true,
+		"noImplicitReturns": true,
 		"noPropertyAccessFromIndexSignature": false,
 		"noUncheckedIndexedAccess": true,
 		"noUnusedLocals": false,
 		"noUnusedParameters": false,
-		// @see https://github.com/oven-sh/bun/issues/28995
+		/**
+		 * Duplicates `imports` in `package.json`, because Bun does not resolve root-level wildcard subpath imports.
+		 *
+		 * @see {@link https://github.com/oven-sh/bun/issues/28995}
+		 */
 		"paths": {
 			"#/*": ["./*"]
 		},
@@ -31,5 +38,5 @@
 		"verbatimModuleSyntax": true
 	},
 	"include": ["**/*.ts", "**/*.tsx", ".next/types/**/*.ts", ".next/dev/types/**/*.ts"],
-	"exclude": ["dist", "node_modules", "out", "public", "storybook-static"]
+	"exclude": ["dist", "node_modules", "out", "public"]
 }

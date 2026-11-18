@@ -57,6 +57,13 @@
 		"tailwindcss-react-aria-components": "^2.2.0",
 		"typescript": "^7.1.0-beta"
 	},
+	"browserslist": [
+		"chrome >= 111",
+		"edge >= 111",
+		"firefox >= 128",
+		"safari >= 16.4",
+		"ios_saf >= 16.4"
+	],
 	"stylelint": {
 		"extends": "./configs/stylelint.config.ts"
 	},
