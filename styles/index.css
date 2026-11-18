@@ -15,8 +15,8 @@
 
 @layer base {
 	:root {
-		block-size: 100%;
 		color-scheme: light dark;
+		block-size: 100%;
 	}
 
 	:root[data-color-scheme="light"] {
@@ -28,9 +28,9 @@
 	}
 
 	body {
-		background-color: var(--color-canvas);
 		block-size: 100%;
 		color: var(--color-canvas-text);
+		background-color: var(--color-canvas);
 	}
 
 	:where(h1, h2, h3, h4, h5, h6) {

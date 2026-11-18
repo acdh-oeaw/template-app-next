@@ -1,5 +1,7 @@
 import type { Config } from "stylelint";
 
+import { propertyGroups } from "#/configs/stylelint/property-groups.ts";
+
 const tailwindAtRules = [
 	"apply",
 	"config",
@@ -185,15 +187,14 @@ const config: Config = {
 		"order/custom-properties-alphabetical-order": null,
 		"order/order": [
 			"custom-properties",
-			"dollar-variables",
 			{ type: "at-rule", name: "apply" },
 			"declarations",
 			{ type: "at-rule", name: "variant" },
 			"rules",
 			"at-rules",
 		],
-		"order/properties-alphabetical-order": true,
-		"order/properties-order": null,
+		"order/properties-alphabetical-order": null,
+		"order/properties-order": [propertyGroups, { unspecified: "bottomAlphabetical" }],
 	},
 };
 
