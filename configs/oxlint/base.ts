@@ -588,7 +588,7 @@ export const base = {
 		"node/no-unsupported-features/es-syntax": "off",
 		"node/no-unsupported-features/node-builtins": "off",
 		"bun/axios-no-unbounded-requests": "error",
-		"bun/consistent-directive-prefix": "error",
+		"bun/consistent-directive-prefix": ["error", { prefix: "oxlint" }],
 		"bun/fast-check-no-unseeded-random": "error",
 		"bun/format": "off",
 		"bun/jsx-no-forbidden-nesting": "error",
