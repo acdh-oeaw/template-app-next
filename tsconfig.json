@@ -12,5 +12,5 @@
 		}
 	},
 	"include": ["**/*.ts", "**/*.tsx", ".next/types/**/*.ts", ".next/dev/types/**/*.ts"],
-	"exclude": ["dist", "node_modules", "out", "public"]
+	"exclude": ["node_modules", "out", "public"]
 }

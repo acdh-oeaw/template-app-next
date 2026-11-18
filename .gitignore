@@ -1,5 +1,4 @@
 # dependencies
-.pnpm-store/
 node_modules/
 
 # non-public environment variables
@@ -16,19 +15,9 @@ certificates/
 next-env.d.ts
 out/
 
-# package build artefacts
-dist/
-
-# i18n
-*.d.json.ts
-
 # caches
 *.tsbuildinfo
-.cache/
 .stylelintcache
-
-# turborepo
-.turbo/
 
 # logs
 *.log
@@ -49,12 +38,6 @@ playwright-report/
 test-results/
 **/playwright/.auth/
 **/playwright/.cache/
-
-# storybook
-storybook-static/
-
-# vercel
-.vercel
 
 # misc
 .DS_Store
