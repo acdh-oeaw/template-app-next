@@ -2,9 +2,11 @@ import { describe, expect, test } from "bun:test";
 
 import {
 	href as appHref,
+	externalHref,
 	type Href,
 	type HrefFunction,
 	type LocalizedRoutes,
+	type RelativeHref,
 	withSearchParams,
 } from "#/lib/navigation/href.ts";
 
@@ -53,6 +55,21 @@ describe("href", () => {
 		expect<string>(href({ pathname: "/about", searchParams: {} })).toBe("/about");
 	});
 
+	test("creates hrefs relative to the current page", () => {
+		expect<string>(href({ hash: "main-content" })).toBe("#main-content");
+		expect<string>(href({ searchParams: { page: "2" } })).toBe("?page=2");
+		expect<string>(href({ searchParams: { page: "2" }, hash: "results" })).toBe("?page=2#results");
+	});
+
+	test("removes the current search params with empty search params", () => {
+		expect<string>(href({ searchParams: {} })).toBe("?");
+		expect<string>(href({ searchParams: { page: undefined }, hash: "results" })).toBe("?#results");
+	});
+
+	test("throws for empty relative hrefs at runtime", () => {
+		expect(() => href({ hash: "" })).toThrow("needs a `pathname`, `searchParams` or a `hash`");
+	});
+
 	test("rejects invalid routes and params at compile time", () => {
 		expect(hrefTypeTests).toBeFunction();
 	});
@@ -80,6 +97,25 @@ describe("withSearchParams", () => {
 	});
 });
 
+describe("externalHref", () => {
+	test("accepts absolute urls with a safe protocol", () => {
+		expect<string>(externalHref("https://example.org")).toBe("https://example.org");
+		expect<string>(externalHref("mailto:info@example.org")).toBe("mailto:info@example.org");
+		expect<string>(externalHref("tel:+431234")).toBe("tel:+431234");
+		expect<string>(externalHref(new URL("https://example.org/a?b=c"))).toBe("https://example.org/a?b=c");
+	});
+
+	test("rejects relative urls, and points to href()", () => {
+		expect(() => externalHref("/about")).toThrow("Use `href()` for pages of this app.");
+		expect(() => externalHref("example.org")).toThrow('expected an absolute url, like "https://example.org"');
+	});
+
+	test("rejects unsafe protocols", () => {
+		expect(() => externalHref("javascript:alert(1)")).toThrow("expected one of the protocols");
+		expect(() => externalHref("data:text/html,hi")).toThrow("expected one of the protocols");
+	});
+});
+
 /** Only type checked, not run. */
 function hrefTypeTests() {
 	// @ts-expect-error -- unknown route
@@ -94,9 +130,15 @@ function hrefTypeTests() {
 	href({ pathname: "/posts/[id]", params: { slug: "1" } });
 	// @ts-expect-error -- static routes have no params
 	href({ pathname: "/about", params: { id: "1" } });
-	// @ts-expect-error -- needs a pathname
-	href({ hash: "x" });
+	// @ts-expect-error -- params need a pathname
+	href({ params: { id: "1" }, hash: "x" });
+	// @ts-expect-error -- needs a pathname, search params or a hash
+	href({});
 	// @ts-expect-error -- the href is not a plain string
 	const value: Href = "/about";
-	void value;
+	// @ts-expect-error -- relative hrefs are not pages
+	const relative: Href = href({ hash: "x" });
+	const page: Href = href({ pathname: "/about", hash: "x" });
+	const current: RelativeHref = href({ searchParams: { page: "2" } });
+	void [value, relative, page, current];
 }

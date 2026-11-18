@@ -10,6 +10,19 @@ declare const brand: unique symbol;
  */
 export type Href = string & { readonly [brand]: "Create internal hrefs with href() from #/lib/navigation/href.ts" };
 
+/**
+ * Search params or a hash, relative to the current page, like `?page=2` or `#comments`. Only for links, because it
+ * cannot be localized, and is not a page for metadata or redirects.
+ */
+export type RelativeHref = string & {
+	readonly [brand]: "Create relative hrefs with href({ searchParams, hash }) from #/lib/navigation/href.ts";
+};
+
+/** An absolute url, like `https://example.org` or `mailto:info@example.org`. */
+export type ExternalHref = string & {
+	readonly [brand]: "Create external hrefs with externalHref() from #/lib/navigation/href.ts";
+};
+
 type SegmentParams = Record<string, string | Array<string> | undefined>;
 
 /** Maps page routes below `[locale]` to their params, without the locale. Generic, so tests can use other routes. */
@@ -42,7 +55,16 @@ type RouteHrefOptions<TRoutes> = {
 		};
 }[keyof TRoutes & string];
 
-export type HrefFunction<TRoutes> = (options: Readonly<RouteHrefOptions<TRoutes>>) => Href;
+type RelativeHrefOptions = {
+	pathname?: never;
+	params?: never;
+} & ({ searchParams: Readonly<SearchParams>; hash?: string } | { searchParams?: never; hash: string });
+
+/** The route overload is last, because type errors are reported for the last overload. */
+export interface HrefFunction<TRoutes> {
+	(options: Readonly<RelativeHrefOptions>): RelativeHref;
+	(options: Readonly<RouteHrefOptions<TRoutes>>): Href;
+}
 
 const dynamicSegment = /^\[(?<optional>\[)?(?<catchAll>\.{3})?(?<name>[^\]]+)\]\]?$/;
 
@@ -98,27 +120,37 @@ function toSearch(searchParams: Readonly<SearchParams>): string {
 /**
  * Creates the href of a page, like `href({ pathname: "/posts/[id]", params: { id } })`. Pathnames are the page routes
  * that `next typegen` generates, without the `[locale]` segment, which `<Link>` and `redirect()` add.
+ *
+ * Without a pathname, creates an href relative to the current page, like `href({ hash: "comments" })`. Search params
+ * replace the current ones, so empty search params remove them.
  */
-export const href: HrefFunction<Routes> = (options) => {
+export function href(options: Readonly<RelativeHrefOptions>): RelativeHref;
+export function href(options: Readonly<RouteHrefOptions<Routes>>): Href;
+export function href(options: Readonly<RelativeHrefOptions | RouteHrefOptions<Routes>>): Href | RelativeHref {
 	const { pathname, params, searchParams, hash } = options as {
-		pathname: string;
+		pathname?: string;
 		params?: SegmentParams;
 		searchParams?: Readonly<SearchParams>;
 		hash?: string;
 	};
 
-	let value = interpolate(pathname, params ?? {});
+	let value = pathname != null ? interpolate(pathname, params ?? {}) : "";
 
 	if (searchParams != null) {
-		value += toSearch(searchParams);
+		/** A relative href needs the "?" to remove the current search params, a pathname alone already does. */
+		value += toSearch(searchParams) || (pathname == null ? "?" : "");
 	}
 
 	if (hash != null && hash !== "") {
 		value += `#${encodeURIComponent(hash)}`;
 	}
 
-	return value as Href;
-};
+	if (value === "") {
+		throw new Error("`href()` needs a `pathname`, `searchParams` or a `hash`.");
+	}
+
+	return value as Href | RelativeHref;
+}
 
 /** Adds search params to an href, like the current search params to the href of the current page. */
 export function withSearchParams(value: Href, searchParams: URLSearchParams): Href {
@@ -129,6 +161,30 @@ export function withSearchParams(value: Href, searchParams: URLSearchParams): Hr
 	}
 
 	return `${url.pathname}${url.search}${url.hash}` as Href;
+}
+
+const externalProtocols = new Set(["http:", "https:", "mailto:", "tel:"]);
+
+/** Checks that a url is absolute, and that its protocol is safe to link to, unlike `javascript:` or `data:`. */
+export function externalHref(value: string | URL): ExternalHref {
+	let url: URL;
+
+	try {
+		url = new URL(value);
+	} catch {
+		throw new TypeError(
+			`Invalid external href "${String(value)}": expected an absolute url, like "https://example.org". Use \`href()\` for pages of this app.`,
+		);
+	}
+
+	if (!externalProtocols.has(url.protocol)) {
+		throw new TypeError(
+			`Invalid external href "${String(value)}": expected one of the protocols ${Array.from(externalProtocols).join(", ")}.`,
+		);
+	}
+
+	/** Strings are kept as they are, because the `URL` serialization can differ, like a trailing slash. */
+	return (typeof value === "string" ? value : url.href) as ExternalHref;
 }
 
 /**
