@@ -1,7 +1,12 @@
 /** `settings` is not inherited through `extends`, so this is composed in `oxlint.config.ts`. */
 export const settings = {
-	formComponents: ["Form"],
-	linkComponents: ["Link"],
+	"jsx-a11y": {
+		components: { Link: "a" },
+	},
+	react: {
+		formComponents: ["Form"],
+		linkComponents: ["Link"],
+	},
 };
 
 export const react = {

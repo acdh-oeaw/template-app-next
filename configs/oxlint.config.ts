@@ -69,8 +69,8 @@ const config = {
 		typeAware: true,
 	},
 	settings: {
-		react: reactSettings,
-		tailwindcss: tailwindcssSettings,
+		...reactSettings,
+		...tailwindcssSettings,
 	},
 	rules: {
 		"no-restricted-imports": ["error", { paths: [...restrictedPaths, envParsePath], patterns: restrictedPatterns }],

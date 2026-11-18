@@ -2,7 +2,9 @@ import { fromRoot } from "#/configs/oxlint/paths.ts";
 
 /** `settings` is not inherited through `extends`, so this is composed in `oxlint.config.ts`. */
 export const settings = {
-	entryPoint: fromRoot("styles/index.css"),
+	tailwindcss: {
+		entryPoint: fromRoot("styles/index.css"),
+	},
 };
 
 export const tailwindcss = {
