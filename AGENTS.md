@@ -52,6 +52,8 @@ Use `bun check` to type check the project. It reads `tsconfig.json` and reports 
 
 - Relative globs in `overrides` resolve against `configs/`. Use `fromRoot()` for paths outside `configs/`, and a glob without a slash, like `*.config.ts`, to match a file name in any directory. Absolute globs don't match files inside `configs/`
 
+`configs/stylelint.config.ts` also sets every rule explicitly, with `null` for rules that are off, and `bun test configs` warns about rules that a stylelint or plugin upgrade added.
+
 ## CSS
 
 - Put all CSS in a cascade layer, like `@layer base`, so utilities can override it
