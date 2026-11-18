@@ -18,7 +18,7 @@ export const tailwindcss = {
 		"tailwindcss/enforce-logical": "error",
 		"tailwindcss/enforce-negative-arbitrary-values": "error",
 		"tailwindcss/enforce-physical": "off",
-		"tailwindcss/enforce-shorthand": "off",
+		"tailwindcss/enforce-shorthand": "error",
 		"tailwindcss/enforce-sort-order": "off",
 		"tailwindcss/max-class-count": "off",
 		"tailwindcss/no-arbitrary-value": "off",
