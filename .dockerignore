@@ -14,6 +14,7 @@
 
 !bun.lock
 !bunfig.toml
+!instrumentation-client.ts
 !instrumentation.ts
 !next.config.ts
 !package.json
