@@ -43,6 +43,7 @@ Locate elements by aria role with `getByRole`, not by element name with `locator
 
 Use `bun check` to type check the project. It reads `tsconfig.json` and reports the same errors as `tsc`.
 
+- Compiler options are in `configs/typescript.config.json`. `tsconfig.json` extends it and only sets what is resolved relative to the root, like `paths` and `include`, because Bun, Next.js and editors look for it there
 - `bun check src/index.ts` checks one file and what it imports
 - Route types (`PageProps`, `LayoutProps`) are generated into `.next/types` by `bun run types:prepare`, which runs on `bun install`
 

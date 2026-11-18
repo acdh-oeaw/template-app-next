@@ -1,26 +1,7 @@
 {
 	"$schema": "https://www.schemastore.org/tsconfig.json",
+	"extends": "./configs/typescript.config.json",
 	"compilerOptions": {
-		"allowArbitraryExtensions": true,
-		"allowImportingTsExtensions": true,
-		"allowJs": false,
-		"erasableSyntaxOnly": true,
-		"exactOptionalPropertyTypes": false,
-		"incremental": true,
-		"isolatedModules": true,
-		"jsx": "react-jsx",
-		/** `es2023` is the highest lib that all `browserslist` targets in `package.json` support. */
-		"lib": ["dom", "es2023"],
-		"module": "preserve",
-		"moduleDetection": "force",
-		"noEmit": true,
-		"noFallthroughCasesInSwitch": true,
-		"noImplicitOverride": true,
-		"noImplicitReturns": true,
-		"noPropertyAccessFromIndexSignature": false,
-		"noUncheckedIndexedAccess": true,
-		"noUnusedLocals": false,
-		"noUnusedParameters": false,
 		/**
 		 * Duplicates `imports` in `package.json`, because Bun does not resolve root-level wildcard subpath imports.
 		 *
@@ -28,14 +9,7 @@
 		 */
 		"paths": {
 			"#/*": ["./*"]
-		},
-		"plugins": [{ "name": "next" }],
-		"resolveJsonModule": true,
-		"skipLibCheck": true,
-		"strict": true,
-		"target": "esnext",
-		"types": ["bun", "react", "react-dom"],
-		"verbatimModuleSyntax": true
+		}
 	},
 	"include": ["**/*.ts", "**/*.tsx", ".next/types/**/*.ts", ".next/dev/types/**/*.ts"],
 	"exclude": ["dist", "node_modules", "out", "public"]
