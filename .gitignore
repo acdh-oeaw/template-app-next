@@ -4,7 +4,6 @@ node_modules/
 # non-public environment variables
 .env.local
 .env.*.local
-/docker/.env
 
 # certificates and keys
 *.pem

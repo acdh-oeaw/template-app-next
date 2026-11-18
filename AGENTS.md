@@ -16,6 +16,13 @@ Some dependencies are patched via `patchedDependencies` in `package.json`, with 
 - To change a dependency, use `bun patch <pkg>`, edit it in `node_modules/`, then `bun patch --commit <pkg>`. Never edit `node_modules/` without committing a patch.
 - Patches are pinned to exact versions, so `bun update` keeps patched packages at their version (`kept … (patched, … available)`). To update one, use `bun update --latest <pkg>` or bump its version, then re-create the patch with `bun patch`.
 
+## Local services
+
+Define containers for third-party services in local development, like a Typesense server, in `docker/compose.yaml`, not in the `Dockerfile`, which builds the production image. See `readme.md`.
+
+- Services read variables from `.env.local`: run them with `docker compose --env-file .env.local --file docker/compose.yaml up --detach`
+- Define variables that a service shares with the app in `configs/env.config.ts`, so `bun run env:sync` generates them, and reference them as `${NAME:?}`
+
 ## Testing
 
 Use `bun test` to run tests.
