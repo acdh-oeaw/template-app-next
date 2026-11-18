@@ -3,22 +3,17 @@ import * as fs from "node:fs/promises";
 import * as os from "node:os";
 import * as path from "node:path";
 
-import playwrightPlugin from "eslint-plugin-playwright";
-import regexpPlugin from "eslint-plugin-regexp";
-import tailwindcssPlugin from "oxlint-tailwindcss";
-
 import config from "#/configs/oxlint.config.ts";
-import { base } from "#/configs/oxlint/base.ts";
-import { bunTest } from "#/configs/oxlint/bun-test.ts";
-import { nextjs } from "#/configs/oxlint/nextjs.ts";
-import { playwright } from "#/configs/oxlint/playwright.ts";
-import { react } from "#/configs/oxlint/react.ts";
-import { regexp } from "#/configs/oxlint/regexp.ts";
-import { tailwindcss } from "#/configs/oxlint/tailwindcss.ts";
+
+interface JsPlugin {
+	name: string;
+	specifier: string;
+}
 
 interface Config {
+	jsPlugins?: Array<JsPlugin>;
 	rules?: Record<string, unknown>;
-	overrides?: Array<{ rules?: Record<string, unknown> }>;
+	overrides?: Array<{ jsPlugins?: Array<JsPlugin>; rules?: Record<string, unknown> }>;
 }
 
 /** Configs whose rules only apply to some files declare them in their only override. */
@@ -26,20 +21,19 @@ function ruleNames(config: Config): Array<string> {
 	return Object.keys(config.rules ?? config.overrides?.[0]?.rules ?? {});
 }
 
-const nativePlugins = new Set([
-	"bun",
-	"bun:test",
-	"eslint",
-	"import",
-	"jsx-a11y",
-	"nextjs",
-	"node",
-	"oxc",
-	"promise",
-	"react",
-	"react-perf",
-	"typescript",
-	"unicorn",
+function jsPluginsOf(config: Config): Array<JsPlugin> {
+	return config.jsPlugins ?? config.overrides?.[0]?.jsPlugins ?? [];
+}
+
+/** Listed by `bun lint --rules`, but not configured, so not reported as missing. */
+const ignoredPlugins = new Set([
+	/** Only available in an ESLint config. */
+	"json",
+	"markdown",
+	"prettier",
+	/** Tests use `bun:test`. */
+	"jest",
+	"vitest",
 ]);
 
 function normalize(name: string): string {
@@ -84,27 +78,27 @@ async function resolve(names: Array<string>): Promise<Set<string>> {
 	}
 }
 
-const jsPlugins = [
-	["playwright", playwright, playwrightPlugin],
-	["regexp", regexp, regexpPlugin],
-	["tailwindcss", tailwindcss, tailwindcssPlugin],
-] as const;
+const configs: Array<Config> = [...config.extends, { rules: config.rules }];
 
 async function getAvailableRules(): Promise<Set<string>> {
 	const listed = (await bunLint(["--rules"]))
 		.trim()
 		.split("\n")
 		.map((name) => normalize(name))
-		.filter((name) => nativePlugins.has(pluginOf(name)));
-	const pluginRules = jsPlugins.flatMap(([prefix, , plugin]) =>
-		Object.keys(plugin.rules).map((rule) => `${prefix}/${rule}`),
+		.filter((name) => !ignoredPlugins.has(pluginOf(name)));
+	const pluginRules = await Promise.all(
+		configs
+			.flatMap((config) => jsPluginsOf(config))
+			.map(async ({ name, specifier }) => {
+				const plugin = (await import(specifier)) as { default: { rules: Record<string, unknown> } };
+				return Object.keys(plugin.default.rules).map((rule) => `${name}/${rule}`);
+			}),
 	);
-	return new Set([...(await resolve(listed)), ...pluginRules]);
+	return new Set([...(await resolve(listed)), ...pluginRules.flat()]);
 }
 
 describe("oxlint config", () => {
-	const native = [base, bunTest, nextjs, react, { rules: config.rules }].flatMap((config) => ruleNames(config));
-	const configured = [native, ...jsPlugins.map(([, config]) => ruleNames(config))].flat();
+	const configured = configs.flatMap((config) => ruleNames(config));
 	const available = getAvailableRules();
 
 	/** A Bun or plugin upgrade can add rules, which stay off until they are configured. */
