@@ -1,4 +1,4 @@
-import { describe, expect, test } from "bun:test";
+import { afterAll, describe, expect, test } from "bun:test";
 import * as fs from "node:fs/promises";
 import * as os from "node:os";
 import * as path from "node:path";
@@ -55,8 +55,14 @@ function pluginOf(name: string): string {
 
 async function bunLint(args: Array<string>, cwd?: string): Promise<string> {
 	const subprocess = Bun.spawn(["bun", "lint", ...args], { cwd, stderr: "pipe", stdout: "pipe" });
-	const [stdout, exitCode] = await Promise.all([new Response(subprocess.stdout).text(), subprocess.exited]);
-	expect(exitCode).toBe(0);
+	const [stdout, stderr, exitCode] = await Promise.all([
+		new Response(subprocess.stdout).text(),
+		new Response(subprocess.stderr).text(),
+		subprocess.exited,
+	]);
+	if (exitCode !== 0) {
+		throw new Error(`\`bun lint ${args.join(" ")}\` exited with ${String(exitCode)}:\n${stderr}`);
+	}
 	return stdout;
 }
 
@@ -78,33 +84,46 @@ async function resolve(names: Array<string>): Promise<Set<string>> {
 	}
 }
 
+const jsPlugins = [
+	["playwright", playwright, playwrightPlugin],
+	["regexp", regexp, regexpPlugin],
+	["tailwindcss", tailwindcss, tailwindcssPlugin],
+] as const;
+
+async function getAvailableRules(): Promise<Set<string>> {
+	const listed = (await bunLint(["--rules"]))
+		.trim()
+		.split("\n")
+		.map((name) => normalize(name))
+		.filter((name) => nativePlugins.has(pluginOf(name)));
+	const pluginRules = jsPlugins.flatMap(([prefix, , plugin]) =>
+		Object.keys(plugin.rules).map((rule) => `${prefix}/${rule}`),
+	);
+	return new Set([...(await resolve(listed)), ...pluginRules]);
+}
+
 describe("oxlint config", () => {
 	const native = [base, bunTest, nextjs, react, { rules: config.rules }].flatMap((config) => ruleNames(config));
+	const configured = [native, ...jsPlugins.map(([, config]) => ruleNames(config))].flat();
+	const available = getAvailableRules();
+
+	/** A Bun or plugin upgrade can add rules, which stay off until they are configured. */
+	afterAll(async () => {
+		const names = new Set(configured);
+		const missing = [...(await available)].filter((name) => !names.has(name)).toSorted();
+		if (missing.length > 0) {
+			// oxlint-disable-next-line no-console -- reports new rules without failing the tests
+			console.warn(`Rules not configured in \`configs/oxlint/\`:\n${missing.join("\n")}`);
+		}
+	});
 
 	test("configures every rule only once", () => {
-		const names = [native, ...[playwright, regexp, tailwindcss].map((config) => ruleNames(config))].flat();
-		expect(names.filter((name, index) => names.indexOf(name) !== index)).toStrictEqual([]);
+		expect(configured.filter((name, index) => configured.indexOf(name) !== index)).toStrictEqual([]);
 	});
 
-	test("configures every built-in rule by its own name", async () => {
-		const listed = (await bunLint(["--rules"]))
-			.trim()
-			.split("\n")
-			.map((name) => normalize(name))
-			.filter((name) => nativePlugins.has(pluginOf(name)));
-		const canonical = await resolve(listed);
-		const configured = new Set(native);
-
-		expect([...canonical].filter((name) => !configured.has(name)).toSorted()).toStrictEqual([]);
-		expect(native.filter((name) => !canonical.has(name)).toSorted()).toStrictEqual([]);
-	});
-
-	test.each([
-		["playwright", playwright, playwrightPlugin],
-		["regexp", regexp, regexpPlugin],
-		["tailwindcss", tailwindcss, tailwindcssPlugin],
-	] as const)("configures every rule of the %s plugin", (prefix, config, plugin) => {
-		const expected = Object.keys(plugin.rules).map((rule) => `${prefix}/${rule}`);
-		expect(ruleNames(config).toSorted()).toStrictEqual(expected.toSorted());
+	/** An alias overrides the setting of the rule it stands for, and an unknown rule makes `bun lint` exit early. */
+	test("sets every rule by its own name", async () => {
+		const rules = await available;
+		expect(configured.filter((name) => !rules.has(name)).toSorted()).toStrictEqual([]);
 	});
 });

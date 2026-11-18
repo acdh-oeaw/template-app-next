@@ -48,7 +48,7 @@ Use `bun check` to type check the project. It reads `tsconfig.json` and reports 
 
 ## Linting
 
-`configs/oxlint/` sets every rule explicitly, with all categories off. `bun test configs` fails when a Bun upgrade adds a rule, or when a rule is set by an alias, like `typescript/no-unused-vars` for `no-unused-vars`, which would override the rule's other setting.
+`configs/oxlint/` sets every rule explicitly, with all categories off. `bun test configs` warns about rules that a Bun or plugin upgrade added, and fails when a rule is set by an alias, like `typescript/no-unused-vars` for `no-unused-vars`, which would override the rule's other setting.
 
 - Relative globs in `overrides` resolve against `configs/`. Use `fromRoot()` for paths outside `configs/`, and a glob without a slash, like `*.config.ts`, to match a file name in any directory. Absolute globs don't match files inside `configs/`
 

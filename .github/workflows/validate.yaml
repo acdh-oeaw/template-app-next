@@ -41,6 +41,7 @@ jobs:
           - run: bun run lint:check
           - run: bun run styles:check
           - run: bun run types:check
+          - run: bun run test:unit
 
   e2e:
     name: End-to-end tests
