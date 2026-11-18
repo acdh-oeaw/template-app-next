@@ -115,7 +115,7 @@
 - [ ] Remove `fallback: []` from `firaCode` in `styles/fonts.ts` once https://github.com/vercel/next.js/pull/101397
       is in a stable release (it is in `16.5.0-canary.53`). Check that a Turbopack build emits no `Fira Code Fallback`
       face
-- [ ] Clean up leftover `.gitignore` entries (`.pnpm-store/`, `/docker/.env`, `.turbo/`, ...)
+- [x] Clean up leftover `.gitignore` entries (`.pnpm-store/`, `/docker/.env`, `.turbo/`, ...)
 - [ ] Recommend the Bun VS Code extension (`oven.bun-vscode`) in `.vscode/extensions.json` once it lints and formats
       (https://github.com/oven-sh/bun/pull/46885). Narrow `bun.test.filePattern`, which also matches `e2e/`, and set
       `editor.formatOnSave` and `source.fixAll.bun` in `.vscode/settings.json`
