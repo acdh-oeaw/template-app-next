@@ -4,11 +4,12 @@ import type { ReactNode } from "react";
 
 import { MainContent } from "#/components/main-content.tsx";
 import { createPageMetadata } from "#/lib/metadata/create-page-metadata.ts";
+import { href } from "#/lib/navigation/href.ts";
 
 interface IndexPageProps extends PageProps<"/[locale]"> {}
 
 export async function generateMetadata(): Promise<Metadata> {
-	return createPageMetadata({ href: "/" });
+	return createPageMetadata({ href: href({ pathname: "/" }) });
 }
 
 export default function IndexPage(_props: Readonly<IndexPageProps>): ReactNode {

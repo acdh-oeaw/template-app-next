@@ -1,11 +1,11 @@
 import { getExtracted as getTranslations } from "next-intl/server";
 
 import type { Locale } from "#/lib/i18n/locales.ts";
+import { type Href, href } from "#/lib/navigation/href.ts";
 
 export interface NavigationLink {
 	kind: "link";
-	/** Pathname without locale prefix. */
-	href: string;
+	href: Href;
 	label: string;
 }
 
@@ -16,7 +16,7 @@ export async function getMainNavigation(locale: Locale): Promise<Array<Navigatio
 	const t = await getTranslations({ locale });
 
 	return [
-		{ kind: "link", href: "/", label: t("Home") },
-		{ kind: "link", href: "/about", label: t("About") },
+		{ kind: "link", href: href({ pathname: "/" }), label: t("Home") },
+		{ kind: "link", href: href({ pathname: "/about" }), label: t("About") },
 	];
 }

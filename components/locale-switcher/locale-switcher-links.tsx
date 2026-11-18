@@ -7,6 +7,7 @@ import { Fragment, type ReactNode, Suspense, useEffect, useRef } from "react";
 import { Link } from "#/components/link.tsx";
 import { getLanguage, type Locale, locales } from "#/lib/i18n/locales.ts";
 import { usePathname } from "#/lib/i18n/navigation.ts";
+import { href as createHref, type Href, withSearchParams } from "#/lib/navigation/href.ts";
 
 /**
  * Each locale is named in its own language, so these are not translated. Not derived with `Intl.DisplayNames`, which
@@ -45,7 +46,7 @@ function useRestoreFocus(currentLocale: Locale) {
 
 interface LocaleLinksProps {
 	glosses: Glosses;
-	href: string;
+	href: Href;
 }
 
 function LocaleLinks(props: Readonly<LocaleLinksProps>): ReactNode {
@@ -89,15 +90,15 @@ function LocaleLinks(props: Readonly<LocaleLinksProps>): ReactNode {
 
 interface LocaleLinksWithSearchParamsProps {
 	glosses: Glosses;
-	pathname: string;
+	pathname: Href;
 }
 
 function LocaleLinksWithSearchParams(props: Readonly<LocaleLinksWithSearchParamsProps>): ReactNode {
 	const { glosses, pathname } = props;
 
-	const search = useSearchParams().toString();
+	const searchParams = useSearchParams();
 
-	return <LocaleLinks glosses={glosses} href={search !== "" ? `${pathname}?${search}` : pathname} />;
+	return <LocaleLinks glosses={glosses} href={withSearchParams(pathname, searchParams)} />;
 }
 
 interface LocaleLinksWithPathnameProps {
@@ -131,7 +132,7 @@ export function LocaleSwitcherLinks(props: Readonly<LocaleSwitcherLinksProps>): 
 	const { glosses } = props;
 
 	return (
-		<Suspense fallback={<LocaleLinks glosses={glosses} href="/" />}>
+		<Suspense fallback={<LocaleLinks glosses={glosses} href={createHref({ pathname: "/" })} />}>
 			<LocaleLinksWithPathname glosses={glosses} />
 		</Suspense>
 	);

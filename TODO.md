@@ -105,10 +105,14 @@
       (tailwindlabs/tailwindcss#17892), but compare build time and CSS output with and without `.gitignore`
 - [ ] Typed navigation: reimplement the ideas from `dariah-website` (Next.js patch plus `lib/navigation/*`) from
       scratch rather than copying
-  - [ ] `href()` helper
+  - [x] `href()` helper
   - [ ] `search-params.ts` convention
   - [ ] Derive the static pages in `app/sitemap.ts` from typed routes, or type check the list against `AppRoutes` from
         `.next/types/routes.d.ts`, so that new pages cannot be forgotten
+  - [ ] Links from a headless cms, once there is one: store a route and its params, like
+        `{ pathname: "/posts/[id]", params: { id } }`, not a url, validate them with a valibot schema of the known
+        routes, and pass them to `href()`. The route names need a runtime list, type checked against `Route` (could be
+        shared with the sitemap). Matching cms pathnames against routes (`parseHref()`) only if the cms cannot store routes
 - [ ] After updating `@react-aria/optimize-locales-plugin` past 2.1.0, re-create our patch, and decide whether it should
       keep `locales: readonly string[]` in the Turbopack rule type, which upstream relaxed to `string[]` to satisfy
       Next.js's `JSONValue` (adobe/react-spectrum#10889, unreleased). `bun check` passes with the readonly type today

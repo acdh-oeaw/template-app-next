@@ -1,11 +1,12 @@
 import type { MetadataRoute } from "next";
 
 import { env } from "#/lib/env/public.ts";
-import { getAlternateLanguages, type Href } from "#/lib/i18n/get-alternate-languages.ts";
+import { getAlternateLanguages } from "#/lib/i18n/get-alternate-languages.ts";
 import { locales } from "#/lib/i18n/locales.ts";
 import { getPathname } from "#/lib/i18n/navigation.ts";
+import { type Href, href } from "#/lib/navigation/href.ts";
 
-const pages: Array<Href> = ["/", "/about", "/imprint"];
+const pages: Array<Href> = [href({ pathname: "/" }), href({ pathname: "/about" }), href({ pathname: "/imprint" })];
 
 /** Only set `lastModified` to a real content date, never `new Date()`: crawlers ignore unreliable values. */
 export default function sitemap(): MetadataRoute.Sitemap {

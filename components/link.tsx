@@ -4,12 +4,13 @@ import type { ComponentProps, ReactNode, Ref } from "react";
 import { Link as AriaLink, type LinkProps as AriaLinkProps } from "react-aria-components/Link";
 
 import { Link as LocaleLink } from "#/lib/i18n/navigation.ts";
+import type { Href } from "#/lib/navigation/href.ts";
 
 type LocaleLinkProps = ComponentProps<typeof LocaleLink>;
 
 interface LinkProps
 	extends Omit<AriaLinkProps, "href" | "render">, Pick<LocaleLinkProps, "locale" | "prefetch" | "replace" | "scroll"> {
-	href: string;
+	href: Href;
 	ref?: Ref<HTMLAnchorElement>;
 }
 

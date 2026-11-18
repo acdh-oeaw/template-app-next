@@ -4,11 +4,12 @@ import { type ReactNode, Suspense } from "react";
 
 import { Link } from "#/components/link.tsx";
 import { usePathname } from "#/lib/i18n/navigation.ts";
+import type { Href } from "#/lib/navigation/href.ts";
 
 type AriaCurrent = "page" | "true" | undefined;
 
 /** Links to an ancestor of the current page are marked too, but not as the current page. */
-function getAriaCurrent(pathname: string, href: string): AriaCurrent {
+function getAriaCurrent(pathname: Href, href: Href): AriaCurrent {
 	if (pathname === href) {
 		return "page";
 	}
@@ -22,7 +23,7 @@ function getAriaCurrent(pathname: string, href: string): AriaCurrent {
 
 interface NavigationLinkProps {
 	children: ReactNode;
-	href: string;
+	href: Href;
 }
 
 function CurrentNavigationLink(props: Readonly<NavigationLinkProps>): ReactNode {

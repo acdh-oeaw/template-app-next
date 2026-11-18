@@ -52,7 +52,7 @@ Use `bun check` to type check the project. It reads `tsconfig.json` and reports 
 
 - Compiler options are in `configs/typescript.config.json`. `tsconfig.json` extends it and only sets what is resolved relative to the root, like `paths` and `include`, because Bun, Next.js and editors look for it there
 - `bun check src/index.ts` checks one file and what it imports
-- Route types (`PageProps`, `LayoutProps`) are generated into `.next/types` by `bun run types:prepare`, which runs on `bun install`
+- Route types (`PageProps`, `LayoutProps`, and the routes of `href()`) are generated into `.next/types` by `bun run types:prepare`, which runs on `bun install`
 
 ## Linting
 

@@ -5,13 +5,14 @@ import type { ReactNode } from "react";
 
 import { MainContent } from "#/components/main-content.tsx";
 import { createPageMetadata } from "#/lib/metadata/create-page-metadata.ts";
+import { href } from "#/lib/navigation/href.ts";
 
 interface ImprintPageProps extends PageProps<"/[locale]/imprint"> {}
 
 export async function generateMetadata(): Promise<Metadata> {
 	const t = await getTranslations();
 
-	return createPageMetadata({ href: "/imprint", title: t("Imprint") });
+	return createPageMetadata({ href: href({ pathname: "/imprint" }), title: t("Imprint") });
 }
 
 export default function ImprintPage(_props: Readonly<ImprintPageProps>): ReactNode {
