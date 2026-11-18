@@ -2,6 +2,8 @@
 
 [fmt]
 config = "./configs/oxfmt.config.ts"
+# Generated, or served as they are. In the oxfmt config, patterns can only match files inside `configs/`.
+ignorePatterns = ["e2e/snapshots/", "public/"]
 
 [lint]
 config = "./configs/oxlint.config.ts"
