@@ -1,5 +1,6 @@
 import { fromRoot } from "#/configs/paths.ts";
 
+/** Takes precedence over `.editorconfig`, which editors also read, so layout options need to match it. */
 const config = {
 	endOfLine: "lf",
 	jsdoc: true,
