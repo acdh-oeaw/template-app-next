@@ -28,23 +28,24 @@ export const nextjs = {
 	overrides: [
 		{
 			files: [
+				"app/**/apple-icon.{ts,tsx}",
 				"app/**/default.tsx",
 				"app/**/error.tsx",
 				"app/**/forbidden.tsx",
 				"app/**/global-error.tsx",
 				"app/**/global-not-found.tsx",
+				"app/**/icon.{ts,tsx}",
 				"app/**/layout.tsx",
 				"app/**/loading.tsx",
 				"app/**/not-found.tsx",
-				"app/**/opengraph-image.tsx",
+				"app/**/opengraph-image.{ts,tsx}",
 				"app/**/page.tsx",
+				"app/**/sitemap.ts",
 				"app/**/template.tsx",
-				"app/**/twitter-image.tsx",
+				"app/**/twitter-image.{ts,tsx}",
 				"app/**/unauthorized.tsx",
 				"app/manifest.ts",
 				"app/robots.ts",
-				"app/sitemap.ts",
-				"next.config.ts",
 				"proxy.ts",
 			].map((pattern) => fromRoot(pattern)),
 			rules: {
