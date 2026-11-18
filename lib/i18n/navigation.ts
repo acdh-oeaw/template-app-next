@@ -7,7 +7,20 @@ import { type Href, unsafeHref } from "#/lib/navigation/href.ts";
 const navigation = createNavigation(routing);
 
 /** Use `<Link>` from `components/link.tsx`, which requires an `Href`. */
-export const { Link, useRouter } = navigation;
+export const { Link } = navigation;
+
+type NextIntlRouter = ReturnType<typeof navigation.useRouter>;
+
+interface Router extends Omit<NextIntlRouter, "prefetch" | "push" | "replace"> {
+	prefetch: (href: Href, options?: Parameters<NextIntlRouter["prefetch"]>[1]) => void;
+	push: (href: Href, options?: Parameters<NextIntlRouter["push"]>[1]) => void;
+	replace: (href: Href, options?: Parameters<NextIntlRouter["replace"]>[1]) => void;
+}
+
+/** Only narrows the types, so that navigating requires an `Href`. */
+export function useRouter(): Router {
+	return navigation.useRouter();
+}
 
 interface NavigationParams {
 	href: Href;

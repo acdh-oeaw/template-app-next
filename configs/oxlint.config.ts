@@ -24,6 +24,45 @@ const restrictedPaths = [
 	},
 ];
 
+/** Navigation that requires an `Href`, see `lib/navigation/href.ts`. Each wrapper imports the module it wraps. */
+const linkPaths = [
+	{
+		name: "next/link",
+		message: "Use `Link` from `#/components/link.tsx`.",
+	},
+	{
+		name: "react-aria-components",
+		importNames: ["Link"],
+		message: "Use `Link` from `#/components/link.tsx`.",
+	},
+	{
+		name: "react-aria-components/Link",
+		message: "Use `Link` from `#/components/link.tsx`.",
+	},
+	{
+		name: "#/lib/i18n/navigation.ts",
+		importNames: ["Link"],
+		message: "Use `Link` from `#/components/link.tsx`.",
+	},
+];
+
+const navigationPaths = [
+	{
+		name: "next/navigation",
+		importNames: ["permanentRedirect", "redirect", "usePathname", "useRouter"],
+		message: "Use `#/lib/i18n/navigation.ts`.",
+	},
+	{
+		name: "next-intl/navigation",
+		message: "Use `#/lib/i18n/navigation.ts`.",
+	},
+	{
+		name: "#/lib/navigation/href.ts",
+		importNames: ["unsafeHref"],
+		message: "Use `href()`, or add a helper to `#/lib/navigation/href.ts`.",
+	},
+];
+
 const restrictedPatterns = [
 	{
 		group: ["next/dist/**"],
@@ -73,7 +112,10 @@ const config = {
 		...tailwindcssSettings,
 	},
 	rules: {
-		"no-restricted-imports": ["error", { paths: [...restrictedPaths, envParsePath], patterns: restrictedPatterns }],
+		"no-restricted-imports": [
+			"error",
+			{ paths: [...restrictedPaths, ...linkPaths, ...navigationPaths, envParsePath], patterns: restrictedPatterns },
+		],
 	},
 	overrides: [
 		{
@@ -81,7 +123,31 @@ const config = {
 			rules: {
 				"no-restricted-imports": [
 					"error",
-					{ paths: [...restrictedPaths, envParsePath], patterns: [...restrictedPatterns, configsPattern] },
+					{
+						paths: [...restrictedPaths, ...linkPaths, ...navigationPaths, envParsePath],
+						patterns: [...restrictedPatterns, configsPattern],
+					},
+				],
+			},
+		},
+		{
+			files: [fromRoot("components/link.tsx")],
+			rules: {
+				"no-restricted-imports": [
+					"error",
+					{
+						paths: [...restrictedPaths, ...navigationPaths, envParsePath],
+						patterns: [...restrictedPatterns, configsPattern],
+					},
+				],
+			},
+		},
+		{
+			files: [fromRoot("lib/i18n/navigation.ts")],
+			rules: {
+				"no-restricted-imports": [
+					"error",
+					{ paths: [...restrictedPaths, ...linkPaths, envParsePath], patterns: restrictedPatterns },
 				],
 			},
 		},
