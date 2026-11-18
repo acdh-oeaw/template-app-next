@@ -1,4 +1,4 @@
-import { fromRoot } from "#/configs/oxlint/paths.ts";
+import { fromRoot } from "#/configs/paths.ts";
 
 /** `settings` is not inherited through `extends`, so this is composed in `oxlint.config.ts`. */
 export const settings = {

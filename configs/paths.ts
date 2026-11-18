@@ -3,7 +3,7 @@ import { fileURLToPath } from "node:url";
 
 const root = path.dirname(fileURLToPath(import.meta.resolve("#/package.json")));
 
-/** Relative globs in `overrides` are resolved against `configs/`, not the repository root. */
+/** Some tools resolve relative paths against `configs/`, like oxlint for globs in `overrides`, not the repository root. */
 export function fromRoot(pattern: string): string {
 	return path.join(root, pattern);
 }

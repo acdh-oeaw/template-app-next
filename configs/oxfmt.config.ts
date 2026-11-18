@@ -1,4 +1,4 @@
-import { fileURLToPath } from "node:url";
+import { fromRoot } from "#/configs/paths.ts";
 
 const config = {
 	endOfLine: "lf",
@@ -19,7 +19,7 @@ const config = {
 		newlinesBetween: true,
 	},
 	sortPackageJson: { sortScripts: true },
-	sortTailwindcss: { functions: ["clsx"], stylesheet: fileURLToPath(import.meta.resolve("#/styles/index.css")) },
+	sortTailwindcss: { functions: ["clsx"], stylesheet: fromRoot("styles/index.css") },
 	tabWidth: 2,
 	useTabs: true,
 };

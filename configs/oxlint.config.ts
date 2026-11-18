@@ -1,11 +1,11 @@
 import { base } from "#/configs/oxlint/base.ts";
 import { bunTest } from "#/configs/oxlint/bun-test.ts";
 import { nextjs } from "#/configs/oxlint/nextjs.ts";
-import { fromRoot } from "#/configs/oxlint/paths.ts";
 import { playwright } from "#/configs/oxlint/playwright.ts";
 import { react, settings as reactSettings } from "#/configs/oxlint/react.ts";
 import { regexp } from "#/configs/oxlint/regexp.ts";
 import { tailwindcss, settings as tailwindcssSettings } from "#/configs/oxlint/tailwindcss.ts";
+import { fromRoot } from "#/configs/paths.ts";
 
 const restrictedPaths = [
 	{

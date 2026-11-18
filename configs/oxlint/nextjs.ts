@@ -1,4 +1,4 @@
-import { fromRoot } from "#/configs/oxlint/paths.ts";
+import { fromRoot } from "#/configs/paths.ts";
 
 export const nextjs = {
 	plugins: ["nextjs"],
