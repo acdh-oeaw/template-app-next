@@ -113,6 +113,20 @@
         `{ pathname: "/posts/[id]", params: { id } }`, not a url, validate them with a valibot schema of the known
         routes, and pass them to `href()`. The route names need a runtime list, type checked against `Route` (could be
         shared with the sitemap). Matching cms pathnames against routes (`parseHref()`) only if the cms cannot store routes
+  - [ ] Investigate moving the generic parts into a package, so that apps no longer carry their tests. Wait until the API
+        has been stable in one or two apps, because a package puts every change behind a release
+    - Generic: `search-params.ts`, `href.ts` (except stripping `[locale]`, which could be a type parameter, and the
+      brand texts, which name the module) and `get-aria-current.ts`, with their tests
+    - Stays in the app: the next-intl wrappers in `lib/i18n/navigation.ts`, `<Link>`, the lint restrictions, the
+      sitemap record, `navigation.test-d.tsx`, and the fixture with its e2e tests
+    - The patch cannot ship in a package. Either keep it in the app, which makes the format of `navigation.d.ts` a
+      contract between two repositories, or generate the registry from the package, with a `next.config.ts` wrapper
+      that generates once for `next typegen` and `next build`, and watches `app/` in `next dev`. That removes the patch,
+      but reimplements how Next.js resolves routes (route groups, parallel and intercepting routes, private folders,
+      `pageExtensions`). Prototype it first, to see how much is needed
+    - A separate package with an example app for its e2e tests, like `acdh-oeaw/content-lib`, not `@acdh-oeaw/lib`,
+      which depends on neither Next.js nor valibot
+    - Ask Next.js upstream for a global route registry, which would also fix the stale route types in `next dev`
 - [ ] After updating `@react-aria/optimize-locales-plugin` past 2.1.0, re-create our patch, and decide whether it should
       keep `locales: readonly string[]` in the Turbopack rule type, which upstream relaxed to `string[]` to satisfy
       Next.js's `JSONValue` (adobe/react-spectrum#10889, unreleased). `bun check` passes with the readonly type today
