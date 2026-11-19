@@ -98,6 +98,68 @@ To remove it, delete `components/color-scheme/` and `e2e/color-scheme.test.ts`, 
 `suppressHydrationWarning` from `components/html-document.tsx`, `<ColorSchemeSwitcher />` from `components/header.tsx`, and the
 `data-color-scheme` rules from `styles/index.css`.
 
+## Localized urls
+
+Pages are in `app/[locale]/`, and every url starts with a language prefix, like `/en/about`. Routes in `href()` leave
+out the `[locale]` segment, and `<Link>`, `redirect()` and `getPathname()` from `lib/i18n/navigation.ts` add the prefix
+back. Apps that don't need a url per language have three options.
+
+### Locale from a cookie
+
+Set `localePrefix: { mode: "never" }` in `lib/i18n/routing.ts`, and remove `prefixes`. Pages stay in `app/[locale]/`:
+the proxy rewrites `/about` to the locale from the cookie or the `Accept-Language` header, and redirects prefixed urls,
+like `/en-GB/about`, to `/about`. `href()` and its routes are unchanged.
+[next-intl documents this mode](https://next-intl.dev/docs/routing/configuration#locale-prefix-never) for a locale from
+a cookie, and for one locale per domain. Because urls are no longer unique per locale:
+
+- Remove the `hreflang` alternates: delete `lib/i18n/get-alternate-languages.ts`, remove `alternates.languages` from
+  `createPageMetadata()`, and list each page once, without alternates, in `app/sitemap.ts`
+- The locale switcher links to the internal prefix, like `/de-AT/about`, which the proxy redirects to `/about`
+- Update the end-to-end tests, which visit prefixed urls, and remove the ones for canonical and alternate urls in
+  `e2e/i18n.test.ts`
+
+### One language, with a prefix later
+
+Keep one locale in `configs/i18n.config.ts`, delete the other message files, like `messages/de.po`, and set
+`localePrefix: { mode: "as-needed", prefixes }` in `lib/i18n/routing.ts`. The default locale has no prefix, so no url
+has one, and `/en/about` redirects to `/about`. `href()` and its routes are unchanged, and adding a language later only
+adds urls with its prefix. next-intl does not document this case, and the proxy still runs for every page.
+
+- Delete `components/locale-switcher/` and `e2e/locale-switcher.test.ts`, and remove `<LocaleSwitcher />` from
+  `components/header.tsx`
+- Replace the removed locale in `lib/navigation/navigation.test-d.tsx`
+- Update the end-to-end tests, which visit prefixed urls, and test removed locales
+
+### One language, without i18n routing
+
+[next-intl recommends this](https://next-intl.dev/docs/getting-started/app-router/without-i18n-routing) for apps
+without a url per language: no `[locale]` segment and no proxy, and next-intl only provides the messages. `href()` takes
+the routes as they are, and the navigation functions wrap Next.js instead of next-intl. Until all steps are done,
+`bun check` reports every `href()` call, because no route starts with `/[locale]` anymore.
+
+1. Move everything in `app/[locale]/` to `app/`, run `bun run types:prepare`, and update `PageProps<"/[locale]/…">`,
+   `LayoutProps<"/[locale]">` and imports from `#/app/[locale]/`
+2. In `app/layout.tsx`, remove `generateStaticParams()`, the `params` and the `hasLocale()` checks, and use
+   `defaultLocale`
+3. Keep one locale in `configs/i18n.config.ts`, delete the other message files, and return `defaultLocale` from
+   `lib/i18n/request.ts`, instead of reading `next/root-params`
+4. Delete `proxy.ts`, `lib/i18n/routing.ts`, `lib/i18n/get-alternate-languages.ts` and `components/locale-switcher/`,
+   and remove `<LocaleSwitcher />` from `components/header.tsx`
+5. In `lib/navigation/href.ts`, make `LocalizedRoute` return the route unchanged, and remove the `Omit` of the `locale`
+   param
+6. In `lib/i18n/navigation.ts`, wrap `next/navigation` instead of next-intl, without the `locale` param and the `Link`
+   export: `getPathname()` returns the href, and the router accepts relative hrefs with all options
+7. In `components/link.tsx`, render `next/link`, and remove the `locale` prop. Remove `Link` from `#/lib/i18n/navigation.ts`
+   from `linkPaths` in `configs/oxlint.config.ts`
+8. Remove the `locale` from `getPathname()` calls, and the alternates: `alternates.languages` and Open Graph
+   `alternateLocale` in `lib/metadata/create-page-metadata.ts`, and the per-locale entries in `app/sitemap.ts`
+9. In `lib/navigation/href.test.ts`, remove `/[locale]` and the `locale` param from the routes of `TestRegistry`, with
+   `params: object` for routes without params, and the tests for routes outside of `[locale]`. Remove the `locale` cases
+   from `lib/navigation/navigation.test-d.tsx`, and update the fixture path in `lib/e2e/`, `AGENTS.md` and this readme
+10. Delete `e2e/i18n.test.ts` and `e2e/locale-switcher.test.ts`, remove the locale prefixes and the tests for other
+    locales from the other end-to-end tests, and update comments that mention `[locale]`, next-intl routing or locale
+    prefixes
+
 ## End-to-end tests
 
 End-to-end tests live in `e2e/` and run with Playwright in Chromium, Firefox and WebKit, against a production build
