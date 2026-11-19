@@ -107,7 +107,7 @@
       scratch rather than copying
   - [x] `href()` helper
   - [x] `search-params.ts` convention
-  - [ ] Derive the static pages in `app/sitemap.ts` from typed routes, or type check the list against `AppRoutes` from
+  - [x] Derive the static pages in `app/sitemap.ts` from typed routes, or type check the list against `AppRoutes` from
         `.next/types/routes.d.ts`, so that new pages cannot be forgotten
   - [ ] Links from a headless cms, once there is one: store a route and its params, like
         `{ pathname: "/posts/[id]", params: { id } }`, not a url, validate them with a valibot schema of the known

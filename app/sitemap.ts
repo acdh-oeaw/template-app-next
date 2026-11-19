@@ -4,9 +4,19 @@ import { env } from "#/lib/env/public.ts";
 import { getAlternateLanguages } from "#/lib/i18n/get-alternate-languages.ts";
 import { locales } from "#/lib/i18n/locales.ts";
 import { getPathname } from "#/lib/i18n/navigation.ts";
-import { type Href, href } from "#/lib/navigation/href.ts";
+import { href, type StaticRoute } from "#/lib/navigation/href.ts";
 
-const pages: Array<Href> = [href({ pathname: "/" }), href({ pathname: "/about" }), href({ pathname: "/imprint" })];
+/** Lists every static page, so that `bun check` reports new pages until they are included or excluded. */
+const staticPages = {
+	"/": "include",
+	"/about": "include",
+	"/e2e/search-params": "exclude",
+	"/imprint": "include",
+} satisfies Record<StaticRoute, "exclude" | "include">;
+
+const pages = Object.entries(staticPages)
+	.filter(([, status]) => status === "include")
+	.map(([pathname]) => href({ pathname: pathname as StaticRoute }));
 
 /** Only set `lastModified` to a real content date, never `new Date()`: crawlers ignore unreliable values. */
 export default function sitemap(): MetadataRoute.Sitemap {

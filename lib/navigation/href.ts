@@ -71,6 +71,9 @@ export type Routes = LocalizedRoutes<CheckRouteRegistry<RouteRegistry>>;
 
 export type Route = keyof Routes;
 
+/** Routes without params, like `/about`. */
+export type StaticRoute = { [TRoute in Route]: keyof Routes[TRoute]["params"] extends never ? TRoute : never }[Route];
+
 export type SearchParams = Record<string, string | ReadonlyArray<string> | undefined>;
 
 /** Required catch-all segments need at least one item. Arrays can be readonly. */
