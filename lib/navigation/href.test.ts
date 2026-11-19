@@ -1,14 +1,18 @@
 import { describe, expect, test } from "bun:test";
 
+import * as v from "valibot";
+
 import {
 	href as appHref,
 	externalHref,
 	type Href,
 	type HrefFunction,
 	type LocalizedRoutes,
+	type LocalizedSearchParams,
 	type RelativeHref,
 	withSearchParams,
 } from "#/lib/navigation/href.ts";
+import { createSearchParamsCodec, encodeSearchParams, searchParam } from "#/lib/navigation/search-params.ts";
 
 interface TestParamMap {
 	"/[locale]": { locale: string };
@@ -16,11 +20,26 @@ interface TestParamMap {
 	"/[locale]/posts/[id]": { locale: string; id: string };
 	"/[locale]/docs/[...path]": { locale: string; path: Array<string> };
 	"/[locale]/search/[[...filters]]": { locale: string; filters?: Array<string> };
+	"/[locale]/results": { locale: string };
+	"/[locale]/tags/[tag]": { locale: string; tag: string };
 	"/api/health": Record<string, never>;
 }
 
+const resultsCodec = createSearchParamsCodec({
+	q: searchParam.string(),
+	page: searchParam.number(v.pipe(v.number(), v.integer(), v.minValue(1)), { default: 1 }),
+	tag: searchParam.array(searchParam.string()),
+});
+
+const tagCodec = createSearchParamsCodec({ sort: searchParam.string(v.picklist(["new", "old"])) });
+
+interface TestCodecs {
+	"/[locale]/results": typeof resultsCodec;
+	"/[locale]/tags/[tag]": typeof tagCodec;
+}
+
 /** The implementation does not depend on the generated routes, only its types do. */
-const href = appHref as unknown as HrefFunction<LocalizedRoutes<TestParamMap>>;
+const href = appHref as unknown as HrefFunction<LocalizedRoutes<TestParamMap>, LocalizedSearchParams<TestCodecs>>;
 
 describe("href", () => {
 	test("strips the locale segment from static routes", () => {
@@ -63,6 +82,26 @@ describe("href", () => {
 			href({ pathname: "/about", searchParams: { q: "a&b", tag: ["x", "y"], page: undefined }, hash: "team" }),
 		).toBe("/about?q=a%26b&tag=x&tag=y#team");
 		expect<string>(href({ pathname: "/about", searchParams: {} })).toBe("/about");
+	});
+
+	test("appends search params encoded by the codec of pages with a search-params.ts", () => {
+		expect<string>(
+			href({
+				pathname: "/results",
+				searchParams: encodeSearchParams(resultsCodec, { q: "a b", page: 2, tag: ["x", "y"] }),
+			}),
+		).toBe("/results?q=a+b&page=2&tag=x&tag=y");
+		expect<string>(href({ pathname: "/results", searchParams: encodeSearchParams(resultsCodec, { page: 1 }) })).toBe(
+			"/results",
+		);
+		expect<string>(href({ pathname: "/results" })).toBe("/results");
+		expect<string>(
+			href({
+				pathname: "/tags/[tag]",
+				params: { tag: "a" },
+				searchParams: encodeSearchParams(tagCodec, { sort: "new" }),
+			}),
+		).toBe("/tags/a?sort=new");
 	});
 
 	test("creates hrefs relative to the current page", () => {
@@ -146,6 +185,16 @@ function hrefTypeTests() {
 	href({ params: { id: "1" }, hash: "x" });
 	// @ts-expect-error -- needs a pathname, search params or a hash
 	href({});
+	// @ts-expect-error -- plain records for a page with a search-params.ts
+	href({ pathname: "/results", searchParams: { page: "2" } });
+	// @ts-expect-error -- search params encoded by the codec of another page
+	href({ pathname: "/results", searchParams: encodeSearchParams(tagCodec, { sort: "new" }) });
+	const tags: ReadonlyArray<string> = ["x"];
+	// pages without a search-params.ts accept any search params
+	href({ pathname: "/about", searchParams: { other: "1", list: tags } });
+	// relative hrefs do not know the current page, so they accept any search params
+	href({ searchParams: { other: "1" } });
+	href({ searchParams: encodeSearchParams(resultsCodec, { page: 2 }) });
 	// @ts-expect-error -- the href is not a plain string
 	const value: Href = "/about";
 	// @ts-expect-error -- relative hrefs are not pages

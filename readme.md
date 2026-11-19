@@ -9,7 +9,8 @@ bun install
 bun run dev
 ```
 
-`bun install` also creates `.env.local` (see [Environment variables](#environment-variables)) and generates route types.
+`bun install` also creates `.env.local` (see [Environment variables](#environment-variables)) and generates route types,
+including the search params of pages with a `search-params.ts`.
 
 The `prepare` script sets `BUN_OPTIONS=--bun`, because `run.bun` in `bunfig.toml` doesn't apply to lifecycle scripts, so
 `next typegen` would run with Node.js. Remove it once [oven-sh/bun#44584](https://github.com/oven-sh/bun/issues/44584)
@@ -216,6 +217,11 @@ two undocumented behaviours. After upgrading, check that:
   `compiler.define`
 - editing a public variable in `.env.local` while `bun run dev` is running updates the page without a restart, i.e.
   `next dev` still reads `compiler.define` again when `.env*` files change
+
+Our patch in [`patches/`](patches/) adds the codecs of `search-params.ts` files to the route types that Next.js
+generates. Re-create it with `bun patch next` for the new version, then check that `SearchParamsModules` in
+`.next/types/routes.d.ts` lists the pages with a `search-params.ts`, and that `bun run dev` adds a page to
+`.next/dev/types/routes.d.ts` when a `search-params.ts` is added next to it.
 
 The `dev` script sets `BUN_OPTIONS=--no-env-file`, so that Next.js, not Bun, loads `.env` files and can reload them.
 Remove it once [oven-sh/bun#47916](https://github.com/oven-sh/bun/issues/47916) is fixed.

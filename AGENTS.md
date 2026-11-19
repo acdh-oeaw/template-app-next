@@ -72,6 +72,15 @@ Use `bun check` to type check the project. It reads `tsconfig.json` and reports 
 
 - Each page renders its own main landmark with `<MainContent>` from `components/main-content.tsx`, not with `<main>`, because it is the target of the skip link. This includes `not-found`, `error` and `loading` pages. The layout only renders the header and footer
 
+## Search params
+
+A page that reads search params defines them in a `search-params.ts` next to its `page.tsx`, which exports `searchParamsCodec`, created with `createSearchParamsCodec()` from `lib/navigation/search-params.ts`. Each search param decodes from the url into a typed value and encodes back, validated with an optional valibot schema of the value, like `searchParam.number(v.pipe(v.number(), v.integer(), v.minValue(1)), { default: 1 })`.
+
+- Our Next.js patch adds the codecs to the route types, which `next dev` regenerates. `bun check` reports a `search-params.ts` without a valid `searchParamsCodec` export
+- `href({ pathname, searchParams })` only accepts `encodeSearchParams()` with that page's codec, like `encodeSearchParams(searchParamsCodec, { page: page + 1 })`. It throws for invalid values, and leaves out defaults, so links are canonical. Pages without the file accept any search params
+- Decode the `searchParams` prop, or `useSearchParams()`, with `safeParseSearchParams()`, which returns the issues of invalid search params, or `parseSearchParams()`, which throws. Unknown search params are ignored
+- With `cacheComponents`, read `searchParams` inside `<Suspense>`, so the rest of the page stays in the static shell
+
 ## React
 
 - Avoid booleans for application state: name the states instead, like `status: "idle" | "loading" | "error"` rather than `isLoading` and `isError`, also when there are only two. Boolean props are fine when they mirror an html attribute or a third-party prop, like `disabled` or `isDisabled`
