@@ -1,11 +1,13 @@
 /**
- * Type tests for components and hooks which accept hrefs. Only type checked, not run, because `bun test` does not match
- * the file name.
+ * Type tests for components and hooks which accept hrefs, and for the routes that our Next.js patch generates. Only
+ * type checked, not run, because `bun test` does not match the file name.
  */
 
+import { searchParamsCodec } from "#/app/[locale]/e2e/search-params/search-params.ts";
 import { Link } from "#/components/link.tsx";
 import { getPathname, redirect, useRouter } from "#/lib/i18n/navigation.ts";
-import { externalHref, type Href, href, type RelativeHref } from "#/lib/navigation/href.ts";
+import { externalHref, type Href, href, type RelativeHref, type Route } from "#/lib/navigation/href.ts";
+import { createSearchParamsCodec, encodeSearchParams, searchParam } from "#/lib/navigation/search-params.ts";
 
 declare const page: Href;
 declare const relative: RelativeHref;
@@ -57,4 +59,21 @@ export function navigationTypeTests(): void {
 	getPathname({ href: relative, locale: "de-AT" });
 	// @ts-expect-error -- relative hrefs are not pages
 	redirect({ href: relative, locale: "de-AT" });
+}
+
+/** Fails without the generated `RouteRegistry`, so that `bun check` reports a missing or broken patch. */
+export function routeRegistryTypeTests(): void {
+	const route: Route = "/e2e/search-params";
+	// @ts-expect-error -- unknown route
+	const unknown: Route = "/does-not-exist";
+
+	href({ pathname: "/e2e/search-params", searchParams: encodeSearchParams(searchParamsCodec, { page: 2 }) });
+	// @ts-expect-error -- pages with a `search-params.ts` only accept search params encoded by its codec
+	href({ pathname: "/e2e/search-params", searchParams: { page: "2" } });
+
+	const otherCodec = createSearchParamsCodec({ page: searchParam.number() });
+	// @ts-expect-error -- search params encoded by the codec of another page
+	href({ pathname: "/e2e/search-params", searchParams: encodeSearchParams(otherCodec, { page: 2 }) });
+
+	void [route, unknown];
 }

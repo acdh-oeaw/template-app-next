@@ -8,22 +8,10 @@ import {
 	type Href,
 	type HrefFunction,
 	type LocalizedRoutes,
-	type LocalizedSearchParams,
 	type RelativeHref,
 	withSearchParams,
 } from "#/lib/navigation/href.ts";
 import { createSearchParamsCodec, encodeSearchParams, searchParam } from "#/lib/navigation/search-params.ts";
-
-interface TestParamMap {
-	"/[locale]": { locale: string };
-	"/[locale]/about": { locale: string };
-	"/[locale]/posts/[id]": { locale: string; id: string };
-	"/[locale]/docs/[...path]": { locale: string; path: Array<string> };
-	"/[locale]/search/[[...filters]]": { locale: string; filters?: Array<string> };
-	"/[locale]/results": { locale: string };
-	"/[locale]/tags/[tag]": { locale: string; tag: string };
-	"/api/health": Record<string, never>;
-}
 
 const resultsCodec = createSearchParamsCodec({
 	q: searchParam.string(),
@@ -33,13 +21,23 @@ const resultsCodec = createSearchParamsCodec({
 
 const tagCodec = createSearchParamsCodec({ sort: searchParam.string(v.picklist(["new", "old"])) });
 
-interface TestCodecs {
-	"/[locale]/results": typeof resultsCodec;
-	"/[locale]/tags/[tag]": typeof tagCodec;
+/** Like the `RouteRegistry` that our Next.js patch generates. */
+interface TestRegistry {
+	"/[locale]": { params: { locale: string } };
+	"/[locale]/about": { params: { locale: string } };
+	"/[locale]/posts/[id]": { params: { locale: string; id: string } };
+	"/[locale]/docs/[...path]": { params: { locale: string; path: Array<string> } };
+	"/[locale]/search/[[...filters]]": { params: { locale: string; filters?: Array<string> } };
+	"/[locale]/results": { params: { locale: string }; searchParams: { searchParamsCodec: typeof resultsCodec } };
+	"/[locale]/tags/[tag]": {
+		params: { locale: string; tag: string };
+		searchParams: { searchParamsCodec: typeof tagCodec };
+	};
+	"/health": { params: Record<string, never> };
 }
 
 /** The implementation does not depend on the generated routes, only its types do. */
-const href = appHref as unknown as HrefFunction<LocalizedRoutes<TestParamMap>, LocalizedSearchParams<TestCodecs>>;
+const href = appHref as unknown as HrefFunction<LocalizedRoutes<TestRegistry>>;
 
 describe("href", () => {
 	test("strips the locale segment from static routes", () => {
@@ -173,8 +171,8 @@ function hrefTypeTests() {
 	href({ pathname: "/does-not-exist" });
 	// @ts-expect-error -- the locale is added by `<Link>`
 	href({ pathname: "/[locale]/about" });
-	// @ts-expect-error -- route handlers are not pages
-	href({ pathname: "/api/health" });
+	// @ts-expect-error -- pages outside of `[locale]` have no localized href
+	href({ pathname: "/health" });
 	// @ts-expect-error -- missing params
 	href({ pathname: "/posts/[id]" });
 	// @ts-expect-error -- wrong param name

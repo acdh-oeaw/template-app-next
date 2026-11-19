@@ -219,10 +219,11 @@ two undocumented behaviours. After upgrading, check that:
 - editing a public variable in `.env.local` while `bun run dev` is running updates the page without a restart, i.e.
   `next dev` still reads `compiler.define` again when `.env*` files change
 
-Our patch in [`patches/`](patches/) adds the codecs of `search-params.ts` files to the route types that Next.js
-generates. Re-create it with `bun patch next` for the new version, then check that `SearchParamsModules` in
-`.next/types/routes.d.ts` lists the pages with a `search-params.ts`, and that `bun run dev` adds a page to
-`.next/dev/types/routes.d.ts` when a `search-params.ts` is added next to it.
+Our patch in [`patches/`](patches/) makes Next.js type generation also write the pages, with their params and the
+codecs of their `search-params.ts`, to `.next/types/navigation.d.ts`, which `href()` reads. Re-create it with
+`bun patch next` for the new version. `bun check` fails if the patch is missing, because the type tests in
+`lib/navigation/navigation.test-d.tsx` use the generated routes. Also check that `bun run dev` adds a page to
+`.next/types/navigation.d.ts` (not `.next/dev/types`) when it is added while the server runs.
 
 The `dev` script sets `BUN_OPTIONS=--no-env-file`, so that Next.js, not Bun, loads `.env` files and can reload them.
 Remove it once [oven-sh/bun#47916](https://github.com/oven-sh/bun/issues/47916) is fixed.

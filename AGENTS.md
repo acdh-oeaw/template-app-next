@@ -60,7 +60,7 @@ Use `bun check` to type check the project. It reads `tsconfig.json` and reports 
 
 - Compiler options are in `configs/typescript.config.json`. `tsconfig.json` extends it and only sets what is resolved relative to the root, like `paths` and `include`, because Bun, Next.js and editors look for it there
 - `bun check src/index.ts` checks one file and what it imports
-- Route types (`PageProps`, `LayoutProps`, and the routes of `href()`) are generated into `.next/types` by `bun run types:prepare`, which runs on `bun install`
+- Route types (`PageProps`, `LayoutProps`) are generated into `.next/types` by `bun run types:prepare`, which runs on `bun install`. Our Next.js patch also generates the global `RouteRegistry` for `href()` into `.next/types/navigation.d.ts`, which `next dev` keeps up to date. Don't import route types from `.next/types/routes.d.ts`: `next dev` writes its own copy to `.next/dev/types`, so imported types go stale in development
 
 ## Linting
 
@@ -84,7 +84,7 @@ Use `bun check` to type check the project. It reads `tsconfig.json` and reports 
 
 A page that reads search params defines them in a `search-params.ts` next to its `page.tsx`, which exports `searchParamsCodec`, created with `createSearchParamsCodec()` from `lib/navigation/search-params.ts`. Each search param decodes from the url into a typed value and encodes back, validated with an optional valibot schema of the value, like `searchParam.number(v.pipe(v.number(), v.integer(), v.minValue(1)), { default: 1 })`.
 
-- Our Next.js patch adds the codecs to the route types, which `next dev` regenerates. `bun check` reports a `search-params.ts` without a valid `searchParamsCodec` export
+- Our Next.js patch adds the codecs to the `RouteRegistry`, which `next dev` regenerates. `bun check` reports a `search-params.ts` without a valid `searchParamsCodec` export
 - `href({ pathname, searchParams })` only accepts `encodeSearchParams()` with that page's codec, like `encodeSearchParams(searchParamsCodec, { page: page + 1 })`. It throws for invalid values, and leaves out defaults, so links are canonical. Pages without the file accept any search params
 - Decode the `searchParams` prop, or `useSearchParams()`, with `safeParseSearchParams()`, which returns the issues of invalid search params, or `parseSearchParams()`, which throws. Unknown search params are ignored
 - With `cacheComponents`, read `searchParams` inside `<Suspense>`, so the rest of the page stays in the static shell
