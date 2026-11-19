@@ -46,6 +46,14 @@ Locate elements by aria role with `getByRole`, not by element name with `locator
 - `cacheComponents` keeps previous pages in the DOM with `display: none` after client navigations. `getByRole` ignores hidden elements, plain locators also match them
 - Elements without an aria role, like those in `<head>`, can use `locator()`. Add these selectors to `allowed` in `configs/oxlint/playwright.ts`
 
+### Fixtures
+
+Pages that only the end-to-end tests need, like one that uses a convention no page of the app uses yet, are fixtures in `app/[locale]/e2e/`, named after what they test, like `app/[locale]/e2e/search-params/`.
+
+- Each fixture page calls `assertE2eFixture()` from `lib/e2e/fixtures.ts` first, which calls `notFound()` unless `BUILD_TARGET` is `e2e`, which Playwright sets for the build it starts. Other builds, and `next dev`, respond with 404. Not in a layout, because Next.js renders a page even when its layout calls `notFound()`, so its content would be in the response. `bun test` checks that every fixture page calls it
+- Fixtures are pages like any other, so `bun check` type checks them and their routes are in the route types. Don't add them to the sitemap or the navigation, or give them metadata, which Next.js resolves even for a page that calls `notFound()`
+- Use plain strings, not `t()`, so that they don't need translations, and next-intl doesn't extract them into `messages/*.po`
+
 ## Type checking
 
 Use `bun check` to type check the project. It reads `tsconfig.json` and reports the same errors as `tsc`.

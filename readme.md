@@ -106,7 +106,8 @@ started by Playwright, or an already running server on port 3000. Set `PORT` to 
 The `instant()` helper from `@next/playwright` asserts what is visible immediately on a page load or client navigation,
 before request-time content streams in. It needs the testing API, which `next dev` includes, and `next build` only with
 `BUILD_TARGET=e2e`. Playwright sets this for the build it starts, so an already running production server must be
-built with it too.
+built with it too. The same goes for test fixtures, pages in `app/[locale]/e2e/` that respond with 404 unless built with
+`BUILD_TARGET=e2e`.
 
 ```sh
 bun run test:e2e:install
