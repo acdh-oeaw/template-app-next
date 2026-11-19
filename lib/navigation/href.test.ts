@@ -75,6 +75,15 @@ describe("href", () => {
 		expect(() => href({ pathname: "/docs/[...path]", params: { path: ["a", ""] } })).toThrow("must not be empty");
 	});
 
+	test("throws for dot segment params, which browsers would resolve", () => {
+		expect(() => href({ pathname: "/posts/[id]", params: { id: ".." } })).toThrow('must not be "." or ".."');
+		expect(() => href({ pathname: "/docs/[...path]", params: { path: ["a", "."] } })).toThrow(
+			'must not be "." or ".."',
+		);
+		expect<string>(href({ pathname: "/posts/[id]", params: { id: "..." } })).toBe("/posts/...");
+		expect<string>(href({ pathname: "/posts/[id]", params: { id: ".well-known" } })).toBe("/posts/.well-known");
+	});
+
 	test("appends search params and hash", () => {
 		expect<string>(
 			href({ pathname: "/about", searchParams: { q: "a&b", tag: ["x", "y"], page: undefined }, hash: "team" }),

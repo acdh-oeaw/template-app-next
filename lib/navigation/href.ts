@@ -148,6 +148,11 @@ function interpolate(route: string, params: SegmentParams): string {
 			throw new Error(`Param "${name}" for route "${route}" must not be empty.`);
 		}
 
+		/** Browsers resolve these as relative segments, also percent-encoded, like `/posts/..` to `/`. */
+		if (parts.includes(".") || parts.includes("..")) {
+			throw new Error(`Param "${name}" for route "${route}" must not be "." or "..".`);
+		}
+
 		if (catchAll == null && parts.length > 1) {
 			throw new Error(`Param "${name}" for route "${route}" must be a single segment.`);
 		}
