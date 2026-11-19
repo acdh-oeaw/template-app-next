@@ -8,7 +8,8 @@ export type AriaCurrent = "page" | "true" | undefined;
  * search params select the page, like pagination, set `aria-current` from their decoded search params instead.
  */
 export function getAriaCurrent(pathname: Href, href: Href): AriaCurrent {
-	const target = href.split(/[?#]/, 1)[0] ?? href;
+	/** Normalized like the pathname from `usePathname()`, which is the `pathname` of a `URL`. */
+	const target = new URL(href, "http://localhost").pathname;
 
 	if (pathname === target) {
 		return "page";
