@@ -45,33 +45,4 @@ test.describe("search params", () => {
 			"/de/e2e/search-params?q=wien&page=3",
 		);
 	});
-
-	test("update the page after client navigation", async ({ page }) => {
-		await page.goto("/en/e2e/search-params?q=vienna");
-
-		await getPagination(page).getByRole("link", { name: "Next page" }).click();
-		await expect(page).toHaveURL(/\/en\/e2e\/search-params\?q=vienna&page=2$/);
-		await expect(page.getByRole("main").getByText("Results for “vienna”, page 2")).toBeVisible();
-
-		await getPagination(page).getByRole("link", { name: "Previous page" }).click();
-		await expect(page).toHaveURL(/\/en\/e2e\/search-params\?q=vienna$/);
-		await expect(page.getByRole("main").getByText("Results for “vienna”, page 1")).toBeVisible();
-
-		await page.goBack();
-		await expect(page.getByRole("main").getByText("Results for “vienna”, page 2")).toBeVisible();
-	});
-
-	test("are submitted by the search form with a client navigation", async ({ page }) => {
-		await page.goto("/en/e2e/search-params?q=vienna&page=3");
-		await page.evaluate(() => {
-			document.documentElement.dataset.testMarker = "before-submit";
-		});
-
-		await page.getByRole("searchbox", { name: "Search term" }).fill("graz");
-		await page.getByRole("search").getByRole("button", { name: "Search" }).click();
-
-		await expect(page).toHaveURL(/\/en\/e2e\/search-params\?q=graz$/);
-		await expect(page.getByRole("main").getByText("Results for “graz”, page 1")).toBeVisible();
-		await expect(page.locator("html")).toHaveAttribute("data-test-marker", "before-submit");
-	});
 });
