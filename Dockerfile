@@ -48,10 +48,10 @@ COPY --from=build --chown=bun:bun /app/public ./public
 COPY --from=build --chown=bun:bun /app/.next/standalone ./
 COPY --from=build --chown=bun:bun /app/.next/static ./.next/static
 
-# ensure folder is owned by bun:bun when mounted as volume
-RUN mkdir -p /app/.next/cache/images && chown -R bun:bun /app/.next/cache
-
 USER bun
+
+# a named volume mounted here takes the ownership of this folder, and would otherwise be created as root.
+RUN mkdir -p /app/.next/cache
 
 ENV HOSTNAME=0.0.0.0
 ENV NODE_ENV=production
