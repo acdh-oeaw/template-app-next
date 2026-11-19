@@ -25,6 +25,10 @@ export type ExternalHref = string & {
 
 type SegmentParams = Record<string, string | ReadonlyArray<string> | undefined>;
 
+/**
+ * Strips only `[locale]`, not all root params from `next/root-params`, because `next-intl` only adds the locale prefix
+ * back. Other root segments stay part of the route, with their params.
+ */
 type LocalizedRoute<TRoute> = TRoute extends `/[locale]${infer TPathname}`
 	? TPathname extends ""
 		? "/"
