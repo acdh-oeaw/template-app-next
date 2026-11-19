@@ -4,12 +4,12 @@ import type { ComponentProps, ReactNode, Ref } from "react";
 import { Link as AriaLink, type LinkProps as AriaLinkProps } from "react-aria-components/Link";
 
 import { Link as LocaleLink } from "#/lib/i18n/navigation.ts";
-import type { ExternalHref, Href, RelativeHref } from "#/lib/navigation/href.ts";
+import type { AnyHref, Href } from "#/lib/navigation/href.ts";
 
 type LocaleLinkProps = ComponentProps<typeof LocaleLink>;
 
 /** Resolves to a message for plain strings, which reads as the type error. */
-type CheckedHref<THref extends string> = THref extends ExternalHref | Href | RelativeHref
+type CheckedHref<THref extends string> = THref extends AnyHref
 	? THref
 	: "Create the href with href() or externalHref() from #/lib/navigation/href.ts";
 

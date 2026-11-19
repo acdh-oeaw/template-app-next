@@ -6,7 +6,7 @@
 import { searchParamsCodec } from "#/app/[locale]/e2e/search-params/search-params.ts";
 import { Link } from "#/components/link.tsx";
 import { getPathname, redirect, useRouter } from "#/lib/i18n/navigation.ts";
-import { externalHref, type Href, href, type RelativeHref, type Route } from "#/lib/navigation/href.ts";
+import { type AnyHref, externalHref, type Href, href, type RelativeHref, type Route } from "#/lib/navigation/href.ts";
 import { createSearchParamsCodec, encodeSearchParams, searchParam } from "#/lib/navigation/search-params.ts";
 
 declare const page: Href;
@@ -36,6 +36,19 @@ export const links = [
 	</Link>,
 	// @ts-expect-error -- relative hrefs cannot be localized
 	<Link key="either-locale" href={either} locale="de-AT">
+		a
+	</Link>,
+];
+
+declare const any: AnyHref;
+
+/** Components that render a link can pass on any href, but not localize it. */
+export const anyHrefLinks = [
+	<Link key="any" href={any}>
+		a
+	</Link>,
+	// @ts-expect-error -- relative and external hrefs cannot be localized
+	<Link key="any-locale" href={any} locale="de-AT">
 		a
 	</Link>,
 ];

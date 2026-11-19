@@ -23,6 +23,9 @@ export type ExternalHref = string & {
 	readonly [brand]: "Create external hrefs with externalHref() from #/lib/navigation/href.ts";
 };
 
+/** Any href that `<Link>` accepts, like for components that render a link, or data that mixes pages and external urls. */
+export type AnyHref = ExternalHref | Href | RelativeHref;
+
 type SegmentParams = Record<string, string | ReadonlyArray<string> | undefined>;
 
 /**
