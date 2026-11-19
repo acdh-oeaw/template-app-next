@@ -190,21 +190,22 @@ export function createSearchParamsCodec<const TParams extends SearchParamsDefini
 	return { params };
 }
 
-type Issues = [v.BaseIssue<unknown>, ...Array<v.BaseIssue<unknown>>];
-
-type Result<TOutput> =
-	| { success: true; output: TOutput; issues?: never }
-	| { success: false; output?: never; issues: Issues };
+interface RunResult {
+	output: Record<string, unknown>;
+	issues: Array<v.BaseIssue<unknown>>;
+}
 
 /**
- * Runs the decoder or encoder of each search param. Not with `v.object()`, which skips the schemas of missing keys
- * whose schema is optional, so defaults would not apply.
+ * Runs the decoder or encoder of each search param, and collects the issues of invalid ones, which `fallback()` can
+ * replace. Not with `v.object()`, which skips the schemas of missing keys whose schema is optional, so defaults would
+ * not apply.
  */
 function run(
 	codec: AnySearchParamsCodec,
 	input: Readonly<Record<string, unknown>>,
 	schemaOf: (param: AnySearchParam) => v.GenericSchema,
-): Result<Record<string, unknown>> {
+	fallback?: (param: AnySearchParam) => unknown,
+): RunResult {
 	const output: Record<string, unknown> = {};
 	const issues: Array<v.BaseIssue<unknown>> = [];
 
@@ -222,12 +223,14 @@ function run(
 
 				issues.push({ ...issue, path });
 			}
+
+			if (fallback != null) {
+				output[key] = fallback(param);
+			}
 		}
 	}
 
-	const [first, ...rest] = issues;
-
-	return first == null ? { success: true, output } : { success: false, issues: [first, ...rest] };
+	return { output, issues };
 }
 
 /** Like Next.js does for the `searchParams` prop, so that a codec can decode both. */
@@ -250,31 +253,37 @@ function toInput(searchParams: SearchParamsSource): Readonly<Record<string, unkn
 	return searchParams instanceof URLSearchParams ? toRecord(searchParams) : searchParams;
 }
 
-export type SafeParseSearchParamsResult<TCodec extends AnySearchParamsCodec> = Result<SearchParamsOf<TCodec>>;
+export interface SearchParamsWithIssues<TCodec extends AnySearchParamsCodec> {
+	values: SearchParamsOf<TCodec>;
+	/** The issues of invalid search params, whose values fell back to their default. */
+	issues: Array<v.BaseIssue<unknown>>;
+}
 
-/** Like `parseSearchParams()`, but returns the issues of invalid search params instead of throwing. */
-export function safeParseSearchParams<TCodec extends AnySearchParamsCodec>(
+/** Like `parseSearchParams()`, but also returns the issues of invalid search params, like for a hint on the page. */
+export function parseSearchParamsWithIssues<TCodec extends AnySearchParamsCodec>(
 	codec: TCodec,
 	searchParams: SearchParamsSource,
-): SafeParseSearchParamsResult<TCodec> {
-	return run(codec, toInput(searchParams), (param) => param.decoder) as SafeParseSearchParamsResult<TCodec>;
+): SearchParamsWithIssues<TCodec> {
+	const { output, issues } = run(
+		codec,
+		toInput(searchParams),
+		(param) => param.decoder,
+		(param) => v.parse(param.decoder, undefined),
+	);
+
+	return { values: output as SearchParamsOf<TCodec>, issues };
 }
 
 /**
  * Decodes the search params of a page with the codec in its `search-params.ts`. Accepts the `searchParams` prop of a
- * page, and the result of `useSearchParams()`. Ignores unknown search params, and throws for invalid ones.
+ * page, and the result of `useSearchParams()`. Ignores unknown search params, and falls back to the default of invalid
+ * ones, because urls are user input, like old links or edited urls, which should not fail the page.
  */
 export function parseSearchParams<TCodec extends AnySearchParamsCodec>(
 	codec: TCodec,
 	searchParams: SearchParamsSource,
 ): SearchParamsOf<TCodec> {
-	const result = safeParseSearchParams(codec, searchParams);
-
-	if (!result.success) {
-		throw new v.ValiError(result.issues);
-	}
-
-	return result.output;
+	return parseSearchParamsWithIssues(codec, searchParams).values;
 }
 
 /**
@@ -285,13 +294,14 @@ export function encodeSearchParams<TCodec extends AnySearchParamsCodec>(
 	codec: TCodec,
 	values: SearchParamsInputOf<TCodec>,
 ): EncodedSearchParams<TCodec> {
-	const result = run(codec, values, (param) => param.encoder);
+	const { output, issues } = run(codec, values, (param) => param.encoder);
+	const [first, ...rest] = issues;
 
-	if (!result.success) {
-		throw new v.ValiError(result.issues);
+	if (first != null) {
+		throw new v.ValiError([first, ...rest]);
 	}
 
 	return Object.fromEntries(
-		Object.entries(result.output).filter(([, value]) => value !== undefined),
+		Object.entries(output).filter(([, value]) => value !== undefined),
 	) as unknown as EncodedSearchParams<TCodec>;
 }

@@ -86,7 +86,7 @@ A page that reads search params defines them in a `search-params.ts` next to its
 
 - Our Next.js patch adds the codecs to the `RouteRegistry`, which `next dev` regenerates. `bun check` reports a `search-params.ts` without a valid `searchParamsCodec` export
 - `href({ pathname, searchParams })` only accepts `encodeSearchParams()` with that page's codec, like `encodeSearchParams(searchParamsCodec, { page: page + 1 })`. It throws for invalid values, and leaves out defaults, so links are canonical. Pages without the file accept any search params
-- Decode the `searchParams` prop, or `useSearchParams()`, with `safeParseSearchParams()`, which returns the issues of invalid search params, or `parseSearchParams()`, which throws. Unknown search params are ignored
+- Decode the `searchParams` prop, or `useSearchParams()`, with `parseSearchParams()`. Invalid search params fall back to their default, because urls are user input, and unknown ones are ignored. `parseSearchParamsWithIssues()` also returns the issues, like for a hint on the page
 - With `cacheComponents`, read `searchParams` inside `<Suspense>`, so the rest of the page stays in the static shell
 
 ## React

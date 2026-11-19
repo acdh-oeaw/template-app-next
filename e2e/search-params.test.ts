@@ -12,14 +12,26 @@ test.describe("search params", () => {
 		await expect(page.getByRole("searchbox", { name: "Search term" })).toHaveValue("vienna");
 	});
 
-	for (const search of ["q=a&q=b", "q=vienna&page=abc", "q=vienna&page=0"]) {
-		test(`are invalid for ${search}`, async ({ page }) => {
+	for (const search of ["q=vienna&page=abc", "q=vienna&page=0", "q=vienna&page=1&page=2"]) {
+		test(`fall back to the default of invalid values, for ${search}`, async ({ page }) => {
 			await page.goto(`/en/e2e/search-params?${search}`);
 
-			await expect(page.getByRole("main").getByText("The search parameters are invalid.")).toBeVisible();
-			await expect(page.getByRole("main").getByText(/^Results for/)).toBeHidden();
+			await expect(
+				page.getByRole("main").getByText("Some search parameters are invalid and were ignored."),
+			).toBeVisible();
+			await expect(page.getByRole("main").getByText("Results for “vienna”, page 1")).toBeVisible();
 		});
 	}
+
+	test("ignore an invalid query, and keep the page", async ({ page }) => {
+		await page.goto("/en/e2e/search-params?q=a&q=b");
+
+		await expect(
+			page.getByRole("main").getByText("Some search parameters are invalid and were ignored."),
+		).toBeVisible();
+		await expect(page.getByRole("searchbox", { name: "Search term" })).toHaveValue("");
+		await expect(page.getByRole("main").getByText(/^Results for/)).toBeHidden();
+	});
 
 	test("are encoded into localized links by href(), without defaults", async ({ page }) => {
 		await page.goto("/de/e2e/search-params?q=wien&page=2");

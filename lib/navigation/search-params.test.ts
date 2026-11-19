@@ -7,7 +7,7 @@ import {
 	type EncodedSearchParams,
 	encodeSearchParams,
 	parseSearchParams,
-	safeParseSearchParams,
+	parseSearchParamsWithIssues,
 	searchParam,
 	type SearchParamsOf,
 } from "#/lib/navigation/search-params.ts";
@@ -49,7 +49,7 @@ describe("parseSearchParams", () => {
 		expect(parseSearchParams(codec, { q: "a", utm_source: "b" })).toStrictEqual({ ...defaults, q: "a" });
 	});
 
-	test("throws for invalid search params", () => {
+	test("falls back to the default of each invalid search param, and keeps the valid ones", () => {
 		for (const searchParams of [
 			{ page: "0" },
 			{ page: "1.5" },
@@ -61,24 +61,24 @@ describe("parseSearchParams", () => {
 			{ ids: ["1", "x"] },
 			{ isDraft: "yes" },
 		]) {
-			expect(() => parseSearchParams(codec, searchParams)).toThrow(v.ValiError);
+			expect(parseSearchParams(codec, { ...searchParams, tag: "kept" })).toStrictEqual({ ...defaults, tag: ["kept"] });
 		}
 	});
 });
 
-describe("safeParseSearchParams", () => {
-	test("returns the typed values of valid search params", () => {
-		expect(safeParseSearchParams(codec, { page: "2" })).toStrictEqual({
-			success: true,
-			output: { ...defaults, page: 2 },
+describe("parseSearchParamsWithIssues", () => {
+	test("returns no issues for valid search params", () => {
+		expect(parseSearchParamsWithIssues(codec, { page: "2" })).toStrictEqual({
+			values: { ...defaults, page: 2 },
+			issues: [],
 		});
 	});
 
-	test("returns the issues of invalid search params instead of throwing", () => {
-		const result = safeParseSearchParams(codec, new URLSearchParams("page=0"));
+	test("returns the issues of invalid search params, with the fallback values", () => {
+		const { values, issues } = parseSearchParamsWithIssues(codec, new URLSearchParams("page=0&q=a&sort=top"));
 
-		expect(result.success).toBe(false);
-		expect(result.issues?.[0].path?.[0]?.key).toBe("page");
+		expect(values).toStrictEqual({ ...defaults, q: "a" });
+		expect(issues.map((issue) => issue.path?.[0]?.key)).toStrictEqual(["page", "sort"]);
 	});
 });
 

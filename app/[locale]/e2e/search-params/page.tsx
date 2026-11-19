@@ -8,7 +8,7 @@ import { MainContent } from "#/components/main-content.tsx";
 import { assertE2eFixture } from "#/lib/e2e/fixtures.ts";
 import { getPathname } from "#/lib/i18n/navigation.ts";
 import { href } from "#/lib/navigation/href.ts";
-import { encodeSearchParams, safeParseSearchParams } from "#/lib/navigation/search-params.ts";
+import { encodeSearchParams, parseSearchParamsWithIssues } from "#/lib/navigation/search-params.ts";
 
 interface SearchParamsFixturePageProps extends PageProps<"/[locale]/e2e/search-params"> {}
 
@@ -51,26 +51,24 @@ function SearchForm(props: Readonly<SearchFormProps>): ReactNode {
 interface SearchResultsProps extends Pick<SearchParamsFixturePageProps, "searchParams"> {}
 
 async function SearchResults(props: Readonly<SearchResultsProps>): Promise<ReactNode> {
-	const result = safeParseSearchParams(searchParamsCodec, await props.searchParams);
+	const { values, issues } = parseSearchParamsWithIssues(searchParamsCodec, await props.searchParams);
+	const { q, page } = values;
 
-	if (!result.success) {
+	const hint = issues.length > 0 ? <p>Some search parameters are invalid and were ignored.</p> : null;
+
+	if (q == null || q === "") {
 		return (
 			<Fragment>
 				<SearchForm />
-				<p>The search parameters are invalid.</p>
+				{hint}
 			</Fragment>
 		);
-	}
-
-	const { q, page } = result.output;
-
-	if (q == null || q === "") {
-		return <SearchForm />;
 	}
 
 	return (
 		<Fragment>
 			<SearchForm query={q} />
+			{hint}
 			<p>{`Results for “${q}”, page ${String(page)}`}</p>
 			<nav aria-label="Pagination">
 				{page > 1 ? (
