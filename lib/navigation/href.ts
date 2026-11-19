@@ -23,7 +23,7 @@ export type ExternalHref = string & {
 	readonly [brand]: "Create external hrefs with externalHref() from #/lib/navigation/href.ts";
 };
 
-type SegmentParams = Record<string, string | Array<string> | undefined>;
+type SegmentParams = Record<string, string | ReadonlyArray<string> | undefined>;
 
 /** Maps page routes below `[locale]` to their params, without the locale. Generic, so tests can use other routes. */
 export type LocalizedRoutes<TParamMap> = {
@@ -42,11 +42,22 @@ export type Route = keyof Routes;
 
 export type SearchParams = Record<string, string | ReadonlyArray<string> | undefined>;
 
+/** Required catch-all segments need at least one item. Arrays can be readonly. */
+type SegmentParam<TValue> = undefined extends TValue
+	? Exclude<TValue, undefined> extends Array<string>
+		? ReadonlyArray<string> | undefined
+		: TValue
+	: TValue extends Array<string>
+		? readonly [string, ...Array<string>]
+		: TValue;
+
+type SegmentParamsOf<TParams> = { readonly [TKey in keyof TParams]: SegmentParam<TParams[TKey]> };
+
 type ParamsOption<TParams> = keyof TParams extends never
 	? { params?: never }
 	: Partial<TParams> extends TParams
-		? { params?: Readonly<TParams> }
-		: { params: Readonly<TParams> };
+		? { params?: SegmentParamsOf<TParams> }
+		: { params: SegmentParamsOf<TParams> };
 
 type RouteHrefOptions<TRoutes> = {
 	[TRoute in keyof TRoutes & string]: { pathname: TRoute } & ParamsOption<TRoutes[TRoute]> & {
@@ -87,11 +98,17 @@ function interpolate(route: string, params: SegmentParams): string {
 			throw new Error(`Missing param "${name}" for route "${route}".`);
 		}
 
-		if (catchAll != null) {
-			return (Array.isArray(value) ? value : [value]).map((part) => encodeURIComponent(part));
+		const parts: ReadonlyArray<string> = typeof value === "string" ? [value] : value;
+
+		if (parts.includes("")) {
+			throw new Error(`Param "${name}" for route "${route}" must not be empty.`);
 		}
 
-		return [encodeURIComponent(String(value))];
+		if (catchAll == null && parts.length > 1) {
+			throw new Error(`Param "${name}" for route "${route}" must be a single segment.`);
+		}
+
+		return parts.map((part) => encodeURIComponent(part));
 	});
 
 	const pathname = segments.join("/");
@@ -141,7 +158,11 @@ export function href(options: Readonly<RelativeHrefOptions | RouteHrefOptions<Ro
 		value += toSearch(searchParams) || (pathname == null ? "?" : "");
 	}
 
-	if (hash != null && hash !== "") {
+	if (hash != null) {
+		if (hash === "" || hash.startsWith("#")) {
+			throw new Error(`Invalid hash "${hash}": expected a non-empty fragment without the leading "#".`);
+		}
+
 		value += `#${encodeURIComponent(hash)}`;
 	}
 

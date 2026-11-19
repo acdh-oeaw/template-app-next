@@ -44,8 +44,18 @@ describe("href", () => {
 		expect<string>(href({ pathname: "/search/[[...filters]]", params: { filters: ["a", "b"] } })).toBe("/search/a/b");
 	});
 
-	test("throws for missing required params at runtime", () => {
+	test("accepts readonly arrays for catch-all segments", () => {
+		const path: ReadonlyArray<string> = ["a", "b"];
+
+		expect<string>(href({ pathname: "/search/[[...filters]]", params: { filters: path } })).toBe("/search/a/b");
+		expect<string>(href({ pathname: "/docs/[...path]", params: { path: ["a", "b"] as const } })).toBe("/docs/a/b");
+	});
+
+	test("throws for missing or empty params at runtime", () => {
+		// @ts-expect-error -- required catch-all segments need at least one item
 		expect(() => href({ pathname: "/docs/[...path]", params: { path: [] } })).toThrow('Missing param "path"');
+		expect(() => href({ pathname: "/posts/[id]", params: { id: "" } })).toThrow('Param "id" for route');
+		expect(() => href({ pathname: "/docs/[...path]", params: { path: ["a", ""] } })).toThrow("must not be empty");
 	});
 
 	test("appends search params and hash", () => {
@@ -66,8 +76,10 @@ describe("href", () => {
 		expect<string>(href({ searchParams: { page: undefined }, hash: "results" })).toBe("?#results");
 	});
 
-	test("throws for empty relative hrefs at runtime", () => {
-		expect(() => href({ hash: "" })).toThrow("needs a `pathname`, `searchParams` or a `hash`");
+	test("throws for empty hashes, and hashes with a leading #", () => {
+		expect(() => href({ hash: "" })).toThrow('Invalid hash ""');
+		expect(() => href({ hash: "#comments" })).toThrow('without the leading "#"');
+		expect(() => href({ pathname: "/about", hash: "" })).toThrow('Invalid hash ""');
 	});
 
 	test("rejects invalid routes and params at compile time", () => {
