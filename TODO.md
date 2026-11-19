@@ -127,6 +127,9 @@
     - A separate package with an example app for its e2e tests, like `acdh-oeaw/content-lib`, not `@acdh-oeaw/lib`,
       which depends on neither Next.js nor valibot
     - Ask Next.js upstream for a global route registry, which would also fix the stale route types in `next dev`
+    - Before freezing the codec API, design a custom search param, like `searchParam.custom({ decode, encode, schema })`,
+      for formats the built-in ones cannot express, like a bounding box `?bbox=1,2,3,4` or a range `?years=1900-1950`.
+      Base it on the first page that needs one, which decides questions like how to report an invalid part of a range
 - [ ] After updating `@react-aria/optimize-locales-plugin` past 2.1.0, re-create our patch, and decide whether it should
       keep `locales: readonly string[]` in the Turbopack rule type, which upstream relaxed to `string[]` to satisfy
       Next.js's `JSONValue` (adobe/react-spectrum#10889, unreleased). `bun check` passes with the readonly type today
