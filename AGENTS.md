@@ -27,14 +27,6 @@ Define containers for third-party services in local development, like a Typesens
 
 Use `bun test` to run tests.
 
-```ts#index.test.ts
-import { test, expect } from "bun:test";
-
-test("hello world", () => {
-  expect(1).toBe(1);
-});
-```
-
 ## End-to-end tests
 
 Use `bun run test:e2e` to run the Playwright tests in `e2e/`. Set `PORT` if port 3000 is taken, because Playwright reuses whatever server is listening there.
