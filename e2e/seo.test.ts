@@ -1,4 +1,4 @@
-import { type APIRequestContext, expect, test } from "@playwright/test";
+import { expect, type Page, test } from "@playwright/test";
 
 const pathnames = ["/en", "/en/about", "/en/imprint", "/de", "/de/about", "/de/imprint"];
 
@@ -7,23 +7,40 @@ interface SitemapEntry {
 	alternates: Record<string, string>;
 }
 
-function parseSitemap(xml: string): Array<SitemapEntry> {
-	return Array.from(xml.matchAll(/<url>(.*?)<\/url>/gs), ([, entry = ""]) => {
-		const links = entry.matchAll(/<xhtml:link rel="alternate" hreflang="(.*?)" href="(.*?)"/g);
+/**
+ * Parses with `DOMParser` rather than regexes, so invalid xml fails, and entities are decoded like in html attributes.
+ *
+ * @see {@link https://github.com/vercel/next.js/issues/77340}
+ */
+function parseSitemap(page: Page, xml: string) {
+	return page.evaluate((xml) => {
+		const sitemap = new DOMParser().parseFromString(xml, "application/xml");
+		const error = sitemap.querySelector("parsererror")?.textContent ?? null;
 
-		return {
-			url: /<loc>(.*?)<\/loc>/.exec(entry)?.[1] ?? "",
-			alternates: Object.fromEntries(Array.from(links, ([, hreflang = "", href = ""]) => [hreflang, href])),
-		};
-	});
+		const entries = Array.from(sitemap.querySelectorAll("url"), (entry) => {
+			const links = entry.querySelectorAll("link");
+
+			return {
+				url: entry.querySelector("loc")?.textContent ?? "",
+				alternates: Object.fromEntries(
+					Array.from(links, (link) => [link.getAttribute("hreflang") ?? "", link.getAttribute("href") ?? ""]),
+				),
+			};
+		});
+
+		return { error, entries };
+	}, xml);
 }
 
 /** The proxy `matcher` must exclude `robots.txt` and `sitemap.xml`, so `maxRedirects: 0` also catches locale redirects. */
-async function getSitemap(request: APIRequestContext): Promise<Array<SitemapEntry>> {
-	const response = await request.get("/sitemap.xml", { maxRedirects: 0 });
+async function getSitemap(page: Page): Promise<Array<SitemapEntry>> {
+	const response = await page.request.get("/sitemap.xml", { maxRedirects: 0 });
 	expect(response.status()).toBe(200);
 
-	return parseSitemap(await response.text());
+	const { error, entries } = await parseSitemap(page, await response.text());
+	expect(error).toBeNull();
+
+	return entries;
 }
 
 test.describe("robots.txt", () => {
@@ -48,18 +65,18 @@ test.describe("robots.txt", () => {
 });
 
 test.describe("sitemap.xml", () => {
-	test("lists all pages in all locales", async ({ request }) => {
-		const response = await request.get("/sitemap.xml", { maxRedirects: 0 });
+	test("lists all pages in all locales", async ({ page }) => {
+		const response = await page.request.get("/sitemap.xml", { maxRedirects: 0 });
 		expect(response.headers()["content-type"]).toContain("application/xml");
 
-		const entries = await getSitemap(request);
+		const entries = await getSitemap(page);
 		const listed = entries.map((entry) => new URL(entry.url).pathname);
 
 		expect(listed.toSorted()).toStrictEqual(pathnames.toSorted());
 	});
 
-	test("alternates are reciprocal", async ({ request }) => {
-		const entries = await getSitemap(request);
+	test("alternates are reciprocal", async ({ page }) => {
+		const entries = await getSitemap(page);
 
 		for (const entry of entries) {
 			expect(Object.values(entry.alternates)).toContain(entry.url);
@@ -74,8 +91,8 @@ test.describe("sitemap.xml", () => {
 	});
 
 	for (const pathname of pathnames) {
-		test(`${pathname} matches the page metadata`, async ({ page, request }) => {
-			const entries = await getSitemap(request);
+		test(`${pathname} matches the page metadata`, async ({ page }) => {
+			const entries = await getSitemap(page);
 			const entry = entries.find((candidate) => new URL(candidate.url).pathname === pathname);
 
 			const response = await page.goto(pathname);
