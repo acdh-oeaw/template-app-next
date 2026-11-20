@@ -90,6 +90,7 @@ A page that reads search params defines them in a `search-params.ts` next to its
 - Use `xstate` only for flows that outgrow a reducer, like multi-step processes with guards or async side effects. Ask before adding it as a dependency
 - Prefer composition over configuration: pass content through `children` or slot props rather than adding config props that switch what a component renders
 - Choose the element by behavior, not by looks: a link navigates, a button performs an action. A link can look like a button and a button like a link, by sharing style functions (like `buttonStyles()`) that return class names, not with polymorphic props like `<Button href>` or `as="a"`. Links cannot be disabled, so something that needs a disabled state is a button
+- Use a native html element when one fits, like `<button>` or `<details>`. Otherwise use a React Aria component. Only build a custom widget when neither fits, and follow its pattern in the [ARIA Authoring Practices Guide](https://www.w3.org/WAI/ARIA/apg/patterns/), including keyboard handling. Add an end-to-end test for it, since React Aria doesn't guarantee its behavior
 
 ## Code comments
 
