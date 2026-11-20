@@ -16,7 +16,7 @@
 		"format:fix": "bun fmt",
 		"lint:check": "bun lint",
 		"lint:fix": "bun lint --fix",
-		"prepare": "BUN_OPTIONS=--bun bun run --sequential env:sync types:prepare",
+		"prepare": "BUN_OPTIONS=--bun bun run --sequential env:sync types:generate",
 		"start": "next start",
 		"styles:check": "stylelint \"styles/**/*.css\"",
 		"styles:fix": "stylelint --fix \"styles/**/*.css\"",
@@ -26,7 +26,7 @@
 		"test:e2e:update-snapshots": "bun scripts/update-snapshots.ts",
 		"test:unit": "bun test",
 		"types:check": "bun check",
-		"types:prepare": "next typegen"
+		"types:generate": "next typegen"
 	},
 	"dependencies": {
 		"clsx": "^2.1.1",

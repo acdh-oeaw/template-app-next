@@ -85,7 +85,7 @@ app/[locale]/
 Move `not-found.tsx` as well, so that pages calling `notFound()` keep the shell. Urls that match no route render
 [`app/global-not-found.tsx`](app/global-not-found.tsx), which renders the shell itself. If `next build` then fails with
 type errors in `.next/dev/types/validator.ts`, delete that file: it still points to the old paths, and
-`bun run types:prepare` does not update it.
+`bun run types:generate` does not update it.
 
 ## Color scheme
 
@@ -137,7 +137,7 @@ without a url per language: no `[locale]` segment and no proxy, and next-intl on
 the routes as they are, and the navigation functions wrap Next.js instead of next-intl. Until all steps are done,
 `bun check` reports every `href()` call, because no route starts with `/[locale]` anymore.
 
-1. Move everything in `app/[locale]/` to `app/`, run `bun run types:prepare`, and update `PageProps<"/[locale]/…">`,
+1. Move everything in `app/[locale]/` to `app/`, run `bun run types:generate`, and update `PageProps<"/[locale]/…">`,
    `LayoutProps<"/[locale]">` and imports from `#/app/[locale]/`
 2. In `app/layout.tsx`, remove `generateStaticParams()`, the `params` and the `hasLocale()` checks, and use
    `defaultLocale`
@@ -276,7 +276,7 @@ readinessProbe:
 Public variables are inlined with a getter on `compiler.define` in [`next.config.ts`](next.config.ts), which relies on
 two undocumented behaviours. After upgrading, check that:
 
-- `bun run types:prepare` (`next typegen`) still succeeds without public variables, i.e. it doesn't read
+- `bun run types:generate` (`next typegen`) still succeeds without public variables, i.e. it doesn't read
   `compiler.define`
 - editing a public variable in `.env.local` while `bun run dev` is running updates the page without a restart, i.e.
   `next dev` still reads `compiler.define` again when `.env*` files change
