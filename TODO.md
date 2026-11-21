@@ -38,6 +38,7 @@
       of the client-rendered shell)
   - [ ] `/en/does-not-exist`: 404 with `global-not-found.tsx`, server-rendered
   - [ ] A page calling `notFound()`: 404 with the localized `app/[locale]/not-found.tsx`
+    - [ ] Applies the stored color scheme: the empty shell has no `ColorSchemeScript`, so only its effect sets it
   - [ ] Invalid locale, e.g. `/x.png`: 404 with our not-found page, not Next's default not-found page. Always renders
         in the default locale, also for German visitors. Currently renders Next's default page, without our styles or
         `ColorSchemeScript`, so it ignores the stored color scheme
@@ -47,6 +48,7 @@
         hydration: React error boundaries don't run during server rendering
   - [ ] `global-error.tsx` has no e2e test: the root layout is prerendered, so only its client components can throw,
         which needs a fixture in the layout
+    - [ ] Applies the stored color scheme, because it renders `<html>` on the client
 - [x] Browser e2e test for light and dark mode, with Playwright's `colorScheme` option
 - [x] Browser e2e test for canonical urls: content must only be reachable under the language prefix (`/en/*`), never
       under the internal locale (`/en-GB/*`) that the proxy rewrites to. Currently `/en-GB/*` redirects to
