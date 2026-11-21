@@ -141,8 +141,8 @@ the routes as they are, and the navigation functions wrap Next.js instead of nex
    `LayoutProps<"/[locale]">` and imports from `#/app/[locale]/`
 2. In `app/layout.tsx`, remove `generateStaticParams()`, the `params` and the `hasLocale()` checks, and use
    `defaultLocale`
-3. Keep one locale in `configs/i18n.config.ts`, delete the other message files, and return `defaultLocale` from
-   `lib/i18n/request.ts`, instead of reading `next/root-params`
+3. Keep one locale in `configs/i18n.config.ts`, delete the other message files and content, like `messages/de.po` and
+   `content/de/`, and return `defaultLocale` from `lib/i18n/request.ts`, instead of reading `next/root-params`
 4. Delete `proxy.ts`, `lib/i18n/routing.ts` and `components/locale-switcher/`, and remove `<LocaleSwitcher />` from
    `components/header.tsx`
 5. In `lib/navigation/href.ts`, change the root param of `Routes` from `"locale"` to `never`
@@ -151,7 +151,8 @@ the routes as they are, and the navigation functions wrap Next.js instead of nex
    href, and `redirect()` ignores the locale. The router accepts relative hrefs with all options of `next/navigation`
 7. In `components/link.tsx`, render `next/link`, and remove the `locale` prop. Remove `Link` from
    `#/lib/navigation/navigation.ts` from `linkPaths` in `configs/oxlint.config.ts`
-8. Optionally, remove the `hreflang` alternates, which now only list the page itself and `x-default`: delete
+8. Remove the Open Graph `alternateLocale` from `lib/metadata/create-page-metadata.ts`, which is always empty.
+   Optionally, remove the `hreflang` alternates, which now only list the page itself and `x-default`: delete
    `lib/i18n/get-alternate-languages.ts`, and remove `alternates.languages` from `createPageMetadata()` and
    `app/sitemap.ts`
 9. In `lib/navigation/navigation.test-d.tsx`, remove the cases for the `locale` of `<Link>` and the router, and replace
