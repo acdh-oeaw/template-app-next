@@ -72,6 +72,7 @@ Use `bun check` to type check the project. It reads `tsconfig.json` and reports 
 
 - Each page renders its own main landmark with `<MainContent>` from `components/main-content.tsx`, not with `<main>`, because it is the target of the skip link. This includes `not-found`, `error` and `loading` pages. The layout only renders the header and footer
 - `app/sitemap.ts` lists every page without params as included or excluded, so `bun check` reports a new page until it is added there
+- Wrap request-time content in its own `<Suspense>`, close to the data, rather than adding `loading.tsx`, so the rest of the page stays in the static shell. Don't add a `loading.tsx` to `app/[locale]/`: it wraps every page in a boundary, so a page that reads uncached data outside `<Suspense>` no longer fails the build, and shows a full-page fallback instead
 
 ## Search params
 
