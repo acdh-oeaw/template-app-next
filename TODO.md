@@ -36,13 +36,14 @@
         requests to whatever port a test header names
 - [ ] Browser e2e test for the not-found and error pages in `e2e/errors.test.ts` (curl only sees status codes, because
       of the client-rendered shell)
-  - [ ] `/en/does-not-exist`: 404 with `global-not-found.tsx`, server-rendered
-  - [ ] A page calling `notFound()`: 404 with the localized `app/[locale]/not-found.tsx`
-    - [ ] Applies the stored color scheme: the empty shell has no `ColorSchemeScript`, so only its effect sets it
+  - [x] `/en/does-not-exist`: 404 with `global-not-found.tsx`, server-rendered
+  - [x] A page calling `notFound()`: 404 with the localized `app/[locale]/not-found.tsx`, with a fixture in
+        `app/[locale]/e2e/not-found/`. Server rendering is an expected failure (`test.fail()`)
+    - [x] Applies the stored color scheme: the empty shell has no `ColorSchemeScript`, so only its effect sets it
   - [ ] Invalid locale, e.g. `/x.png`: 404 with our not-found page, not Next's default not-found page. Always renders
         in the default locale, also for German visitors. Currently renders Next's default page, without our styles or
-        `ColorSchemeScript`, so it ignores the stored color scheme
-  - [ ] `/en-GB`: redirected to `/en/en-GB` by the proxy, then 404
+        `ColorSchemeScript`, so it ignores the stored color scheme. Tested as expected failures (`test.fail()`)
+  - [x] `/en-GB`: redirected to `/en/en-GB` by the proxy, then 404
   - [x] Error page and `ErrorBoundary`, with fixtures in `app/[locale]/e2e/error*/`. Request-time errors with
         `cacheComponents` are inside `<Suspense>`, so they respond with 200 and only render the error ui after
         hydration: React error boundaries don't run during server rendering
