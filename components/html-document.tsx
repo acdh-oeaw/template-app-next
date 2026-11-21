@@ -3,7 +3,6 @@ import type { ReactNode } from "react";
 import { isRTL } from "react-aria-components/I18nProvider";
 
 import { ColorSchemeScript } from "#/components/color-scheme/color-scheme-script.tsx";
-import { Providers } from "#/components/providers.tsx";
 import type { Locale } from "#/lib/i18n/locales.ts";
 import { firaCode, notoSans } from "#/styles/fonts.ts";
 
@@ -26,9 +25,7 @@ export function HtmlDocument(props: Readonly<HtmlDocumentProps>): ReactNode {
 			<head>
 				<ColorSchemeScript />
 			</head>
-			<body>
-				<Providers locale={locale}>{children}</Providers>
-			</body>
+			<body>{children}</body>
 		</html>
 	);
 }

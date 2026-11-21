@@ -7,6 +7,7 @@ import type { ReactNode } from "react";
 import { AppShell } from "#/components/app-shell.tsx";
 import { HtmlDocument } from "#/components/html-document.tsx";
 import { MainContent } from "#/components/main-content.tsx";
+import { Providers } from "#/components/providers.tsx";
 import { defaultLocale } from "#/lib/i18n/locales.ts";
 import { getSiteMetadata } from "#/lib/metadata/site-metadata.ts";
 
@@ -32,11 +33,13 @@ export default async function GlobalNotFoundPage(): Promise<ReactNode> {
 
 	return (
 		<HtmlDocument locale={locale}>
-			<AppShell locale={locale}>
-				<MainContent>
-					<h1>{t("Page not found")}</h1>
-				</MainContent>
-			</AppShell>
+			<Providers locale={locale}>
+				<AppShell locale={locale}>
+					<MainContent>
+						<h1>{t("Page not found")}</h1>
+					</MainContent>
+				</AppShell>
+			</Providers>
 		</HtmlDocument>
 	);
 }

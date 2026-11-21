@@ -8,6 +8,7 @@ import type { ReactNode } from "react";
 import { AppShell } from "#/components/app-shell.tsx";
 import { HtmlDocument } from "#/components/html-document.tsx";
 import { JsonLd } from "#/components/json-ld.tsx";
+import { Providers } from "#/components/providers.tsx";
 import { env } from "#/lib/env/public.ts";
 import { routing } from "#/lib/i18n/routing.ts";
 import { getDefaultOpenGraph } from "#/lib/metadata/create-page-metadata.ts";
@@ -59,8 +60,10 @@ export default async function LocaleLayout(props: Readonly<LocaleLayoutProps>): 
 
 	return (
 		<HtmlDocument locale={locale}>
-			<JsonLd data={createWebSiteJsonLd(meta, locale)} />
-			<AppShell locale={locale}>{children}</AppShell>
+			<Providers locale={locale}>
+				<JsonLd data={createWebSiteJsonLd(meta, locale)} />
+				<AppShell locale={locale}>{children}</AppShell>
+			</Providers>
 		</HtmlDocument>
 	);
 }
