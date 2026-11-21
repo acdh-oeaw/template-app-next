@@ -3,9 +3,9 @@ import { getLocale } from "next-intl/server";
 
 import { getAlternateLanguages } from "#/lib/i18n/get-alternate-languages.ts";
 import { type Locale, locales } from "#/lib/i18n/locales.ts";
-import { getPathname } from "#/lib/i18n/navigation.ts";
 import { getSiteMetadata, type SiteMetadata } from "#/lib/metadata/site-metadata.ts";
 import type { Href } from "#/lib/navigation/href.ts";
+import { getPathname } from "#/lib/navigation/navigation.ts";
 
 type OpenGraph = NonNullable<Metadata["openGraph"]>;
 

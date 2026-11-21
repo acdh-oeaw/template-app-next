@@ -3,8 +3,8 @@
 import type { ComponentProps, ReactNode, Ref } from "react";
 import { Link as AriaLink, type LinkProps as AriaLinkProps } from "react-aria-components/Link";
 
-import { Link as LocaleLink } from "#/lib/i18n/navigation.ts";
 import type { AnyHref, Href } from "#/lib/navigation/href.ts";
+import { Link as LocaleLink } from "#/lib/navigation/navigation.ts";
 
 type LocaleLinkProps = ComponentProps<typeof LocaleLink>;
 

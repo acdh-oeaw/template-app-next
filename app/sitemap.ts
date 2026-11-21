@@ -3,8 +3,8 @@ import type { MetadataRoute } from "next";
 import { env } from "#/lib/env/public.ts";
 import { getAlternateLanguages } from "#/lib/i18n/get-alternate-languages.ts";
 import { locales } from "#/lib/i18n/locales.ts";
-import { getPathname } from "#/lib/i18n/navigation.ts";
 import { href, type StaticRoute } from "#/lib/navigation/href.ts";
+import { getPathname } from "#/lib/navigation/navigation.ts";
 
 /** Lists every static page, so that `bun check` reports new pages until they are included or excluded. */
 const staticPages = {

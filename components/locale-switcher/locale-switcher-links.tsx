@@ -6,8 +6,8 @@ import { Fragment, type ReactNode, Suspense, useEffect, useRef } from "react";
 
 import { Link } from "#/components/link.tsx";
 import { getLanguage, type Locale, locales } from "#/lib/i18n/locales.ts";
-import { usePathname } from "#/lib/i18n/navigation.ts";
 import { href as createHref, type Href, withSearchParams } from "#/lib/navigation/href.ts";
+import { usePathname } from "#/lib/navigation/navigation.ts";
 
 /**
  * Each locale is named in its own language, so these are not translated. Not derived with `Intl.DisplayNames`, which

@@ -6,8 +6,8 @@ import { searchParamsCodec } from "#/app/[locale]/e2e/search-params/search-param
 import { Link } from "#/components/link.tsx";
 import { MainContent } from "#/components/main-content.tsx";
 import { assertE2eFixture } from "#/lib/e2e/fixtures.ts";
-import { getPathname } from "#/lib/i18n/navigation.ts";
 import { href } from "#/lib/navigation/href.ts";
+import { getPathname } from "#/lib/navigation/navigation.ts";
 import { encodeSearchParams, parseSearchParamsWithIssues } from "#/lib/navigation/search-params.ts";
 
 interface SearchParamsFixturePageProps extends PageProps<"/[locale]/e2e/search-params"> {}

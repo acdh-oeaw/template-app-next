@@ -101,8 +101,8 @@ To remove it, delete `components/color-scheme/` and `e2e/color-scheme.test.ts`, 
 ## Localized urls
 
 Pages are in `app/[locale]/`, and every url starts with a language prefix, like `/en/about`. Routes in `href()` leave
-out the `[locale]` segment, and `<Link>`, `redirect()` and `getPathname()` from `lib/i18n/navigation.ts` add the prefix
-back. Apps that don't need a url per language have three options.
+out the `[locale]` segment, and `<Link>`, `redirect()` and `getPathname()` from `lib/navigation/navigation.ts` add the
+prefix back. Apps that don't need a url per language have three options.
 
 ### Locale from a cookie
 
@@ -143,17 +143,19 @@ the routes as they are, and the navigation functions wrap Next.js instead of nex
    `defaultLocale`
 3. Keep one locale in `configs/i18n.config.ts`, delete the other message files, and return `defaultLocale` from
    `lib/i18n/request.ts`, instead of reading `next/root-params`
-4. Delete `proxy.ts`, `lib/i18n/routing.ts`, `lib/i18n/get-alternate-languages.ts` and `components/locale-switcher/`,
-   and remove `<LocaleSwitcher />` from `components/header.tsx`
+4. Delete `proxy.ts`, `lib/i18n/routing.ts` and `components/locale-switcher/`, and remove `<LocaleSwitcher />` from
+   `components/header.tsx`
 5. In `lib/navigation/href.ts`, change the root param of `Routes` from `"locale"` to `never`
-6. In `lib/i18n/navigation.ts`, wrap `next/navigation` instead of next-intl, without the `locale` param and the `Link`
-   export: `getPathname()` returns the href, and the router accepts relative hrefs with all options
-7. In `components/link.tsx`, render `next/link`, and remove the `locale` prop. Remove `Link` from `#/lib/i18n/navigation.ts`
-   from `linkPaths` in `configs/oxlint.config.ts`
-8. Remove the `locale` from `getPathname()` calls, and the alternates: `alternates.languages` and Open Graph
-   `alternateLocale` in `lib/metadata/create-page-metadata.ts`, and the per-locale entries in `app/sitemap.ts`
-9. Remove the `locale` cases from `lib/navigation/navigation.test-d.tsx`, and update the fixture path in `AGENTS.md` and
-   this readme
+6. In `lib/navigation/navigation.ts`, wrap `next/navigation` instead of next-intl, without the `Link` export. Keep the
+   `locale` param of `getPathname()` and `redirect()`, so that their callers stay unchanged: `getPathname()` returns the
+   href, and `redirect()` ignores the locale. The router accepts relative hrefs with all options of `next/navigation`
+7. In `components/link.tsx`, render `next/link`, and remove the `locale` prop. Remove `Link` from
+   `#/lib/navigation/navigation.ts` from `linkPaths` in `configs/oxlint.config.ts`
+8. Optionally, remove the `hreflang` alternates, which now only list the page itself and `x-default`: delete
+   `lib/i18n/get-alternate-languages.ts`, and remove `alternates.languages` from `createPageMetadata()` and
+   `app/sitemap.ts`
+9. In `lib/navigation/navigation.test-d.tsx`, remove the cases for the `locale` of `<Link>` and the router, and replace
+   the removed locale. Update the fixture path in `AGENTS.md` and this readme
 10. Delete `e2e/i18n.test.ts` and `e2e/locale-switcher.test.ts`, remove the locale prefixes and the tests for other
     locales from the other end-to-end tests, and update comments that mention `[locale]`, next-intl routing or locale
     prefixes

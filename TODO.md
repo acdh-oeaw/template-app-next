@@ -117,7 +117,7 @@
         has been stable in one or two apps, because a package puts every change behind a release
     - Generic: `search-params.ts`, `href.ts` (except the `Routes` alias, which sets the root param, and the brand
       texts, which name the module) and `get-aria-current.ts`, with their tests
-    - Stays in the app: the next-intl wrappers in `lib/i18n/navigation.ts`, `<Link>`, the lint restrictions, the
+    - Stays in the app: the next-intl wrappers in `lib/navigation/navigation.ts`, `<Link>`, the lint restrictions, the
       sitemap record, `navigation.test-d.tsx`, and the fixture with its e2e tests
     - The patch cannot ship in a package. Either keep it in the app, which makes the format of `navigation.d.ts` a
       contract between two repositories, or generate the registry from the package, with a `next.config.ts` wrapper

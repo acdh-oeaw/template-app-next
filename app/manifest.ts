@@ -1,9 +1,9 @@
 import type { MetadataRoute } from "next";
 
 import { defaultLocale } from "#/lib/i18n/locales.ts";
-import { getPathname } from "#/lib/i18n/navigation.ts";
 import { getSiteMetadata } from "#/lib/metadata/site-metadata.ts";
 import { href } from "#/lib/navigation/href.ts";
+import { getPathname } from "#/lib/navigation/navigation.ts";
 
 export default async function manifest(): Promise<MetadataRoute.Manifest> {
 	const meta = await getSiteMetadata(defaultLocale);

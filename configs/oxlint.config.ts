@@ -40,7 +40,7 @@ const linkPaths = [
 		message: "Use `Link` from `#/components/link.tsx`.",
 	},
 	{
-		name: "#/lib/i18n/navigation.ts",
+		name: "#/lib/navigation/navigation.ts",
 		importNames: ["Link"],
 		message: "Use `Link` from `#/components/link.tsx`.",
 	},
@@ -50,11 +50,11 @@ const navigationPaths = [
 	{
 		name: "next/navigation",
 		importNames: ["permanentRedirect", "redirect", "usePathname", "useRouter"],
-		message: "Use `#/lib/i18n/navigation.ts`.",
+		message: "Use `#/lib/navigation/navigation.ts`.",
 	},
 	{
 		name: "next-intl/navigation",
-		message: "Use `#/lib/i18n/navigation.ts`.",
+		message: "Use `#/lib/navigation/navigation.ts`.",
 	},
 	{
 		name: "#/lib/navigation/href.ts",
@@ -143,7 +143,7 @@ const config = {
 			},
 		},
 		{
-			files: [fromRoot("lib/i18n/navigation.ts")],
+			files: [fromRoot("lib/navigation/navigation.ts")],
 			rules: {
 				"no-restricted-imports": [
 					"error",

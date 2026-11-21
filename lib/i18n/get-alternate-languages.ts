@@ -1,7 +1,7 @@
 import { env } from "#/lib/env/public.ts";
 import { defaultLocale, type Locale, locales } from "#/lib/i18n/locales.ts";
-import { getPathname } from "#/lib/i18n/navigation.ts";
 import type { Href } from "#/lib/navigation/href.ts";
+import { getPathname } from "#/lib/navigation/navigation.ts";
 
 /**
  * Returns absolute `hreflang` urls for page metadata and sitemaps.
