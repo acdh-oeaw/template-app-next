@@ -146,6 +146,11 @@
       face
 - [ ] Drop the backport of https://github.com/facebook/react/pull/37814 from our Next.js patch once the bundled React
       includes it (it is in `16.5.0-canary.59`), see `readme.md`
+- [ ] Inline svg icons, once the first ui icon is needed, like for `IconButton`: icons in interactive ui should not pop
+      in after load like the css masks of the social media icons, and multi-colored icons cannot be masks. Start with
+      hand-written `.tsx` components (like paths copied from Lucide). Only if projects regularly add icons as svg files,
+      write a minimal Turbopack loader instead of `@svgr/webpack`: keep the root `<svg>` attributes as props, set the
+      children with `dangerouslySetInnerHTML`, and output `*.jsx` for Turbopack to compile, without Babel
 - [x] Clean up leftover `.gitignore` entries (`.pnpm-store/`, `/docker/.env`, `.turbo/`, ...)
 - [ ] Recommend the Bun VS Code extension (`oven.bun-vscode`) in `.vscode/extensions.json` once it lints and formats
       (https://github.com/oven-sh/bun/pull/46885). Narrow `bun.test.filePattern`, which also matches `e2e/`, and set
