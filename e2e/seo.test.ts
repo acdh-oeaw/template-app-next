@@ -99,12 +99,17 @@ test.describe("sitemap.xml", () => {
 			expect(response?.status()).toBe(200);
 			expect(response?.request().redirectedFrom()).toBeNull();
 
-			await expect(page.locator('head link[rel="canonical"]')).toHaveAttribute("href", entry?.url ?? "");
+			/**
+			 * Compares the `href` properties, which normalize the urls, because Next.js renders the home page as the origin,
+			 * without the trailing slash, which is the same url.
+			 */
+			const canonical = await page.locator('head link[rel="canonical"]').evaluate((link: HTMLLinkElement) => link.href);
+			expect(canonical).toBe(entry?.url);
 			await expect(page.locator('head meta[name="robots"]')).toHaveCount(0);
 
 			const alternates = await page
 				.locator('head link[rel="alternate"][hreflang]')
-				.evaluateAll((links) => links.map((link) => [link.getAttribute("hreflang"), link.getAttribute("href")]));
+				.evaluateAll((links: Array<HTMLLinkElement>) => links.map((link) => [link.hreflang, link.href]));
 
 			expect(Object.fromEntries(alternates)).toStrictEqual(entry?.alternates);
 		});
