@@ -41,7 +41,11 @@
         in the default locale, also for German visitors. Currently renders Next's default page, without our styles or
         `ColorSchemeScript`, so it ignores the stored color scheme
   - [ ] `/en-GB`: redirected to `/en/en-GB` by the proxy, then 404
-  - [ ] Error page, once it exists
+  - [x] Error page and `ErrorBoundary`, with fixtures in `app/[locale]/e2e/error*/`. Request-time errors with
+        `cacheComponents` are inside `<Suspense>`, so they respond with 200 and only render the error ui after
+        hydration: React error boundaries don't run during server rendering
+  - [ ] `global-error.tsx` has no e2e test: the root layout is prerendered, so only its client components can throw,
+        which needs a fixture in the layout
 - [x] Browser e2e test for light and dark mode, with Playwright's `colorScheme` option
 - [x] Browser e2e test for canonical urls: content must only be reachable under the language prefix (`/en/*`), never
       under the internal locale (`/en-GB/*`) that the proxy rewrites to. Currently `/en-GB/*` redirects to
@@ -91,7 +95,7 @@
         that should keep focus (like a locale or filter switcher), form submission, not-found and error pages
   - [ ] API design, write it up before building it, and consider proposing it upstream
   - [ ] Implement as a patch, replace the workaround in `components/locale-switcher/`, and add e2e tests
-- [ ] Pages: imprint (placeholder only), accessibility declaration, error, loading
+- [ ] Pages: imprint (placeholder only), accessibility declaration, loading
 - [ ] Devcontainer, issue templates
 
 ## Maybe
@@ -99,7 +103,8 @@
 - [ ] Review the oxlint setup in `dariah-eric/dariah-website` (`configs/oxlint/*`) and decide what to copy, including
       the `nextjs` and `jsx-a11y` plugins
 - [ ] Review the stylelint setup in `dariah-eric/dariah-website` and decide what to copy
-- [ ] Scope messages passed to `NextIntlClientProvider` once there are client components
+- [ ] Scope messages passed to `NextIntlClientProvider` once there are client components. Keep the messages of
+      `components/error/`, because error boundaries are client components
 - [ ] Re-check Tailwind CSS source detection in the Docker build once the template has more code: the `.dockerignore`
       allowlist excludes `.gitignore`, which is fine since Tailwind v4.1.6 ignores `.next/` by default
       (tailwindlabs/tailwindcss#17892), but compare build time and CSS output with and without `.gitignore`

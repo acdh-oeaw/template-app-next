@@ -23,6 +23,12 @@ msgctxt "U6oP-U"
 msgid "Accessibility statement"
 msgstr "Accessibility statement"
 
+#: app/[locale]/error.tsx
+#: app/global-error.tsx
+msgctxt "JqiqNj"
+msgid "Something went wrong"
+msgstr "Something went wrong"
+
 #: app/[locale]/imprint/page.tsx
 #: components/footer.tsx
 msgctxt "xYJkOZ"
@@ -54,6 +60,21 @@ msgstr "Dark"
 msgctxt "DxgBSX"
 msgid "Color scheme"
 msgstr "Color scheme"
+
+#: components/error/error-fallback.tsx
+msgctxt "Xkdnen"
+msgid "An unexpected error occurred."
+msgstr "An unexpected error occurred."
+
+#: components/error/error-fallback.tsx
+msgctxt "iOyeN1"
+msgid "Error reference: {digest}"
+msgstr "Error reference: {digest}"
+
+#: components/error/error-fallback.tsx
+msgctxt "FazwRl"
+msgid "Try again"
+msgstr "Try again"
 
 #: components/footer.tsx
 msgctxt "sy-pv5"

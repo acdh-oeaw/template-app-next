@@ -11,6 +11,8 @@ const staticPages = {
 	"/": "include",
 	"/accessibility": "include",
 	"/about": "include",
+	"/e2e/error": "exclude",
+	"/e2e/error-boundary": "exclude",
 	"/e2e/search-params": "exclude",
 	"/imprint": "include",
 } satisfies Record<StaticRoute, "exclude" | "include">;
