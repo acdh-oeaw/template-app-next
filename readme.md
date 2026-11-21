@@ -288,6 +288,12 @@ codecs of their `search-params.ts`, to `.next/types/navigation.d.ts`, which `hre
 `lib/navigation/navigation.test-d.tsx` use the generated routes. Also check that `bun run dev` adds a page to
 `.next/types/navigation.d.ts` (not `.next/dev/types`) when it is added while the server runs.
 
+The patch also backports [facebook/react#37814](https://github.com/facebook/react/pull/37814) to the React builds that
+Next.js bundles in `dist/compiled/react-dom*/`. Without it, with `cacheComponents`, a client navigation away from a
+page that has not hydrated yet can hide the layout content after it, like the footer. Drop that part once the bundled
+React includes the fix, which `16.5.0-canary.59` does: check that `hideOrUnhideDehydratedBoundary` in
+`node_modules/next/dist/compiled/react-dom/cjs/react-dom-client.production.js` also checks for `"/&"`.
+
 The `dev` script sets `BUN_OPTIONS=--no-env-file`, so that Next.js, not Bun, loads `.env` files and can reload them.
 Remove it once [oven-sh/bun#47916](https://github.com/oven-sh/bun/issues/47916) is fixed.
 

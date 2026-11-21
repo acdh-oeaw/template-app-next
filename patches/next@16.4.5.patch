@@ -1,3 +1,203 @@
+diff --git a/dist/compiled/react-dom/cjs/react-dom-client.development.js b/dist/compiled/react-dom/cjs/react-dom-client.development.js
+index 9cb40b56ebb66b17f5e8ddd1b4e536b0bbb775df..bfb76e9e3360b84f5e714b97e4fbbf0a997285fc 100644
+--- a/dist/compiled/react-dom/cjs/react-dom-client.development.js
++++ b/dist/compiled/react-dom/cjs/react-dom-client.development.js
+@@ -24062,14 +24062,15 @@
+               ? ((node._stashedText = node.nodeValue), (node.nodeValue = ""))
+               : (node.nodeValue = node._stashedText || ""));
+         if (nextNode && 8 === nextNode.nodeType)
+-          if (((node = nextNode.data), node === SUSPENSE_END_DATA))
++          if (((node = nextNode.data), node === SUSPENSE_END_DATA || node === ACTIVITY_END_DATA))
+             if (0 === suspenseInstance) break;
+             else suspenseInstance--;
+           else
+             (node !== SUSPENSE_START_DATA &&
+               node !== SUSPENSE_PENDING_START_DATA &&
+               node !== SUSPENSE_QUEUED_START_DATA &&
+-              node !== SUSPENSE_FALLBACK_START_DATA) ||
++              node !== SUSPENSE_FALLBACK_START_DATA &&
++              node !== ACTIVITY_START_DATA) ||
+               suspenseInstance++;
+         node = nextNode;
+       } while (node);
+diff --git a/dist/compiled/react-dom/cjs/react-dom-client.production.js b/dist/compiled/react-dom/cjs/react-dom-client.production.js
+index 49b478252efd4b7a72cbd156d78ab8ae7a385091..f9ce799d382171f653ce25f7a99ff6024089a5b6 100644
+--- a/dist/compiled/react-dom/cjs/react-dom-client.production.js
++++ b/dist/compiled/react-dom/cjs/react-dom-client.production.js
+@@ -15602,11 +15602,11 @@ function hideOrUnhideDehydratedBoundary(suspenseInstance, isHidden) {
+           ? ((node._stashedText = node.nodeValue), (node.nodeValue = ""))
+           : (node.nodeValue = node._stashedText || ""));
+     if (nextNode && 8 === nextNode.nodeType)
+-      if (((node = nextNode.data), "/$" === node))
++      if (((node = nextNode.data), "/$" === node || "/&" === node))
+         if (0 === suspenseInstance) break;
+         else suspenseInstance--;
+       else
+-        ("$" !== node && "$?" !== node && "$~" !== node && "$!" !== node) ||
++        ("$" !== node && "$?" !== node && "$~" !== node && "$!" !== node && "&" !== node) ||
+           suspenseInstance++;
+     node = nextNode;
+   } while (node);
+diff --git a/dist/compiled/react-dom/cjs/react-dom-profiling.development.js b/dist/compiled/react-dom/cjs/react-dom-profiling.development.js
+index c2b404c698ea39714797fc53784ac64e3901ba3b..67c553d2c558fccc0000caad683c494160fcfe6a 100644
+--- a/dist/compiled/react-dom/cjs/react-dom-profiling.development.js
++++ b/dist/compiled/react-dom/cjs/react-dom-profiling.development.js
+@@ -24070,14 +24070,15 @@
+               ? ((node._stashedText = node.nodeValue), (node.nodeValue = ""))
+               : (node.nodeValue = node._stashedText || ""));
+         if (nextNode && 8 === nextNode.nodeType)
+-          if (((node = nextNode.data), node === SUSPENSE_END_DATA))
++          if (((node = nextNode.data), node === SUSPENSE_END_DATA || node === ACTIVITY_END_DATA))
+             if (0 === suspenseInstance) break;
+             else suspenseInstance--;
+           else
+             (node !== SUSPENSE_START_DATA &&
+               node !== SUSPENSE_PENDING_START_DATA &&
+               node !== SUSPENSE_QUEUED_START_DATA &&
+-              node !== SUSPENSE_FALLBACK_START_DATA) ||
++              node !== SUSPENSE_FALLBACK_START_DATA &&
++              node !== ACTIVITY_START_DATA) ||
+               suspenseInstance++;
+         node = nextNode;
+       } while (node);
+diff --git a/dist/compiled/react-dom/cjs/react-dom-profiling.profiling.js b/dist/compiled/react-dom/cjs/react-dom-profiling.profiling.js
+index cc35e673f245ed52d7940f8b42ca13cb6782503c..f1a77210ad35b909dea7cae4a1a29100308cea2e 100644
+--- a/dist/compiled/react-dom/cjs/react-dom-profiling.profiling.js
++++ b/dist/compiled/react-dom/cjs/react-dom-profiling.profiling.js
+@@ -17497,11 +17497,11 @@ function hideOrUnhideDehydratedBoundary(suspenseInstance, isHidden) {
+           ? ((node._stashedText = node.nodeValue), (node.nodeValue = ""))
+           : (node.nodeValue = node._stashedText || ""));
+     if (nextNode && 8 === nextNode.nodeType)
+-      if (((node = nextNode.data), "/$" === node))
++      if (((node = nextNode.data), "/$" === node || "/&" === node))
+         if (0 === suspenseInstance) break;
+         else suspenseInstance--;
+       else
+-        ("$" !== node && "$?" !== node && "$~" !== node && "$!" !== node) ||
++        ("$" !== node && "$?" !== node && "$~" !== node && "$!" !== node && "&" !== node) ||
+           suspenseInstance++;
+     node = nextNode;
+   } while (node);
+diff --git a/dist/compiled/react-dom-experimental/cjs/react-dom-client.development.js b/dist/compiled/react-dom-experimental/cjs/react-dom-client.development.js
+index 161d6d1415e75c7af2ff944cd86f33b2607cd492..def2b9fbba27611e2ccd1995a263d0d464eb4c73 100644
+--- a/dist/compiled/react-dom-experimental/cjs/react-dom-client.development.js
++++ b/dist/compiled/react-dom-experimental/cjs/react-dom-client.development.js
+@@ -26086,14 +26086,15 @@
+               ? ((node._stashedText = node.nodeValue), (node.nodeValue = ""))
+               : (node.nodeValue = node._stashedText || ""));
+         if (nextNode && 8 === nextNode.nodeType)
+-          if (((node = nextNode.data), node === SUSPENSE_END_DATA))
++          if (((node = nextNode.data), node === SUSPENSE_END_DATA || node === ACTIVITY_END_DATA))
+             if (0 === suspenseInstance) break;
+             else suspenseInstance--;
+           else
+             (node !== SUSPENSE_START_DATA &&
+               node !== SUSPENSE_PENDING_START_DATA &&
+               node !== SUSPENSE_QUEUED_START_DATA &&
+-              node !== SUSPENSE_FALLBACK_START_DATA) ||
++              node !== SUSPENSE_FALLBACK_START_DATA &&
++              node !== ACTIVITY_START_DATA) ||
+               suspenseInstance++;
+         node = nextNode;
+       } while (node);
+diff --git a/dist/compiled/react-dom-experimental/cjs/react-dom-client.production.js b/dist/compiled/react-dom-experimental/cjs/react-dom-client.production.js
+index 2e14f4bb0797bfd42dafa7b321f91cb1f32111f4..69c95fc0df18e263958389949192932efb9a3c7c 100644
+--- a/dist/compiled/react-dom-experimental/cjs/react-dom-client.production.js
++++ b/dist/compiled/react-dom-experimental/cjs/react-dom-client.production.js
+@@ -17226,11 +17226,11 @@ function hideOrUnhideDehydratedBoundary(suspenseInstance, isHidden) {
+           ? ((node._stashedText = node.nodeValue), (node.nodeValue = ""))
+           : (node.nodeValue = node._stashedText || ""));
+     if (nextNode && 8 === nextNode.nodeType)
+-      if (((node = nextNode.data), "/$" === node))
++      if (((node = nextNode.data), "/$" === node || "/&" === node))
+         if (0 === suspenseInstance) break;
+         else suspenseInstance--;
+       else
+-        ("$" !== node && "$?" !== node && "$~" !== node && "$!" !== node) ||
++        ("$" !== node && "$?" !== node && "$~" !== node && "$!" !== node && "&" !== node) ||
+           suspenseInstance++;
+     node = nextNode;
+   } while (node);
+diff --git a/dist/compiled/react-dom-experimental/cjs/react-dom-profiling.development.js b/dist/compiled/react-dom-experimental/cjs/react-dom-profiling.development.js
+index 29430600e3922795911017f5155f1d51a11de351..1f82028c7bb0235885469a1ce90b2a9eb55da53f 100644
+--- a/dist/compiled/react-dom-experimental/cjs/react-dom-profiling.development.js
++++ b/dist/compiled/react-dom-experimental/cjs/react-dom-profiling.development.js
+@@ -26094,14 +26094,15 @@
+               ? ((node._stashedText = node.nodeValue), (node.nodeValue = ""))
+               : (node.nodeValue = node._stashedText || ""));
+         if (nextNode && 8 === nextNode.nodeType)
+-          if (((node = nextNode.data), node === SUSPENSE_END_DATA))
++          if (((node = nextNode.data), node === SUSPENSE_END_DATA || node === ACTIVITY_END_DATA))
+             if (0 === suspenseInstance) break;
+             else suspenseInstance--;
+           else
+             (node !== SUSPENSE_START_DATA &&
+               node !== SUSPENSE_PENDING_START_DATA &&
+               node !== SUSPENSE_QUEUED_START_DATA &&
+-              node !== SUSPENSE_FALLBACK_START_DATA) ||
++              node !== SUSPENSE_FALLBACK_START_DATA &&
++              node !== ACTIVITY_START_DATA) ||
+               suspenseInstance++;
+         node = nextNode;
+       } while (node);
+diff --git a/dist/compiled/react-dom-experimental/cjs/react-dom-profiling.profiling.js b/dist/compiled/react-dom-experimental/cjs/react-dom-profiling.profiling.js
+index 0ca2a97aabf52eea34f249e775a49b913fb8a81b..435056d144b1226d22f5c20c932b99f68ee97064 100644
+--- a/dist/compiled/react-dom-experimental/cjs/react-dom-profiling.profiling.js
++++ b/dist/compiled/react-dom-experimental/cjs/react-dom-profiling.profiling.js
+@@ -19272,11 +19272,11 @@ function hideOrUnhideDehydratedBoundary(suspenseInstance, isHidden) {
+           ? ((node._stashedText = node.nodeValue), (node.nodeValue = ""))
+           : (node.nodeValue = node._stashedText || ""));
+     if (nextNode && 8 === nextNode.nodeType)
+-      if (((node = nextNode.data), "/$" === node))
++      if (((node = nextNode.data), "/$" === node || "/&" === node))
+         if (0 === suspenseInstance) break;
+         else suspenseInstance--;
+       else
+-        ("$" !== node && "$?" !== node && "$~" !== node && "$!" !== node) ||
++        ("$" !== node && "$?" !== node && "$~" !== node && "$!" !== node && "&" !== node) ||
+           suspenseInstance++;
+     node = nextNode;
+   } while (node);
+diff --git a/dist/compiled/react-dom-experimental/cjs/react-dom-unstable_testing.development.js b/dist/compiled/react-dom-experimental/cjs/react-dom-unstable_testing.development.js
+index 38bf00aa998170689d15e252cb382c7ec8658a68..2ea6be0c7f80952032dfbf2dc2d1237794656992 100644
+--- a/dist/compiled/react-dom-experimental/cjs/react-dom-unstable_testing.development.js
++++ b/dist/compiled/react-dom-experimental/cjs/react-dom-unstable_testing.development.js
+@@ -26309,14 +26309,15 @@
+               ? ((node._stashedText = node.nodeValue), (node.nodeValue = ""))
+               : (node.nodeValue = node._stashedText || ""));
+         if (nextNode && 8 === nextNode.nodeType)
+-          if (((node = nextNode.data), node === SUSPENSE_END_DATA))
++          if (((node = nextNode.data), node === SUSPENSE_END_DATA || node === ACTIVITY_END_DATA))
+             if (0 === suspenseInstance) break;
+             else suspenseInstance--;
+           else
+             (node !== SUSPENSE_START_DATA &&
+               node !== SUSPENSE_PENDING_START_DATA &&
+               node !== SUSPENSE_QUEUED_START_DATA &&
+-              node !== SUSPENSE_FALLBACK_START_DATA) ||
++              node !== SUSPENSE_FALLBACK_START_DATA &&
++              node !== ACTIVITY_START_DATA) ||
+               suspenseInstance++;
+         node = nextNode;
+       } while (node);
+diff --git a/dist/compiled/react-dom-experimental/cjs/react-dom-unstable_testing.production.js b/dist/compiled/react-dom-experimental/cjs/react-dom-unstable_testing.production.js
+index c7d5988e4379b27bf26dc51f2b0fb6829ae3a7fa..43fe806d5fcd1de554fd98898d22136ffeaade5e 100644
+--- a/dist/compiled/react-dom-experimental/cjs/react-dom-unstable_testing.production.js
++++ b/dist/compiled/react-dom-experimental/cjs/react-dom-unstable_testing.production.js
+@@ -17498,11 +17498,11 @@ function hideOrUnhideDehydratedBoundary(suspenseInstance, isHidden) {
+           ? ((node._stashedText = node.nodeValue), (node.nodeValue = ""))
+           : (node.nodeValue = node._stashedText || ""));
+     if (nextNode && 8 === nextNode.nodeType)
+-      if (((node = nextNode.data), "/$" === node))
++      if (((node = nextNode.data), "/$" === node || "/&" === node))
+         if (0 === suspenseInstance) break;
+         else suspenseInstance--;
+       else
+-        ("$" !== node && "$?" !== node && "$~" !== node && "$!" !== node) ||
++        ("$" !== node && "$?" !== node && "$~" !== node && "$!" !== node && "&" !== node) ||
+           suspenseInstance++;
+     node = nextNode;
+   } while (node);
 diff --git a/dist/server/lib/router-utils/route-types-utils.js b/dist/server/lib/router-utils/route-types-utils.js
 index a6f5d58538e1b92b8ee8e60fcff81ec3524053f1..a0fa65e9813c92ebbbe8d09b2e880246ab995cf4 100644
 --- a/dist/server/lib/router-utils/route-types-utils.js

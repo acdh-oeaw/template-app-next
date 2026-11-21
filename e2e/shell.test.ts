@@ -30,5 +30,11 @@ test.describe("app shell", () => {
 		await page.getByRole("banner").getByRole("link", { name: "ACDH-App" }).click();
 		await expect(page).toHaveURL(/\/de$/);
 		await expect(page.getByRole("banner").getByRole("link", { name: "ACDH-App" })).toBeVisible();
+		/**
+		 * Only fails sometimes without the fix, when the navigation starts before the page has hydrated.
+		 *
+		 * @see {@link https://github.com/facebook/react/pull/37814}
+		 */
+		await expect(page.getByRole("contentinfo")).toBeVisible();
 	});
 });
