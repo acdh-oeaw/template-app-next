@@ -45,6 +45,24 @@ for (const { prefix, lang, og, alternate, meta, imprint } of locales) {
 				await expect(page.locator('head link[rel="canonical"]')).toHaveAttribute("href", url ?? "");
 			});
 		}
+
+		test("describes the website with JSON-LD", async ({ baseURL, page }) => {
+			await page.goto(`${prefix}/imprint`);
+
+			const script = page.locator('script[type="application/ld+json"]');
+			await expect(script).toHaveCount(1);
+
+			const data = JSON.parse((await script.textContent()) ?? "") as Record<string, unknown>;
+			expect(data).toMatchObject({
+				"@context": "https://schema.org",
+				"@type": "WebSite",
+				name: meta.title,
+				description: meta.description,
+				inLanguage: lang,
+				sameAs: meta.social.map((link) => link.href),
+			});
+			expect(new URL(String(data.url), baseURL).pathname).toBe(prefix);
+		});
 	});
 }
 

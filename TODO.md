@@ -6,7 +6,7 @@
   - [x] Localized `generateMetadata` in `app/[locale]/layout.tsx` (title template, description, `metadataBase`)
   - [x] `manifest.ts`
   - [x] `robots.ts`, `sitemap.ts`
-  - [ ] JSON-LD (`WebSite`, with social links as `sameAs`)
+  - [x] JSON-LD (`WebSite`, with social links as `sameAs`)
   - [x] Validate `content/*/metadata.json`
   - [ ] OpenGraph images
 - [ ] Not-found behavior (measured on Next.js 16.4.5 production builds)

@@ -7,9 +7,11 @@ import type { ReactNode } from "react";
 
 import { AppShell } from "#/components/app-shell.tsx";
 import { HtmlDocument } from "#/components/html-document.tsx";
+import { JsonLd } from "#/components/json-ld.tsx";
 import { env } from "#/lib/env/public.ts";
 import { routing } from "#/lib/i18n/routing.ts";
 import { getDefaultOpenGraph } from "#/lib/metadata/create-page-metadata.ts";
+import { createWebSiteJsonLd } from "#/lib/metadata/create-website-json-ld.ts";
 import { getSiteMetadata } from "#/lib/metadata/site-metadata.ts";
 
 export { viewport } from "#/lib/metadata/viewport.ts";
@@ -53,8 +55,11 @@ export default async function LocaleLayout(props: Readonly<LocaleLayoutProps>): 
 		notFound();
 	}
 
+	const meta = await getSiteMetadata(locale);
+
 	return (
 		<HtmlDocument locale={locale}>
+			<JsonLd data={createWebSiteJsonLd(meta, locale)} />
 			<AppShell locale={locale}>{children}</AppShell>
 		</HtmlDocument>
 	);

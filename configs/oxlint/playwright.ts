@@ -39,6 +39,7 @@ export const playwright = {
 							'head link[rel="alternate"][hreflang]',
 							'head link[rel="canonical"]',
 							'head meta[name="robots"]',
+							'script[type="application/ld+json"]',
 						],
 					},
 				],
