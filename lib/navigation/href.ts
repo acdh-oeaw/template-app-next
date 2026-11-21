@@ -29,14 +29,16 @@ export type AnyHref = ExternalHref | Href | RelativeHref;
 type SegmentParams = Record<string, string | ReadonlyArray<string> | undefined>;
 
 /**
- * Strips only `[locale]`, not all root params from `next/root-params`, because `next-intl` only adds the locale prefix
- * back. Other root segments stay part of the route, with their params.
+ * Strips the segment of the root param, and drops routes outside of it, which the navigation wrappers could not prefix.
+ * With `never`, keeps all routes unchanged.
  */
-type LocalizedRoute<TRoute> = TRoute extends `/[locale]${infer TPathname}`
-	? TPathname extends ""
-		? "/"
-		: TPathname
-	: never;
+type RouteBelow<TRoute extends string, TRootParam extends string> = [TRootParam] extends [never]
+	? TRoute
+	: TRoute extends `/[${TRootParam}]${infer TPathname}`
+		? TPathname extends ""
+			? "/"
+			: TPathname
+		: never;
 
 /** A page in the `RouteRegistry` that our Next.js patch generates: its params, and its `search-params.ts` module. */
 interface RouteRegistryEntry {
@@ -49,17 +51,21 @@ type CodecOf<TEntry> = TEntry extends { searchParams: { searchParamsCodec: infer
 	: never;
 
 /**
- * Maps page routes below `[locale]` to their params, without the locale, and to the codec of their `search-params.ts`,
- * which is `never` without one. Generic, so tests can use other routes.
+ * Maps page routes below the segment of a root param, like `[locale]`, to their params, without the root param, and to
+ * the codec of their `search-params.ts`, which is `never` without one. With `never` as the root param, maps all routes.
+ * Generic, so tests can use other routes.
  */
-export type LocalizedRoutes<TRegistry extends { [TRoute in keyof TRegistry]: RouteRegistryEntry }> = {
-	[TRoute in keyof TRegistry & string as LocalizedRoute<TRoute>]: {
-		params: Omit<TRegistry[TRoute]["params"], "locale">;
+export type RoutesBelow<
+	TRegistry extends { [TRoute in keyof TRegistry]: RouteRegistryEntry },
+	TRootParam extends string,
+> = {
+	[TRoute in keyof TRegistry & string as RouteBelow<TRoute, TRootParam>]: {
+		params: Omit<TRegistry[TRoute]["params"], TRootParam>;
 		codec: CodecOf<TRegistry[TRoute]>;
 	};
 };
 
-interface LocalizedRouteEntry {
+interface RouteEntry {
 	params: object;
 	codec: AnySearchParamsCodec;
 }
@@ -74,7 +80,11 @@ type CheckRouteRegistry<
 	},
 > = TRegistry;
 
-export type Routes = LocalizedRoutes<CheckRouteRegistry<RouteRegistry>>;
+/**
+ * Pages below `[locale]`, because `next-intl` adds the locale prefix back. Not all root params from `next/root-params`:
+ * other root segments stay part of the route, with their params. Without i18n routing, use `never`.
+ */
+export type Routes = RoutesBelow<CheckRouteRegistry<RouteRegistry>, "locale">;
 
 export type Route = keyof Routes;
 
@@ -105,7 +115,7 @@ type SearchParamsOption<TCodec extends AnySearchParamsCodec> = [TCodec] extends 
 	? { searchParams?: Readonly<SearchParams> }
 	: { searchParams?: EncodedSearchParams<TCodec> };
 
-type RouteHrefOptions<TRoutes extends { [TRoute in keyof TRoutes]: LocalizedRouteEntry }> = {
+type RouteHrefOptions<TRoutes extends { [TRoute in keyof TRoutes]: RouteEntry }> = {
 	[TRoute in keyof TRoutes & string]: { pathname: TRoute } & ParamsOption<TRoutes[TRoute]["params"]> &
 		SearchParamsOption<TRoutes[TRoute]["codec"]> & { hash?: string };
 }[keyof TRoutes & string];
@@ -116,7 +126,7 @@ type RelativeHrefOptions = {
 } & ({ searchParams: Readonly<SearchParams>; hash?: string } | { searchParams?: never; hash: string });
 
 /** The route overload is last, because type errors are reported for the last overload. */
-export interface HrefFunction<TRoutes extends { [TRoute in keyof TRoutes]: LocalizedRouteEntry }> {
+export interface HrefFunction<TRoutes extends { [TRoute in keyof TRoutes]: RouteEntry }> {
 	(options: Readonly<RelativeHrefOptions>): RelativeHref;
 	(options: Readonly<RouteHrefOptions<TRoutes>>): Href;
 }

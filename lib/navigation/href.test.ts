@@ -7,8 +7,8 @@ import {
 	externalHref,
 	type Href,
 	type HrefFunction,
-	type LocalizedRoutes,
 	type RelativeHref,
+	type RoutesBelow,
 	withSearchParams,
 } from "#/lib/navigation/href.ts";
 import { createSearchParamsCodec, encodeSearchParams, searchParam } from "#/lib/navigation/search-params.ts";
@@ -36,8 +36,17 @@ interface TestRegistry {
 	"/health": { params: Record<string, never> };
 }
 
+/** Like the `RouteRegistry` of an app without i18n routing. */
+interface FlatTestRegistry {
+	"/": { params: object };
+	"/about": { params: object };
+	"/posts/[id]": { params: { id: string } };
+	"/results": { params: object; searchParams: { searchParamsCodec: typeof resultsCodec } };
+}
+
 /** The implementation does not depend on the generated routes, only its types do. */
-const href = appHref as unknown as HrefFunction<LocalizedRoutes<TestRegistry>>;
+const href = appHref as unknown as HrefFunction<RoutesBelow<TestRegistry, "locale">>;
+const flatHref = appHref as unknown as HrefFunction<RoutesBelow<FlatTestRegistry, never>>;
 
 describe("href", () => {
 	test("strips the locale segment from static routes", () => {
@@ -133,6 +142,21 @@ describe("href", () => {
 	});
 });
 
+describe("href without i18n routing", () => {
+	test("keeps routes unchanged", () => {
+		expect<string>(flatHref({ pathname: "/" })).toBe("/");
+		expect<string>(flatHref({ pathname: "/about" })).toBe("/about");
+		expect<string>(flatHref({ pathname: "/posts/[id]", params: { id: "a b" } })).toBe("/posts/a%20b");
+		expect<string>(
+			flatHref({ pathname: "/results", searchParams: encodeSearchParams(resultsCodec, { page: 2 }) }),
+		).toBe("/results?page=2");
+	});
+
+	test("rejects invalid routes and params at compile time", () => {
+		expect(flatHrefTypeTests).toBeFunction();
+	});
+});
+
 describe("withSearchParams", () => {
 	test("adds search params to an href", () => {
 		expect<string>(withSearchParams(href({ pathname: "/about" }), new URLSearchParams("q=a+b&tag=x"))).toBe(
@@ -209,4 +233,16 @@ function hrefTypeTests() {
 	const page: Href = href({ pathname: "/about", hash: "x" });
 	const current: RelativeHref = href({ searchParams: { page: "2" } });
 	void [value, relative, page, current];
+}
+
+/** Only type checked, not run. */
+function flatHrefTypeTests() {
+	// @ts-expect-error -- unknown route
+	flatHref({ pathname: "/does-not-exist" });
+	// @ts-expect-error -- missing params
+	flatHref({ pathname: "/posts/[id]" });
+	// @ts-expect-error -- static routes have no params
+	flatHref({ pathname: "/about", params: { id: "1" } });
+	// @ts-expect-error -- plain records for a page with a search-params.ts
+	flatHref({ pathname: "/results", searchParams: { page: "2" } });
 }

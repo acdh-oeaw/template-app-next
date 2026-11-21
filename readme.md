@@ -134,7 +134,7 @@ adds urls with its prefix. next-intl does not document this case, and the proxy 
 
 [next-intl recommends this](https://next-intl.dev/docs/getting-started/app-router/without-i18n-routing) for apps
 without a url per language: no `[locale]` segment and no proxy, and next-intl only provides the messages. `href()` takes
-the routes as they are, and the navigation functions wrap Next.js instead of next-intl. Until all steps are done,
+the routes as they are, and the navigation functions wrap Next.js instead of next-intl. Until step 5,
 `bun check` reports every `href()` call, because no route starts with `/[locale]` anymore.
 
 1. Move everything in `app/[locale]/` to `app/`, run `bun run types:generate`, and update `PageProps<"/[locale]/…">`,
@@ -145,17 +145,15 @@ the routes as they are, and the navigation functions wrap Next.js instead of nex
    `lib/i18n/request.ts`, instead of reading `next/root-params`
 4. Delete `proxy.ts`, `lib/i18n/routing.ts`, `lib/i18n/get-alternate-languages.ts` and `components/locale-switcher/`,
    and remove `<LocaleSwitcher />` from `components/header.tsx`
-5. In `lib/navigation/href.ts`, make `LocalizedRoute` return the route unchanged, and remove the `Omit` of the `locale`
-   param
+5. In `lib/navigation/href.ts`, change the root param of `Routes` from `"locale"` to `never`
 6. In `lib/i18n/navigation.ts`, wrap `next/navigation` instead of next-intl, without the `locale` param and the `Link`
    export: `getPathname()` returns the href, and the router accepts relative hrefs with all options
 7. In `components/link.tsx`, render `next/link`, and remove the `locale` prop. Remove `Link` from `#/lib/i18n/navigation.ts`
    from `linkPaths` in `configs/oxlint.config.ts`
 8. Remove the `locale` from `getPathname()` calls, and the alternates: `alternates.languages` and Open Graph
    `alternateLocale` in `lib/metadata/create-page-metadata.ts`, and the per-locale entries in `app/sitemap.ts`
-9. In `lib/navigation/href.test.ts`, remove `/[locale]` and the `locale` param from the routes of `TestRegistry`, with
-   `params: object` for routes without params, and the tests for routes outside of `[locale]`. Remove the `locale` cases
-   from `lib/navigation/navigation.test-d.tsx`, and update the fixture path in `lib/e2e/`, `AGENTS.md` and this readme
+9. Remove the `locale` cases from `lib/navigation/navigation.test-d.tsx`, and update the fixture path in `AGENTS.md` and
+   this readme
 10. Delete `e2e/i18n.test.ts` and `e2e/locale-switcher.test.ts`, remove the locale prefixes and the tests for other
     locales from the other end-to-end tests, and update comments that mention `[locale]`, next-intl routing or locale
     prefixes

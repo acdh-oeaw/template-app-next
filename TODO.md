@@ -115,8 +115,8 @@
         shared with the sitemap). Matching cms pathnames against routes (`parseHref()`) only if the cms cannot store routes
   - [ ] Investigate moving the generic parts into a package, so that apps no longer carry their tests. Wait until the API
         has been stable in one or two apps, because a package puts every change behind a release
-    - Generic: `search-params.ts`, `href.ts` (except stripping `[locale]`, which could be a type parameter, and the
-      brand texts, which name the module) and `get-aria-current.ts`, with their tests
+    - Generic: `search-params.ts`, `href.ts` (except the `Routes` alias, which sets the root param, and the brand
+      texts, which name the module) and `get-aria-current.ts`, with their tests
     - Stays in the app: the next-intl wrappers in `lib/i18n/navigation.ts`, `<Link>`, the lint restrictions, the
       sitemap record, `navigation.test-d.tsx`, and the fixture with its e2e tests
     - The patch cannot ship in a package. Either keep it in the app, which makes the format of `navigation.d.ts` a
