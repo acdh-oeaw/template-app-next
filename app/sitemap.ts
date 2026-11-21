@@ -9,6 +9,7 @@ import { getPathname } from "#/lib/navigation/navigation.ts";
 /** Lists every static page, so that `bun check` reports new pages until they are included or excluded. */
 const staticPages = {
 	"/": "include",
+	"/accessibility": "include",
 	"/about": "include",
 	"/e2e/search-params": "exclude",
 	"/imprint": "include",

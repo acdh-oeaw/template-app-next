@@ -18,7 +18,7 @@ export function AppShell(props: Readonly<AppShellProps>): ReactNode {
 			<SkipLink />
 			<Header locale={locale} />
 			{children}
-			<Footer />
+			<Footer locale={locale} />
 		</div>
 	);
 }

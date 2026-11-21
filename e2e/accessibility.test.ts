@@ -4,11 +4,13 @@ import { expect, test } from "@playwright/test";
 const pathnames = [
 	"/en",
 	"/en/about",
+	"/en/accessibility",
 	"/en/imprint",
 	"/en/e2e/search-params?q=vienna&page=2",
 	"/en/does-not-exist",
 	"/de",
 	"/de/about",
+	"/de/accessibility",
 	"/de/imprint",
 ];
 

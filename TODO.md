@@ -71,7 +71,7 @@
   - [ ] `IconButton` component, once there is a first icon button: requires an accessible name, hides the icon from
         screen readers, and uses a `touch-area` utility, which enlarges the hit area with a pseudo-element
   - [x] Locale switcher
-  - [ ] Footer: link to the accessibility declaration, social links from `getSiteMetadata()`
+  - [x] Footer: link to the accessibility declaration, social links from `getSiteMetadata()`
   - [x] Color scheme switcher in `components/color-scheme/`
   - [ ] Browser e2e test for client navigation with `instant()` from `@next/playwright`, once there are links and dynamic
         content. Pair positive assertions with a negative one like `toHaveCount(0)`, because nothing is held back when

@@ -1,6 +1,15 @@
 import { expect, type Page, test } from "@playwright/test";
 
-const pathnames = ["/en", "/en/about", "/en/imprint", "/de", "/de/about", "/de/imprint"];
+const pathnames = [
+	"/en",
+	"/en/about",
+	"/en/accessibility",
+	"/en/imprint",
+	"/de",
+	"/de/about",
+	"/de/accessibility",
+	"/de/imprint",
+];
 
 interface SitemapEntry {
 	url: string;

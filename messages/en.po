@@ -17,6 +17,12 @@ msgctxt "g5pX-a"
 msgid "About"
 msgstr "About"
 
+#: app/[locale]/accessibility/page.tsx
+#: components/footer.tsx
+msgctxt "U6oP-U"
+msgid "Accessibility statement"
+msgstr "Accessibility statement"
+
 #: app/[locale]/imprint/page.tsx
 #: components/footer.tsx
 msgctxt "xYJkOZ"
@@ -48,6 +54,26 @@ msgstr "Dark"
 msgctxt "DxgBSX"
 msgid "Color scheme"
 msgstr "Color scheme"
+
+#: components/footer.tsx
+msgctxt "sy-pv5"
+msgid "Email"
+msgstr "Email"
+
+#: components/footer.tsx
+msgctxt "x_zuFu"
+msgid "RSS feed"
+msgstr "RSS feed"
+
+#: components/footer.tsx
+msgctxt "JkLHGw"
+msgid "Website"
+msgstr "Website"
+
+#: components/footer.tsx
+msgctxt "ZEEVQX"
+msgid "Social media"
+msgstr "Social media"
 
 #: components/locale-switcher/locale-switcher-links.tsx
 msgctxt "y1Z3or"

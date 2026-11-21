@@ -9,9 +9,10 @@ license of this repository:
 - public/icon-maskable.svg
 
 All logos are the property and/or trademarks of their respective owners. They
-are included only to identify this project, the organisations behind it, and
-its partners and funders, and no rights to use, copy, modify or distribute them
-are granted.
+are included only to identify this project, the organisations behind it, its
+partners and funders, and the social media profiles it links to, and no rights
+to use, copy, modify or distribute them are granted. The use of the social media
+logos is subject to each owner's brand guidelines.
 
 If you fork or reuse this repository, you must remove or replace these files,
 unless their owners have authorised you to use them.
