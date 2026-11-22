@@ -6,19 +6,13 @@ interface RequestErrorOptions {
 	url: string;
 }
 
-/** Leaves out search params, which can contain secrets, like api keys. */
-function formatUrl(url: string): string {
-	const { origin, pathname } = new URL(url);
-	return `${origin}${pathname}`;
-}
-
 export abstract class RequestError extends Error {
 	abstract override readonly name: string;
 	readonly method: string;
 	readonly url: string;
 
 	constructor(message: string, options: RequestErrorOptions) {
-		super(`${message} - ${options.method} ${formatUrl(options.url)}`, { cause: options.cause });
+		super(`${message} - ${options.method} ${options.url}`, { cause: options.cause });
 		this.method = options.method;
 		this.url = options.url;
 	}

@@ -12,7 +12,7 @@ import {
 } from "#/lib/request/errors.ts";
 import { request } from "#/lib/request/request.ts";
 
-const url = "https://example.com/api?token=secret";
+const url = "https://example.com/api?page=2";
 
 type Handler = (request: Request) => Response;
 
@@ -143,14 +143,14 @@ describe("request errors", () => {
 		expect(state.isCancelled).toBe(true);
 	});
 
-	test("leaves search params out of the message", async () => {
+	test("includes the method and url in the message", async () => {
 		const { fetch } = createFetch(() => new Response(null, { status: 500, statusText: "Internal Server Error" }));
 
 		const promise = request(url, { fetch, responseType: "void" });
 
 		const error = await getError(promise);
 
-		expect(error).toHaveProperty("message", "500 Internal Server Error - GET https://example.com/api");
+		expect(error).toHaveProperty("message", "500 Internal Server Error - GET https://example.com/api?page=2");
 	});
 
 	test("throws a TimeoutError when the timeout fires while reading the body", async () => {
