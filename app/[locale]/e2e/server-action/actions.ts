@@ -6,17 +6,26 @@ import * as v from "valibot";
 import { assertE2eFixture } from "#/lib/e2e/fixtures.ts";
 import { href } from "#/lib/navigation/href.ts";
 import { redirect } from "#/lib/navigation/navigation.ts";
+import { createRateLimiter } from "#/lib/rate-limit/rate-limiter.ts";
 import { TimeoutError } from "#/lib/request/errors.ts";
 import { ActionError } from "#/lib/server-actions/action-error.ts";
 import { createServerAction } from "#/lib/server-actions/create-server-action.ts";
+import { rateLimit } from "#/lib/server-actions/rate-limit.ts";
+
+const rateLimiter = createRateLimiter({ name: "e2e-server-action", limit: 2, windowMs: 60 * 1000 });
 
 /** Each submit button sends an `outcome`, which decides how the handler responds. */
 export const serverActionFixture = createServerAction({
-	async guard() {
+	async guard(context) {
 		/** The action is reachable in every build, the fixture page only in e2e builds. */
 		assertE2eFixture();
 
 		const cookieStore = await cookies();
+
+		/** Only for tests that opt in, because tests share the client address. */
+		if (cookieStore.get("e2e-rate-limit")?.value === "on") {
+			await rateLimit(context, rateLimiter);
+		}
 
 		if (cookieStore.get("e2e-authorization")?.value === "denied") {
 			throw new ActionError("You are not allowed to do this.");

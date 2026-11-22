@@ -135,3 +135,8 @@ msgstr "The service is not available. Please try again later."
 msgctxt "IULR3V"
 msgid "An unexpected error occurred. Please try again."
 msgstr "An unexpected error occurred. Please try again."
+
+#: lib/server-actions/rate-limit.ts
+msgctxt "l8JQZP"
+msgid "Too many attempts. Please try again later."
+msgstr "Too many attempts. Please try again later."

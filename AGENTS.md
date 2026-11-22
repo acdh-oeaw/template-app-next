@@ -115,6 +115,7 @@ Create server actions with `createServerAction()` from `lib/server-actions/creat
 - Throw an `ActionError` with a translated message for an expected failure. Other errors are logged, and the user sees a generic message
 - The error state contains the submitted values, because a form resets after its action. Use them as the `defaultValue` of each field, and list fields like passwords in `omitValues`, so that their values are not sent back
 - Server actions are public endpoints, so check authorization in each action, also when only authorized users see the form. Check it in `guard`, which runs before `schema`, so that async checks in the schema, like whether a name is taken, don't run for unauthorized callers. Return what `schema` and `handler` need from the check, like the user, so they receive it in their context instead of loading it again
+- Rate limit actions that can be abused, like sign-in or contact forms, with `rateLimit()` from `lib/server-actions/rate-limit.ts` in `guard`, and a limiter created with `createRateLimiter()` at module level. It limits the client address by default, so call it before authorization to slow down guessing passwords, or pass the user id as key after it
 - `next/root-params` throws in server actions, so use the `locale` from the handler's context
 
 ## Code comments

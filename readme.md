@@ -257,6 +257,11 @@ In GitHub Actions:
 
 Server variables that are only read at runtime are passed to the container, not to `docker build`.
 
+Rate limiting finds the client address in the `x-forwarded-for` header, so set `TRUSTED_PROXY_COUNT` to the number of
+reverse proxies in front of the app, like `1` behind a Kubernetes ingress. Otherwise clients can choose their address.
+The default store of rate limiters is in memory, so each replica counts on its own. With several replicas, use a
+shared store, like Valkey, see `RateLimitStore` in [`lib/rate-limit/rate-limiter.ts`](lib/rate-limit/rate-limiter.ts).
+
 Kubernetes probes use `/api/health/live` and `/api/health/ready`, which respond with `200` while the server is up.
 Liveness failures restart the container, so the liveness endpoint only checks the process itself. Readiness failures
 stop traffic to the pod, so checks for dependencies like a database belong in the readiness endpoint.

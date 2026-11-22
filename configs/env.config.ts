@@ -37,6 +37,17 @@ export const serverEnvSchema = v.object({
 			v.metadata({ dev: generate.base64(32) }),
 		),
 	),
+	TRUSTED_PROXY_COUNT: v.optional(
+		v.pipe(
+			v.string(),
+			v.digits(),
+			v.transform(Number),
+			v.description(
+				"Number of reverse proxies in front of the app that append to the `x-forwarded-for` header, used to find the client address for rate limiting. Without a trusted proxy, clients can choose their address.",
+			),
+		),
+		"0",
+	),
 	SERVICE_ID: v.pipe(
 		v.string(),
 		v.digits(),

@@ -71,6 +71,28 @@ test.describe("server actions", () => {
 		await expect(page.getByRole("main").getByRole("status")).toHaveText("Saved Ada as Grace");
 	});
 
+	test("limit the requests of a client address", async ({ baseURL, context, page }) => {
+		/** An address of its own, because tests run in parallel, from the same address. */
+		const prefix = crypto.randomUUID().slice(0, 4);
+		await context.setExtraHTTPHeaders({ "x-forwarded-for": `2001:db8:${prefix}::1` });
+		await context.addCookies([{ name: "e2e-rate-limit", value: "on", url: baseURL }]);
+		await gotoHydrated(page, pathname);
+		await getNameField(page).fill("Ada");
+
+		await submit(page, "Succeed");
+		await expect(page.getByRole("main").getByRole("status")).toHaveText("Saved Ada");
+
+		/** Another address in the same /64 network counts as the same client. */
+		await context.setExtraHTTPHeaders({ "x-forwarded-for": `2001:db8:${prefix}::2` });
+		await getNameField(page).fill("Grace");
+		await submit(page, "Succeed");
+		await expect(page.getByRole("main").getByRole("status")).toHaveText("Saved Grace");
+
+		await getNameField(page).fill("Ada");
+		await submit(page, "Succeed");
+		await expect(page.getByRole("main").getByRole("alert")).toHaveText("Too many attempts. Please try again later.");
+	});
+
 	test("show the message and field errors of an ActionError, and keep the values", async ({ page }) => {
 		await gotoHydrated(page, pathname);
 		await getNameField(page).fill("Ada");
