@@ -111,6 +111,29 @@ describe("request", () => {
 		expect(error).toBeInstanceOf(ParseError);
 	});
 
+	test("returns undefined for an empty json body", async () => {
+		const { fetch } = createFetch(
+			() => new Response(null, { status: 204 }),
+			() => new Response(""),
+		);
+
+		const responses = [
+			await request(url, { fetch, responseType: "json" }),
+			await request(url, { fetch, responseType: "json" }),
+		];
+
+		expect(responses.map((response) => response.data)).toStrictEqual([undefined, undefined]);
+	});
+
+	test("does not accept both body and json", async () => {
+		const { fetch, requests } = createFetch(() => new Response());
+
+		// @ts-expect-error -- only one of them can be sent
+		await request(url, { body: "body", fetch, json: {}, method: "post", responseType: "void" });
+
+		expect(requests).toHaveLength(1);
+	});
+
 	test("sends a json body", async () => {
 		const { fetch, requests } = createFetch(() => new Response());
 
@@ -179,6 +202,34 @@ describe("request errors", () => {
 		const error = await getError(request(url, { fetch, responseType: "text", timeout: 10 }));
 
 		expect(error).toBeInstanceOf(TimeoutError);
+	});
+
+	test("throws a TimeoutError when the timeout fires while reading an error body", async () => {
+		const { fetch } = createFetch((request) => {
+			const body = new ReadableStream({
+				start(controller) {
+					request.signal.addEventListener("abort", () => {
+						controller.error(request.signal.reason);
+					});
+				},
+			});
+			return new Response(body, { status: 503 });
+		});
+
+		const error = await getError(request(url, { fetch, responseType: "void", timeout: 10 }));
+
+		expect(error).toBeInstanceOf(TimeoutError);
+	});
+
+	test("throws a NetworkError for a cross-realm TypeError", async () => {
+		const { runInNewContext } = await import("node:vm");
+		const cause = runInNewContext('new TypeError("fetch failed")') as Error;
+		const { fetch } = createFetch(() => throwError(cause));
+
+		const error = await getError(request(url, { fetch, responseType: "void" }));
+
+		expect(cause).not.toBeInstanceOf(TypeError);
+		expect(error).toBeInstanceOf(NetworkError);
 	});
 
 	test("throws an AbortError when the caller aborts", async () => {

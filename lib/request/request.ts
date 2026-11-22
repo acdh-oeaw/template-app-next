@@ -23,12 +23,16 @@ export type ResponseType = keyof ResponseTypes;
 /** @see {@link https://github.com/oven-sh/bun/issues/23741#issuecomment-3410060027} */
 type Fetch = (input: RequestInfo | URL, init?: RequestInit) => Promise<Response>;
 
+type RequestBody =
+	| { body?: BodyInit; json?: never }
+	| {
+			body?: never;
+			/** Serialized with `JSON.stringify`, and sent with a json `content-type`. */
+			json: unknown;
+	  };
+
 interface BaseRequestOptions extends Omit<RequestInit, "body" | "method" | "signal"> {
-	/** Mutually exclusive with `json`. */
-	body?: BodyInit;
 	fetch?: Fetch;
-	/** Serialized with `JSON.stringify`, and sent with a json `content-type`. */
-	json?: unknown;
 	/** @default "get" */
 	method?: HttpMethod;
 	/**
@@ -47,14 +51,15 @@ interface BaseRequestOptions extends Omit<RequestInit, "body" | "method" | "sign
 	timeout?: number | false;
 }
 
-export interface RequestOptions<
+export type RequestOptions<
 	TResponseType extends ResponseType = ResponseType,
 	TSchema extends v.GenericSchema | undefined = undefined,
-> extends BaseRequestOptions {
-	responseType: TResponseType;
-	/** Validates a json response body. */
-	schema?: TResponseType extends "json" ? TSchema : never;
-}
+> = BaseRequestOptions &
+	RequestBody & {
+		responseType: TResponseType;
+		/** Validates a json response body. */
+		schema?: TResponseType extends "json" ? TSchema : never;
+	};
 
 export interface RequestResponse<TData> {
 	data: TData;
@@ -157,6 +162,8 @@ export async function request<
 
 			// oxlint-disable-next-line no-await-in-loop
 			const errorBody = await readStart(response, errorBodyBytes);
+			/** `readStart` ignores errors, so a timeout or abort while reading would otherwise become an `HttpError`. */
+			signal.throwIfAborted();
 			failure = new HttpError({ body: errorBody, method, response, url: href });
 		} catch (error) {
 			if (error instanceof ParseError || error instanceof ValidationError) {
@@ -201,13 +208,13 @@ export async function request<
 
 		try {
 			if (responseType === "bytes") {
-				data = await response.bytes();
+				data = new Uint8Array(await response.arrayBuffer());
 			} else if (responseType === "text") {
 				data = await response.text();
-			} else if (response.status === 204) {
-				data = undefined;
 			} else {
-				data = await response.json();
+				/** An empty body, like for http 204, has no json value. */
+				const text = await response.text();
+				data = text === "" ? undefined : JSON.parse(text);
 			}
 		} catch (error) {
 			if (toRequestError(error) != null) {
@@ -332,8 +339,9 @@ async function readStart(response: Response, bytes: number): Promise<string> {
 	return new TextDecoder().decode(data);
 }
 
+/** Works across realms, unlike `instanceof`, and in browsers without `Error.isError`. */
 function isTypeError(error: unknown): error is TypeError {
-	return Error.isError(error) && error.name === "TypeError";
+	return Object.prototype.toString.call(error) === "[object Error]" && (error as Error).name === "TypeError";
 }
 
 /** Bun rejects with a `TypeError` with code `Timeout` when its socket idle timeout fires. */
