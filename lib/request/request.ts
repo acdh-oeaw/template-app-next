@@ -32,8 +32,8 @@ interface BaseRequestOptions extends Omit<RequestInit, "body" | "method" | "sign
 	/** @default "get" */
 	method?: HttpMethod;
 	/**
-	 * Retries after network errors, and http 408, 429 and 5xx, for idempotent methods only. Waits with exponential
-	 * backoff, or as long as a `retry-after` header asks, if that fits within the `timeout`.
+	 * Retries after network errors, and http 408, 429 and 5xx, for safe methods only. Waits with exponential backoff, or
+	 * as long as a `retry-after` header asks, if that fits within the `timeout` and is at most a minute.
 	 *
 	 * @default 0
 	 */
@@ -53,7 +53,7 @@ export interface RequestOptions<
 > extends BaseRequestOptions {
 	responseType: TResponseType;
 	/** Validates a json response body. */
-	schema?: TSchema;
+	schema?: TResponseType extends "json" ? TSchema : never;
 }
 
 export interface RequestResponse<TData> {
@@ -67,11 +67,13 @@ type ResponseData<TResponseType extends ResponseType, TSchema> = TResponseType e
 		: unknown
 	: ResponseTypes[TResponseType];
 
-const idempotentMethods = new Set(["GET", "HEAD", "OPTIONS"]);
+const safeMethods = new Set(["GET", "HEAD", "OPTIONS"]);
 
 const retryableStatusCodes = new Set([408, 429, 500, 502, 503, 504]);
 
 const errorBodyBytes = 4096;
+
+const maxRetryDelay = 60_000;
 
 /**
  * Throws a `RequestError` subclass for errors at runtime, like an unreachable server or an error status. Invalid
@@ -120,7 +122,7 @@ export async function request<
 	const signal = AbortSignal.any([callerSignal, deadlineSignal].filter((signal) => signal != null));
 
 	/** A stream can only be sent once. */
-	const canRetry = idempotentMethods.has(method) && !(body instanceof ReadableStream);
+	const canRetry = safeMethods.has(method) && !(body instanceof ReadableStream);
 
 	function toRequestError(error: unknown) {
 		const options = { cause: error, method, url: href };
@@ -215,7 +217,7 @@ export async function request<
 			throw new ParseError({ cause: error, method, url: href });
 		}
 
-		if (schema == null) {
+		if (responseType !== "json" || schema == null) {
 			return data;
 		}
 
@@ -238,12 +240,12 @@ function getRetryDelay(error: HttpError | NetworkError, attempt: number): number
 		const retryAfter = parseRetryAfter(error.headers.get("retry-after"));
 
 		if (retryAfter != null) {
-			return retryAfter;
+			return retryAfter <= maxRetryDelay ? retryAfter : null;
 		}
 	}
 
 	/** Up to 30% shorter, so that clients which failed together don't retry together. */
-	return 300 * 2 ** attempt * (1 - Math.random() * 0.3);
+	return Math.min(300 * 2 ** attempt, maxRetryDelay) * (1 - Math.random() * 0.3);
 }
 
 /** Either seconds or an http date. */

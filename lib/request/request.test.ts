@@ -77,8 +77,19 @@ describe("request", () => {
 		const schema = v.object({ id: v.pipe(v.string(), v.transform(Number)) });
 
 		const response = await request(url, { fetch, responseType: "json", schema });
+		const id: number = response.data.id;
 
-		expect(response.data).toStrictEqual({ id: 1 });
+		expect(id).toBe(1);
+	});
+
+	test("only accepts a schema for json", async () => {
+		const { fetch } = createFetch(() => new Response("1"));
+		const schema = v.pipe(v.string(), v.transform(Number));
+
+		// @ts-expect-error -- the schema would not apply
+		const response = await request(url, { fetch, responseType: "text", schema });
+
+		expect(response.data).toBe("1");
 	});
 
 	test("throws a ValidationError for data that does not match the schema", async () => {
@@ -266,7 +277,7 @@ describe("request retries", () => {
 		expect(response.data).toBe("ok");
 	});
 
-	test("does not retry methods that are not idempotent", async () => {
+	test("does not retry methods that are not safe", async () => {
 		const { fetch, requests } = createFetch(() => new Response(null, { status: 503, headers: { "retry-after": "0" } }));
 
 		await request(url, { fetch, method: "post", responseType: "void", retries: 2 }).catch(() => null);
@@ -293,6 +304,18 @@ describe("request retries", () => {
 		);
 
 		const error = await getError(request(url, { fetch, responseType: "void", retries: 2 }));
+
+		expect(error).toBeInstanceOf(HttpError);
+
+		expect(requests).toHaveLength(1);
+	});
+
+	test("does not retry when retry-after exceeds a minute, also without a timeout", async () => {
+		const { fetch, requests } = createFetch(
+			() => new Response(null, { status: 503, headers: { "retry-after": "2592000" } }),
+		);
+
+		const error = await getError(request(url, { fetch, responseType: "void", retries: 1, timeout: false }));
 
 		expect(error).toBeInstanceOf(HttpError);
 
