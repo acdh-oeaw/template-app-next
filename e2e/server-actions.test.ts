@@ -10,6 +10,11 @@ function getNicknameField(page: Page) {
 	return page.getByRole("main").getByRole("textbox", { name: "Nickname", exact: true });
 }
 
+/** Password inputs have no aria role. */
+function getPasswordField(page: Page) {
+	return page.getByRole("main").getByLabel("Password", { exact: true });
+}
+
 /** Typing before hydration is lost, see the fixture. */
 async function gotoHydrated(page: Page, path: string): Promise<void> {
 	await page.goto(path);
@@ -65,6 +70,17 @@ test.describe("server actions", () => {
 		await expect(page.getByRole("main").getByRole("alert")).toHaveText("This name is taken.");
 		await expect(getNameField(page)).toHaveAccessibleDescription("Choose another name.");
 		await expect(getNameField(page)).toHaveValue("Ada");
+	});
+
+	test("don't send back the values of omitted fields", async ({ page }) => {
+		await gotoHydrated(page, pathname);
+		await getNameField(page).fill("Ada");
+		await getPasswordField(page).fill("secret");
+		await submit(page, "Fail expectedly");
+
+		await expect(page.getByRole("main").getByRole("alert")).toHaveText("This name is taken.");
+		await expect(getNameField(page)).toHaveValue("Ada");
+		await expect(getPasswordField(page)).toHaveValue("");
 	});
 
 	test("show a generic message for unexpected errors", async ({ page }) => {

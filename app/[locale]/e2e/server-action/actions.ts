@@ -26,6 +26,7 @@ export const serverActionFixture = createServerAction({
 				name: v.pipe(v.string(), v.trim(), v.nonEmpty("Enter a name.")),
 				/** Without a message, to show the translated fallback. */
 				nickname: v.pipe(v.string(), v.maxLength(10)),
+				password: v.string(),
 				outcome: v.picklist(["success", "action-error", "error", "timeout", "validation-timeout", "redirect"]),
 			}),
 			/** Like a check that makes a request, such as whether a name is taken. */
@@ -39,6 +40,7 @@ export const serverActionFixture = createServerAction({
 			}),
 		);
 	},
+	omitValues: ["password"],
 	// oxlint-disable-next-line require-await -- server actions are async
 	async handler(input, { locale }) {
 		switch (input.outcome) {
