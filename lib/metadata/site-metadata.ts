@@ -1,4 +1,4 @@
-import { cacheTag } from "next/cache";
+import { cacheLife } from "next/cache";
 import * as v from "valibot";
 
 import { getLanguage, type Locale } from "#/lib/i18n/locales.ts";
@@ -47,7 +47,7 @@ export class SiteMetadataError extends Error {
 export async function getSiteMetadata(locale: Locale): Promise<SiteMetadata> {
 	"use cache";
 
-	cacheTag("site-metadata");
+	cacheLife("max");
 
 	const language = getLanguage(locale);
 
