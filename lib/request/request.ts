@@ -123,8 +123,26 @@ export async function request<
 	}
 
 	const startedAt = performance.now();
-	const deadlineSignal = timeout !== false ? AbortSignal.timeout(timeout) : undefined;
-	const signal = AbortSignal.any([callerSignal, deadlineSignal].filter((signal) => signal != null));
+	/** Combines the caller's signal and the timeout without `AbortSignal.any`, which the browserslist doesn't support. */
+	const controller = new AbortController();
+	const { signal } = controller;
+
+	const timer =
+		timeout !== false
+			? setTimeout(() => {
+					controller.abort(new DOMException("The operation timed out.", "TimeoutError"));
+				}, timeout)
+			: undefined;
+
+	function onCallerAbort() {
+		controller.abort(callerSignal?.reason);
+	}
+
+	if (callerSignal?.aborted === true) {
+		onCallerAbort();
+	} else {
+		callerSignal?.addEventListener("abort", onCallerAbort, { once: true });
+	}
 
 	/** A stream can only be sent once. */
 	const canRetry = safeMethods.has(method) && !(body instanceof ReadableStream);
@@ -136,7 +154,8 @@ export async function request<
 			return new AbortError({ ...options, cause: callerSignal.reason });
 		}
 
-		if (deadlineSignal?.aborted === true || isBunSocketTimeout(error)) {
+		/** Otherwise only the timeout aborts the signal. */
+		if (signal.aborted || isBunSocketTimeout(error)) {
 			return new TimeoutError(options);
 		}
 
@@ -147,55 +166,60 @@ export async function request<
 		return null;
 	}
 
-	for (let attempt = 0; ; attempt++) {
-		let failure: HttpError | NetworkError;
+	try {
+		for (let attempt = 0; ; attempt++) {
+			let failure: HttpError | NetworkError;
 
-		try {
-			// oxlint-disable-next-line no-await-in-loop
-			const response = await fetch(href, { ...init, body, headers, method, signal });
-
-			if (response.ok) {
+			try {
 				// oxlint-disable-next-line no-await-in-loop
-				const data = await readBody(response);
-				return { data: data as ResponseData<TResponseType, TSchema>, headers: response.headers };
+				const response = await fetch(href, { ...init, body, headers, method, signal });
+
+				if (response.ok) {
+					// oxlint-disable-next-line no-await-in-loop
+					const data = await readBody(response);
+					return { data: data as ResponseData<TResponseType, TSchema>, headers: response.headers };
+				}
+
+				// oxlint-disable-next-line no-await-in-loop
+				const errorBody = await readStart(response, errorBodyBytes);
+				/** `readStart` ignores errors, so a timeout or abort while reading would otherwise become an `HttpError`. */
+				signal.throwIfAborted();
+				failure = new HttpError({ body: errorBody, method, response, url: href });
+			} catch (error) {
+				if (error instanceof ParseError || error instanceof ValidationError) {
+					throw error;
+				}
+
+				const requestError = toRequestError(error);
+
+				if (requestError == null) {
+					throw error;
+				}
+
+				if (!(requestError instanceof NetworkError)) {
+					throw requestError;
+				}
+
+				failure = requestError;
 			}
 
-			// oxlint-disable-next-line no-await-in-loop
-			const errorBody = await readStart(response, errorBodyBytes);
-			/** `readStart` ignores errors, so a timeout or abort while reading would otherwise become an `HttpError`. */
-			signal.throwIfAborted();
-			failure = new HttpError({ body: errorBody, method, response, url: href });
-		} catch (error) {
-			if (error instanceof ParseError || error instanceof ValidationError) {
-				throw error;
+			const delay = attempt < retries && canRetry ? getRetryDelay(failure, attempt) : null;
+			const remaining = timeout !== false ? timeout - (performance.now() - startedAt) : Infinity;
+
+			if (delay == null || delay >= remaining) {
+				throw failure;
 			}
 
-			const requestError = toRequestError(error);
-
-			if (requestError == null) {
-				throw error;
+			try {
+				// oxlint-disable-next-line no-await-in-loop
+				await sleep(delay, signal);
+			} catch (error) {
+				throw toRequestError(error) ?? (error as Error);
 			}
-
-			if (!(requestError instanceof NetworkError)) {
-				throw requestError;
-			}
-
-			failure = requestError;
 		}
-
-		const delay = attempt < retries && canRetry ? getRetryDelay(failure, attempt) : null;
-		const remaining = timeout !== false ? timeout - (performance.now() - startedAt) : Infinity;
-
-		if (delay == null || delay >= remaining) {
-			throw failure;
-		}
-
-		try {
-			// oxlint-disable-next-line no-await-in-loop
-			await sleep(delay, signal);
-		} catch (error) {
-			throw toRequestError(error) ?? (error as Error);
-		}
+	} finally {
+		clearTimeout(timer);
+		callerSignal?.removeEventListener("abort", onCallerAbort);
 	}
 
 	async function readBody(response: Response): Promise<unknown> {

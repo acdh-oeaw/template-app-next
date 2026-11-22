@@ -58,6 +58,15 @@ function createResponse(text: string, init?: ResponseInit) {
 	return { response: new Response(body, init), state };
 }
 
+/** Settles only when aborted. */
+function fetchUntilAborted(_input: RequestInfo | URL, init?: RequestInit): Promise<Response> {
+	return new Promise((_resolve, reject) => {
+		init?.signal?.addEventListener("abort", () => {
+			reject(init.signal?.reason as Error);
+		});
+	});
+}
+
 function throwError(error: Error): never {
 	throw error;
 }
@@ -241,6 +250,28 @@ describe("request errors", () => {
 		const error = await getError(promise);
 
 		expect(error).toBeInstanceOf(AbortError);
+	});
+
+	test("aborts without AbortSignal.any, which the browserslist doesn't support", async () => {
+		const descriptor = Object.getOwnPropertyDescriptor(AbortSignal, "any")!;
+		// @ts-expect-error -- missing in older browsers
+		delete AbortSignal.any;
+
+		try {
+			const controller = new AbortController();
+			const promise = request(url, { fetch: fetchUntilAborted, responseType: "void", signal: controller.signal });
+			controller.abort();
+
+			const abortError = await getError(promise);
+			const timeoutError = await getError(
+				request(url, { fetch: fetchUntilAborted, responseType: "void", timeout: 10 }),
+			);
+
+			expect(abortError).toBeInstanceOf(AbortError);
+			expect(timeoutError).toBeInstanceOf(TimeoutError);
+		} finally {
+			Object.defineProperty(AbortSignal, "any", descriptor);
+		}
 	});
 
 	test.each([
