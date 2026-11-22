@@ -102,6 +102,7 @@ Throw errors for failures, and return them only from Server Functions. Next.js i
 - Only catch errors you handle, and rethrow the rest. Handle an expected error where it has a meaning for the user, like an `HttpError` with status 404 for a missing record, which becomes `notFound()`. Let everything else reach the error boundary, or fail the build
 - Don't wrap bugs, like an invalid url, in an error class: they throw as they are
 - Server Functions return expected failures, like invalid form data, as serializable state for `useActionState`, because Next.js hides the message of a thrown error in production. They throw unexpected errors
+- Make http requests with `request()` from `lib/request/request.ts`, not with `fetch`. It throws a subclass of `RequestError` from `lib/request/errors.ts`, like `HttpError` or `TimeoutError`, and handles timeouts, retries and unread response bodies
 
 ## Code comments
 
