@@ -14,11 +14,12 @@ import type { ActionState, ActionStateError, FieldErrors, FormValues } from "#/l
 import { getFormDataValues, getFormValues } from "#/lib/server-actions/form-data.ts";
 import { getValidationErrors } from "#/lib/server-actions/validation.ts";
 
-type Translator = Awaited<ReturnType<typeof getExtracted>>;
-
+/**
+ * Translate messages with `await getExtracted({ locale })`. A `t` passed in the context would not work, because
+ * next-intl only extracts messages of a `t` that is bound to the result of `getExtracted()`.
+ */
 export interface ServerActionContext {
 	locale: Locale;
-	t: Translator;
 }
 
 type Schema = v.GenericSchema | v.GenericSchemaAsync;
@@ -32,11 +33,11 @@ interface CreateServerActionOptions<TSchema extends Schema, TData> {
 	 */
 	authorize?: (context: ServerActionContext) => Promise<void> | void;
 	/**
-	 * Created for each request, so that its messages can be translated with `t`. Checks without a message use a generic
-	 * translated one, instead of valibot's untranslated default. Without a schema, the handler receives an empty object,
-	 * for actions without input, like signing out.
+	 * Created for each request, so that its messages can be translated with `await getExtracted({ locale })`. Checks
+	 * without a message use a generic translated one, instead of valibot's untranslated default. Without a schema, the
+	 * handler receives an empty object, for actions without input, like signing out.
 	 */
-	schema?: (context: ServerActionContext) => TSchema;
+	schema?: (context: ServerActionContext) => Promise<TSchema> | TSchema;
 	/** Fields whose values are not sent back to the client, like passwords. */
 	omitValues?: ReadonlyArray<string>;
 	/**
@@ -62,7 +63,7 @@ export function createServerAction<TSchema extends Schema = EmptySchema, TData =
 	return async function serverAction(_state, formData) {
 		const locale = await getActionLocale();
 		const t = await getExtracted({ locale });
-		const context: ServerActionContext = { locale, t };
+		const context: ServerActionContext = { locale };
 
 		const values = getFormDataValues(formData);
 		const formValues = getFormValues(values, omitValues);
@@ -71,7 +72,7 @@ export function createServerAction<TSchema extends Schema = EmptySchema, TData =
 			await authorize?.(context);
 
 			/** Inside `try`, because async schemas can make requests, which can fail like the handler's. */
-			const result = await v.safeParseAsync(schema(context), values, { message: t("Enter a valid value.") });
+			const result = await v.safeParseAsync(await schema(context), values, { message: t("Enter a valid value.") });
 
 			if (!result.success) {
 				const { fieldErrors, rootErrors } = getValidationErrors(result.issues);
