@@ -4,10 +4,7 @@ import { cacheLife } from "next/cache";
 
 import { env } from "#/lib/env/server.ts";
 import { getLanguage, type Locale } from "#/lib/i18n/locales.ts";
-
-export class ImprintError extends Error {
-	override name = "ImprintError";
-}
+import { request } from "#/lib/request/request.ts";
 
 /** @see {@link https://github.com/acdh-oeaw/imprint-service} */
 export async function getImprint(locale: Locale): Promise<string> {
@@ -23,11 +20,7 @@ export async function getImprint(locale: Locale): Promise<string> {
 		url.searchParams.set("redmine", "disabled");
 	}
 
-	const response = await fetch(url, { signal: AbortSignal.timeout(10_000) });
+	const { data } = await request(url, { responseType: "text", retries: 2 });
 
-	if (!response.ok) {
-		throw new ImprintError(`Failed to fetch the imprint: ${String(response.status)} ${response.statusText}`);
-	}
-
-	return response.text();
+	return data;
 }
