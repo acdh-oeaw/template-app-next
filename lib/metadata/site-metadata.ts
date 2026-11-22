@@ -41,7 +41,7 @@ export type SocialMediaLink = v.InferOutput<typeof socialMediaLinkSchema>;
 export type SiteMetadata = v.InferOutput<typeof siteMetadataSchema>;
 
 export class SiteMetadataError extends Error {
-	override name = "SiteMetadataError";
+	override readonly name = "SiteMetadataError";
 }
 
 export async function getSiteMetadata(locale: Locale): Promise<SiteMetadata> {

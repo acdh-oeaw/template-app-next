@@ -4,7 +4,7 @@ import { type PublicEnv, publicEnvSchema, type ServerEnv, serverEnvSchema } from
 import { getAnnotations } from "#/lib/env/annotations.ts";
 
 export class EnvError extends Error {
-	override name = "EnvError";
+	override readonly name = "EnvError";
 }
 
 function read(key: string): string | undefined {

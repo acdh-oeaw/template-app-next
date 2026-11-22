@@ -93,6 +93,16 @@ A page that reads search params defines them in a `search-params.ts` next to its
 - Choose the element by behavior, not by looks: a link navigates, a button performs an action. A link can look like a button and a button like a link, by sharing style functions (like `buttonStyles()`) that return class names, not with polymorphic props like `<Button href>` or `as="a"`. Links cannot be disabled, so something that needs a disabled state is a button
 - Use a native html element when one fits, like `<button>` or `<details>`. Otherwise use a React Aria component. Only build a custom widget when neither fits, and follow its pattern in the [ARIA Authoring Practices Guide](https://www.w3.org/WAI/ARIA/apg/patterns/), including keyboard handling. Add an end-to-end test for it, since React Aria doesn't guarantee its behavior
 
+## Errors
+
+Throw errors for failures, and return them only from Server Functions. Next.js is built around thrown errors: `notFound()` and `redirect()` throw, error boundaries render `error.tsx`, and an error while prerendering fails the build. `"use cache"` functions cannot return class instances, so not a `Result` wrapper either.
+
+- Define an error class for each failure that a caller may handle, with a literal `name`, like `class SiteMetadataError extends Error { override readonly name = "SiteMetadataError"; }`. Callers narrow with `instanceof`
+- Pass the original error as `cause` when wrapping it
+- Only catch errors you handle, and rethrow the rest. Handle an expected error where it has a meaning for the user, like an `HttpError` with status 404 for a missing record, which becomes `notFound()`. Let everything else reach the error boundary, or fail the build
+- Don't wrap bugs, like an invalid url, in an error class: they throw as they are
+- Server Functions return expected failures, like invalid form data, as serializable state for `useActionState`, because Next.js hides the message of a thrown error in production. They throw unexpected errors
+
 ## Code comments
 
 - Only add a comment when something needs explanation, like a non-obvious reason or constraint. Don't restate what the code does
