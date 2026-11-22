@@ -23,6 +23,8 @@ export interface ServerActionContext {
 
 type Schema = v.GenericSchema | v.GenericSchemaAsync;
 
+type EmptySchema = ReturnType<typeof createEmptySchema>;
+
 interface CreateServerActionOptions<TSchema extends Schema, TData> {
 	/**
 	 * Runs before `schema`, so that async checks in the schema, like whether a name is taken, don't run for unauthorized
@@ -31,9 +33,10 @@ interface CreateServerActionOptions<TSchema extends Schema, TData> {
 	authorize?: (context: ServerActionContext) => Promise<void> | void;
 	/**
 	 * Created for each request, so that its messages can be translated with `t`. Checks without a message use a generic
-	 * translated one, instead of valibot's untranslated default.
+	 * translated one, instead of valibot's untranslated default. Without a schema, the handler receives an empty object,
+	 * for actions without input, like signing out.
 	 */
-	schema: (context: ServerActionContext) => TSchema;
+	schema?: (context: ServerActionContext) => TSchema;
 	/** Fields whose values are not sent back to the client, like passwords. */
 	omitValues?: ReadonlyArray<string>;
 	/** Throws an `ActionError` for expected failures, which the user sees. */
@@ -48,10 +51,10 @@ export type ServerAction<TData> = (state: ActionState<TData>, formData: FormData
  * and return a generic message, because Next.js hides the message of a thrown error in production. `redirect()` and
  * `notFound()` work as usual.
  */
-export function createServerAction<TSchema extends Schema, TData = undefined>(
+export function createServerAction<TSchema extends Schema = EmptySchema, TData = undefined>(
 	options: CreateServerActionOptions<TSchema, TData>,
 ): ServerAction<TData> {
-	const { authorize, handler, omitValues = [], schema } = options;
+	const { authorize, handler, omitValues = [], schema = createEmptySchema } = options;
 
 	return async function serverAction(_state, formData) {
 		const locale = await getActionLocale();
@@ -98,6 +101,10 @@ export function createServerAction<TSchema extends Schema, TData = undefined>(
 			return createErrorState({ message, fieldErrors: {}, values: formValues });
 		}
 	};
+}
+
+function createEmptySchema() {
+	return v.object({});
 }
 
 /**
