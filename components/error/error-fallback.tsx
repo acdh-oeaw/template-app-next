@@ -32,7 +32,7 @@ export function ErrorFallback(props: Readonly<ErrorFallbackProps>): ReactNode {
 
 /** Errors from server components only carry a digest, which matches the error in the server logs. */
 function getErrorDigest(error: unknown): string | null {
-	if (Error.isError(error) && "digest" in error && typeof error.digest === "string") {
+	if (typeof error === "object" && error !== null && "digest" in error && typeof error.digest === "string") {
 		return error.digest;
 	}
 
