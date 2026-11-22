@@ -10,11 +10,6 @@ export function getFormDataValues(formData: FormData): FormDataValues {
 	const entries: Array<[string, FormDataEntryValue | Array<FormDataEntryValue>]> = [];
 
 	for (const key of new Set(formData.keys())) {
-		/** Next.js adds these fields to forms that are submitted without JavaScript. */
-		if (key.startsWith("$ACTION")) {
-			continue;
-		}
-
 		const values = formData.getAll(key);
 		entries.push([key, values.length === 1 ? values[0]! : values]);
 	}

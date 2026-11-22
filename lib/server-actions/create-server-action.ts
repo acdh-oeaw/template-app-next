@@ -87,7 +87,7 @@ export function createServerAction<TSchema extends Schema, TData = undefined>(
 				return createErrorState({ message: error.message, fieldErrors: error.fieldErrors, values: formValues });
 			}
 
-			/** A caught error does not reach Next.js, which would log it. */
+			/** A caught error does not reach Next.js, which would log it and pass it to `onRequestError`, so report it here. */
 			// oxlint-disable-next-line no-console
 			console.error(error);
 

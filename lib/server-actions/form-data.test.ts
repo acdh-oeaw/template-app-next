@@ -23,16 +23,6 @@ describe("getFormDataValues", () => {
 		expect(getFormDataValues(formData)).toStrictEqual({ name: "Ada", tags: ["a", "b"] });
 	});
 
-	test("leaves out the fields that Next.js adds", () => {
-		const formData = createFormData([
-			["$ACTION_ID_abc", ""],
-			["$ACTION_REF_1", ""],
-			["name", "Ada"],
-		]);
-
-		expect(getFormDataValues(formData)).toStrictEqual({ name: "Ada" });
-	});
-
 	test("keeps a field named `__proto__` as an own property", () => {
 		const formData = createFormData([
 			["__proto__", "a"],
