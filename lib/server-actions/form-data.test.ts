@@ -32,6 +32,19 @@ describe("getFormDataValues", () => {
 
 		expect(getFormDataValues(formData)).toStrictEqual({ name: "Ada" });
 	});
+
+	test("keeps a field named `__proto__` as an own property", () => {
+		const formData = createFormData([
+			["__proto__", "a"],
+			["__proto__", "b"],
+		]);
+
+		const values = getFormDataValues(formData);
+
+		expect(Object.getPrototypeOf(values)).toBe(Object.prototype);
+		expect(Object.hasOwn(values, "__proto__")).toBe(true);
+		expect("length" in values).toBe(false);
+	});
 });
 
 describe("getFormValues", () => {
@@ -48,5 +61,19 @@ describe("getFormValues", () => {
 		);
 
 		expect(getFormValues(values, ["password"])).toStrictEqual({ name: "Ada", tags: ["a"] });
+	});
+
+	test("keeps a field named `__proto__` as an own property", () => {
+		const values = getFormDataValues(
+			createFormData([
+				["__proto__", "a"],
+				["__proto__", "b"],
+			]),
+		);
+
+		const formValues = getFormValues(values, []);
+
+		expect(Object.getPrototypeOf(formValues)).toBe(Object.prototype);
+		expect(Object.hasOwn(formValues, "__proto__")).toBe(true);
 	});
 });

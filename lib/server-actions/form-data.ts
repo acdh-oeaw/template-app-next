@@ -7,7 +7,7 @@ export type FormDataValues = Record<string, FormDataEntryValue | Array<FormDataE
  * schemas for such fields should accept a single value too.
  */
 export function getFormDataValues(formData: FormData): FormDataValues {
-	const values: FormDataValues = {};
+	const entries: Array<[string, FormDataEntryValue | Array<FormDataEntryValue>]> = [];
 
 	for (const key of new Set(formData.keys())) {
 		/** Next.js adds these fields to forms that are submitted without JavaScript. */
@@ -15,16 +15,17 @@ export function getFormDataValues(formData: FormData): FormDataValues {
 			continue;
 		}
 
-		const entries = formData.getAll(key);
-		values[key] = entries.length === 1 ? entries[0]! : entries;
+		const values = formData.getAll(key);
+		entries.push([key, values.length === 1 ? values[0]! : values]);
 	}
 
-	return values;
+	/** Defines own properties, so that a field named `__proto__` cannot replace the prototype. */
+	return Object.fromEntries(entries);
 }
 
 /** The text values to send back to the client, without files, and without fields like passwords. */
 export function getFormValues(values: FormDataValues, omit: ReadonlyArray<string>): FormValues {
-	const formValues: FormValues = {};
+	const entries: Array<[string, string | Array<string>]> = [];
 
 	for (const [key, value] of Object.entries(values)) {
 		if (omit.includes(key)) {
@@ -32,11 +33,12 @@ export function getFormValues(values: FormDataValues, omit: ReadonlyArray<string
 		}
 
 		if (typeof value === "string") {
-			formValues[key] = value;
+			entries.push([key, value]);
 		} else if (Array.isArray(value)) {
-			formValues[key] = value.filter((entry) => typeof entry === "string");
+			entries.push([key, value.filter((entry) => typeof entry === "string")]);
 		}
 	}
 
-	return formValues;
+	/** Defines own properties, so that a field named `__proto__` cannot replace the prototype. */
+	return Object.fromEntries(entries);
 }
