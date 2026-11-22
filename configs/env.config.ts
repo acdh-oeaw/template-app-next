@@ -37,6 +37,12 @@ export const serverEnvSchema = v.object({
 			v.metadata({ dev: generate.base64(32) }),
 		),
 	),
+	SERVICE_ID: v.pipe(
+		v.string(),
+		v.digits(),
+		v.description("Redmine service id of the app, used to fetch the imprint from the ACDH imprint service."),
+		v.metadata({ dev: "21966" }),
+	),
 });
 
 export type PublicEnv = v.InferOutput<typeof publicEnvSchema>;

@@ -98,7 +98,9 @@
         that should keep focus (like a locale or filter switcher), form submission, not-found and error pages
   - [ ] API design, write it up before building it, and consider proposing it upstream
   - [ ] Implement as a patch, replace the workaround in `components/locale-switcher/`, and add e2e tests
-- [ ] Pages: imprint (placeholder only), accessibility declaration
+- [ ] Pages
+  - [x] Imprint, from the ACDH imprint service
+  - [ ] Accessibility declaration
 - [ ] Devcontainer, issue templates
 
 ## Maybe

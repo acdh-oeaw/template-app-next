@@ -50,6 +50,7 @@ jobs:
     env:
       # `bun run env:sync` does not create `.env.local` in CI.
       NEXT_PUBLIC_APP_BASE_URL: http://localhost:3000
+      SERVICE_ID: "21966"
     steps:
       - uses: actions/checkout@v7
         with:
