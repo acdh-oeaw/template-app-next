@@ -74,7 +74,7 @@ export function createServerAction<TSchema extends Schema = EmptySchema, TData =
 				const { fieldErrors, rootErrors } = getValidationErrors(result.issues);
 
 				return createErrorState({
-					message: rootErrors[0] ?? t("Please correct the highlighted fields."),
+					message: rootErrors.length > 0 ? rootErrors.join(" ") : t("Please correct the highlighted fields."),
 					fieldErrors,
 					values: formValues,
 				});
