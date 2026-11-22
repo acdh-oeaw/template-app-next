@@ -13,7 +13,7 @@ async function gotoHydrated(page: Page, path: string): Promise<void> {
 }
 
 async function submit(page: Page, button: string): Promise<void> {
-	await page.getByRole("main").getByRole("button", { name: button }).click();
+	await page.getByRole("main").getByRole("button", { name: button, exact: true }).click();
 }
 
 test.describe("server actions", () => {
@@ -64,6 +64,19 @@ test.describe("server actions", () => {
 		await expect(page.getByRole("main").getByRole("alert")).toHaveText(
 			"The service is not available. Please try again later.",
 		);
+	});
+
+	test("show that a service is not available after a timeout during validation, and keep the values", async ({
+		page,
+	}) => {
+		await gotoHydrated(page, pathname);
+		await getNameField(page).fill("Ada");
+		await submit(page, "Time out during validation");
+
+		await expect(page.getByRole("main").getByRole("alert")).toHaveText(
+			"The service is not available. Please try again later.",
+		);
+		await expect(getNameField(page)).toHaveValue("Ada");
 	});
 
 	test("can redirect", async ({ page }) => {

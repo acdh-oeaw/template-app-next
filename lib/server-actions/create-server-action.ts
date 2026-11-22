@@ -52,19 +52,20 @@ export function createServerAction<TSchema extends Schema, TData = undefined>(
 		const values = getFormDataValues(formData);
 		const formValues = getFormValues(values, omitValues);
 
-		const result = await v.safeParseAsync(schema(context), values);
-
-		if (!result.success) {
-			const { nested, root } = v.flatten(result.issues);
-
-			return createErrorState({
-				message: root?.[0] ?? t("Please correct the highlighted fields."),
-				fieldErrors: toFieldErrors(nested),
-				values: formValues,
-			});
-		}
-
 		try {
+			/** Inside `try`, because async schemas can make requests, which can fail like the handler's. */
+			const result = await v.safeParseAsync(schema(context), values);
+
+			if (!result.success) {
+				const { nested, root } = v.flatten(result.issues);
+
+				return createErrorState({
+					message: root?.[0] ?? t("Please correct the highlighted fields."),
+					fieldErrors: toFieldErrors(nested),
+					values: formValues,
+				});
+			}
+
 			const data = await handler(result.output, context);
 
 			return { status: "success", id: crypto.randomUUID(), data };
@@ -104,13 +105,7 @@ function createErrorState(params: { fieldErrors: FieldErrors; message: string; v
 }
 
 function toFieldErrors(nested: Partial<Record<string, Array<string>>> | undefined): FieldErrors {
-	const fieldErrors: FieldErrors = {};
-
-	for (const [key, messages] of Object.entries(nested ?? {})) {
-		if (messages != null) {
-			fieldErrors[key] = messages;
-		}
-	}
-
-	return fieldErrors;
+	return Object.fromEntries(
+		Object.entries(nested ?? {}).filter((entry): entry is [string, Array<string>] => entry[1] != null),
+	);
 }

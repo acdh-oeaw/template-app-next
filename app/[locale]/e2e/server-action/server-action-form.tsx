@@ -43,6 +43,9 @@ export function ServerActionForm(): React.ReactNode {
 			<button name="outcome" type="submit" value="timeout">
 				Time out
 			</button>
+			<button name="outcome" type="submit" value="validation-timeout">
+				Time out during validation
+			</button>
 			<button name="outcome" type="submit" value="redirect">
 				Redirect
 			</button>
