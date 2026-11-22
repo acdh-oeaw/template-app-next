@@ -39,7 +39,10 @@ interface CreateServerActionOptions<TSchema extends Schema, TData> {
 	schema?: (context: ServerActionContext) => TSchema;
 	/** Fields whose values are not sent back to the client, like passwords. */
 	omitValues?: ReadonlyArray<string>;
-	/** Throws an `ActionError` for expected failures, which the user sees. */
+	/**
+	 * Throws an `ActionError` for expected failures, which the user sees. Returns data that React can serialize, because
+	 * a serialization error happens after the handler has run, and reaches the error boundary.
+	 */
 	handler: (input: v.InferOutput<TSchema>, context: ServerActionContext) => Promise<TData>;
 }
 
