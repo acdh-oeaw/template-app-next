@@ -114,7 +114,7 @@ Create server actions with `createServerAction()` from `lib/server-actions/creat
 - `schema` validates the form data. Leave it out for actions without input, and the handler receives an empty object. It is created for each request, so that its messages can be translated with `await getExtracted({ locale })`, and checks without a message get a generic translated one. next-intl only extracts messages of a `t` bound to the result of `getExtracted()`, so don't pass `t` around. Invalid input returns `fieldErrors`, keyed by the field name, which React Aria's `<Form validationErrors>` shows on the fields
 - Throw an `ActionError` with a translated message for an expected failure. Other errors are logged, and the user sees a generic message
 - The error state contains the submitted values, because a form resets after its action. Use them as the `defaultValue` of each field, and list fields like passwords in `omitValues`, so that their values are not sent back
-- Server actions are public endpoints, so check authorization in each action, also when only authorized users see the form. Check it in `authorize`, which runs before `schema`, so that async checks in the schema, like whether a name is taken, don't run for unauthorized callers
+- Server actions are public endpoints, so check authorization in each action, also when only authorized users see the form. Check it in `guard`, which runs before `schema`, so that async checks in the schema, like whether a name is taken, don't run for unauthorized callers. Return what `schema` and `handler` need from the check, like the user, so they receive it in their context instead of loading it again
 - `next/root-params` throws in server actions, so use the `locale` from the handler's context
 
 ## Code comments

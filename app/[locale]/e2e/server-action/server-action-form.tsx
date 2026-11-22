@@ -41,7 +41,12 @@ export function ServerActionForm(): React.ReactNode {
 			</TextField>
 
 			{state.status === "error" ? <p role="alert">{state.message}</p> : null}
-			{state.status === "success" ? <p role="status">Saved {state.data.name}</p> : null}
+			{state.status === "success" ? (
+				<p role="status">
+					Saved {state.data.name}
+					{state.data.user != null ? ` as ${state.data.user}` : null}
+				</p>
+			) : null}
 
 			{hydration === "hydrated" ? <p>Hydrated</p> : null}
 

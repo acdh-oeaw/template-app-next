@@ -26,39 +26,54 @@ type Schema = v.GenericSchema | v.GenericSchemaAsync;
 
 type EmptySchema = ReturnType<typeof createEmptySchema>;
 
-interface CreateServerActionOptions<TSchema extends Schema, TData> {
+/** Values that `guard` adds to the context, which cannot replace the ones of `ServerActionContext`. */
+type GuardContext = Partial<Record<keyof ServerActionContext, never>> & Record<string, unknown>;
+
+/** A guard that only checks returns nothing. */
+// oxlint-disable-next-line no-invalid-void-type
+type GuardResult = Promise<GuardContext | void> | GuardContext | void;
+
+type GuardedContext<TGuardResult extends GuardResult> = [Exclude<Awaited<TGuardResult>, void>] extends [never]
+	? ServerActionContext
+	: ServerActionContext & Exclude<Awaited<TGuardResult>, void>;
+
+interface CreateServerActionOptions<TSchema extends Schema, TGuardResult extends GuardResult, TData> {
 	/**
-	 * Runs before `schema`, so that async checks in the schema, like whether a name is taken, don't run for unauthorized
-	 * callers. Throws an `ActionError`, or calls `redirect()`, when the caller is not authorized.
+	 * Checks whether the request may run the action, like authorization and rate limiting, in the order they are called.
+	 * Runs before `schema`, so that async checks in the schema, like whether a name is taken, don't run for rejected
+	 * requests. Throws an `ActionError`, or calls `redirect()`, to reject a request. Returns values that `schema` and
+	 * `handler` receive in their context, like the user.
 	 */
-	authorize?: (context: ServerActionContext) => Promise<void> | void;
+	guard?: (context: ServerActionContext) => TGuardResult;
 	/**
 	 * Created for each request, so that its messages can be translated with `await getExtracted({ locale })`. Checks
 	 * without a message use a generic translated one, instead of valibot's untranslated default. Without a schema, the
 	 * handler receives an empty object, for actions without input, like signing out.
 	 */
-	schema?: (context: ServerActionContext) => Promise<TSchema> | TSchema;
+	schema?: (context: GuardedContext<TGuardResult>) => Promise<TSchema> | TSchema;
 	/** Fields whose values are not sent back to the client, like passwords. */
 	omitValues?: ReadonlyArray<string>;
 	/**
 	 * Throws an `ActionError` for expected failures, which the user sees. Returns data that React can serialize, because
 	 * a serialization error happens after the handler has run, and reaches the error boundary.
 	 */
-	handler: (input: v.InferOutput<TSchema>, context: ServerActionContext) => Promise<TData>;
+	handler: (input: v.InferOutput<TSchema>, context: GuardedContext<TGuardResult>) => Promise<TData>;
 }
 
 export type ServerAction<TData> = (state: ActionState<TData>, formData: FormData) => Promise<ActionState<TData>>;
 
 /**
- * Creates a server action for `useActionState`. It checks `authorize`, validates the form data with `schema`, and
- * returns field errors for invalid input. An `ActionError` from `handler` returns its message, other errors are logged,
- * and return a generic message, because Next.js hides the message of a thrown error in production. `redirect()` and
+ * Creates a server action for `useActionState`. It checks `guard`, validates the form data with `schema`, and returns
+ * field errors for invalid input. An `ActionError` from `handler` returns its message, other errors are logged, and
+ * return a generic message, because Next.js hides the message of a thrown error in production. `redirect()` and
  * `notFound()` work as usual.
  */
-export function createServerAction<TSchema extends Schema = EmptySchema, TData = undefined>(
-	options: CreateServerActionOptions<TSchema, TData>,
-): ServerAction<TData> {
-	const { authorize, handler, omitValues = [], schema = createEmptySchema } = options;
+export function createServerAction<
+	TSchema extends Schema = EmptySchema,
+	TGuardResult extends GuardResult = void,
+	TData = undefined,
+>(options: CreateServerActionOptions<TSchema, TGuardResult, TData>): ServerAction<TData> {
+	const { guard, handler, omitValues = [], schema = createEmptySchema } = options;
 
 	return async function serverAction(_state, formData) {
 		const locale = await getActionLocale();
@@ -69,10 +84,14 @@ export function createServerAction<TSchema extends Schema = EmptySchema, TData =
 		const formValues = getFormValues(values, omitValues);
 
 		try {
-			await authorize?.(context);
+			/** The values of `context` come last, so that `guard` cannot replace them at runtime either. */
+			const guardResult: GuardResult = guard?.(context);
+			const guardedContext = { ...(await guardResult), ...context } as GuardedContext<TGuardResult>;
 
 			/** Inside `try`, because async schemas can make requests, which can fail like the handler's. */
-			const result = await v.safeParseAsync(await schema(context), values, { message: t("Enter a valid value.") });
+			const result = await v.safeParseAsync(await schema(guardedContext), values, {
+				message: t("Enter a valid value."),
+			});
 
 			if (!result.success) {
 				const { fieldErrors, rootErrors } = getValidationErrors(result.issues);
@@ -84,7 +103,7 @@ export function createServerAction<TSchema extends Schema = EmptySchema, TData =
 				});
 			}
 
-			const data = await handler(result.output, context);
+			const data = await handler(result.output, guardedContext);
 
 			return { status: "success", id: crypto.randomUUID(), data };
 		} catch (error) {

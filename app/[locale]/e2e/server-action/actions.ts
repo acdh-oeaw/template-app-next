@@ -12,13 +12,17 @@ import { createServerAction } from "#/lib/server-actions/create-server-action.ts
 
 /** Each submit button sends an `outcome`, which decides how the handler responds. */
 export const serverActionFixture = createServerAction({
-	async authorize() {
+	async guard() {
 		/** The action is reachable in every build, the fixture page only in e2e builds. */
 		assertE2eFixture();
 
-		if ((await cookies()).get("e2e-authorization")?.value === "denied") {
+		const cookieStore = await cookies();
+
+		if (cookieStore.get("e2e-authorization")?.value === "denied") {
 			throw new ActionError("You are not allowed to do this.");
 		}
+
+		return { user: cookieStore.get("e2e-user")?.value };
 	},
 	schema() {
 		return v.pipeAsync(
@@ -42,10 +46,10 @@ export const serverActionFixture = createServerAction({
 	},
 	omitValues: ["password"],
 	// oxlint-disable-next-line require-await -- server actions are async
-	async handler(input, { locale }) {
+	async handler(input, { locale, user }) {
 		switch (input.outcome) {
 			case "success": {
-				return { name: input.name };
+				return { name: input.name, user };
 			}
 
 			case "action-error": {

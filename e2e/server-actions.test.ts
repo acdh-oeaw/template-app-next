@@ -62,6 +62,15 @@ test.describe("server actions", () => {
 		await expect(page.getByRole("main").getByRole("status")).toHaveText("Saved Ada");
 	});
 
+	test("pass the values that the guard returns to the handler", async ({ baseURL, context, page }) => {
+		await context.addCookies([{ name: "e2e-user", value: "Grace", url: baseURL }]);
+		await gotoHydrated(page, pathname);
+		await getNameField(page).fill("Ada");
+		await submit(page, "Succeed");
+
+		await expect(page.getByRole("main").getByRole("status")).toHaveText("Saved Ada as Grace");
+	});
+
 	test("show the message and field errors of an ActionError, and keep the values", async ({ page }) => {
 		await gotoHydrated(page, pathname);
 		await getNameField(page).fill("Ada");
