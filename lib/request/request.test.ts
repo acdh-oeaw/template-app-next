@@ -243,16 +243,56 @@ describe("request errors", () => {
 		expect(error).toBeInstanceOf(AbortError);
 	});
 
-	test.each(["ConnectionRefused", "ECONNREFUSED", "ECONNRESET", "ENOTFOUND", "ETIMEDOUT", "FailedToOpenSocket"])(
-		"throws a NetworkError for Bun's %s error",
-		async (code) => {
-			const { fetch } = createFetch(() => throwError(Object.assign(new TypeError("Connection failed"), { code })));
+	test.each([
+		"EAI_AGAIN",
+		"ECONNABORTED",
+		"ECONNREFUSED",
+		"ECONNRESET",
+		"EHOSTUNREACH",
+		"ENETUNREACH",
+		"ENOTFOUND",
+		"EPIPE",
+		"ETIMEDOUT",
+	])("throws a NetworkError for Bun's %s error", async (code) => {
+		const { fetch } = createFetch(() => throwError(Object.assign(new TypeError("Connection failed"), { code })));
 
-			const error = await getError(request(url, { fetch, responseType: "void" }));
+		const error = await getError(request(url, { fetch, responseType: "void" }));
+
+		expect(error).toBeInstanceOf(NetworkError);
+	});
+
+	test("throws a NetworkError when Bun's fetch cannot connect", async () => {
+		// oxlint-disable-next-line no-empty-function -- Bun requires a data handler
+		const listener = Bun.listen({ hostname: "127.0.0.1", port: 0, socket: { data() {} } });
+		const { port } = listener;
+		listener.stop(true);
+
+		const error = await getError(request(`http://127.0.0.1:${String(port)}/`, { responseType: "void" }));
+
+		expect(error).toBeInstanceOf(NetworkError);
+	});
+
+	test("throws a NetworkError when Bun's fetch loses the connection", async () => {
+		const listener = Bun.listen({
+			hostname: "127.0.0.1",
+			port: 0,
+			socket: {
+				// oxlint-disable-next-line no-empty-function -- Bun requires a data handler
+				data() {},
+				open(socket) {
+					socket.terminate();
+				},
+			},
+		});
+
+		try {
+			const error = await getError(request(`http://127.0.0.1:${String(listener.port)}/`, { responseType: "void" }));
 
 			expect(error).toBeInstanceOf(NetworkError);
-		},
-	);
+		} finally {
+			listener.stop(true);
+		}
+	});
 
 	test("throws a TimeoutError for Bun's socket timeout", async () => {
 		const { fetch } = createFetch(() =>
