@@ -181,7 +181,7 @@ describe("request errors", () => {
 		expect(error).toBeInstanceOf(AbortError);
 	});
 
-	test.each(["ConnectionRefused", "ECONNRESET", "ENOTFOUND", "FailedToOpenSocket"])(
+	test.each(["ConnectionRefused", "ECONNREFUSED", "ECONNRESET", "ENOTFOUND", "ETIMEDOUT", "FailedToOpenSocket"])(
 		"throws a NetworkError for Bun's %s error",
 		async (code) => {
 			const { fetch } = createFetch(() => throwError(Object.assign(new TypeError("Connection failed"), { code })));

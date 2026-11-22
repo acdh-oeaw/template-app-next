@@ -342,10 +342,11 @@ function isBunSocketTimeout(error: unknown): boolean {
 /** Bun sets these codes on the `TypeError`, Node.js on its `cause`, which is matched by message. */
 const networkErrorCodes = new Set([
 	"ConnectionRefused",
+	"ECONNREFUSED",
 	"ECONNRESET",
 	"ENOTFOUND",
 	"EPIPE",
-	"ETIMEOUT",
+	"ETIMEDOUT",
 	"FailedToOpenSocket",
 ]);
 
