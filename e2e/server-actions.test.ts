@@ -3,7 +3,11 @@ import { expect, type Page, test } from "@playwright/test";
 const pathname = "/en/e2e/server-action";
 
 function getNameField(page: Page) {
-	return page.getByRole("main").getByRole("textbox", { name: "Name" });
+	return page.getByRole("main").getByRole("textbox", { name: "Name", exact: true });
+}
+
+function getNicknameField(page: Page) {
+	return page.getByRole("main").getByRole("textbox", { name: "Nickname", exact: true });
 }
 
 /** Typing before hydration is lost, see the fixture. */
@@ -25,6 +29,24 @@ test.describe("server actions", () => {
 		await expect(name).toHaveAttribute("aria-invalid", "true");
 		await expect(name).toHaveAccessibleDescription("Enter a name.");
 		await expect(page.getByRole("main").getByRole("alert")).toHaveText("Please correct the highlighted fields.");
+	});
+
+	test("translate the messages of checks without a message", async ({ page }) => {
+		await gotoHydrated(page, "/de/e2e/server-action");
+		await getNameField(page).fill("Ada");
+		await getNicknameField(page).fill("A nickname that is too long");
+		await submit(page, "Succeed");
+
+		await expect(getNicknameField(page)).toHaveAccessibleDescription("Geben Sie einen gültigen Wert ein.");
+	});
+
+	test("check authorization before validation", async ({ baseURL, context, page }) => {
+		await context.addCookies([{ name: "e2e-authorization", value: "denied", url: baseURL }]);
+		await gotoHydrated(page, pathname);
+		await getNameField(page).fill("Ada");
+		await submit(page, "Time out during validation");
+
+		await expect(page.getByRole("main").getByRole("alert")).toHaveText("You are not allowed to do this.");
 	});
 
 	test("return data on success", async ({ page }) => {

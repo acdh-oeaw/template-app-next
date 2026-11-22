@@ -117,6 +117,11 @@ msgid "Home"
 msgstr "Startseite"
 
 #: lib/server-actions/create-server-action.ts
+msgctxt "B4bUh5"
+msgid "Enter a valid value."
+msgstr "Geben Sie einen gültigen Wert ein."
+
+#: lib/server-actions/create-server-action.ts
 msgctxt "-Ybav6"
 msgid "Please correct the highlighted fields."
 msgstr "Bitte korrigieren Sie die markierten Felder."

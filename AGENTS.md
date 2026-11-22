@@ -111,10 +111,10 @@ Throw errors for failures, and return them only from server actions. Next.js is 
 
 Create server actions with `createServerAction()` from `lib/server-actions/create-server-action.ts`, in a file with `"use server"`, and use them with `useActionState`, starting from `idleActionState`.
 
-- `schema` validates the form data. It is created for each request with `t`, so that its messages are translated. Invalid input returns `fieldErrors`, which React Aria's `<Form validationErrors>` shows on the fields
+- `schema` validates the form data. It is created for each request with `t`, so that its messages are translated, and checks without a message get a generic translated one. Invalid input returns `fieldErrors`, keyed by the field name, which React Aria's `<Form validationErrors>` shows on the fields
 - Throw an `ActionError` with a translated message for an expected failure. Other errors are logged, and the user sees a generic message
 - The error state contains the submitted values, because a form resets after its action. Use them as the `defaultValue` of each field, and list fields like passwords in `omitValues`, so that their values are not sent back
-- Server actions are public endpoints, so check authorization in each handler, also when only authorized users see the form
+- Server actions are public endpoints, so check authorization in each action, also when only authorized users see the form. Check it in `authorize`, which runs before `schema`, so that async checks in the schema, like whether a name is taken, don't run for unauthorized callers
 - `next/root-params` throws in server actions, so use the `locale` from the handler's context
 
 ## Code comments

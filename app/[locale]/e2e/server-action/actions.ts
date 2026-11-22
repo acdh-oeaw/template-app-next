@@ -1,5 +1,6 @@
 "use server";
 
+import { cookies } from "next/headers";
 import * as v from "valibot";
 
 import { assertE2eFixture } from "#/lib/e2e/fixtures.ts";
@@ -11,10 +12,20 @@ import { createServerAction } from "#/lib/server-actions/create-server-action.ts
 
 /** Each submit button sends an `outcome`, which decides how the handler responds. */
 export const serverActionFixture = createServerAction({
+	async authorize() {
+		/** The action is reachable in every build, the fixture page only in e2e builds. */
+		assertE2eFixture();
+
+		if ((await cookies()).get("e2e-authorization")?.value === "denied") {
+			throw new ActionError("You are not allowed to do this.");
+		}
+	},
 	schema() {
 		return v.pipeAsync(
 			v.object({
 				name: v.pipe(v.string(), v.trim(), v.nonEmpty("Enter a name.")),
+				/** Without a message, to show the translated fallback. */
+				nickname: v.pipe(v.string(), v.maxLength(10)),
 				outcome: v.picklist(["success", "action-error", "error", "timeout", "validation-timeout", "redirect"]),
 			}),
 			/** Like a check that makes a request, such as whether a name is taken. */
@@ -30,9 +41,6 @@ export const serverActionFixture = createServerAction({
 	},
 	// oxlint-disable-next-line require-await -- server actions are async
 	async handler(input, { locale }) {
-		/** The action is reachable in every build, the fixture page only in e2e builds. */
-		assertE2eFixture();
-
 		switch (input.outcome) {
 			case "success": {
 				return { name: input.name };

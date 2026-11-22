@@ -8,10 +8,11 @@ import * as v from "valibot";
 
 import { defaultLocale, type Locale } from "#/lib/i18n/locales.ts";
 import { routing } from "#/lib/i18n/routing.ts";
-import { NetworkError, TimeoutError } from "#/lib/request/errors.ts";
+import { isServiceUnavailableError } from "#/lib/request/errors.ts";
 import { ActionError } from "#/lib/server-actions/action-error.ts";
 import type { ActionState, ActionStateError, FieldErrors, FormValues } from "#/lib/server-actions/action-state.ts";
 import { getFormDataValues, getFormValues } from "#/lib/server-actions/form-data.ts";
+import { getValidationErrors } from "#/lib/server-actions/validation.ts";
 
 type Translator = Awaited<ReturnType<typeof getExtracted>>;
 
@@ -23,7 +24,15 @@ export interface ServerActionContext {
 type Schema = v.GenericSchema | v.GenericSchemaAsync;
 
 interface CreateServerActionOptions<TSchema extends Schema, TData> {
-	/** Created for each request, so that its messages can be translated with `t`. */
+	/**
+	 * Runs before `schema`, so that async checks in the schema, like whether a name is taken, don't run for unauthorized
+	 * callers. Throws an `ActionError`, or calls `redirect()`, when the caller is not authorized.
+	 */
+	authorize?: (context: ServerActionContext) => Promise<void> | void;
+	/**
+	 * Created for each request, so that its messages can be translated with `t`. Checks without a message use a generic
+	 * translated one, instead of valibot's untranslated default.
+	 */
 	schema: (context: ServerActionContext) => TSchema;
 	/** Fields whose values are not sent back to the client, like passwords. */
 	omitValues?: ReadonlyArray<string>;
@@ -34,15 +43,15 @@ interface CreateServerActionOptions<TSchema extends Schema, TData> {
 export type ServerAction<TData> = (state: ActionState<TData>, formData: FormData) => Promise<ActionState<TData>>;
 
 /**
- * Creates a server action for `useActionState`. It validates the form data with `schema`, and returns field errors for
- * invalid input. An `ActionError` from `handler` returns its message, other errors are logged, and return a generic
- * message, because Next.js hides the message of a thrown error in production. `redirect()` and `notFound()` work as
- * usual.
+ * Creates a server action for `useActionState`. It checks `authorize`, validates the form data with `schema`, and
+ * returns field errors for invalid input. An `ActionError` from `handler` returns its message, other errors are logged,
+ * and return a generic message, because Next.js hides the message of a thrown error in production. `redirect()` and
+ * `notFound()` work as usual.
  */
 export function createServerAction<TSchema extends Schema, TData = undefined>(
 	options: CreateServerActionOptions<TSchema, TData>,
 ): ServerAction<TData> {
-	const { handler, omitValues = [], schema } = options;
+	const { authorize, handler, omitValues = [], schema } = options;
 
 	return async function serverAction(_state, formData) {
 		const locale = await getActionLocale();
@@ -53,15 +62,17 @@ export function createServerAction<TSchema extends Schema, TData = undefined>(
 		const formValues = getFormValues(values, omitValues);
 
 		try {
+			await authorize?.(context);
+
 			/** Inside `try`, because async schemas can make requests, which can fail like the handler's. */
-			const result = await v.safeParseAsync(schema(context), values);
+			const result = await v.safeParseAsync(schema(context), values, { message: t("Enter a valid value.") });
 
 			if (!result.success) {
-				const { nested, root } = v.flatten(result.issues);
+				const { fieldErrors, rootErrors } = getValidationErrors(result.issues);
 
 				return createErrorState({
-					message: root?.[0] ?? t("Please correct the highlighted fields."),
-					fieldErrors: toFieldErrors(nested),
+					message: rootErrors[0] ?? t("Please correct the highlighted fields."),
+					fieldErrors,
 					values: formValues,
 				});
 			}
@@ -80,10 +91,9 @@ export function createServerAction<TSchema extends Schema, TData = undefined>(
 			// oxlint-disable-next-line no-console
 			console.error(error);
 
-			const message =
-				error instanceof TimeoutError || error instanceof NetworkError
-					? t("The service is not available. Please try again later.")
-					: t("An unexpected error occurred. Please try again.");
+			const message = isServiceUnavailableError(error)
+				? t("The service is not available. Please try again later.")
+				: t("An unexpected error occurred. Please try again.");
 
 			return createErrorState({ message, fieldErrors: {}, values: formValues });
 		}
@@ -102,10 +112,4 @@ async function getActionLocale(): Promise<Locale> {
 
 function createErrorState(params: { fieldErrors: FieldErrors; message: string; values: FormValues }): ActionStateError {
 	return { status: "error", id: crypto.randomUUID(), ...params };
-}
-
-function toFieldErrors(nested: Partial<Record<string, Array<string>>> | undefined): FieldErrors {
-	return Object.fromEntries(
-		Object.entries(nested ?? {}).filter((entry): entry is [string, Array<string>] => entry[1] != null),
-	);
 }

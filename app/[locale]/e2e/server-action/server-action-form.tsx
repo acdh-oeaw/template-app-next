@@ -10,6 +10,7 @@ export function ServerActionForm(): React.ReactNode {
 	const [state, action] = useActionState(serverActionFixture, idleActionState);
 
 	const name = state.status === "error" ? state.values.name : undefined;
+	const nickname = state.status === "error" ? state.values.nickname : undefined;
 
 	/** Typing before hydration is lost when React Aria takes over the field, so tests wait for this. */
 	const hydration = useSyncExternalStore(
@@ -22,6 +23,12 @@ export function ServerActionForm(): React.ReactNode {
 		<Form action={action} validationErrors={state.status === "error" ? state.fieldErrors : undefined}>
 			<TextField defaultValue={typeof name === "string" ? name : ""} name="name">
 				<Label>Name</Label>
+				<Input />
+				<FieldError />
+			</TextField>
+
+			<TextField defaultValue={typeof nickname === "string" ? nickname : ""} name="nickname">
+				<Label>Nickname</Label>
 				<Input />
 				<FieldError />
 			</TextField>

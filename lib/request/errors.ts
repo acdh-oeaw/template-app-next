@@ -103,3 +103,15 @@ export class ValidationError extends RequestError {
 		this.issues = options.issues;
 	}
 }
+
+/** Gateway statuses, which mean that a service behind the server is not available. */
+const serviceUnavailableStatuses = new Set([502, 503, 504]);
+
+/** The service could not be reached or did not respond in time, so retrying later may succeed. */
+export function isServiceUnavailableError(error: unknown): boolean {
+	return (
+		error instanceof TimeoutError ||
+		error instanceof NetworkError ||
+		(error instanceof HttpError && serviceUnavailableStatuses.has(error.status))
+	);
+}
