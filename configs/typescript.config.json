@@ -9,7 +9,10 @@
 		"incremental": true,
 		"isolatedModules": true,
 		"jsx": "react-jsx",
-		/** `es2023` is the highest lib that all `browserslist` targets in `package.json` support. */
+		/**
+		 * `es2023` is the highest lib that all `browserslist` targets in `package.json` support. `bun-types` still declares
+		 * newer globals.
+		 */
 		"lib": ["dom", "es2023"],
 		"module": "preserve",
 		"moduleDetection": "force",

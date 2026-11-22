@@ -52,6 +52,7 @@ Use `bun check` to type check the project. It reads `tsconfig.json` and reports 
 
 - Compiler options are in `configs/typescript.config.json`. `tsconfig.json` extends it and only sets what is resolved relative to the root, like `paths` and `include`, because Bun, Next.js and editors look for it there
 - `bun check src/index.ts` checks one file and what it imports
+- `lib` only includes what the `browserslist` targets in `package.json` support, but `bun-types` declares newer globals for the whole project, like `Error.isError`, so `bun check` doesn't report them. Check browser support for APIs in code that can run in the browser
 - Route types (`PageProps`, `LayoutProps`) are generated into `.next/types` by `bun run types:generate`, which runs on `bun install`. Our Next.js patch also generates the global `RouteRegistry` for `href()` into `.next/types/navigation.d.ts`, which `next dev` keeps up to date. Don't import route types from `.next/types/routes.d.ts`: `next dev` writes its own copy to `.next/dev/types`, so imported types go stale in development
 
 ## Linting
