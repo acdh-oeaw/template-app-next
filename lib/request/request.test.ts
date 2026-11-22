@@ -196,6 +196,17 @@ describe("request errors", () => {
 		expect(error).toHaveProperty("message", "500 Internal Server Error - GET https://example.com/api?page=2");
 	});
 
+	test("leaves out credentials in the url", async () => {
+		const { fetch } = createFetch(() => new Response(null, { status: 401, statusText: "Unauthorized" }));
+
+		const promise = request("https://user:secret@example.com/api", { fetch, responseType: "void" });
+
+		const error = await getError(promise);
+
+		expect(error).toHaveProperty("message", "401 Unauthorized - GET https://example.com/api");
+		expect(error).toHaveProperty("url", "https://example.com/api");
+	});
+
 	test("throws a TimeoutError when the timeout fires while reading the body", async () => {
 		const { fetch } = createFetch((request) => {
 			const body = new ReadableStream({

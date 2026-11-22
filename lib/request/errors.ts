@@ -6,15 +6,38 @@ interface RequestErrorOptions {
 	url: string;
 }
 
+/** Removes credentials in the url, like `https://user:password@example.com`, which would end up in logs. */
+function redactUrl(url: string): string {
+	let parsed: URL;
+
+	try {
+		parsed = new URL(url);
+	} catch {
+		/** Relative urls have no credentials. */
+		return url;
+	}
+
+	if (parsed.username === "" && parsed.password === "") {
+		return url;
+	}
+
+	parsed.username = "";
+	parsed.password = "";
+
+	return parsed.href;
+}
+
 export abstract class RequestError extends Error {
 	abstract override readonly name: string;
 	readonly method: string;
+	/** Without credentials. */
 	readonly url: string;
 
 	constructor(message: string, options: RequestErrorOptions) {
-		super(`${message} - ${options.method} ${options.url}`, { cause: options.cause });
+		const url = redactUrl(options.url);
+		super(`${message} - ${options.method} ${url}`, { cause: options.cause });
 		this.method = options.method;
-		this.url = options.url;
+		this.url = url;
 	}
 }
 
