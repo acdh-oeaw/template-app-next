@@ -1,0 +1,99 @@
+import { expect, type Page, test } from "@playwright/test";
+
+const pathname = "/en/e2e/server-action";
+
+function getNameField(page: Page) {
+	return page.getByRole("main").getByRole("textbox", { name: "Name" });
+}
+
+/** Typing before hydration is lost, see the fixture. */
+async function gotoHydrated(page: Page, path: string): Promise<void> {
+	await page.goto(path);
+	await expect(page.getByRole("main").getByText("Hydrated")).toBeVisible();
+}
+
+async function submit(page: Page, button: string): Promise<void> {
+	await page.getByRole("main").getByRole("button", { name: button }).click();
+}
+
+test.describe("server actions", () => {
+	test("show field errors for invalid input", async ({ page }) => {
+		await gotoHydrated(page, pathname);
+		await submit(page, "Succeed");
+
+		const name = getNameField(page);
+		await expect(name).toHaveAttribute("aria-invalid", "true");
+		await expect(name).toHaveAccessibleDescription("Enter a name.");
+		await expect(page.getByRole("main").getByRole("alert")).toHaveText("Please correct the highlighted fields.");
+	});
+
+	test("return data on success", async ({ page }) => {
+		await gotoHydrated(page, pathname);
+		await getNameField(page).fill("Ada");
+		await submit(page, "Succeed");
+
+		await expect(page.getByRole("main").getByRole("status")).toHaveText("Saved Ada");
+	});
+
+	test("show the message and field errors of an ActionError, and keep the values", async ({ page }) => {
+		await gotoHydrated(page, pathname);
+		await getNameField(page).fill("Ada");
+		await submit(page, "Fail expectedly");
+
+		await expect(page.getByRole("main").getByRole("alert")).toHaveText("This name is taken.");
+		await expect(getNameField(page)).toHaveAccessibleDescription("Choose another name.");
+		await expect(getNameField(page)).toHaveValue("Ada");
+	});
+
+	test("show a generic message for unexpected errors", async ({ page }) => {
+		await gotoHydrated(page, pathname);
+		await getNameField(page).fill("Ada");
+		await submit(page, "Fail unexpectedly");
+
+		await expect(page.getByRole("main").getByRole("alert")).toHaveText(
+			"An unexpected error occurred. Please try again.",
+		);
+		await expect(page.getByText("Internal error message")).toHaveCount(0);
+	});
+
+	test("show that a service is not available after a timeout", async ({ page }) => {
+		await gotoHydrated(page, pathname);
+		await getNameField(page).fill("Ada");
+		await submit(page, "Time out");
+
+		await expect(page.getByRole("main").getByRole("alert")).toHaveText(
+			"The service is not available. Please try again later.",
+		);
+	});
+
+	test("can redirect", async ({ page }) => {
+		await gotoHydrated(page, pathname);
+		await getNameField(page).fill("Ada");
+		await submit(page, "Redirect");
+
+		await expect(page).toHaveURL(/\/en$/);
+	});
+
+	test("translate messages with the locale of the page", async ({ page }) => {
+		await gotoHydrated(page, "/de/e2e/server-action");
+		await getNameField(page).fill("Ada");
+		await submit(page, "Fail unexpectedly");
+
+		await expect(page.getByRole("main").getByRole("alert")).toHaveText(
+			"Ein unerwarteter Fehler ist aufgetreten. Bitte versuchen Sie es erneut.",
+		);
+	});
+
+	test.describe("without javascript", () => {
+		test.use({ javaScriptEnabled: false });
+
+		test("show field errors and keep the values", async ({ page }) => {
+			await page.goto(pathname);
+			await getNameField(page).fill("Ada");
+			await submit(page, "Fail expectedly");
+
+			await expect(page.getByRole("main").getByRole("alert")).toHaveText("This name is taken.");
+			await expect(getNameField(page)).toHaveValue("Ada");
+		});
+	});
+});

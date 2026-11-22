@@ -115,3 +115,18 @@ msgstr "Zum Hauptinhalt springen"
 msgctxt "ejEGdx"
 msgid "Home"
 msgstr "Startseite"
+
+#: lib/server-actions/create-server-action.ts
+msgctxt "-Ybav6"
+msgid "Please correct the highlighted fields."
+msgstr "Bitte korrigieren Sie die markierten Felder."
+
+#: lib/server-actions/create-server-action.ts
+msgctxt "xB2nNC"
+msgid "The service is not available. Please try again later."
+msgstr "Der Dienst ist nicht verfügbar. Bitte versuchen Sie es später erneut."
+
+#: lib/server-actions/create-server-action.ts
+msgctxt "IULR3V"
+msgid "An unexpected error occurred. Please try again."
+msgstr "Ein unerwarteter Fehler ist aufgetreten. Bitte versuchen Sie es erneut."

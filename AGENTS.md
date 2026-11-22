@@ -95,15 +95,25 @@ A page that reads search params defines them in a `search-params.ts` next to its
 
 ## Errors
 
-Throw errors for failures, and return them only from Server Functions. Next.js is built around thrown errors: `notFound()` and `redirect()` throw, error boundaries render `error.tsx`, and an error while prerendering fails the build. `"use cache"` functions cannot return class instances, so not a `Result` wrapper either.
+Throw errors for failures, and return them only from server actions. Next.js is built around thrown errors: `notFound()` and `redirect()` throw, error boundaries render `error.tsx`, and an error while prerendering fails the build. `"use cache"` functions cannot return class instances, so not a `Result` wrapper either.
 
 - Define an error class for each failure that a caller may handle, with a literal `name`, like `class SiteMetadataError extends Error { override readonly name = "SiteMetadataError"; }`. Callers narrow with `instanceof`
 - Pass the original error as `cause` when wrapping it
 - Only catch errors you handle, and rethrow the rest. Handle an expected error where it has a meaning for the user, like an `HttpError` with status 404 for a missing record, which becomes `notFound()`. Let everything else reach the error boundary, or fail the build
 - Don't wrap bugs, like an invalid url, in an error class: they throw as they are
-- Server Functions return expected failures, like invalid form data, as serializable state for `useActionState`, because Next.js hides the message of a thrown error in production. They throw unexpected errors
+- Server actions return expected failures, like invalid form data, as serializable state for `useActionState`, because Next.js hides the message of a thrown error in production. `createServerAction()` does this, see below
 - Make http requests with `request()` from `lib/request/request.ts`, not with `fetch`. It throws a subclass of `RequestError` from `lib/request/errors.ts`, like `HttpError` or `TimeoutError`, and handles timeouts, retries and unread response bodies
 - Send credentials in headers, like `Authorization`, never in search params, which end up in logs and error messages. If an api only accepts them as search params, redact them where that api is called
+
+## Server actions
+
+Create server actions with `createServerAction()` from `lib/server-actions/create-server-action.ts`, in a file with `"use server"`, and use them with `useActionState`, starting from `idleActionState`.
+
+- `schema` validates the form data. It is created for each request with `t`, so that its messages are translated. Invalid input returns `fieldErrors`, which React Aria's `<Form validationErrors>` shows on the fields
+- Throw an `ActionError` with a translated message for an expected failure. Other errors are logged, and the user sees a generic message
+- The error state contains the submitted values, because a form resets after its action. Use them as the `defaultValue` of each field, and list fields like passwords in `omitValues`, so that their values are not sent back
+- Server actions are public endpoints, so check authorization in each handler, also when only authorized users see the form
+- `next/root-params` throws in server actions, so use the `locale` from the handler's context
 
 ## Code comments
 

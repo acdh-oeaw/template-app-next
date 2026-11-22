@@ -101,6 +101,8 @@
 - [ ] Pages
   - [x] Imprint, from the ACDH imprint service
   - [ ] Accessibility declaration
+- [ ] Text typed into a React Aria `TextField` before hydration seems to be lost (seen once in the server action e2e
+      tests, which now wait for hydration). Reproduce on a slow connection, and check whether it affects other fields
 - [ ] Devcontainer, issue templates
 
 ## Maybe

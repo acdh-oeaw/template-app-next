@@ -15,6 +15,7 @@ const staticPages = {
 	"/e2e/error-boundary": "exclude",
 	"/e2e/not-found": "exclude",
 	"/e2e/search-params": "exclude",
+	"/e2e/server-action": "exclude",
 	"/imprint": "include",
 } satisfies Record<StaticRoute, "exclude" | "include">;
 

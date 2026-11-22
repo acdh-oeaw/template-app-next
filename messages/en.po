@@ -115,3 +115,18 @@ msgstr "Skip to main content"
 msgctxt "ejEGdx"
 msgid "Home"
 msgstr "Home"
+
+#: lib/server-actions/create-server-action.ts
+msgctxt "-Ybav6"
+msgid "Please correct the highlighted fields."
+msgstr "Please correct the highlighted fields."
+
+#: lib/server-actions/create-server-action.ts
+msgctxt "xB2nNC"
+msgid "The service is not available. Please try again later."
+msgstr "The service is not available. Please try again later."
+
+#: lib/server-actions/create-server-action.ts
+msgctxt "IULR3V"
+msgid "An unexpected error occurred. Please try again."
+msgstr "An unexpected error occurred. Please try again."
