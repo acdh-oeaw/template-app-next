@@ -46,6 +46,25 @@ for (const { prefix, lang, og, alternate, meta, imprint } of locales) {
 			});
 		}
 
+		test("links a localized OpenGraph image", async ({ baseURL, page, request }) => {
+			/** The imprint page sets its own `openGraph`, which replaces that of the layout. */
+			for (const pathname of [prefix, `${prefix}/imprint`]) {
+				await page.goto(pathname);
+
+				const url = await getMeta(page, "og:image").getAttribute("content");
+				expect(url).toMatch(/^https?:\/\//);
+				expect(new URL(url ?? "", baseURL).pathname).toBe(`${prefix}/og-image`);
+				await expect(getMeta(page, "og:image:alt")).toHaveAttribute("content", meta.title);
+				await expect(getMeta(page, "og:image:width")).toHaveAttribute("content", "1200");
+				await expect(getMeta(page, "og:image:height")).toHaveAttribute("content", "630");
+				await expect(getMeta(page, "twitter:card")).toHaveAttribute("content", "summary_large_image");
+			}
+
+			const response = await request.get(`${prefix}/og-image`);
+			expect(response.status()).toBe(200);
+			expect(response.headers()["content-type"]).toBe("image/png");
+		});
+
 		test("describes the website with JSON-LD", async ({ baseURL, page }) => {
 			await page.goto(`${prefix}/imprint`);
 

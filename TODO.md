@@ -2,14 +2,13 @@
 
 ## Next up
 
-- [ ] Site metadata
+- [x] Site metadata
   - [x] Localized `generateMetadata` in `app/[locale]/layout.tsx` (title template, description, `metadataBase`)
   - [x] `manifest.ts`
   - [x] `robots.ts`, `sitemap.ts`
   - [x] JSON-LD (`WebSite`, with social links as `sameAs`)
   - [x] Validate `content/*/metadata.json`
-  - [ ] OpenGraph images. `next/root-params` throws in metadata image routes, which are route handlers, so validate the
-        locale from `params` with `hasLocale()` and pass it explicitly, like `getTranslations({ locale })`
+  - [x] OpenGraph images, from a route handler in `app/[locale]/og-image/`, not `opengraph-image.tsx`
 - [ ] Not-found behavior (measured on Next.js 16.4.5 production builds)
   - [ ] `notFound()` in a page or layout is not server-rendered: 404 with an empty `__next_error__` shell (no `lang`,
         title or landmarks), and the localized `not-found.tsx` only renders client-side
