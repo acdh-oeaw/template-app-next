@@ -104,6 +104,7 @@ Throw errors for failures, and return them only from server actions. Next.js is 
 - Don't wrap bugs, like an invalid url, in an error class: they throw as they are
 - Server actions return expected failures, like invalid form data, as serializable state for `useActionState`, because Next.js hides the message of a thrown error in production. `createServerAction()` does this, see below
 - Make http requests with `request()` from `lib/request/request.ts`, not with `fetch`. It throws a subclass of `RequestError` from `lib/request/errors.ts`, like `HttpError` or `TimeoutError`, and handles timeouts, retries and unread response bodies
+- `request()` always passes a `signal` to `fetch`, which opts out of the memoization of identical `GET` requests during a render. Wrap a request that several components make in a function with `"use cache"`, or with React's `cache()` for data that must not be cached across requests. `cache()` from outside is not shared with `"use cache"` functions
 - Send credentials in headers, like `Authorization`, never in search params, which end up in logs and error messages. If an api only accepts them as search params, redact them where that api is called
 
 ## Server actions
