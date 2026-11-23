@@ -57,9 +57,9 @@ server action validates, rate limits and translates, and calls `sendContactMessa
 `CONTACT_FORM_RECIPIENT` variables, and an smtp server that is allowed to send from `EMAIL_FROM`.
 
 To remove it, delete `app/[locale]/contact/`, `services/contact/`, `lib/mail/` and `e2e/contact.test.ts`, remove the
-contact page from `lib/navigation/main-navigation.ts`, `app/sitemap.ts`, `e2e/navigation.test.ts`,
-`e2e/accessibility.test.ts` and `e2e/seo.test.ts`, the variables from `configs/env.config.ts` and
-`.github/workflows/validate.yaml`, the `mailpit` service from `docker/compose.yaml`, and the `nodemailer` dependency.
+contact page from `lib/navigation/main-navigation.ts`, `lib/navigation/static-pages.ts` and `e2e/navigation.test.ts`,
+the variables from `configs/env.config.ts` and `.github/workflows/validate.yaml`, the `mailpit` service from
+`docker/compose.yaml`, and the `nodemailer` dependency.
 
 ## App shell
 

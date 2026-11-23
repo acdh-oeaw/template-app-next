@@ -1,17 +1,6 @@
 import { expect, type Page, test } from "@playwright/test";
 
-const pathnames = [
-	"/en",
-	"/en/about",
-	"/en/accessibility",
-	"/en/contact",
-	"/en/imprint",
-	"/de",
-	"/de/about",
-	"/de/accessibility",
-	"/de/contact",
-	"/de/imprint",
-];
+import { sitemapPages } from "#/e2e/pages.ts";
 
 interface SitemapEntry {
 	url: string;
@@ -83,7 +72,7 @@ test.describe("sitemap.xml", () => {
 		const entries = await getSitemap(page);
 		const listed = entries.map((entry) => new URL(entry.url).pathname);
 
-		expect(listed.toSorted()).toStrictEqual(pathnames.toSorted());
+		expect(listed.toSorted()).toStrictEqual(sitemapPages.toSorted());
 	});
 
 	test("alternates are reciprocal", async ({ page }) => {
@@ -101,7 +90,7 @@ test.describe("sitemap.xml", () => {
 		}
 	});
 
-	for (const pathname of pathnames) {
+	for (const pathname of sitemapPages) {
 		test(`${pathname} matches the page metadata`, async ({ page }) => {
 			const entries = await getSitemap(page);
 			const entry = entries.find((candidate) => new URL(candidate.url).pathname === pathname);

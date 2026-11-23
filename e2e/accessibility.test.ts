@@ -1,20 +1,9 @@
 import { AxeBuilder } from "@axe-core/playwright";
 import { expect, test } from "@playwright/test";
 
-const pathnames = [
-	"/en",
-	"/en/about",
-	"/en/accessibility",
-	"/en/contact",
-	"/en/imprint",
-	"/en/e2e/search-params?q=vienna&page=2",
-	"/en/does-not-exist",
-	"/de",
-	"/de/about",
-	"/de/accessibility",
-	"/de/contact",
-	"/de/imprint",
-];
+import { sitemapPages } from "#/e2e/pages.ts";
+
+const pathnames = [...sitemapPages, "/en/e2e/search-params?q=vienna&page=2", "/en/does-not-exist"];
 
 const tags = ["wcag2a", "wcag2aa", "wcag21a", "wcag21aa", "wcag22aa", "best-practice"];
 
