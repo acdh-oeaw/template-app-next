@@ -13,6 +13,8 @@ export const staticPages = {
 	"/e2e/search-params": "exclude",
 	"/e2e/server-action": "exclude",
 	"/imprint": "include",
+	/** Results depend on the query, so crawlers should find the documents themselves instead. */
+	"/search": "exclude",
 } satisfies Record<StaticRoute, "exclude" | "include">;
 
 export const sitemapPathnames = (Object.keys(staticPages) as Array<StaticRoute>).filter(

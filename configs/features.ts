@@ -26,4 +26,18 @@ export const features = {
 			"Remove the contact form section from `readme.md`.",
 		],
 	},
+	search: {
+		description:
+			"Full-text search page with Typesense, with a Typesense server in local development. A skeleton to build on.",
+		paths: ["app/[locale]/search/", "lib/typesense/", "scripts/search-index.ts", "services/search/"],
+		dependencies: [],
+		composeServices: ["typesense"],
+		steps: [
+			"Remove the Typesense variables from the `env` of the `e2e` job in `.github/workflows/validate.yaml`.",
+			"Remove the `search:index` script from `package.json`, and `scripts/search-index.ts` from the overrides in `configs/oxlint.config.ts`.",
+			"Remove the search link from the expected links in `e2e/navigation.test.ts`, and `/en/search` from `e2e/accessibility.test.ts`.",
+			"Remove the `typesense` volume from `docker/compose.yaml`.",
+			"Remove the search section from `readme.md`.",
+		],
+	},
 } satisfies Record<string, Feature>;

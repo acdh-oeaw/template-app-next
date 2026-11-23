@@ -164,7 +164,12 @@ const config = {
 			},
 		},
 		{
-			files: [fromRoot("next.config.ts"), fromRoot("instrumentation.ts"), fromRoot("lib/env/**")],
+			files: [
+				fromRoot("next.config.ts"),
+				fromRoot("instrumentation.ts"),
+				fromRoot("lib/env/**"),
+				fromRoot("scripts/search-index.ts"),
+			],
 			rules: {
 				"no-restricted-imports": ["error", { paths: restrictedPaths, patterns: restrictedPatterns }],
 			},

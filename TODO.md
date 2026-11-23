@@ -35,6 +35,12 @@
         requests to whatever port a test header names
 - [ ] End-to-end test for sending a contact message: run Mailpit as a service container in the `e2e` job, and check
       the message with its api. Locally, this needs `docker compose up` before `bun run test:e2e`
+- [ ] Search: iterate on the Typesense skeleton in `services/search/` and `lib/typesense/`
+  - [ ] A search-only api key for the app, scoped to the collection, and the admin key only for indexing
+  - [ ] Index the app's data instead of sample documents, and swap collections with an alias, so that reindexing
+        does not leave the search empty
+  - [ ] Highlighting, facets and filters, as search params in `app/[locale]/search/search-params.ts`
+  - [ ] End-to-end test with Typesense as a service container in the `e2e` job, like for Mailpit
 - [ ] Browser e2e test for the not-found and error pages in `e2e/errors.test.ts` (curl only sees status codes, because
       of the client-rendered shell)
   - [x] `/en/does-not-exist`: 404 with `global-not-found.tsx`, server-rendered

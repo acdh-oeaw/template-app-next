@@ -3,6 +3,7 @@ import * as v from "valibot";
 import { base64ByteLength } from "#/lib/env/actions.ts";
 import { generate } from "#/lib/env/generate.ts";
 import { mailEnvEntries } from "#/lib/mail/env-schema.ts";
+import { typesenseEnvEntries } from "#/lib/typesense/env-schema.ts";
 import { contactEnvEntries } from "#/services/contact/env-schema.ts";
 
 /** Available in client and server code, inlined at build time. */
@@ -58,6 +59,7 @@ export const serverEnvSchema = v.object({
 	),
 	...mailEnvEntries,
 	...contactEnvEntries,
+	...typesenseEnvEntries,
 });
 
 export type PublicEnv = v.InferOutput<typeof publicEnvSchema>;

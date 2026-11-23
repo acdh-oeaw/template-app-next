@@ -64,6 +64,19 @@ server action validates, rate limits and translates, and calls `sendContactMessa
 The `EMAIL_*` variables default to the smtp server of the ÖAW, which accepts mail from the ACDH cluster without
 credentials, and sends from `noreply@oeaw.ac.at`.
 
+## Search
+
+[`app/[locale]/search/`](app/[locale]/search/) searches a [Typesense](https://typesense.org) collection through
+`searchDocuments()` from [`services/search/`](services/search/), with the client from
+[`lib/typesense/`](lib/typesense/). It is a skeleton to build on. In local development, start Typesense with
+`docker compose`, see [Local services](#local-services), and index the sample documents:
+
+```sh
+bun run search:index
+```
+
+Until the collection exists, the page says that the search index is not available yet.
+
 ## App shell
 
 The header and footer are rendered in [`app/[locale]/layout.tsx`](app/[locale]/layout.tsx), and each page renders its own

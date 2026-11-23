@@ -92,6 +92,42 @@ msgctxt "QRccCM"
 msgid "Page not found"
 msgstr "Page not found"
 
+#: app/[locale]/search/page.tsx
+#: lib/navigation/main-navigation.ts
+msgctxt "xmcVZ0"
+msgid "Search"
+msgstr "Search"
+
+#: app/[locale]/search/page.tsx
+msgctxt "UD_BhG"
+msgid "Search term"
+msgstr "Search term"
+
+#: app/[locale]/search/page.tsx
+msgctxt "trnwe9"
+msgid "The search index is not available yet."
+msgstr "The search index is not available yet."
+
+#: app/[locale]/search/page.tsx
+msgctxt "DcxYpw"
+msgid "{count, plural, =0 {No results} =1 {1 result} other {# results}}"
+msgstr "{count, plural, =0 {No results} =1 {1 result} other {# results}}"
+
+#: app/[locale]/search/page.tsx
+msgctxt "ZATT08"
+msgid "Pagination"
+msgstr "Pagination"
+
+#: app/[locale]/search/page.tsx
+msgctxt "k9hDFZ"
+msgid "Previous page"
+msgstr "Previous page"
+
+#: app/[locale]/search/page.tsx
+msgctxt "rBj9Ib"
+msgid "Next page"
+msgstr "Next page"
+
 #: components/color-scheme/color-scheme-switcher.tsx
 msgctxt "-CwN9C"
 msgid "System"

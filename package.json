@@ -18,6 +18,7 @@
 		"lint:check": "bun lint",
 		"lint:fix": "bun lint --fix",
 		"prepare": "BUN_OPTIONS=--bun bun run --sequential env:sync types:generate",
+		"search:index": "bun scripts/search-index.ts",
 		"start": "next start",
 		"styles:check": "stylelint \"styles/**/*.css\"",
 		"styles:fix": "stylelint --fix \"styles/**/*.css\"",

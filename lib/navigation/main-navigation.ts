@@ -19,5 +19,6 @@ export async function getMainNavigation(locale: Locale): Promise<Array<Navigatio
 		{ kind: "link", href: href({ pathname: "/" }), label: t("Home") },
 		{ kind: "link", href: href({ pathname: "/about" }), label: t("About") },
 		{ kind: "link", href: href({ pathname: "/contact" }), label: t("Contact") },
+		{ kind: "link", href: href({ pathname: "/search" }), label: t("Search") },
 	];
 }

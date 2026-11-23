@@ -9,7 +9,7 @@ test.describe("main navigation", () => {
 		await page.goto("/en");
 
 		await expect(getNavigation(page, "Main")).toBeVisible();
-		await expect(getNavigation(page, "Main").getByRole("link")).toHaveText(["Home", "About", "Contact"]);
+		await expect(getNavigation(page, "Main").getByRole("link")).toHaveText(["Home", "About", "Contact", "Search"]);
 	});
 
 	test("is localized", async ({ page }) => {
@@ -20,6 +20,7 @@ test.describe("main navigation", () => {
 			"Startseite",
 			"Über uns",
 			"Kontakt",
+			"Suche",
 		]);
 		await expect(getNavigation(page, "Hauptnavigation").getByRole("link", { name: "Über uns" })).toHaveAttribute(
 			"href",
