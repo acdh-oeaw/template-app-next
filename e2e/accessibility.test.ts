@@ -5,12 +5,14 @@ const pathnames = [
 	"/en",
 	"/en/about",
 	"/en/accessibility",
+	"/en/contact",
 	"/en/imprint",
 	"/en/e2e/search-params?q=vienna&page=2",
 	"/en/does-not-exist",
 	"/de",
 	"/de/about",
 	"/de/accessibility",
+	"/de/contact",
 	"/de/imprint",
 ];
 

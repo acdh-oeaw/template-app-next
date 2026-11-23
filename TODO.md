@@ -33,6 +33,8 @@
         requests; unit tests for mapping errors to ui. Not `experimental.testProxy`: undocumented, no new features
         since 2024, only mocks request-time fetches (not prerendered or `"use cache"` data), and makes the server send
         requests to whatever port a test header names
+- [ ] End-to-end test for sending a contact message: run Mailpit as a service container in the `e2e` job, and check
+      the message with its api. Locally, this needs `docker compose up` before `bun run test:e2e`
 - [ ] Browser e2e test for the not-found and error pages in `e2e/errors.test.ts` (curl only sees status codes, because
       of the client-rendered shell)
   - [x] `/en/does-not-exist`: 404 with `global-not-found.tsx`, server-rendered

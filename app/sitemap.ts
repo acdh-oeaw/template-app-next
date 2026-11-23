@@ -11,6 +11,7 @@ const staticPages = {
 	"/": "include",
 	"/accessibility": "include",
 	"/about": "include",
+	"/contact": "include",
 	"/e2e/error": "exclude",
 	"/e2e/error-boundary": "exclude",
 	"/e2e/not-found": "exclude",

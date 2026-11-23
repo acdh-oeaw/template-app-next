@@ -4,10 +4,12 @@ const pathnames = [
 	"/en",
 	"/en/about",
 	"/en/accessibility",
+	"/en/contact",
 	"/en/imprint",
 	"/de",
 	"/de/about",
 	"/de/accessibility",
+	"/de/contact",
 	"/de/imprint",
 ];
 

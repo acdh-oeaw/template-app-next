@@ -79,6 +79,18 @@ const envParsePath = {
 	message: "Import `env` from `#/lib/env/server.ts` or `#/lib/env/public.ts`.",
 };
 
+/** Services hold the business logic, independent of the framework, so they can be called and tested without it. */
+const frameworkPatterns = [
+	{
+		group: ["next", "next/**", "next-intl", "next-intl/**", "react", "react/**", "react-dom", "react-dom/**"],
+		message: "Services are framework-agnostic. Handle framework concerns, like translations, in the caller.",
+	},
+	{
+		group: ["server-only", "#/app/**", "#/components/**", "#/lib/env/**", "#/lib/server-actions/**"],
+		message: "Services are framework-agnostic. Pass configuration, like `env` values, as dependencies.",
+	},
+];
+
 const configsPattern = {
 	group: ["#/configs/*"],
 	message: "Import from `#/lib/*` instead.",
@@ -155,6 +167,18 @@ const config = {
 			files: [fromRoot("next.config.ts"), fromRoot("instrumentation.ts"), fromRoot("lib/env/**")],
 			rules: {
 				"no-restricted-imports": ["error", { paths: restrictedPaths, patterns: restrictedPatterns }],
+			},
+		},
+		{
+			files: [fromRoot("services/**")],
+			rules: {
+				"no-restricted-imports": [
+					"error",
+					{
+						paths: [...restrictedPaths, envParsePath],
+						patterns: [...restrictedPatterns, configsPattern, ...frameworkPatterns],
+					},
+				],
 			},
 		},
 		{

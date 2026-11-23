@@ -1,0 +1,8 @@
+name: template-app-next
+
+services:
+  mailpit:
+    image: axllent/mailpit:v1.29.7
+    ports:
+      - ${EMAIL_SMTP_PORT:?}:1025
+      - 8025:8025

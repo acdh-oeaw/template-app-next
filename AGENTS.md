@@ -96,7 +96,7 @@ A page that reads search params defines them in a `search-params.ts` next to its
 
 ## Errors
 
-Throw errors for failures, and return them only from server actions. Next.js is built around thrown errors: `notFound()` and `redirect()` throw, error boundaries render `error.tsx`, and an error while prerendering fails the build. `"use cache"` functions cannot return class instances, so not a `Result` wrapper either.
+Throw errors for failures. Only server actions return them, as state, and services return expected outcomes as values (see [Services](#services)). Next.js is built around thrown errors: `notFound()` and `redirect()` throw, error boundaries render `error.tsx`, and an error while prerendering fails the build. `"use cache"` functions cannot return class instances, so not a `Result` wrapper either.
 
 - Define an error class for each failure that a caller may handle, with a literal `name`, like `class SiteMetadataError extends Error { override readonly name = "SiteMetadataError"; }`. Callers narrow with `instanceof`
 - Pass the original error as `cause` when wrapping it
@@ -117,6 +117,22 @@ Create server actions with `createServerAction()` from `lib/server-actions/creat
 - Server actions are public endpoints, so check authorization in each action, also when only authorized users see the form. Check it in `guard`, which runs before `schema`, so that async checks in the schema, like whether a name is taken, don't run for unauthorized callers. Return what `schema` and `handler` need from the check, like the user, so they receive it in their context instead of loading it again
 - Rate limit actions that can be abused, like sign-in or contact forms, with `rateLimit()` from `lib/server-actions/rate-limit.ts` in `guard`, and a limiter created with `createRateLimiter()` at module level. It limits the client address by default, so call it before authorization to slow down guessing passwords, or pass the user id as key after it
 - `next/root-params` throws in server actions, so use the `locale` from the handler's context
+
+## Services
+
+Put business logic in framework-agnostic modules in `services/<feature>/`, like `services/contact/`. Pages and server actions are thin adapters: they read the request, check authorization, validate and translate, call a service, and map its result to the framework, like `notFound()`, `redirect()` or an `ActionError`. `lib/` holds infrastructure, like `request()` or `Mailer`, and framework helpers.
+
+- `bun lint` forbids imports of Next.js, React, next-intl, `server-only`, `app/`, `components/`, `lib/env/` and `lib/server-actions/` in `services/`. Pass configuration and clients, like `env` values or a `Mailer`, as a dependencies parameter, so that tests pass fakes instead of mocking modules
+- Services return no user-facing messages, because translating needs the locale. Return data, and translate in the adapter
+- Test services with `bun test`
+
+### Errors in services
+
+Return expected outcomes, which the caller decides how to handle, as a discriminated union, like `{ status: "sent" } | { status: "spam" }`. Throw failures, like an unreachable server, or a bug. Map the outcomes with a `switch` in the adapter: `typescript/switch-exhaustiveness-check` and `noImplicitReturns` report each adapter that misses a new outcome.
+
+- Outcomes are plain objects, so that they serialize through `"use cache"`. Name the states, as in React state, rather than returning booleans. `T | null` is fine when "not found" is the only outcome
+- Don't add a Result type library. Failures reach an error boundary or `createServerAction()`, which handle them generically, so only the outcomes that callers branch on belong in the return type
+- Don't catch a failure to return it as an outcome, unless callers handle it differently from other failures
 
 ## Code comments
 

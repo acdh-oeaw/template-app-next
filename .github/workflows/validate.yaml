@@ -51,6 +51,10 @@ jobs:
       # `bun run env:sync` does not create `.env.local` in CI.
       NEXT_PUBLIC_APP_BASE_URL: http://localhost:3000
       SERVICE_ID: "21966"
+      CONTACT_FORM_RECIPIENT: contact@example.com
+      EMAIL_FROM: noreply@example.com
+      EMAIL_SMTP_HOST: localhost
+      EMAIL_SMTP_PORT: "1025"
     steps:
       - uses: actions/checkout@v7
         with:

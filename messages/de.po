@@ -23,6 +23,57 @@ msgctxt "U6oP-U"
 msgid "Accessibility statement"
 msgstr "Erklärung zur Barrierefreiheit"
 
+#: app/[locale]/contact/actions.ts
+msgctxt "Fh7omD"
+msgid "Enter your name."
+msgstr "Geben Sie Ihren Namen ein."
+
+#: app/[locale]/contact/actions.ts
+msgctxt "eSg221"
+msgid "Enter your email address."
+msgstr "Geben Sie Ihre E-Mail-Adresse ein."
+
+#: app/[locale]/contact/actions.ts
+msgctxt "TBZNYA"
+msgid "Enter a valid email address."
+msgstr "Geben Sie eine gültige E-Mail-Adresse ein."
+
+#: app/[locale]/contact/actions.ts
+msgctxt "qNEWu-"
+msgid "Enter a message."
+msgstr "Geben Sie eine Nachricht ein."
+
+#: app/[locale]/contact/contact-form.tsx
+msgctxt "HAlOn1"
+msgid "Name"
+msgstr "Name"
+
+#: app/[locale]/contact/contact-form.tsx
+msgctxt "hJZwTS"
+msgid "Email address"
+msgstr "E-Mail-Adresse"
+
+#: app/[locale]/contact/contact-form.tsx
+msgctxt "T7Ry38"
+msgid "Message"
+msgstr "Nachricht"
+
+#: app/[locale]/contact/contact-form.tsx
+msgctxt "YU1Nt9"
+msgid "Thank you, your message has been sent."
+msgstr "Vielen Dank, Ihre Nachricht wurde gesendet."
+
+#: app/[locale]/contact/contact-form.tsx
+msgctxt "9WRlF4"
+msgid "Send"
+msgstr "Senden"
+
+#: app/[locale]/contact/page.tsx
+#: lib/navigation/main-navigation.ts
+msgctxt "zFegDD"
+msgid "Contact"
+msgstr "Kontakt"
+
 #: app/[locale]/error.tsx
 #: app/global-error.tsx
 msgctxt "JqiqNj"
