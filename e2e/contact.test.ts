@@ -1,16 +1,12 @@
 import { expect, type Page, test } from "@playwright/test";
 
+import { waitForHydration } from "#/e2e/hydration.ts";
+
 const pathname = "/en/contact";
 
-/**
- * Typing before hydration is lost. The locale switcher adds search params in the browser, inside a suspense boundary,
- * which hydrates after the form.
- */
 async function gotoHydrated(page: Page): Promise<void> {
-	await page.goto(`${pathname}?hydrated`);
-	await expect(
-		page.getByRole("banner").getByRole("navigation", { name: "Language" }).getByRole("link").first(),
-	).toHaveAttribute("href", /\?hydrated=?$/);
+	await page.goto(pathname);
+	await waitForHydration(page.getByRole("main").getByRole("button", { name: "Send" }));
 }
 
 async function fillForm(page: Page, values: { name: string; email: string; message: string }): Promise<void> {

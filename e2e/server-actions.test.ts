@@ -1,5 +1,7 @@
 import { expect, type Page, test } from "@playwright/test";
 
+import { waitForHydration } from "#/e2e/hydration.ts";
+
 const pathname = "/en/e2e/server-action";
 
 function getNameField(page: Page) {
@@ -15,10 +17,9 @@ function getPasswordField(page: Page) {
 	return page.getByRole("main").getByLabel("Password", { exact: true });
 }
 
-/** Typing before hydration is lost, see the fixture. */
 async function gotoHydrated(page: Page, path: string): Promise<void> {
 	await page.goto(path);
-	await expect(page.getByRole("main").getByText("Hydrated")).toBeVisible();
+	await waitForHydration(page.getByRole("main").getByRole("button", { name: "Succeed", exact: true }));
 }
 
 async function submit(page: Page, button: string): Promise<void> {

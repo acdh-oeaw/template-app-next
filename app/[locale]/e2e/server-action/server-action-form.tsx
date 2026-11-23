@@ -1,6 +1,6 @@
 "use client";
 
-import { useActionState, useSyncExternalStore } from "react";
+import { useActionState } from "react";
 import { FieldError, Form, Input, Label, TextField } from "react-aria-components";
 
 import { serverActionFixture } from "#/app/[locale]/e2e/server-action/actions.ts";
@@ -12,13 +12,6 @@ export function ServerActionForm(): React.ReactNode {
 	const name = state.status === "error" ? state.values.name : undefined;
 	const nickname = state.status === "error" ? state.values.nickname : undefined;
 	const password = state.status === "error" ? state.values.password : undefined;
-
-	/** Typing before hydration is lost when React Aria takes over the field, so tests wait for this. */
-	const hydration = useSyncExternalStore(
-		subscribe,
-		() => "hydrated",
-		() => "server",
-	);
 
 	return (
 		<Form action={action} validationErrors={state.status === "error" ? state.fieldErrors : undefined}>
@@ -48,8 +41,6 @@ export function ServerActionForm(): React.ReactNode {
 				</p>
 			) : null}
 
-			{hydration === "hydrated" ? <p>Hydrated</p> : null}
-
 			<button name="outcome" type="submit" value="success">
 				Succeed
 			</button>
@@ -70,8 +61,4 @@ export function ServerActionForm(): React.ReactNode {
 			</button>
 		</Form>
 	);
-}
-
-function subscribe(): () => void {
-	return () => undefined;
 }
