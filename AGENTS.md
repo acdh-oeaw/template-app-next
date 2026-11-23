@@ -9,6 +9,10 @@ Use Bun instead of Node.js, npm, pnpm or yarn.
 - Environment variables from `.env` files are loaded automatically, so don't use `dotenv`
 - The `dev` script sets `BUN_OPTIONS=--no-env-file`, so `next dev` loads `.env` files itself and reloads them on change (see https://github.com/oven-sh/bun/issues/47916). After upgrading Next.js, follow the checks in `readme.md`
 
+## Translations
+
+next-intl extracts the messages of `t()` into `messages/*.po`, in `next dev` and `next build`. Run `bun run i18n:extract` to update them without either, like after adding or removing messages, then translate the new entries, which have an empty `msgstr`.
+
 ## Patched dependencies
 
 Some dependencies are patched via `patchedDependencies` in `package.json`, with patch files in `patches/`.

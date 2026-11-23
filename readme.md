@@ -100,6 +100,12 @@ To remove it, delete `components/color-scheme/` and `e2e/color-scheme.test.ts`, 
 `suppressHydrationWarning` from `components/html-document.tsx`, `<ColorSchemeSwitcher />` from `components/header.tsx`, and the
 `data-color-scheme` rules from `styles/index.css`.
 
+## Translations
+
+Messages are written in the source locale, with `useExtracted()` or `getExtracted()` from next-intl, and extracted into
+`messages/*.po`. `next dev` and `next build` extract them, and `bun run i18n:extract` does so without starting Next.js.
+Entries with an empty `msgstr` still need a translation.
+
 ## Localized urls
 
 Pages are in `app/[locale]/`, and every url starts with a language prefix, like `/en/about`. Routes in `href()` leave

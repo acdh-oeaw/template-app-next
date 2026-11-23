@@ -3,7 +3,7 @@ import type { NextConfig } from "next";
 import createNextIntlPlugin from "next-intl/plugin";
 import { PHASE_DEVELOPMENT_SERVER, PHASE_PRODUCTION_BUILD } from "next/constants";
 
-import { defaultLocale, getLanguage, locales } from "#/configs/i18n.config.ts";
+import { extractorConfig, getLanguage, locales } from "#/configs/i18n.config.ts";
 import { assertPublicEnv, createServerEnv } from "#/lib/env/parse.ts";
 
 const languages = Array.from(new Set(locales.map((locale) => getLanguage(locale))));
@@ -17,16 +17,7 @@ const localeOptimization = optimizeLocales.turbopack([
 const plugins: Array<(config: NextConfig) => NextConfig> = [
 	createNextIntlPlugin({
 		requestConfig: "./lib/i18n/request.ts",
-		experimental: {
-			extract: true,
-			messages: {
-				format: "po",
-				locales: languages,
-				path: "./messages",
-				sourceLocale: getLanguage(defaultLocale),
-			},
-			srcPath: ["./app", "./components", "./lib"],
-		},
+		experimental: extractorConfig,
 	}),
 ];
 
