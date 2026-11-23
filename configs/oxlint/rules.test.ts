@@ -68,7 +68,9 @@ async function resolve(names: Array<string>): Promise<Set<string>> {
 	const directory = await fs.mkdtemp(path.join(os.tmpdir(), "oxlint-rules-"));
 	try {
 		const rules = Object.fromEntries(names.map((name) => [name, "error"]));
-		const plugins = [...new Set(names.map((name) => pluginOf(name)))].filter((plugin) => !plugin.startsWith("bun"));
+		const plugins = Array.from(new Set(names.map((name) => pluginOf(name)))).filter(
+			(plugin) => !plugin.startsWith("bun"),
+		);
 		await Bun.write(path.join(directory, ".oxlintrc.json"), JSON.stringify({ plugins, rules }));
 		await Bun.write(path.join(directory, "index.ts"), "");
 		const output = JSON.parse(await bunLint(["--print-config", "index.ts"], directory)) as Config;
@@ -104,7 +106,9 @@ describe("oxlint config", () => {
 	/** A Bun or plugin upgrade can add rules, which stay off until they are configured. */
 	afterAll(async () => {
 		const names = new Set(configured);
-		const missing = [...(await available)].filter((name) => !names.has(name)).toSorted();
+		const missing = Array.from(await available)
+			.filter((name) => !names.has(name))
+			.toSorted();
 		if (missing.length > 0) {
 			// oxlint-disable-next-line no-console -- reports new rules without failing the tests
 			console.warn(`Rules not configured in \`configs/oxlint/\`:\n${missing.join("\n")}`);
