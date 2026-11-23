@@ -34,6 +34,11 @@ async function createImage(locale: Locale): Promise<ArrayBuffer> {
 
 	const meta = await getSiteMetadata(locale);
 
+	/**
+	 * Not `import.meta.resolve("#/app/icon.svg")`, which Next.js does not support.
+	 *
+	 * @see {@link https://github.com/vercel/next.js/issues/75292}
+	 */
 	const logo = await readFile(join(process.cwd(), "app/icon.svg"));
 	const logoSrc = `data:image/svg+xml;base64,${logo.toString("base64")}`;
 
