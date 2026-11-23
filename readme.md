@@ -164,20 +164,25 @@ the routes as they are, and the navigation functions wrap Next.js instead of nex
 `bun check` reports every `href()` call, because no route starts with `/[locale]` anymore.
 
 1. Move everything in `app/[locale]/` to `app/`, run `bun run types:generate`, and update `PageProps<"/[locale]/…">`,
-   `LayoutProps<"/[locale]">` and imports from `#/app/[locale]/`
-2. In `app/layout.tsx`, remove `generateStaticParams()`, the `params` and the `hasLocale()` checks, and use
-   `defaultLocale`
+   `LayoutProps<"/[locale]">`, `RouteContext<"/[locale]/…">`, imports from `#/app/[locale]/`, and the paths in
+   `configs/features.ts`, which `bun test` checks. Relative file urls now point one directory too far, like
+   `new URL("../../icon.svg", import.meta.url)` in `app/og-image/route.tsx`, which only the build reports. If
+   `bun check` reports errors in `.next/dev/types/validator.ts`, delete it
+2. In `app/layout.tsx` and `app/og-image/route.tsx`, remove `generateStaticParams()`, the `params` and the
+   `hasLocale()` checks, and use `defaultLocale`
 3. Keep one locale in `configs/i18n.config.ts`, delete the other message files and content, like `messages/de.po` and
    `content/de/`, and return `defaultLocale` from `lib/i18n/request.ts`, instead of reading `next/root-params`
 4. Delete `proxy.ts`, `lib/i18n/routing.ts` and `components/locale-switcher/`, and remove `<LocaleSwitcher />` from
    `components/header.tsx`
 5. In `lib/navigation/href.ts`, change the root param of `Routes` from `"locale"` to `never`
-6. In `lib/navigation/navigation.ts`, wrap `next/navigation` instead of next-intl, without the `Link` export. Keep the
-   `locale` param of `getPathname()` and `redirect()`, so that their callers stay unchanged: `getPathname()` returns the
-   href, and `redirect()` ignores the locale. The router accepts relative hrefs with all options of `next/navigation`
+6. In `lib/navigation/navigation.ts` and `lib/navigation/navigation-hooks.ts`, wrap `next/navigation` instead of
+   next-intl, without the `Link` export. Keep the `locale` param of `getPathname()` and `redirect()`, so that their
+   callers stay unchanged: `getPathname()` returns the href, and `redirect()` ignores the locale. The router accepts
+   relative hrefs with all options of `next/navigation`
 7. In `components/link.tsx`, render `next/link`, and remove the `locale` prop. Remove `Link` from
    `#/lib/navigation/navigation.ts` from `linkPaths` in `configs/oxlint.config.ts`
-8. Remove the Open Graph `alternateLocale` from `lib/metadata/create-page-metadata.ts`, which is always empty.
+8. Remove the Open Graph `alternateLocale` from `lib/metadata/create-page-metadata.ts`, which is always empty, and use
+   `/og-image` as the url of the Open Graph image instead of `prefixes`.
    Optionally, remove the `hreflang` alternates, which now only list the page itself and `x-default`: delete
    `lib/i18n/get-alternate-languages.ts`, and remove `alternates.languages` from `createPageMetadata()` and
    `app/sitemap.ts`
@@ -185,7 +190,8 @@ the routes as they are, and the navigation functions wrap Next.js instead of nex
    the removed locale. Update the fixture path in `AGENTS.md` and this readme
 10. Delete `e2e/i18n.test.ts` and `e2e/locale-switcher.test.ts`, remove the locale prefixes and the tests for other
     locales from the other end-to-end tests, and update comments that mention `[locale]`, next-intl routing or locale
-    prefixes
+    prefixes. This includes the tests for invalid and internal locales in `e2e/errors.test.ts`, whose `test.fail()`
+    cases pass without i18n routing, and the test for reciprocal alternates in `e2e/seo.test.ts`
 
 ## End-to-end tests
 
