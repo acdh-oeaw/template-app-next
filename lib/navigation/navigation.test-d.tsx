@@ -6,7 +6,8 @@
 import { searchParamsCodec } from "#/app/[locale]/e2e/search-params/search-params.ts";
 import { Link } from "#/components/link.tsx";
 import { type AnyHref, externalHref, type Href, href, type RelativeHref, type Route } from "#/lib/navigation/href.ts";
-import { getPathname, redirect, useRouter } from "#/lib/navigation/navigation.ts";
+import { useRouter } from "#/lib/navigation/navigation-hooks.ts";
+import { getPathname, redirect } from "#/lib/navigation/navigation.ts";
 import { createSearchParamsCodec, encodeSearchParams, searchParam } from "#/lib/navigation/search-params.ts";
 
 declare const page: Href;

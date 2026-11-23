@@ -6,8 +6,7 @@ import { headers } from "next/headers";
 import { unstable_rethrow as rethrow } from "next/navigation";
 import * as v from "valibot";
 
-import { defaultLocale, type Locale } from "#/lib/i18n/locales.ts";
-import { routing } from "#/lib/i18n/routing.ts";
+import { defaultLocale, type Locale, locales } from "#/lib/i18n/locales.ts";
 import { isServiceUnavailableError } from "#/lib/request/errors.ts";
 import { ActionError } from "#/lib/server-actions/action-error.ts";
 import type { ActionState, ActionStateError, FieldErrors, FormValues } from "#/lib/server-actions/action-state.ts";
@@ -132,12 +131,12 @@ function createEmptySchema() {
 
 /**
  * `next/root-params` throws in server actions, so read the locale from the header that the proxy sets for every request
- * it handles, including the requests of server actions.
+ * it handles, including the requests of server actions. Without i18n routing, there is no proxy, and no header.
  */
 async function getActionLocale(): Promise<Locale> {
 	const locale = (await headers()).get("x-next-intl-locale");
 
-	return hasLocale(routing.locales, locale) ? locale : defaultLocale;
+	return hasLocale(locales, locale) ? locale : defaultLocale;
 }
 
 function createErrorState(params: { fieldErrors: FieldErrors; message: string; values: FormValues }): ActionStateError {

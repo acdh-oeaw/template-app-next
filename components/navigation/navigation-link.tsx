@@ -5,7 +5,7 @@ import { type ReactNode, Suspense } from "react";
 import { Link } from "#/components/link.tsx";
 import { getAriaCurrent } from "#/lib/navigation/get-aria-current.ts";
 import type { Href } from "#/lib/navigation/href.ts";
-import { usePathname } from "#/lib/navigation/navigation.ts";
+import { usePathname } from "#/lib/navigation/navigation-hooks.ts";
 
 interface NavigationLinkProps {
 	children: ReactNode;

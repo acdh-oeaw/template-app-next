@@ -49,12 +49,17 @@ const linkPaths = [
 const navigationPaths = [
 	{
 		name: "next/navigation",
-		importNames: ["permanentRedirect", "redirect", "usePathname", "useRouter"],
+		importNames: ["permanentRedirect", "redirect"],
 		message: "Use `#/lib/navigation/navigation.ts`.",
 	},
 	{
+		name: "next/navigation",
+		importNames: ["usePathname", "useRouter"],
+		message: "Use `#/lib/navigation/navigation-hooks.ts`.",
+	},
+	{
 		name: "next-intl/navigation",
-		message: "Use `#/lib/navigation/navigation.ts`.",
+		message: "Use `#/lib/navigation/navigation.ts` or `#/lib/navigation/navigation-hooks.ts`.",
 	},
 	{
 		name: "#/lib/navigation/href.ts",
@@ -155,7 +160,7 @@ const config = {
 			},
 		},
 		{
-			files: [fromRoot("lib/navigation/navigation.ts")],
+			files: [fromRoot("lib/navigation/navigation.ts"), fromRoot("lib/navigation/navigation-hooks.ts")],
 			rules: {
 				"no-restricted-imports": [
 					"error",
