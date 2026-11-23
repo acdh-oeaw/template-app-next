@@ -1,4 +1,5 @@
 import { readFile } from "node:fs/promises";
+import { join } from "node:path";
 
 import { hasLocale } from "next-intl";
 import { cacheLife } from "next/cache";
@@ -33,7 +34,7 @@ async function createImage(locale: Locale): Promise<ArrayBuffer> {
 
 	const meta = await getSiteMetadata(locale);
 
-	const logo = await readFile(new URL("../../icon.svg", import.meta.url));
+	const logo = await readFile(join(process.cwd(), "app/icon.svg"));
 	const logoSrc = `data:image/svg+xml;base64,${logo.toString("base64")}`;
 
 	const image = new ImageResponse(

@@ -165,9 +165,8 @@ the routes as they are, and the navigation functions wrap Next.js instead of nex
 
 1. Move everything in `app/[locale]/` to `app/`, run `bun run types:generate`, and update `PageProps<"/[locale]/…">`,
    `LayoutProps<"/[locale]">`, `RouteContext<"/[locale]/…">`, imports from `#/app/[locale]/`, and the paths in
-   `configs/features.ts`, which `bun test` checks. Relative file urls now point one directory too far, like
-   `new URL("../../icon.svg", import.meta.url)` in `app/og-image/route.tsx`, which only the build reports. If
-   `bun check` reports errors in `.next/dev/types/validator.ts`, delete it
+   `configs/features.ts`, which `bun test` checks. If `bun check` reports errors in `.next/dev/types/validator.ts`,
+   delete it
 2. In `app/layout.tsx` and `app/og-image/route.tsx`, remove `generateStaticParams()`, the `params` and the
    `hasLocale()` checks, and use `defaultLocale`
 3. Keep one locale in `configs/i18n.config.ts`, delete the other message files and content, like `messages/de.po` and
