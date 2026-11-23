@@ -21,7 +21,7 @@ Some dependencies are patched via `patchedDependencies` in `package.json`, with 
 Define containers for third-party services in local development, like a Typesense server, in `docker/compose.yaml`, not in the `Dockerfile`, which builds the production image. See `readme.md`.
 
 - Services read variables from `.env.local`: run them with `docker compose --env-file .env.local --file docker/compose.yaml up --detach`
-- Define variables that a service shares with the app in `configs/env.config.ts`, so `bun run env:sync` generates them, and reference them as `${NAME:?}`
+- Define variables that a service shares with the app in `configs/env.config.ts`, or in the `env-schema.ts` of the feature that `configs/env.config.ts` spreads, so `bun run env:sync` generates them, and reference them as `${NAME:?}`
 
 ## Testing
 

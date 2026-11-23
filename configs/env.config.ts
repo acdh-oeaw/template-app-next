@@ -2,6 +2,8 @@ import * as v from "valibot";
 
 import { base64ByteLength } from "#/lib/env/actions.ts";
 import { generate } from "#/lib/env/generate.ts";
+import { mailEnvEntries } from "#/lib/mail/env-schema.ts";
+import { contactEnvEntries } from "#/services/contact/env-schema.ts";
 
 /** Available in client and server code, inlined at build time. */
 export const publicEnvSchema = v.object({
@@ -48,39 +50,14 @@ export const serverEnvSchema = v.object({
 		),
 		"0",
 	),
-	CONTACT_FORM_RECIPIENT: v.pipe(
-		v.string(),
-		v.email(),
-		v.description("Email address that receives the messages of the contact form."),
-		v.metadata({ dev: "contact@example.com" }),
-	),
-	EMAIL_FROM: v.pipe(
-		v.string(),
-		v.email(),
-		v.description("Email address that the app sends mail from, which the smtp server must be allowed to send from."),
-		v.metadata({ dev: "noreply@example.com" }),
-	),
-	EMAIL_SMTP_HOST: v.pipe(
-		v.string(),
-		v.nonEmpty(),
-		v.description("Host of the smtp server that sends mail."),
-		v.metadata({ dev: "localhost" }),
-	),
-	EMAIL_SMTP_PASSWORD: v.optional(v.pipe(v.string(), v.description("Password for the smtp server."))),
-	EMAIL_SMTP_PORT: v.pipe(
-		v.string(),
-		v.digits(),
-		v.transform(Number),
-		v.description("Port of the smtp server. Port 465 uses implicit TLS, other ports STARTTLS when available."),
-		v.metadata({ dev: "1025" }),
-	),
-	EMAIL_SMTP_USERNAME: v.optional(v.pipe(v.string(), v.description("User name for the smtp server."))),
 	SERVICE_ID: v.pipe(
 		v.string(),
 		v.digits(),
 		v.description("Redmine service id of the app, used to fetch the imprint from the ACDH imprint service."),
 		v.metadata({ dev: "21966" }),
 	),
+	...mailEnvEntries,
+	...contactEnvEntries,
 });
 
 export type PublicEnv = v.InferOutput<typeof publicEnvSchema>;

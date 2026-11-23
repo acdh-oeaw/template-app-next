@@ -19,7 +19,9 @@ is fixed.
 ## Environment variables
 
 All environment variables are defined as Valibot schemas in [`configs/env.config.ts`](configs/env.config.ts), which is the
-single source of truth.
+single source of truth. A removable feature defines its variables in an `env-schema.ts` next to its code, like
+[`lib/mail/env-schema.ts`](lib/mail/env-schema.ts), which `configs/env.config.ts` spreads into its schema, so that
+removing the feature leaves a type error at the spread.
 
 - **Public variables** start with `NEXT_PUBLIC_`. They are validated when bundling, and inlined into client and server
   bundles at build time. Import them from `#/lib/env/public.ts`.
