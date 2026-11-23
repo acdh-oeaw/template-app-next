@@ -134,6 +134,10 @@ Return expected outcomes, which the caller decides how to handle, as a discrimin
 - Don't add a Result type library. Failures reach an error boundary or `createServerAction()`, which handle them generically, so only the outcomes that callers branch on belong in the return type
 - Don't catch a failure to return it as an outcome, unless callers handle it differently from other failures
 
+## Optional features
+
+`configs/features.ts` lists the features that apps can remove. To remove one, follow `.claude/skills/remove-feature/SKILL.md`. When adding a feature, list it there, and keep its references findable by `bun check`: import its code and env schema, and link to its pages with `href()`, so that deleting its paths leaves type errors. List only what `bun check` cannot find in `steps`. Then remove the feature once on a throwaway branch, to check that the steps are complete.
+
 ## Code comments
 
 - Only add a comment when something needs explanation, like a non-obvious reason or constraint. Don't restate what the code does

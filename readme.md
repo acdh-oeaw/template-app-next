@@ -48,6 +48,13 @@ is defined once in [`configs/env.config.ts`](configs/env.config.ts) and generate
 variables as `${NAME:?}`, so `docker compose` fails when one is missing. `name` is set, because the project name
 otherwise defaults to the folder name, and containers and volumes of different apps would clash.
 
+## Optional features
+
+[`configs/features.ts`](configs/features.ts) lists the features that apps can remove, like the contact form, with their
+files, dependencies and local services. Remove a feature rather than disabling it: ask an agent to remove it, which
+follows the [`remove-feature` skill](.claude/skills/remove-feature/SKILL.md), or follow the steps there by hand.
+`bun test` checks that the list matches the repository.
+
 ## Contact form
 
 [`app/[locale]/contact/`](app/[locale]/contact/) is an example of the [layering in `AGENTS.md`](AGENTS.md#services): the
@@ -55,11 +62,6 @@ server action validates, rate limits and translates, and calls `sendContactMessa
 [`services/contact/`](services/contact/), which sends the mail with nodemailer, through the `Mailer` from
 [`lib/mail/`](lib/mail/). A hidden honeypot field catches simple bots. Deployments need the `EMAIL_*` and
 `CONTACT_FORM_RECIPIENT` variables, and an smtp server that is allowed to send from `EMAIL_FROM`.
-
-To remove it, delete `app/[locale]/contact/`, `services/contact/`, `lib/mail/` and `e2e/contact.test.ts`, remove the
-contact page from `lib/navigation/main-navigation.ts`, `lib/navigation/static-pages.ts` and `e2e/navigation.test.ts`,
-the variables from `configs/env.config.ts` and `.github/workflows/validate.yaml`, the `mailpit` service from
-`docker/compose.yaml`, and the `nodemailer` dependency.
 
 ## App shell
 
