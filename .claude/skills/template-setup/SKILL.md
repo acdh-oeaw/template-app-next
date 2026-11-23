@@ -1,5 +1,5 @@
 ---
-name: setup
+name: template-setup
 description: Set up a new app created from this template, by choosing which optional features to keep, naming the app, and replacing the template's defaults. Use when the user starts a new project from the template, or asks to set up or initialize the app.
 ---
 
@@ -20,6 +20,6 @@ Run this once, in a new repository created from the template. It removes the fea
    - The heading and first line of `readme.md`
    - `title`, `description` and `manifest` in each `content/*/metadata.json`, and `social` if the user did not keep the ACDH links
 5. Set the Redmine service id as the `dev` value of `SERVICE_ID` in `lib/env/schema.ts`, as `SERVICE_ID` in `.env.local`, and in the `env` of the `e2e` job in `.github/workflows/validate.yaml`. Without an id yet, keep the template's, and tell the user to replace it before the first deployment.
-6. Delete the template's own files: `TODO.md`, which is the template's backlog, and this skill, `.claude/skills/setup/`.
+6. Delete the template's own files: `TODO.md`, which is the template's backlog, and this skill, `.claude/skills/template-setup/`.
 7. Run `bun install`, `bun run i18n:extract`, `bun lint`, `bun check`, `bun test`, `bun run build`, and `bun run test:e2e` with an unused `PORT`, because Playwright reuses a server that is already listening there.
 8. Commit the rest as one commit, like `set up the app`, and tell the user what is left for deployment, like `NEXT_PUBLIC_APP_BASE_URL` and the variables of the features they kept, see "Environment variables" and "Docker" in `readme.md`.

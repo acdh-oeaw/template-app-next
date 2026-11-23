@@ -10,8 +10,8 @@ bun run dev
 ```
 
 In a new repository created from the template, ask an agent to set up the app, which follows the
-[`setup` skill](.claude/skills/setup/SKILL.md): it asks which [optional features](#optional-features) to keep, removes
-the others, and replaces the template's name and metadata.
+[`template-setup` skill](.claude/skills/template-setup/SKILL.md): it asks which
+[optional features](#optional-features) to keep, removes the others, and replaces the template's name and metadata.
 
 `bun install` also creates `.env.local` (see [Environment variables](#environment-variables)) and generates route types,
 including the search params of pages with a `search-params.ts`.
