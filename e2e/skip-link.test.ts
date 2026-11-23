@@ -1,5 +1,7 @@
 import { expect, type Page, test } from "@playwright/test";
 
+import en from "#/content/en/metadata.json";
+
 function getSkipLink(page: Page) {
 	return page.getByRole("link", { name: "Skip to main content" });
 }
@@ -68,7 +70,7 @@ test.describe("skip link", () => {
 		await activateSkipLink(page);
 		await expect(page.getByRole("main")).toBeFocused();
 
-		await page.getByRole("banner").getByRole("link", { name: "ACDH App" }).click();
+		await page.getByRole("banner").getByRole("link", { name: en.title }).click();
 		await expect(page.getByRole("heading", { level: 1, name: "Hello, World!" })).toBeVisible();
 		await activateSkipLink(page);
 		await expect(page.getByRole("main")).toBeFocused();

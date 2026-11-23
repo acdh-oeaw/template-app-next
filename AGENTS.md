@@ -140,7 +140,7 @@ Return expected outcomes, which the caller decides how to handle, as a discrimin
 
 ## Optional features
 
-`configs/features.ts` lists the features that apps can remove. To remove one, follow `.claude/skills/remove-feature/SKILL.md`. When adding a feature, list it there, and keep its references findable by `bun check`: import its code and env schema, and link to its pages with `href()`, so that deleting its paths leaves type errors. List only what `bun check` cannot find in `steps`. Then remove the feature once on a throwaway branch, to check that the steps are complete.
+`configs/features.ts` lists the features that apps can remove. To remove one, follow `.claude/skills/remove-feature/SKILL.md`. To set up a new app from the template, which also removes the features it doesn't keep, follow `.claude/skills/setup/SKILL.md`. When adding a feature, list it there, and keep its references findable by `bun check`: import its code and env schema, and link to its pages with `href()`, so that deleting its paths leaves type errors. List only what `bun check` cannot find in `steps`. Then remove the feature once on a throwaway branch, to check that the steps are complete.
 
 ## Code comments
 
