@@ -72,7 +72,7 @@
 ## Missing
 
 - [x] README
-  - [x] Point to `configs/env.config.ts` as the place where environment variables are defined, and to `bun run env:sync`
+  - [x] Point to `lib/env/schema.ts` as the place where environment variables are defined, and to `bun run env:sync`
 - [ ] CI workflows
   - [x] Validate
   - [ ] Build and deploy
@@ -96,7 +96,7 @@
         content. Pair positive assertions with a negative one like `toHaveCount(0)`, because nothing is held back when
         the testing API is missing
     - [x] Enable `experimental.exposeTestingApiInProductionBuild` for test builds only, with `BUILD_TARGET=e2e` in
-          `configs/env.config.ts`, set in Playwright's `webServer.env` and never in the `Dockerfile`
+          `lib/env/schema.ts`, set in Playwright's `webServer.env` and never in the `Dockerfile`
     - [x] `e2e/instant-navigation.test.ts` with positive assertions for the existing pages
     - [ ] Negative assertions, once a page has request-time content
 - [ ] Focus management and announcements after client navigation. Next.js has no API to choose where focus goes, or

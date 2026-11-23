@@ -79,10 +79,16 @@ const restrictedPatterns = [
 	},
 ];
 
-const envParsePath = {
-	name: "#/lib/env/parse.ts",
-	message: "Import `env` from `#/lib/env/server.ts` or `#/lib/env/public.ts`.",
-};
+const envPaths = [
+	{
+		name: "#/lib/env/parse.ts",
+		message: "Import `env` from `#/lib/env/server.ts` or `#/lib/env/public.ts`.",
+	},
+	{
+		name: "#/lib/env/schema.ts",
+		message: "Import `env` from `#/lib/env/server.ts` or `#/lib/env/public.ts`.",
+	},
+];
 
 /** Services hold the business logic, independent of the framework, so they can be called and tested without it. */
 const frameworkPatterns = [
@@ -97,8 +103,8 @@ const frameworkPatterns = [
 ];
 
 const configsPattern = {
-	group: ["#/configs/*"],
-	message: "Import from `#/lib/*` instead.",
+	group: ["#/configs/**"],
+	message: "`configs/` is for tooling.",
 };
 
 /**
@@ -131,7 +137,7 @@ const config = {
 	rules: {
 		"no-restricted-imports": [
 			"error",
-			{ paths: [...restrictedPaths, ...linkPaths, ...navigationPaths, envParsePath], patterns: restrictedPatterns },
+			{ paths: [...restrictedPaths, ...linkPaths, ...navigationPaths, ...envPaths], patterns: restrictedPatterns },
 		],
 	},
 	overrides: [
@@ -141,7 +147,7 @@ const config = {
 				"no-restricted-imports": [
 					"error",
 					{
-						paths: [...restrictedPaths, ...linkPaths, ...navigationPaths, envParsePath],
+						paths: [...restrictedPaths, ...linkPaths, ...navigationPaths, ...envPaths],
 						patterns: [...restrictedPatterns, configsPattern],
 					},
 				],
@@ -153,7 +159,7 @@ const config = {
 				"no-restricted-imports": [
 					"error",
 					{
-						paths: [...restrictedPaths, ...navigationPaths, envParsePath],
+						paths: [...restrictedPaths, ...navigationPaths, ...envPaths],
 						patterns: [...restrictedPatterns, configsPattern],
 					},
 				],
@@ -164,7 +170,7 @@ const config = {
 			rules: {
 				"no-restricted-imports": [
 					"error",
-					{ paths: [...restrictedPaths, ...linkPaths, envParsePath], patterns: restrictedPatterns },
+					{ paths: [...restrictedPaths, ...linkPaths, ...envPaths], patterns: restrictedPatterns },
 				],
 			},
 		},
@@ -173,6 +179,7 @@ const config = {
 				fromRoot("next.config.ts"),
 				fromRoot("instrumentation.ts"),
 				fromRoot("lib/env/**"),
+				fromRoot("scripts/env-sync.ts"),
 				fromRoot("scripts/search-index.ts"),
 			],
 			rules: {
@@ -185,7 +192,7 @@ const config = {
 				"no-restricted-imports": [
 					"error",
 					{
-						paths: [...restrictedPaths, envParsePath],
+						paths: [...restrictedPaths, ...envPaths],
 						patterns: [...restrictedPatterns, configsPattern, ...frameworkPatterns],
 					},
 				],

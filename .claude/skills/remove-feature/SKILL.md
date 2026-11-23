@@ -9,7 +9,7 @@ description: Remove an optional feature of the template from the app, like the c
 
 1. Read the feature in `configs/features.ts`. If the user named none, list the features with their descriptions, and ask.
 2. Delete its `paths`, and its entry in `configs/features.ts`.
-3. Run `bun check`, and remove each reference it reports, like an env spread in `configs/env.config.ts`. Remove references, don't stub them. Fix these first: `bun install`, `bun remove` and `bun run types:generate` load `next.config.ts`, which fails while `configs/env.config.ts` imports a deleted file.
+3. Run `bun check`, and remove each reference it reports, like an env spread in `lib/env/schema.ts`. Remove references, don't stub them. Fix these first: `bun install`, `bun remove` and `bun run types:generate` load `next.config.ts`, which fails while `lib/env/schema.ts` imports a deleted file.
 4. Run `bun run types:generate`, so that the route types no longer contain the removed pages, and run `bun check` again, which now reports links to them, like a navigation item or an entry in `lib/navigation/static-pages.ts`.
 5. Remove its `dependencies` with `bun remove`.
 6. Remove its `composeServices` from `docker/compose.yaml`. Delete the file when no service remains.

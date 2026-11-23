@@ -3,8 +3,9 @@ import type { NextConfig } from "next";
 import createNextIntlPlugin from "next-intl/plugin";
 import { PHASE_DEVELOPMENT_SERVER, PHASE_PRODUCTION_BUILD } from "next/constants";
 
-import { extractorConfig, getLanguage, locales } from "#/configs/i18n.config.ts";
 import { assertPublicEnv, createServerEnv } from "#/lib/env/parse.ts";
+import { extractorConfig } from "#/lib/i18n/extractor-config.ts";
+import { getLanguage, locales } from "#/lib/i18n/locales.ts";
 
 const languages = Array.from(new Set(locales.map((locale) => getLanguage(locale))));
 

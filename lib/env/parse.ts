@@ -1,7 +1,7 @@
 import * as v from "valibot";
 
-import { type PublicEnv, publicEnvSchema, type ServerEnv, serverEnvSchema } from "#/configs/env.config.ts";
 import { getAnnotations } from "#/lib/env/annotations.ts";
+import { type PublicEnv, publicEnvSchema, type ServerEnv, serverEnvSchema } from "#/lib/env/schema.ts";
 
 export class EnvError extends Error {
 	override readonly name = "EnvError";

@@ -2,8 +2,8 @@ import { parseArgs } from "node:util";
 
 import * as v from "valibot";
 
-import { publicEnvSchema, serverEnvSchema } from "#/configs/env.config.ts";
 import { getAnnotations } from "#/lib/env/annotations.ts";
+import { publicEnvSchema, serverEnvSchema } from "#/lib/env/schema.ts";
 
 const filePath = ".env.local";
 
@@ -116,7 +116,7 @@ async function main(): Promise<void> {
 
 	if (content === "") {
 		lines.push(
-			"# Generated from `configs/env.config.ts` by `bun run env:sync`.",
+			"# Generated from `lib/env/schema.ts` by `bun run env:sync`.",
 			"#",
 			"# Running `bun run env:sync` again only appends missing variables.",
 			"# `bun run env:sync --force` overwrites this file, including all values.",

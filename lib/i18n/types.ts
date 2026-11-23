@@ -1,4 +1,4 @@
-import type { Locale } from "#/configs/i18n.config.ts";
+import type { Locale } from "#/lib/i18n/locales.ts";
 
 declare module "next-intl" {
 	interface AppConfig {

@@ -1,4 +1,4 @@
-import type { PublicEnv } from "#/configs/env.config.ts";
+import type { PublicEnv } from "#/lib/env/schema.ts";
 
 declare const __PUBLIC_ENV__: string;
 

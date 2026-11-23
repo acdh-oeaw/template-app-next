@@ -1,6 +1,6 @@
 import { defineRouting } from "next-intl/routing";
 
-import { defaultLocale, getLanguage, type Locale, locales } from "#/configs/i18n.config.ts";
+import { defaultLocale, getLanguage, type Locale, locales } from "#/lib/i18n/locales.ts";
 
 export const prefixes = Object.fromEntries(locales.map((locale) => [locale, `/${getLanguage(locale)}`])) as Record<
 	Locale,
