@@ -10,6 +10,7 @@ Run this once, in a new repository created from the template. It removes the fea
 1. Check that this is a fresh copy: the `name` in `package.json` is `@acdh-oeaw/template-app-next`. Otherwise ask whether to continue.
 2. Ask in one round:
    - Which features to keep, as a multiple choice of the features in `configs/features.ts`, with their descriptions
+   - If the user may not keep `i18n-routing`, which locale the app is in, from `configs/i18n.config.ts`
    - The package name, like `@acdh-oeaw/<repository>`
    - The title and description of the app in each locale in `content/*/metadata.json`, and whether to keep the ACDH social links
    - The Redmine service id of the app, for the imprint, if it has one yet

@@ -26,6 +26,23 @@ export const features = {
 			"Remove the contact form section from `readme.md`.",
 		],
 	},
+	"i18n-routing": {
+		description:
+			"A url per language, like `/en/about`, with a locale switcher. Remove it for an app in one language, which keeps next-intl for its messages.",
+		paths: [
+			"components/locale-switcher/",
+			"e2e/i18n.test.ts",
+			"e2e/locale-switcher.test.ts",
+			"lib/i18n/routing.ts",
+			"proxy.ts",
+		],
+		dependencies: [],
+		composeServices: [],
+		steps: [
+			'Ask which locale to keep, then follow "One language, without i18n routing" in `readme.md`, which also moves `app/[locale]/` to `app/`, and removes the other locales.',
+			'Remove the "Localized urls" section from `readme.md`, whose options no longer apply.',
+		],
+	},
 	search: {
 		description:
 			"Full-text search page with Typesense, with a Typesense server in local development. A skeleton to build on.",
