@@ -60,8 +60,9 @@ follows the [`remove-feature` skill](.claude/skills/remove-feature/SKILL.md), or
 [`app/[locale]/contact/`](app/[locale]/contact/) is an example of the [layering in `AGENTS.md`](AGENTS.md#services): the
 server action validates, rate limits and translates, and calls `sendContactMessage()` from
 [`services/contact/`](services/contact/), which sends the mail with nodemailer, through the `Mailer` from
-[`lib/mail/`](lib/mail/). A hidden honeypot field catches simple bots. Deployments need the `EMAIL_*` and
-`CONTACT_FORM_RECIPIENT` variables, and an smtp server that is allowed to send from `EMAIL_FROM`.
+[`lib/mail/`](lib/mail/). A hidden honeypot field catches simple bots. Deployments need `CONTACT_FORM_RECIPIENT`.
+The `EMAIL_*` variables default to the smtp server of the ÖAW, which accepts mail from the ACDH cluster without
+credentials, and sends from `noreply@oeaw.ac.at`.
 
 ## App shell
 

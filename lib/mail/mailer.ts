@@ -26,14 +26,22 @@ interface SmtpMailerOptions {
 	from: string;
 }
 
+const localHosts = new Set(["localhost", "127.0.0.1", "::1"]);
+
 export function createSmtpMailer(options: SmtpMailerOptions): Mailer {
 	const { host, port, username, password, from } = options;
+
+	const secure = port === 465;
 
 	const transport = createTransport({
 		host,
 		port,
-		/** Port 465 uses implicit TLS, other ports upgrade with STARTTLS when the server offers it. */
-		secure: port === 465,
+		secure,
+		/**
+		 * Other ports must upgrade with STARTTLS, so mail is never sent in plain text, except to a local server like
+		 * Mailpit.
+		 */
+		requireTLS: !secure && !localHosts.has(host),
 		...(username != null && password != null ? { auth: { user: username, pass: password } } : undefined),
 		/** The defaults are minutes, much longer than a user waits for a form to submit. */
 		connectionTimeout: 10_000,
