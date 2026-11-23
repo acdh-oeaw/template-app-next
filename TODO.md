@@ -35,10 +35,12 @@
         requests to whatever port a test header names
 - [ ] End-to-end test for sending a contact message: run Mailpit as a service container in the `e2e` job, and check
       the message with its api. Locally, this needs `docker compose up` before `bun run test:e2e`
-- [ ] A local standalone build (`BUILD_MODE=standalone bun run build`, then `bun server.js` or `node server.js` in
-      `.next/standalone/`) redirects every page in a loop, like `/en/about` to `/en/en-GB/about`: the proxy rewrites to
-      the internal locale, then redirects it as if requested. `next start` does not. Check whether the Docker image is
-      affected
+- [ ] A server bound to a loopback ip, like `next start -H 127.0.0.1` or `HOSTNAME=127.0.0.1`, redirects every page in a
+      loop, like `/en/about` to `/en/en-GB/about`. `request.nextUrl` turns loopback ips into `localhost`, so the router
+      treats the proxy's rewrite as external, and proxies it back to the server, whose proxy redirects the internal
+      path. Behind a reverse proxy that sets `x-forwarded-proto: https`, it responds with 500 instead. The Docker image
+      binds `0.0.0.0` and is not affected. Remove the comment in the `Dockerfile` once
+      https://github.com/vercel/next.js/issues/94745 is fixed
 - [ ] Search: iterate on the Typesense skeleton in `services/search/` and `lib/typesense/`
   - [ ] A search-only api key for the app, scoped to the collection, and the admin key only for indexing
   - [ ] Index the app's data instead of sample documents, and swap collections with an alias, so that reindexing

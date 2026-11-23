@@ -53,6 +53,8 @@ USER bun
 # a named volume mounted here takes the ownership of this folder, and would otherwise be created as root.
 RUN mkdir -p /app/.next/cache
 
+# not a loopback ip like 127.0.0.1, which breaks the rewrites of the i18n proxy.
+# @see https://github.com/vercel/next.js/issues/94745
 ENV HOSTNAME=0.0.0.0
 ENV NODE_ENV=production
 ENV NEXT_TELEMETRY_DISABLED=1
