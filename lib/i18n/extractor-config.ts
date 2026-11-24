@@ -6,7 +6,6 @@ type ExtractorConfigInput = Parameters<typeof unstable_extractMessages>[0];
 
 /** Shared by the next-intl plugin in `next.config.ts` and eloqnt in `.eloqnt/config.ts`. */
 export const extractorConfig = {
-	extract: true,
 	messages: {
 		format: "po",
 		locales: Array.from(new Set(locales.map((locale) => getLanguage(locale)))),

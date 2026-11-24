@@ -18,7 +18,7 @@ const localeOptimization = optimizeLocales.turbopack([
 const plugins: Array<(config: NextConfig) => NextConfig> = [
 	createNextIntlPlugin({
 		requestConfig: "./lib/i18n/request.ts",
-		experimental: extractorConfig,
+		experimental: { ...extractorConfig, extract: true },
 	}),
 ];
 
