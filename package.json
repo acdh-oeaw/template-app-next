@@ -14,7 +14,7 @@
 		"env:sync": "bun scripts/env-sync.ts",
 		"format:check": "bun fmt --check",
 		"format:fix": "bun fmt",
-		"i18n:extract": "bun scripts/i18n-extract.ts",
+		"i18n:extract": "eloqnt extract",
 		"lint:check": "bun lint",
 		"lint:fix": "bun lint --fix",
 		"prepare": "BUN_OPTIONS=--bun bun run --sequential env:sync types:generate",

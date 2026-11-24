@@ -4,7 +4,7 @@ import { defaultLocale, getLanguage, locales } from "#/lib/i18n/locales.ts";
 
 type ExtractorConfigInput = Parameters<typeof unstable_extractMessages>[0];
 
-/** Shared by the next-intl plugin in `next.config.ts` and `bun run i18n:extract`. */
+/** Shared by the next-intl plugin in `next.config.ts` and eloqnt in `.eloqnt/config.ts`. */
 export const extractorConfig = {
 	extract: true,
 	messages: {
