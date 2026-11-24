@@ -200,7 +200,7 @@ const config = {
 		},
 		{
 			/** A glob without a slash matches the file name in any directory. */
-			files: ["*.config.ts", fromRoot("lib/i18n/request.ts")],
+			files: ["*.config.ts", fromRoot(".eloqnt/config.ts"), fromRoot("lib/i18n/request.ts")],
 			rules: {
 				"import/no-default-export": "off",
 			},
