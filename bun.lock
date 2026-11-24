@@ -40,6 +40,7 @@
   },
   "patchedDependencies": {
     "@react-aria/optimize-locales-plugin@2.1.0": "patches/@react-aria%2Foptimize-locales-plugin@2.1.0.patch",
+    "next@16.4.6": "patches/next@16.4.6.patch",
   },
   "packages": {
     "@alloc/quick-lru": ["@alloc/quick-lru@5.3.0", "", {}, "sha512-U4+70Pc5ZS9osnCBCE5Jha/ciHM+Yp+CNMNC/7HvYbNRk1Ldd+f7qO65W5qfhu/TCv+/ozljlXXe9Nj8419DMA=="],

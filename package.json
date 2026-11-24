@@ -93,7 +93,7 @@
 		}
 	},
 	"patchedDependencies": {
-		"next@16.4.5": "patches/next@16.4.5.patch",
+		"next@16.4.6": "patches/next@16.4.6.patch",
 		"@react-aria/optimize-locales-plugin@2.1.0": "patches/@react-aria%2Foptimize-locales-plugin@2.1.0.patch"
 	}
 }
