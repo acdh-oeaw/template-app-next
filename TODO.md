@@ -121,8 +121,6 @@
 
 ## Maybe
 
-- [ ] Lint the messages in `messages/*.po` with eloqnt or x18n, like for missing translations, and check in CI that
-      `bun run i18n:extract` leaves them unchanged
 - [ ] Review the oxlint setup in `dariah-eric/dariah-website` (`configs/oxlint/*`) and decide what to copy, including
       the `nextjs` and `jsx-a11y` plugins
 - [ ] Review the stylelint setup in `dariah-eric/dariah-website` and decide what to copy

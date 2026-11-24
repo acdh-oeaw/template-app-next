@@ -38,6 +38,8 @@ jobs:
 
       - parallel:
           - run: bun run format:check
+          - run: bun run i18n:check
+          - run: bun run i18n:extract && git diff --exit-code messages/
           - run: bun run lint:check
           - run: bun run styles:check
           - run: bun run types:check
