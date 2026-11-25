@@ -13,9 +13,14 @@ const documents: Array<SearchDocument> = [
 /** `lib/env/server.ts` imports `server-only`, which throws outside of Next.js. */
 const env = createServerEnv();
 
+if (env.TYPESENSE_INDEX_API_KEY == null) {
+	throw new Error("Missing `TYPESENSE_INDEX_API_KEY`.");
+}
+
 await indexDocuments(documents, {
-	client: createTypesenseClient({ url: env.TYPESENSE_URL, apiKey: env.TYPESENSE_ADMIN_API_KEY }),
+	client: createTypesenseClient({ url: env.TYPESENSE_URL, apiKey: env.TYPESENSE_INDEX_API_KEY }),
 	collection: env.TYPESENSE_COLLECTION,
+	now: Date.now(),
 });
 
 console.log(`Indexed ${String(documents.length)} documents.`);

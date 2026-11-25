@@ -1,15 +1,17 @@
 import { describe, expect, test } from "bun:test";
 
-import { HttpError } from "#/lib/request/errors.ts";
-import type { TypesenseClient } from "#/lib/typesense/client.ts";
+import { CollectionNotFoundError, type TypesenseClient } from "#/lib/typesense/client.ts";
 import { searchDocuments } from "#/services/search/search-documents.ts";
 
 const collection = "test";
 
 function createFakeClient(search: TypesenseClient["search"]): TypesenseClient {
 	return {
-		ensureCollection: () => Promise.resolve(),
-		upsertDocuments: () => Promise.resolve(),
+		createCollection: () => Promise.resolve(),
+		deleteCollection: () => Promise.resolve(),
+		listCollections: () => Promise.resolve([]),
+		importDocuments: () => Promise.resolve(),
+		setAlias: () => Promise.resolve(),
 		search,
 	};
 }
@@ -25,12 +27,7 @@ describe("searchDocuments", () => {
 	});
 
 	test("reports a missing collection as not indexed", async () => {
-		const error = new HttpError({
-			method: "GET",
-			url: "http://localhost:8108/collections/test/documents/search",
-			body: "",
-			response: new Response(null, { status: 404 }),
-		});
+		const error = new CollectionNotFoundError(collection, { cause: null });
 		const client = createFakeClient(() => Promise.reject(error));
 
 		const result = await searchDocuments({ query: "vienna", page: 1 }, { client, collection });

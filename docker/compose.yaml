@@ -9,7 +9,7 @@ services:
 
   typesense:
     image: typesense/typesense:30.2
-    command: --data-dir /data --api-key ${TYPESENSE_ADMIN_API_KEY:?}
+    command: --data-dir /data --api-key ${TYPESENSE_INDEX_API_KEY:?}
     ports:
       - 8108:8108
     volumes:

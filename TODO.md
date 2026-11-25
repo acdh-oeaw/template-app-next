@@ -42,11 +42,9 @@
       binds `0.0.0.0` and is not affected. Remove the comment in the `Dockerfile` once
       https://github.com/vercel/next.js/issues/94745 is fixed
 - [ ] Search: iterate on the Typesense skeleton in `services/search/` and `lib/typesense/`
-  - [ ] A search-only api key for the app, scoped to the collection, and the admin key only for indexing. Deployments use
-        the server at `typesense.acdh.oeaw.ac.at`, which apps share, so the app must not have its admin key
-  - [ ] Index in deployments with a cronjob, in `kubernetes/`, with the script bundled in the `Dockerfile`
-  - [ ] Index the app's data instead of sample documents, and swap collections with an alias, so that reindexing
-        does not leave the search empty
+  - [ ] Index in deployments with a cronjob, in `kubernetes/`, with the script bundled in the `Dockerfile`, and
+        `TYPESENSE_INDEX_API_KEY` only for the cronjob. Until then, run `bun run search:index` by hand
+  - [ ] Index the app's data instead of sample documents
   - [ ] Highlighting, facets and filters, as search params in `app/[locale]/search/search-params.ts`
   - [ ] End-to-end test with Typesense as a service container in the `e2e` job, like for Mailpit
 - [ ] Browser e2e test for the not-found and error pages in `e2e/errors.test.ts` (curl only sees status codes, because

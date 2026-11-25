@@ -1,5 +1,4 @@
-import { HttpError } from "#/lib/request/errors.ts";
-import type { TypesenseClient } from "#/lib/typesense/client.ts";
+import { CollectionNotFoundError, type TypesenseClient } from "#/lib/typesense/client.ts";
 import { documentSchema, type SearchDocument } from "#/services/search/collection.ts";
 
 const perPage = 20;
@@ -12,7 +11,7 @@ interface SearchDocumentsInput {
 
 interface SearchDocumentsDependencies {
 	client: TypesenseClient;
-	/** Name of the collection. */
+	/** Alias of the collection. */
 	collection: string;
 }
 
@@ -42,7 +41,7 @@ export async function searchDocuments(
 			pageCount: Math.ceil(response.found / perPage),
 		};
 	} catch (error) {
-		if (error instanceof HttpError && error.status === 404) {
+		if (error instanceof CollectionNotFoundError) {
 			return { status: "not-indexed" };
 		}
 

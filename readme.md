@@ -86,34 +86,46 @@ gh variable set CONTACT_FORM_RECIPIENT --env development --body <email>
 bun run search:index
 ```
 
-The collection is named after the package, or set with `TYPESENSE_COLLECTION`. Apps and environments that share a Typesense
-server need different collections.
+Each run indexes into a new collection, like `template-app-next_1767225600000`, and then switches an alias to it, so search
+keeps working meanwhile. Then it deletes previous collections. Runs must not overlap, so a cronjob needs
+`concurrencyPolicy: Forbid`. The alias is named after the package, or set with `TYPESENSE_COLLECTION`. Apps and environments
+that share a Typesense server need different aliases.
+
+The deployed app and the collection change at different times, so a schema must work with both versions of the app: add
+fields and index before deploying code that uses them, and remove fields after deploying code that no longer does.
 
 Until the collection exists, the page says that the search index is not available yet.
 
-Deployments use the Typesense server of ACDH, which apps share. Never use its admin key. Ask for one key for each
-environment, limited to the collections of that environment, so that development cannot change production:
+Deployments use the Typesense server of ACDH, which apps share. The app never needs its admin key. Ask its administrators
+for two keys for each environment, limited to the collections of that environment: one to search, for the app, and one to
+index, for `bun run search:index`, which the app does not get:
 
 ```sh
 create_key() {
   curl --fail-with-body "$TYPESENSE_URL/keys" --header "x-typesense-api-key: $ADMIN_KEY" --json "{
     \"description\": \"$1\",
-    \"actions\": [\"collections:create\", \"documents:import\", \"documents:upsert\", \"documents:create\", \"documents:search\"],
-    \"collections\": [\"$2\"]
+    \"actions\": $2,
+    \"collections\": [\"$3\"]
   }"
 }
 
-create_key "template-app-next production" "template-app-next(_[0-9]+)?"
-create_key "template-app-next development" "template-app-next-(development|pr-[0-9]+)(_[0-9]+)?"
+search='["documents:search"]'
+index='["collections:list", "collections:create", "collections:delete", "documents:import", "documents:create", "aliases:upsert"]'
+
+create_key "template-app-next production, search" "$search" "template-app-next"
+create_key "template-app-next production, index" "$index" "template-app-next(_[0-9]+)?"
+create_key "template-app-next development, search" "$search" "template-app-next-(development|pr-[0-9]+)"
+create_key "template-app-next development, index" "$index" "template-app-next-(development|pr-[0-9]+)(_[0-9]+)?"
 ```
 
-The expression for development also matches collections of preview deployments, and neither matches collections of the
-other environment. A prefix like `template-app-next.*` would. Both keys must only be set for their environment:
+The expressions for development also match preview deployments, and none match collections of the other environment. A
+prefix like `template-app-next.*` would. Typesense does not limit aliases to collections, so an index key can switch the
+alias of any app on the server. Keep it as safe as an admin key.
 
 ```sh
 gh variable set TYPESENSE_URL --body https://typesense.acdh.oeaw.ac.at
-gh secret set TYPESENSE_ADMIN_API_KEY --env production
-gh secret set TYPESENSE_ADMIN_API_KEY --env development
+gh secret set TYPESENSE_SEARCH_API_KEY --env production
+gh secret set TYPESENSE_SEARCH_API_KEY --env development
 ```
 
 ## App shell

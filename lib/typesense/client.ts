@@ -30,11 +30,14 @@ export interface SearchResponse<TDocument> {
 
 /** Services depend on this interface rather than on `request()`, so that tests can pass a fake. */
 export interface TypesenseClient {
-	/** Creates the collection, unless it exists. */
-	ensureCollection: (schema: CollectionSchema) => Promise<void>;
-	/** Creates or replaces documents by their `id`. */
-	upsertDocuments: (collection: string, documents: ReadonlyArray<{ id: string }>) => Promise<void>;
-	/** Throws an `HttpError` with status 404 when the collection does not exist. */
+	createCollection: (schema: CollectionSchema) => Promise<void>;
+	deleteCollection: (name: string) => Promise<void>;
+	/** Names of the collections that the api key has access to. */
+	listCollections: () => Promise<Array<string>>;
+	importDocuments: (collection: string, documents: ReadonlyArray<{ id: string }>) => Promise<void>;
+	/** Creates the alias, or switches it to another collection. */
+	setAlias: (alias: string, collection: string) => Promise<void>;
+	/** Throws a `CollectionNotFoundError` when neither an alias nor a collection with the name exists. */
 	search: <TSchema extends v.GenericSchema>(
 		collection: string,
 		params: SearchParams,
@@ -42,11 +45,24 @@ export interface TypesenseClient {
 	) => Promise<SearchResponse<v.InferOutput<TSchema>>>;
 }
 
+export class CollectionNotFoundError extends Error {
+	override readonly name = "CollectionNotFoundError";
+
+	constructor(collection: string, options: { cause: unknown }) {
+		super(`The collection "${collection}" does not exist`, options);
+	}
+}
+
 export class TypesenseImportError extends Error {
 	override readonly name = "TypesenseImportError";
 }
 
 const importResultSchema = v.object({ success: v.boolean(), error: v.optional(v.string()) });
+
+/** Typesense also responds with 404 when a field does not exist, which is a bug. */
+function isCollectionNotFound(error: unknown): boolean {
+	return error instanceof HttpError && error.status === 404 && error.body.includes("Collection not found");
+}
 
 /** @see {@link https://typesense.org/docs/latest/api/} */
 export function createTypesenseClient(options: { url: string; apiKey: string }): TypesenseClient {
@@ -56,26 +72,43 @@ export function createTypesenseClient(options: { url: string; apiKey: string }):
 	const headers = { "x-typesense-api-key": apiKey };
 
 	return {
-		async ensureCollection(schema) {
-			try {
-				await request(new URL("/collections", url), {
-					method: "post",
-					headers,
-					json: schema,
-					responseType: "void",
-				});
-			} catch (error) {
-				if (error instanceof HttpError && error.status === 409) {
-					return;
-				}
-
-				throw error;
-			}
+		async createCollection(schema) {
+			await request(new URL("/collections", url), { method: "post", headers, json: schema, responseType: "void" });
 		},
 
-		async upsertDocuments(collection, documents) {
+		async deleteCollection(name) {
+			await request(new URL(`/collections/${encodeURIComponent(name)}`, url), {
+				method: "delete",
+				headers,
+				responseType: "void",
+			});
+		},
+
+		async listCollections() {
+			const endpoint = new URL("/collections", url);
+			endpoint.searchParams.set("exclude_fields", "fields");
+
+			const { data } = await request(endpoint, {
+				headers,
+				responseType: "json",
+				schema: v.array(v.object({ name: v.string() })),
+			});
+
+			return data.map(({ name }) => name);
+		},
+
+		async setAlias(alias, collection) {
+			await request(new URL(`/aliases/${encodeURIComponent(alias)}`, url), {
+				method: "put",
+				headers,
+				json: { collection_name: collection },
+				responseType: "void",
+			});
+		},
+
+		async importDocuments(collection, documents) {
 			const endpoint = new URL(`/collections/${encodeURIComponent(collection)}/documents/import`, url);
-			endpoint.searchParams.set("action", "upsert");
+			endpoint.searchParams.set("action", "create");
 
 			const { data } = await request(endpoint, {
 				method: "post",
@@ -115,6 +148,12 @@ export function createTypesenseClient(options: { url: string; apiKey: string }):
 					page: v.number(),
 					hits: v.array(v.object({ document: documentSchema })),
 				}),
+			}).catch((error: unknown) => {
+				if (isCollectionNotFound(error)) {
+					throw new CollectionNotFoundError(collection, { cause: error });
+				}
+
+				throw error;
 			});
 
 			/** The schema validates the documents, but TypeScript cannot infer its output for a generic `TSchema`. */
