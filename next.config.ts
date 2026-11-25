@@ -47,6 +47,8 @@ export default function createConfig(phase: string): NextConfig {
 			turbopackRustReactCompiler: true,
 		},
 		cacheComponents: true,
+		/** Traefik compresses responses, also with brotli and zstd, but not when they are already compressed. */
+		compress: false,
 		logging: {
 			/** Probes hit the health checks every few seconds. */
 			incomingRequests: { ignore: [/^\/api\/health\/(?:live|ready)$/] },

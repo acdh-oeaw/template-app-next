@@ -46,10 +46,6 @@ spec:
           envFrom:
             - secretRef:
                 name: ${SECRET_NAME}
-          env:
-            # the ingress controller.
-            - name: TRUSTED_PROXY_COUNT
-              value: "1"
           startupProbe:
             httpGet:
               path: /api/health/live
@@ -99,33 +95,3 @@ spec:
     - name: http
       port: 80
       targetPort: http
----
-apiVersion: networking.k8s.io/v1
-kind: Ingress
-metadata:
-  name: ${NAME}
-  labels:
-    app.kubernetes.io/name: frontend
-    app.kubernetes.io/instance: ${NAME}
-    app.kubernetes.io/managed-by: ${MANAGED_BY}
-    ID: "${SERVICE_ID}"
-  annotations:
-    # without `ingressClassName`, because certificates are not issued for other classes than the default.
-    # @see https://github.com/acdh-oeaw/gl-autodevops-minimal-port/issues/7
-    kubernetes.io/tls-acme: "true"
-spec:
-  tls:
-    - hosts:
-        - ${HOST}
-      secretName: ${NAME}-tls
-  rules:
-    - host: ${HOST}
-      http:
-        paths:
-          - path: /
-            pathType: Prefix
-            backend:
-              service:
-                name: ${NAME}
-                port:
-                  name: http

@@ -5,11 +5,17 @@ inputs:
   base-url:
     description: Public base url of the app.
     required: true
+  cert-issuer:
+    description: Name of the cert-manager cluster issuer. Leave it out when tls is terminated before the cluster.
+    default: ""
   env-file:
     description: Json file with the environment variables of the container.
     required: true
   image:
     description: Image reference with a digest.
+    required: true
+  ingress-class:
+    description: Name of the ingress class.
     required: true
   kube-config:
     description: Base64-encoded kubeconfig.
@@ -28,8 +34,10 @@ runs:
       env:
         ACTION_PATH: ${{ github.action_path }}
         BASE_URL: ${{ inputs.base-url }}
+        CERT_ISSUER: ${{ inputs.cert-issuer }}
         ENV_FILE: ${{ inputs.env-file }}
         IMAGE: ${{ inputs.image }}
+        INGRESS_CLASS: ${{ inputs.ingress-class }}
         KUBE_CONFIG: ${{ inputs.kube-config }}
         NAME: ${{ inputs.name }}
         NAMESPACE: ${{ inputs.namespace }}

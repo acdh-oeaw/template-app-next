@@ -64,9 +64,16 @@ follows the [`remove-feature` skill](.claude/skills/remove-feature/SKILL.md), or
 [`app/[locale]/contact/`](app/[locale]/contact/) is an example of the [layering in `AGENTS.md`](AGENTS.md#services): the
 server action validates, rate limits and translates, and calls `sendContactMessage()` from
 [`services/contact/`](services/contact/), which sends the mail with nodemailer, through the `Mailer` from
-[`lib/mail/`](lib/mail/). A hidden honeypot field catches simple bots. Deployments need `CONTACT_FORM_RECIPIENT`.
+[`lib/mail/`](lib/mail/). A hidden honeypot field catches simple bots.
 The `EMAIL_*` variables default to the smtp server of the ÖAW, which accepts mail from the ACDH cluster without
 credentials, and sends from `noreply@oeaw.ac.at`.
+
+Deployments need the recipient, for each environment, so that messages from development don't go to the real inbox:
+
+```sh
+gh variable set CONTACT_FORM_RECIPIENT --env production --body <email>
+gh variable set CONTACT_FORM_RECIPIENT --env development --body <email>
+```
 
 ## Search
 
@@ -83,6 +90,31 @@ The collection is named after the package, or set with `TYPESENSE_COLLECTION`. A
 server need different collections.
 
 Until the collection exists, the page says that the search index is not available yet.
+
+Deployments use the Typesense server of ACDH, which apps share. Never use its admin key. Ask for one key for each
+environment, limited to the collections of that environment, so that development cannot change production:
+
+```sh
+create_key() {
+  curl --fail-with-body "$TYPESENSE_URL/keys" --header "x-typesense-api-key: $ADMIN_KEY" --json "{
+    \"description\": \"$1\",
+    \"actions\": [\"collections:create\", \"documents:import\", \"documents:upsert\", \"documents:create\", \"documents:search\"],
+    \"collections\": [\"$2\"]
+  }"
+}
+
+create_key "template-app-next production" "template-app-next(_[0-9]+)?"
+create_key "template-app-next development" "template-app-next-(development|pr-[0-9]+)(_[0-9]+)?"
+```
+
+The expression for development also matches collections of preview deployments, and neither matches collections of the
+other environment. A prefix like `template-app-next.*` would. Both keys must only be set for their environment:
+
+```sh
+gh variable set TYPESENSE_URL --body https://typesense.acdh.oeaw.ac.at
+gh secret set TYPESENSE_ADMIN_API_KEY --env production
+gh secret set TYPESENSE_ADMIN_API_KEY --env development
+```
 
 ## App shell
 
@@ -274,8 +306,8 @@ In GitHub Actions, [`.github/actions/build-image`](.github/actions/build-image/a
 Server variables that are only read at runtime are passed to the container, not to `docker build`.
 
 Rate limiting finds the client address in the `x-forwarded-for` header, so set `TRUSTED_PROXY_COUNT` to the number of
-reverse proxies in front of the app, like `1` behind a Kubernetes ingress, which `kubernetes/app.yaml` sets. Otherwise
-clients can choose their address.
+reverse proxies in front of the app, like `1` behind a Kubernetes ingress. Otherwise clients can choose their address.
+Deployments set it in `configs/deployments.ts`.
 The default store of rate limiters is in memory, so each replica counts on its own. With several replicas, use a
 shared store, like Valkey, see `RateLimitStore` in [`lib/rate-limit/rate-limiter.ts`](lib/rate-limit/rate-limiter.ts).
 
@@ -309,8 +341,60 @@ deployment, not other resources, like the ingress or cronjobs.
 [`configs/deployments.ts`](configs/deployments.ts) sets the namespace, the base url, which determines the host of the
 ingress, and other variables that differ between deployments. Production has its own namespace, so that nothing that
 cleans up in the other one can affect it. Namespaces are not created by the workflow. `bun test` checks that deployments
-do not share a host or a name. Other values are set in GitHub, as variables or secrets with the name in the schema, for
-the repository or for an environment. `KUBE_CONFIG`, a base64-encoded kubeconfig, is a secret of the organization.
+do not share a host or a name.
+
+### Set up a new app
+
+1. Set the namespaces, base urls and ingress options in [`configs/deployments.ts`](configs/deployments.ts).
+2. Create both namespaces in Rancher.
+3. Create the GitHub environments, and only allow the branch that deploys to each, so that workflows on other branches
+   cannot read its secrets:
+
+   ```sh
+   for deployment in production:main development:development; do
+     environment="${deployment%%:*}" branch="${deployment#*:}"
+     gh api --method PUT "repos/{owner}/{repo}/environments/$environment" --input - \
+       <<< '{"deployment_branch_policy":{"protected_branches":false,"custom_branch_policies":true}}'
+     gh api --method POST "repos/{owner}/{repo}/environments/$environment/deployment-branch-policies" -f name="$branch"
+   done
+   ```
+
+4. Set the variables and secrets, with the name in [`lib/env/schema.ts`](lib/env/schema.ts):
+
+   | Name                                 | Kind     | Set for                                              |
+   | ------------------------------------ | -------- | ---------------------------------------------------- |
+   | `KUBE_CONFIG`                        | secret   | organization, already set                            |
+   | `SERVICE_ID`                         | variable | repository                                           |
+   | `NEXT_SERVER_ACTIONS_ENCRYPTION_KEY` | secret   | each environment, optional, needed with replicas     |
+   | Variables of features                |          | see [Contact form](#contact-form), [Search](#search) |
+
+   ```sh
+   gh variable set SERVICE_ID --body <redmine id>
+   openssl rand -base64 32 | gh secret set NEXT_SERVER_ACTIONS_ENCRYPTION_KEY --env production
+   ```
+
+   Set values that must differ between environments only for the environments, not for the repository: GitHub falls back
+   to the value of the repository, so an environment without its own would silently use it. Otherwise the deployment
+   fails.
+
+5. If the package in the GitHub container registry is private, the first deployment fails, because the image cannot be
+   pulled. Make the package public, and run the workflow again.
+
+### Ingress
+
+`ingress` in [`configs/deployments.ts`](configs/deployments.ts) sets what differs between deployments:
+
+- `className`: `traefik-proxy-protocol` forwards the addresses of clients. With `traefik`, the app sees the address of a
+  proxy instead, so all clients share one limit when rate limiting by address, like in the contact form
+- `tls`: with `terminatedBy: "cluster"`, cert-manager requests a certificate from `certIssuer`, which is `acdh-prod` for
+  `oeaw.ac.at` domains, and `letsencrypt-prod` for others. Use `terminatedBy: "upstream"` for the few domains whose tls is
+  terminated before the cluster, by the computing center of the ÖAW. The base url still starts with `https://`. Its proxy
+  can be an additional hop, so check which addresses the app receives in `x-forwarded-for`, and set `TRUSTED_PROXY_COUNT`
+  accordingly, before relying on rate limiting
+
+Other annotations go in [`kubernetes/ingress.yaml`](kubernetes/ingress.yaml). It uses the `compress` middleware of
+Traefik in the `kube-system` namespace, so compression is disabled in [`next.config.ts`](next.config.ts). Separate
+several middlewares with a comma, like `kube-system-redirect-to-www@kubernetescrd,kube-system-compress@kubernetescrd`.
 
 ### More resources
 

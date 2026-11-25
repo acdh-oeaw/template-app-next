@@ -1,0 +1,12 @@
+# merged into the ingress, unless tls is terminated before the cluster.
+metadata:
+  annotations:
+    # only has an effect when the certificate is created. after changing the class, delete the certificate.
+    # @see https://github.com/acdh-oeaw/gl-autodevops-minimal-port/issues/7
+    acme.cert-manager.io/http01-ingress-ingressclassname: ${INGRESS_CLASS}
+    cert-manager.io/cluster-issuer: ${CERT_ISSUER}
+spec:
+  tls:
+    - hosts:
+        - ${HOST}
+      secretName: ${NAME}-tls

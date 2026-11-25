@@ -3,7 +3,7 @@
 set -euo pipefail
 umask 077
 
-: "${BASE_URL:?}" "${ENV_FILE:?}" "${IMAGE:?}" "${KUBE_CONFIG:?}" "${NAME:?}" "${NAMESPACE:?}"
+: "${BASE_URL:?}" "${ENV_FILE:?}" "${IMAGE:?}" "${INGRESS_CLASS:?}" "${KUBE_CONFIG:?}" "${NAME:?}" "${NAMESPACE:?}"
 
 directory="$(mktemp --directory)"
 trap 'rm -rf -- "${directory:?}"' EXIT
@@ -23,7 +23,7 @@ MANAGED_BY="deploy-action"
 hash="$(jq --compact-output --sort-keys . "$ENV_FILE" | sha256sum | cut -c 1-10)"
 SECRET_NAME="$NAME-env-$hash"
 
-export HOST IMAGE MANAGED_BY NAME SECRET_NAME SERVICE_ID
+export CERT_ISSUER HOST IMAGE INGRESS_CLASS MANAGED_BY NAME SECRET_NAME SERVICE_ID
 
 selector="app.kubernetes.io/instance=$NAME,app.kubernetes.io/managed-by=$MANAGED_BY"
 
@@ -42,10 +42,21 @@ jq --arg instance "$NAME" --arg managed_by "$MANAGED_BY" --arg name "$SECRET_NAM
 manifests="$directory/manifests"
 mkdir "$manifests"
 
-for file in kubernetes/*.yaml; do
+render() {
   # shellcheck disable=SC2016
-  envsubst '$HOST $IMAGE $MANAGED_BY $NAME $SECRET_NAME $SERVICE_ID' < "$file" > "$manifests/${file##*/}"
+  envsubst '$CERT_ISSUER $HOST $IMAGE $INGRESS_CLASS $MANAGED_BY $NAME $SECRET_NAME $SERVICE_ID' < "$1"
+}
+
+for file in kubernetes/*.yaml; do
+  render "$file" > "$manifests/${file##*/}"
 done
+
+if [ -n "${CERT_ISSUER:-}" ]; then
+  render kubernetes/patches/ingress-tls.yaml > "$directory/ingress-tls.yaml"
+  kubectl patch --local --type merge --filename "$manifests/ingress.yaml" --patch-file "$directory/ingress-tls.yaml" \
+    --output yaml > "$directory/ingress.yaml"
+  mv "$directory/ingress.yaml" "$manifests/ingress.yaml"
+fi
 
 if grep --line-number --recursive --fixed-strings "\${" "$manifests"; then
   echo "::error::Unknown placeholder in kubernetes/"

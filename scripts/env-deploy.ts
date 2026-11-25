@@ -4,7 +4,7 @@ import { parseArgs } from "node:util";
 
 import * as v from "valibot";
 
-import { deployments } from "#/configs/deployments.ts";
+import { type Deployment, deployments } from "#/configs/deployments.ts";
 import { type EnvValues, selectDeployEnv, serializeDotenv } from "#/lib/env/deploy.ts";
 import { EnvError } from "#/lib/env/parse.ts";
 
@@ -32,7 +32,8 @@ const environment = v.parse(
 );
 const outDir = v.parse(v.string(), values["out-dir"]);
 
-const { env: deploymentEnv, name, namespace } = deployments[environment];
+const deployment: Deployment = deployments[environment];
+const { env: deploymentEnv, ingress, name, namespace } = deployment;
 
 try {
 	const env = selectDeployEnv([
@@ -50,6 +51,8 @@ try {
 	const outputs = {
 		"base-url": deploymentEnv.NEXT_PUBLIC_APP_BASE_URL,
 		"build-env-file": files.build,
+		"cert-issuer": ingress.tls.terminatedBy === "cluster" ? ingress.tls.certIssuer : "",
+		"ingress-class": ingress.className,
 		name,
 		namespace,
 		"runtime-env-file": files.runtime,

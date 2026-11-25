@@ -19,9 +19,9 @@ Run this once, in a new repository created from the template. It removes the fea
 4. Name the app:
    - `name` in `package.json`, and the project `name` in `docker/compose.yaml` (the repository name), if the file still exists
    - The namespaces, base urls and other names in `configs/deployments.ts`
-   - The heading and first line of `readme.md`, and the namespace in its deployment section
+   - The heading and first line of `readme.md`, the namespace in its deployment section, and the collection names in its search section
    - `title`, `description` and `manifest` in each `content/*/metadata.json`, and `social` if the user did not keep the ACDH links
 5. Set the Redmine service id as the `dev` value of `SERVICE_ID` in `lib/env/schema.ts`, as `SERVICE_ID` in `.env.local`, and in the `env` of the `e2e` job in `.github/workflows/validate.yaml`. Without an id yet, keep the template's, and tell the user to replace it before the first deployment.
 6. Delete the template's own files: `TODO.md`, which is the template's backlog, and this skill, `.claude/skills/template-setup/`.
 7. Run `bun install`, `bun run i18n:extract`, `bun lint`, `bun check`, `bun test`, `bun run build`, and `bun run test:e2e` with an unused `PORT`, because Playwright reuses a server that is already listening there.
-8. Commit the rest as one commit, like `set up the app`, and tell the user what is left for deployment, like creating the namespaces, and setting the variables of the features they kept in GitHub, see "Deployment" in `readme.md`.
+8. Commit the rest as one commit, like `set up the app`, and tell the user what is left for deployment: the steps in "Set up a new app" in `readme.md`, and the variables and secrets in the sections of the features they kept. Offer to run the `gh` commands, but ask before each that changes GitHub, and never ask for a secret in the chat: the user runs `gh secret set`, which prompts for it.
