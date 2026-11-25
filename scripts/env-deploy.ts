@@ -52,6 +52,8 @@ try {
 		"base-url": deploymentEnv.NEXT_PUBLIC_APP_BASE_URL,
 		"build-env-file": files.build,
 		"cert-issuer": ingress.tls.terminatedBy === "cluster" ? ingress.tls.certIssuer : "",
+		"health-url":
+			ingress.access === "public" ? new URL("/api/health/ready", deploymentEnv.NEXT_PUBLIC_APP_BASE_URL).href : "",
 		"ingress-class": ingress.className,
 		name,
 		namespace,

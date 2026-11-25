@@ -1,5 +1,5 @@
 name: Deploy
-description: Deploy an image with kubectl, and roll back when it does not become ready.
+description: Deploy an image with kubectl, roll back when it does not become ready, and check its public url.
 
 inputs:
   base-url:
@@ -11,6 +11,9 @@ inputs:
   env-file:
     description: Json file with the environment variables of the container.
     required: true
+  health-url:
+    description: Public url that responds with 200. Leave it out when GitHub cannot reach the app.
+    default: ""
   image:
     description: Image reference with a digest.
     required: true
@@ -42,3 +45,10 @@ runs:
         NAME: ${{ inputs.name }}
         NAMESPACE: ${{ inputs.namespace }}
       run: '"$ACTION_PATH/deploy.sh"'
+
+    - if: ${{ inputs.health-url != '' }}
+      shell: bash
+      env:
+        ACTION_PATH: ${{ github.action_path }}
+        URL: ${{ inputs.health-url }}
+      run: '"$ACTION_PATH/check-url.sh"'

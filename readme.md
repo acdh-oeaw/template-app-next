@@ -396,6 +396,9 @@ do not share a host or a name.
 
 `ingress` in [`configs/deployments.ts`](configs/deployments.ts) sets what differs between deployments:
 
+- `access`: after deploying, the workflow requests `/api/health/ready` at the base url for up to five minutes, and fails
+  unless it responds, like when a middleware does not exist. The deployment is not rolled back. Use `"restricted"` when
+  GitHub cannot reach the app, like behind a login
 - `className`: `traefik-proxy-protocol` forwards the addresses of clients. With `traefik`, the app sees the address of a
   proxy instead, so all clients share one limit when rate limiting by address, like in the contact form
 - `tls`: with `terminatedBy: "cluster"`, cert-manager requests a certificate from `certIssuer`, which is `acdh-prod` for

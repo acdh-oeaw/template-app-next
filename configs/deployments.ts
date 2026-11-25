@@ -6,6 +6,8 @@ export interface Deployment {
 	/** Must exist in the cluster. */
 	namespace: string;
 	ingress: {
+		/** `restricted` when GitHub cannot reach the app, like behind a login, so deploying does not check its url. */
+		access: "public" | "restricted";
 		/** Only `traefik-proxy-protocol` forwards the addresses of clients, which rate limiting by address needs. */
 		className: "traefik" | "traefik-proxy-protocol";
 		/** `upstream` for domains whose tls is terminated before the cluster, by the computing center of the ÖAW. */
@@ -20,7 +22,11 @@ export const deployments = {
 	production: {
 		name: "frontend",
 		namespace: "template-app-next",
-		ingress: { className: "traefik-proxy-protocol", tls: { terminatedBy: "cluster", certIssuer: "acdh-prod" } },
+		ingress: {
+			access: "public",
+			className: "traefik-proxy-protocol",
+			tls: { terminatedBy: "cluster", certIssuer: "acdh-prod" },
+		},
 		env: {
 			NEXT_PUBLIC_APP_BASE_URL: "https://template-app-next.acdh-dev.oeaw.ac.at",
 			TRUSTED_PROXY_COUNT: "1",
@@ -30,7 +36,11 @@ export const deployments = {
 	development: {
 		name: "frontend-development",
 		namespace: "template-app-next-development",
-		ingress: { className: "traefik-proxy-protocol", tls: { terminatedBy: "cluster", certIssuer: "acdh-prod" } },
+		ingress: {
+			access: "public",
+			className: "traefik-proxy-protocol",
+			tls: { terminatedBy: "cluster", certIssuer: "acdh-prod" },
+		},
 		env: {
 			NEXT_PUBLIC_APP_BASE_URL: "https://template-app-next-development.acdh-dev.oeaw.ac.at",
 			TRUSTED_PROXY_COUNT: "1",
