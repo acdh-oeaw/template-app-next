@@ -12,6 +12,11 @@ export async function getImprint(locale: Locale): Promise<string> {
 
 	cacheLife("days");
 
+	/** The end-to-end tests must not depend on the imprint service. */
+	if (env.BUILD_TARGET === "e2e") {
+		return "<h2>Legal disclosure</h2><p>Austrian Academy of Sciences</p>";
+	}
+
 	const url = new URL(env.SERVICE_ID, "https://imprint.acdh.oeaw.ac.at/");
 	url.searchParams.set("locale", getLanguage(locale));
 
