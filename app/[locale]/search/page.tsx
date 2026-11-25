@@ -7,6 +7,7 @@ import { Fragment, type ReactNode, Suspense } from "react";
 import { searchParamsCodec } from "#/app/[locale]/search/search-params.ts";
 import { Link } from "#/components/link.tsx";
 import { MainContent } from "#/components/main-content.tsx";
+import { env } from "#/lib/env/server.ts";
 import { createPageMetadata } from "#/lib/metadata/create-page-metadata.ts";
 import { href } from "#/lib/navigation/href.ts";
 import { getPathname } from "#/lib/navigation/navigation.ts";
@@ -69,7 +70,10 @@ async function SearchResults(props: Readonly<SearchResultsProps>): Promise<React
 	}
 
 	const t = await getTranslations();
-	const result = await searchDocuments({ query: q, page }, { client: getTypesenseClient() });
+	const result = await searchDocuments(
+		{ query: q, page },
+		{ client: getTypesenseClient(), collection: env.TYPESENSE_COLLECTION },
+	);
 
 	switch (result.status) {
 		case "not-indexed": {

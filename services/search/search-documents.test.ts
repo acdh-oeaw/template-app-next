@@ -4,6 +4,8 @@ import { HttpError } from "#/lib/request/errors.ts";
 import type { TypesenseClient } from "#/lib/typesense/client.ts";
 import { searchDocuments } from "#/services/search/search-documents.ts";
 
+const collection = "test";
+
 function createFakeClient(search: TypesenseClient["search"]): TypesenseClient {
 	return {
 		ensureCollection: () => Promise.resolve(),
@@ -17,7 +19,7 @@ describe("searchDocuments", () => {
 		const document = { id: "1", title: "Vienna", body: "A city." };
 		const client = createFakeClient(() => Promise.resolve({ found: 41, page: 2, hits: [{ document }] }));
 
-		const result = await searchDocuments({ query: "vienna", page: 2 }, { client });
+		const result = await searchDocuments({ query: "vienna", page: 2 }, { client, collection });
 
 		expect(result).toStrictEqual({ status: "found", documents: [document], total: 41, page: 2, pageCount: 3 });
 	});
@@ -25,13 +27,13 @@ describe("searchDocuments", () => {
 	test("reports a missing collection as not indexed", async () => {
 		const error = new HttpError({
 			method: "GET",
-			url: "http://localhost:8108/collections/documents/documents/search",
+			url: "http://localhost:8108/collections/test/documents/search",
 			body: "",
 			response: new Response(null, { status: 404 }),
 		});
 		const client = createFakeClient(() => Promise.reject(error));
 
-		const result = await searchDocuments({ query: "vienna", page: 1 }, { client });
+		const result = await searchDocuments({ query: "vienna", page: 1 }, { client, collection });
 
 		expect(result).toStrictEqual({ status: "not-indexed" });
 	});
@@ -40,7 +42,7 @@ describe("searchDocuments", () => {
 		const error = new Error("Connection refused");
 		const client = createFakeClient(() => Promise.reject(error));
 
-		const reason: unknown = await searchDocuments({ query: "vienna", page: 1 }, { client }).catch(
+		const reason: unknown = await searchDocuments({ query: "vienna", page: 1 }, { client, collection }).catch(
 			(error: unknown) => error,
 		);
 

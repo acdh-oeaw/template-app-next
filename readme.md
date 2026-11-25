@@ -79,6 +79,9 @@ credentials, and sends from `noreply@oeaw.ac.at`.
 bun run search:index
 ```
 
+The collection is named after the package, or set with `TYPESENSE_COLLECTION`. Apps and environments that share a Typesense
+server need different collections.
+
 Until the collection exists, the page says that the search index is not available yet.
 
 ## App shell

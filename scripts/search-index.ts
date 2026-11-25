@@ -15,6 +15,7 @@ const env = createServerEnv();
 
 await indexDocuments(documents, {
 	client: createTypesenseClient({ url: env.TYPESENSE_URL, apiKey: env.TYPESENSE_ADMIN_API_KEY }),
+	collection: env.TYPESENSE_COLLECTION,
 });
 
 console.log(`Indexed ${String(documents.length)} documents.`);

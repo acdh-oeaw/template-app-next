@@ -1,6 +1,6 @@
 import { HttpError } from "#/lib/request/errors.ts";
 import type { TypesenseClient } from "#/lib/typesense/client.ts";
-import { collection, documentSchema, type SearchDocument } from "#/services/search/collection.ts";
+import { documentSchema, type SearchDocument } from "#/services/search/collection.ts";
 
 const perPage = 20;
 
@@ -12,6 +12,8 @@ interface SearchDocumentsInput {
 
 interface SearchDocumentsDependencies {
 	client: TypesenseClient;
+	/** Name of the collection. */
+	collection: string;
 }
 
 export type SearchDocumentsResult =
@@ -23,11 +25,11 @@ export async function searchDocuments(
 	input: SearchDocumentsInput,
 	dependencies: SearchDocumentsDependencies,
 ): Promise<SearchDocumentsResult> {
-	const { client } = dependencies;
+	const { client, collection } = dependencies;
 
 	try {
 		const response = await client.search(
-			collection.name,
+			collection,
 			{ q: input.query, queryBy: ["title", "body"], page: input.page, perPage },
 			documentSchema,
 		);
