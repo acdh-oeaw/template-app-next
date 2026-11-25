@@ -179,6 +179,7 @@ const config = {
 				fromRoot("next.config.ts"),
 				fromRoot("instrumentation.ts"),
 				fromRoot("lib/env/**"),
+				fromRoot("scripts/env-deploy.ts"),
 				fromRoot("scripts/env-sync.ts"),
 				fromRoot("scripts/search-index.ts"),
 			],
@@ -212,7 +213,7 @@ const config = {
 			},
 		},
 		{
-			files: [fromRoot("lib/env/**"), fromRoot("scripts/env-sync.ts")],
+			files: [fromRoot("lib/env/**"), fromRoot("scripts/env-deploy.ts"), fromRoot("scripts/env-sync.ts")],
 			rules: {
 				"node/no-process-env": "off",
 			},

@@ -11,6 +11,7 @@
 		"analyze": "next analyze",
 		"build": "next build",
 		"dev": "BUN_OPTIONS=--no-env-file next dev",
+		"env:deploy": "bun scripts/env-deploy.ts",
 		"env:sync": "bun scripts/env-sync.ts",
 		"format:check": "bun fmt --check",
 		"format:fix": "bun fmt",

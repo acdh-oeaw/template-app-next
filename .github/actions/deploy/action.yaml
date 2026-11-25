@@ -1,0 +1,36 @@
+name: Deploy
+description: Deploy an image with kubectl, and roll back when it does not become ready.
+
+inputs:
+  base-url:
+    description: Public base url of the app.
+    required: true
+  env-file:
+    description: Json file with the environment variables of the container.
+    required: true
+  image:
+    description: Image reference with a digest.
+    required: true
+  kube-config:
+    description: Base64-encoded kubeconfig.
+    required: true
+  name:
+    description: Name of the Kubernetes resources.
+    required: true
+  namespace:
+    description: Kubernetes namespace.
+    required: true
+
+runs:
+  using: composite
+  steps:
+    - shell: bash
+      env:
+        ACTION_PATH: ${{ github.action_path }}
+        BASE_URL: ${{ inputs.base-url }}
+        ENV_FILE: ${{ inputs.env-file }}
+        IMAGE: ${{ inputs.image }}
+        KUBE_CONFIG: ${{ inputs.kube-config }}
+        NAME: ${{ inputs.name }}
+        NAMESPACE: ${{ inputs.namespace }}
+      run: '"$ACTION_PATH/deploy.sh"'

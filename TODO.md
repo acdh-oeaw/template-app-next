@@ -42,7 +42,9 @@
       binds `0.0.0.0` and is not affected. Remove the comment in the `Dockerfile` once
       https://github.com/vercel/next.js/issues/94745 is fixed
 - [ ] Search: iterate on the Typesense skeleton in `services/search/` and `lib/typesense/`
-  - [ ] A search-only api key for the app, scoped to the collection, and the admin key only for indexing
+  - [ ] A search-only api key for the app, scoped to the collection, and the admin key only for indexing. Deployments use
+        the server at `typesense.acdh.oeaw.ac.at`, which apps share, so the app must not have its admin key
+  - [ ] Index in deployments with a cronjob, in `kubernetes/`, with the script bundled in the `Dockerfile`
   - [ ] Index the app's data instead of sample documents, and swap collections with an alias, so that reindexing
         does not leave the search empty
   - [ ] Highlighting, facets and filters, as search params in `app/[locale]/search/search-params.ts`
@@ -77,11 +79,13 @@
   - [x] Point to `lib/env/schema.ts` as the place where environment variables are defined, and to `bun run env:sync`
 - [ ] CI workflows
   - [x] Validate
-  - [ ] Build and deploy
-  - [ ] Pass public and build-time environment variables to `docker build` as the `dotenv` secret, its sha256 hash as
-        the `DOTENV_HASH` build arg, and the Bun version from `devEngines` as the `BUN_VERSION` build arg
-  - [ ] Explore deploying with `kubectl` and/or `helm` directly, instead of the reusable
-        `acdh-oeaw/gl-autodevops-minimal-port` workflow
+  - [x] Build and deploy
+  - [ ] Deploy to the ACDH cluster once, which the workflow has not done yet. Create the namespace for development, and
+        uninstall the Helm release of the previous workflow first: the selector of its deployment cannot be changed, and
+        its ingress claims the same host
+  - [ ] Extract `.github/actions/build-image` and `.github/actions/deploy` into a shared repository, once they are stable
+  - [ ] Preview deployments of pull requests, in the namespace of development, with a name like `frontend-pr-1`. Delete
+        their resources by label when the pull request is closed, also volumes and Typesense collections, and their images
 - [ ] `test` script and test setup
 - [ ] App shell: `components/header.tsx`, `components/footer.tsx`, rendered in `app/[locale]/layout.tsx`
   - [x] Navigation

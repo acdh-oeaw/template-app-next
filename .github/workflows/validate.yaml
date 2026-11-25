@@ -5,6 +5,7 @@ on:
   push:
     branches:
       - main
+      - development
   workflow_dispatch:
     inputs:
       update-snapshots:
@@ -95,3 +96,14 @@ jobs:
           name: playwright-report
           path: playwright-report/
           retention-days: 7
+
+  build-deploy:
+    name: Build and deploy
+    if: ${{ github.event_name == 'push' }}
+    needs: [check, e2e]
+    permissions:
+      contents: read
+      packages: write
+    # the workflow selects the variables and secrets that the app needs by name.
+    secrets: inherit
+    uses: ./.github/workflows/build-deploy.yaml

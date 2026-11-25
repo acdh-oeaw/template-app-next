@@ -19,7 +19,11 @@ export const publicEnvSchema = v.object({
 /** Available in server code only, validated on first read. */
 export const serverEnvSchema = v.object({
 	BUILD_MODE: v.optional(
-		v.pipe(v.picklist(["standalone"]), v.description("Output mode of `next build`, set in the `Dockerfile`.")),
+		v.pipe(
+			v.picklist(["standalone"]),
+			v.description("Output mode of `next build`, set in the `Dockerfile`."),
+			v.metadata({ phases: [] }),
+		),
 	),
 	BUILD_TARGET: v.optional(
 		v.pipe(
@@ -27,6 +31,7 @@ export const serverEnvSchema = v.object({
 			v.description(
 				"Purpose of `next build`, set by the end-to-end tests. `e2e` includes the instant navigation testing API, so never set it for a user-facing deployment.",
 			),
+			v.metadata({ phases: [] }),
 		),
 	),
 	NEXT_SERVER_ACTIONS_ENCRYPTION_KEY: v.optional(
@@ -37,7 +42,7 @@ export const serverEnvSchema = v.object({
 			v.description(
 				"AES-GCM key to encrypt server function ids and closures, must be the same for all instances of the app. Stored in the build output by `next build`, and takes precedence over it when set at runtime.",
 			),
-			v.metadata({ dev: generate.base64(32) }),
+			v.metadata({ dev: generate.base64(32), phases: ["build"] }),
 		),
 	),
 	TRUSTED_PROXY_COUNT: v.optional(
@@ -46,8 +51,9 @@ export const serverEnvSchema = v.object({
 			v.digits(),
 			v.transform(Number),
 			v.description(
-				"Number of reverse proxies in front of the app that append to the `x-forwarded-for` header, used to find the client address for rate limiting. Without a trusted proxy, clients can choose their address.",
+				"Number of reverse proxies in front of the app that append to the `x-forwarded-for` header, used to find the client address for rate limiting. Without a trusted proxy, clients can choose their address. Deployments set it in `kubernetes/app.yaml`.",
 			),
+			v.metadata({ phases: [] }),
 		),
 		"0",
 	),
@@ -55,7 +61,7 @@ export const serverEnvSchema = v.object({
 		v.string(),
 		v.digits(),
 		v.description("Redmine service id of the app, used to fetch the imprint from the ACDH imprint service."),
-		v.metadata({ dev: "21966" }),
+		v.metadata({ dev: "21966", phases: ["build", "runtime"] }),
 	),
 	...mailEnvEntries,
 	...contactEnvEntries,

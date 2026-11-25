@@ -1,0 +1,53 @@
+name: Build and deploy
+
+on:
+  workflow_call:
+  # redeploys, like after changing variables or secrets.
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build-deploy:
+    name: Build and deploy
+    if: ${{ github.ref == 'refs/heads/main' || github.ref == 'refs/heads/development' }}
+    runs-on: ubuntu-26.04
+    timeout-minutes: 30
+    # not cancelled, because that can stop a deployment halfway.
+    concurrency:
+      group: deploy-${{ github.ref }}
+    environment:
+      name: ${{ github.ref == 'refs/heads/main' && 'production' || 'development' }}
+      url: ${{ steps.env.outputs.base-url }}
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+
+      - uses: ./.github/actions/setup
+
+      - id: env
+        env:
+          DEPLOY_SECRETS: ${{ toJSON(secrets) }}
+          DEPLOY_VARIABLES: ${{ toJSON(vars) }}
+          ENVIRONMENT: ${{ github.ref == 'refs/heads/main' && 'production' || 'development' }}
+        run: bun run env:deploy --environment "$ENVIRONMENT" --out-dir "$RUNNER_TEMP/env"
+
+      - id: image
+        uses: ./.github/actions/build-image
+        with:
+          dotenv-file: ${{ steps.env.outputs.build-env-file }}
+          github-token: ${{ github.token }}
+
+      - uses: ./.github/actions/deploy
+        with:
+          base-url: ${{ steps.env.outputs.base-url }}
+          env-file: ${{ steps.env.outputs.runtime-env-file }}
+          image: ${{ steps.image.outputs.image }}
+          kube-config: ${{ secrets.KUBE_CONFIG }}
+          name: ${{ steps.env.outputs.name }}
+          namespace: ${{ steps.env.outputs.namespace }}

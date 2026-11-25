@@ -38,7 +38,11 @@ function getPath(issue: v.BaseIssue<unknown>, key?: string): string {
 	return (key != null ? [key, ...path] : path).join(".");
 }
 
-function format(issues: ReadonlyArray<v.BaseIssue<unknown>>, entries: v.ObjectEntries, key?: string): string {
+export function formatIssues(
+	issues: ReadonlyArray<v.BaseIssue<unknown>>,
+	entries: v.ObjectEntries,
+	key?: string,
+): string {
 	const groups = new Map<string, Array<v.BaseIssue<unknown>>>();
 
 	for (const issue of issues) {
@@ -69,7 +73,9 @@ export function assertPublicEnv(): PublicEnv {
 	const result = v.safeParse(publicEnvSchema, readAll(publicEnvSchema));
 
 	if (!result.success) {
-		throw new EnvError(`Invalid public environment variables.\n\n${format(result.issues, publicEnvSchema.entries)}`);
+		throw new EnvError(
+			`Invalid public environment variables.\n\n${formatIssues(result.issues, publicEnvSchema.entries)}`,
+		);
 	}
 
 	return result.output;
@@ -79,7 +85,9 @@ export function assertServerEnv(): ServerEnv {
 	const result = v.safeParse(serverEnvSchema, readAll(serverEnvSchema));
 
 	if (!result.success) {
-		throw new EnvError(`Invalid server environment variables.\n\n${format(result.issues, serverEnvSchema.entries)}`);
+		throw new EnvError(
+			`Invalid server environment variables.\n\n${formatIssues(result.issues, serverEnvSchema.entries)}`,
+		);
 	}
 
 	return result.output;
@@ -104,7 +112,7 @@ export function createServerEnv(): ServerEnv {
 						? `\n\n\`${key}\` was read while prerendering, so it must also be provided at build time.`
 						: "";
 					throw new EnvError(
-						`Invalid environment variable \`${key}\`.\n\n${format(result.issues, serverEnvSchema.entries, key)}${hint}`,
+						`Invalid environment variable \`${key}\`.\n\n${formatIssues(result.issues, serverEnvSchema.entries, key)}${hint}`,
 					);
 				}
 

@@ -1,0 +1,131 @@
+# placeholders are replaced by `.github/actions/deploy/deploy.sh`.
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ${NAME}
+  labels: &labels
+    app.kubernetes.io/name: frontend
+    app.kubernetes.io/instance: ${NAME}
+    app.kubernetes.io/managed-by: ${MANAGED_BY}
+    # redmine service id.
+    ID: "${SERVICE_ID}"
+spec:
+  replicas: 1
+  revisionHistoryLimit: 3
+  # `kubectl rollout status` fails after this, which starts the rollback.
+  progressDeadlineSeconds: 300
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: frontend
+      app.kubernetes.io/instance: ${NAME}
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+  template:
+    metadata:
+      labels: *labels
+    spec:
+      automountServiceAccountToken: false
+      securityContext:
+        runAsNonRoot: true
+        # `bun` user of the `oven/bun` image. Kubernetes cannot check that a user name is not root.
+        runAsUser: 1000
+        runAsGroup: 1000
+        # makes volumes writable.
+        fsGroup: 1000
+        seccompProfile:
+          type: RuntimeDefault
+      containers:
+        - name: app
+          image: ${IMAGE}
+          ports:
+            - name: http
+              containerPort: 3000
+          envFrom:
+            - secretRef:
+                name: ${SECRET_NAME}
+          env:
+            # the ingress controller.
+            - name: TRUSTED_PROXY_COUNT
+              value: "1"
+          startupProbe:
+            httpGet:
+              path: /api/health/live
+              port: http
+            periodSeconds: 2
+            failureThreshold: 30
+          livenessProbe:
+            httpGet:
+              path: /api/health/live
+              port: http
+            timeoutSeconds: 5
+          readinessProbe:
+            httpGet:
+              path: /api/health/ready
+              port: http
+            timeoutSeconds: 5
+          lifecycle:
+            preStop:
+              # keeps serving until the ingress controller no longer sends requests to this pod.
+              exec:
+                command: ["sleep", "5"]
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop: ["ALL"]
+          resources:
+            requests:
+              cpu: 100m
+              memory: 256Mi
+            limits:
+              memory: 1Gi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ${NAME}
+  labels:
+    app.kubernetes.io/name: frontend
+    app.kubernetes.io/instance: ${NAME}
+    app.kubernetes.io/managed-by: ${MANAGED_BY}
+    ID: "${SERVICE_ID}"
+spec:
+  selector:
+    app.kubernetes.io/name: frontend
+    app.kubernetes.io/instance: ${NAME}
+  ports:
+    - name: http
+      port: 80
+      targetPort: http
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ${NAME}
+  labels:
+    app.kubernetes.io/name: frontend
+    app.kubernetes.io/instance: ${NAME}
+    app.kubernetes.io/managed-by: ${MANAGED_BY}
+    ID: "${SERVICE_ID}"
+  annotations:
+    # without `ingressClassName`, because certificates are not issued for other classes than the default.
+    # @see https://github.com/acdh-oeaw/gl-autodevops-minimal-port/issues/7
+    kubernetes.io/tls-acme: "true"
+spec:
+  tls:
+    - hosts:
+        - ${HOST}
+      secretName: ${NAME}-tls
+  rules:
+    - host: ${HOST}
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: ${NAME}
+                port:
+                  name: http

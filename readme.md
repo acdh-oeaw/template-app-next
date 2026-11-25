@@ -235,7 +235,7 @@ To download the snapshots of a run that has already finished, for example after 
 ## Continuous integration
 
 [`.github/workflows/validate.yaml`](.github/workflows/validate.yaml) runs static checks and end-to-end tests on pull
-requests and pushes to `main`. [`.github/actions/setup`](.github/actions/setup/action.yaml) installs dependencies, and
+requests and pushes to `main` and `development`. [`.github/actions/setup`](.github/actions/setup/action.yaml) installs dependencies, and
 the Bun version from `devEngines` in `package.json`. This is `canary` until a Bun release includes `bun lint`.
 
 `bun run env:sync` does nothing in CI, so add variables that are required for the build to the `env` of the `e2e` job.
@@ -268,57 +268,75 @@ docker build \
   .
 ```
 
-In GitHub Actions:
-
-```yaml
-- id: config
-  run: |
-    bun_version="$(jq -r '.devEngines.runtime.version' package.json)"
-    [ "$bun_version" = canary ] || bun_version="$(bun pm view "bun@$bun_version" version)"
-    echo "bun-version=$bun_version" >> "$GITHUB_OUTPUT"
-
-- id: dotenv
-  env:
-    NEXT_PUBLIC_APP_BASE_URL: ${{ vars.NEXT_PUBLIC_APP_BASE_URL }}
-    NEXT_SERVER_ACTIONS_ENCRYPTION_KEY: ${{ secrets.NEXT_SERVER_ACTIONS_ENCRYPTION_KEY }}
-  run: |
-    file="${{ runner.temp }}/dotenv"
-    printf 'NEXT_PUBLIC_APP_BASE_URL=%s\nNEXT_SERVER_ACTIONS_ENCRYPTION_KEY=%s\n' \
-      "$NEXT_PUBLIC_APP_BASE_URL" "$NEXT_SERVER_ACTIONS_ENCRYPTION_KEY" > "$file"
-    echo "file=$file" >> "$GITHUB_OUTPUT"
-    echo "hash=$(sha256sum "$file" | cut -d " " -f 1)" >> "$GITHUB_OUTPUT"
-    echo "deployment-id=${{ github.sha }}-$(sha256sum "$file" | cut -c 1-12)" >> "$GITHUB_OUTPUT"
-
-- uses: docker/build-push-action@v7
-  with:
-    secret-files: dotenv=${{ steps.dotenv.outputs.file }}
-    build-args: |
-      BUN_VERSION=${{ steps.config.outputs.bun-version }}
-      DOTENV_HASH=${{ steps.dotenv.outputs.hash }}
-      NEXT_DEPLOYMENT_ID=${{ steps.dotenv.outputs.deployment-id }}
-```
+In GitHub Actions, [`.github/actions/build-image`](.github/actions/build-image/action.yaml) does the same, see
+[Deployment](#deployment).
 
 Server variables that are only read at runtime are passed to the container, not to `docker build`.
 
 Rate limiting finds the client address in the `x-forwarded-for` header, so set `TRUSTED_PROXY_COUNT` to the number of
-reverse proxies in front of the app, like `1` behind a Kubernetes ingress. Otherwise clients can choose their address.
+reverse proxies in front of the app, like `1` behind a Kubernetes ingress, which `kubernetes/app.yaml` sets. Otherwise
+clients can choose their address.
 The default store of rate limiters is in memory, so each replica counts on its own. With several replicas, use a
 shared store, like Valkey, see `RateLimitStore` in [`lib/rate-limit/rate-limiter.ts`](lib/rate-limit/rate-limiter.ts).
 
-Kubernetes probes use `/api/health/live` and `/api/health/ready`, which respond with `200` while the server is up.
+## Deployment
+
+Pushes to `main` deploy to the `production` environment, and pushes to `development` to the `development` environment,
+after the checks and end-to-end tests pass. To redeploy, like after changing a variable, run the workflow by hand:
+
+```sh
+gh workflow run build-deploy.yaml --ref main
+```
+
+[`.github/workflows/build-deploy.yaml`](.github/workflows/build-deploy.yaml) runs these steps:
+
+1. `bun run env:deploy` selects the variables in [`lib/env/schema.ts`](lib/env/schema.ts) from
+   [`configs/deployments.ts`](configs/deployments.ts), and from GitHub variables and secrets with the same name. It fails
+   when one is missing, invalid, or defined more than once. Other variables and secrets are ignored. `phases` in the
+   metadata of a variable sets whether the build, the container or both need it. The default is the build for public
+   variables, and the container for server variables. A server variable that is read while prerendering needs
+   `["build", "runtime"]`, and one with `[]` cannot be configured.
+2. [`.github/actions/build-image`](.github/actions/build-image/action.yaml) builds the image, and pushes it to the GitHub
+   container registry. Kubernetes pulls without credentials, so the package must be public.
+3. [`.github/actions/deploy`](.github/actions/deploy/deploy.sh) applies the manifests in [`kubernetes/`](kubernetes/) with
+   `kubectl`, and waits until the new pods are ready. Then it deletes resources that are no longer in the manifests.
+   Otherwise it prints the logs of the pods, rolls the deployment back, and fails.
+
+The variables of the container are stored in an immutable Kubernetes secret with a hash of its content in the name, so
+that changed values restart the pods, and a rollback also restores the previous values. A rollback only covers the
+deployment, not other resources, like the ingress or cronjobs.
+
+[`configs/deployments.ts`](configs/deployments.ts) sets the namespace, the base url, which determines the host of the
+ingress, and other variables that differ between deployments. Production has its own namespace, so that nothing that
+cleans up in the other one can affect it. Namespaces are not created by the workflow. `bun test` checks that deployments
+do not share a host or a name. Other values are set in GitHub, as variables or secrets with the name in the schema, for
+the repository or for an environment. `KUBE_CONFIG`, a base64-encoded kubeconfig, is a secret of the organization.
+
+### More resources
+
+Add resources to `kubernetes/`, like a cronjob, with the `app.kubernetes.io/instance` and
+`app.kubernetes.io/managed-by` labels of the other resources, also on the job template of a cronjob.
+
+- Only deployments, services, ingresses and cronjobs are deleted when they are removed from `kubernetes/`. Delete others
+  by hand, like a persistent volume claim, which deletes its data
+- Pods of a cronjob need a different `app.kubernetes.io/name` than the app, because the service otherwise sends requests
+  to them
+- A deployment that mounts a `ReadWriteOnce` volume needs the `Recreate` strategy, because the new pod may not be able to
+  mount the volume while the old pod runs
+- Run database migrations in an init container. When it fails, the deployment rolls back, but not the database, so
+  migrations must be compatible with the previous version of the app
+- The image only contains the Next.js server. A script needs to be bundled with `bun build` in the `Dockerfile`
+
+To remove a deployment, like the one for development:
+
+```sh
+kubectl delete cronjobs,deployments,ingresses,secrets,services --namespace template-app-next-development \
+  --selector app.kubernetes.io/instance=frontend-development,app.kubernetes.io/managed-by=deploy-action
+```
+
+The probes use `/api/health/live` and `/api/health/ready`, which respond with `200` while the server is up.
 Liveness failures restart the container, so the liveness endpoint only checks the process itself. Readiness failures
 stop traffic to the pod, so checks for dependencies like a database belong in the readiness endpoint.
-
-```yaml
-livenessProbe:
-  httpGet:
-    path: /api/health/live
-    port: 3000
-readinessProbe:
-  httpGet:
-    path: /api/health/ready
-    port: 3000
-```
 
 ## Upgrading Next.js
 
