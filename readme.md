@@ -404,9 +404,12 @@ do not share a host or a name.
   can be an additional hop, so check which addresses the app receives in `x-forwarded-for`, and set `TRUSTED_PROXY_COUNT`
   accordingly, before relying on rate limiting
 
-Other annotations go in [`kubernetes/ingress.yaml`](kubernetes/ingress.yaml). It uses the `compress` middleware of
-Traefik in the `kube-system` namespace, so compression is disabled in [`next.config.ts`](next.config.ts). Separate
-several middlewares with a comma, like `kube-system-redirect-to-www@kubernetescrd,kube-system-compress@kubernetescrd`.
+Other annotations go in [`kubernetes/ingress.yaml`](kubernetes/ingress.yaml), or, when they only apply with
+`terminatedBy: "cluster"`, in [`kubernetes/patches/ingress-tls.yaml`](kubernetes/patches/ingress-tls.yaml). They use
+middlewares of Traefik in the `kube-system` namespace: `compress`, so compression is disabled in
+[`next.config.ts`](next.config.ts), and `redirect-https`, only with `terminatedBy: "cluster"`. With `"upstream"`, the
+proxy before the cluster must redirect to https. Separate several middlewares with a comma. The patch replaces the list
+of the ingress, so add a middleware to both.
 
 ### More resources
 
