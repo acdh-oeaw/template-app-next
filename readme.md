@@ -407,6 +407,24 @@ do not share a host or a name.
   can be an additional hop, so check which addresses the app receives in `x-forwarded-for`, and set `TRUSTED_PROXY_COUNT`
   accordingly, before relying on rate limiting
 
+### Redirect hosts
+
+Domains outside of `oeaw.ac.at` often have a second host, like `www.example.at` for `https://example.at`. The base url
+sets which one is canonical. List the others in `redirectHosts` of `tls`, so that they redirect permanently to it,
+keeping the path:
+
+```ts
+ingress: {
+  access: "public",
+  className: "traefik",
+  tls: { terminatedBy: "cluster", certIssuer: "letsencrypt-prod", redirectHosts: ["www.example.at"] },
+},
+```
+
+The workflow creates a Gateway and an HTTPRoute of the Kubernetes Gateway API for them, named after the deployment, and
+cert-manager requests a certificate for each host. With `terminatedBy: "upstream"`, the proxy before the cluster has to
+redirect. The url check after deploying also checks the redirects.
+
 Other annotations go in [`kubernetes/ingress.yaml`](kubernetes/ingress.yaml), or, when they only apply with
 `terminatedBy: "cluster"`, in [`kubernetes/patches/ingress-tls.yaml`](kubernetes/patches/ingress-tls.yaml). They use
 middlewares of Traefik in the `kube-system` namespace: `compress`, so compression is disabled in
@@ -432,7 +450,7 @@ Add resources to `kubernetes/`, like a cronjob, with the `app.kubernetes.io/inst
 To remove a deployment, like the one for development:
 
 ```sh
-kubectl delete cronjobs,deployments,ingresses,secrets,services --namespace template-app-next-development \
+kubectl delete cronjobs,deployments,gateways,httproutes,ingresses,secrets,services --namespace template-app-next-development \
   --selector app.kubernetes.io/instance=frontend-development,app.kubernetes.io/managed-by=deploy-action
 ```
 

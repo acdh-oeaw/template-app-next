@@ -55,6 +55,7 @@ try {
 		"health-url":
 			ingress.access === "public" ? new URL("/api/health/ready", deploymentEnv.NEXT_PUBLIC_APP_BASE_URL).href : "",
 		"ingress-class": ingress.className,
+		"redirect-hosts": ingress.tls.terminatedBy === "cluster" ? (ingress.tls.redirectHosts ?? []).join(" ") : "",
 		name,
 		namespace,
 		"runtime-env-file": files.runtime,

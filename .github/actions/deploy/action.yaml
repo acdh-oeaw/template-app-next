@@ -29,6 +29,9 @@ inputs:
   namespace:
     description: Kubernetes namespace.
     required: true
+  redirect-hosts:
+    description: Space-separated hosts that redirect to the host of the base url. Needs a cert issuer.
+    default: ""
 
 runs:
   using: composite
@@ -44,11 +47,17 @@ runs:
         KUBE_CONFIG: ${{ inputs.kube-config }}
         NAME: ${{ inputs.name }}
         NAMESPACE: ${{ inputs.namespace }}
+        REDIRECT_HOSTS: ${{ inputs.redirect-hosts }}
       run: '"$ACTION_PATH/deploy.sh"'
 
     - if: ${{ inputs.health-url != '' }}
       shell: bash
       env:
         ACTION_PATH: ${{ github.action_path }}
-        URL: ${{ inputs.health-url }}
-      run: '"$ACTION_PATH/check-url.sh"'
+        HEALTH_URL: ${{ inputs.health-url }}
+        REDIRECT_HOSTS: ${{ inputs.redirect-hosts }}
+      run: |
+        "$ACTION_PATH/check-url.sh" "$HEALTH_URL"
+        for host in $REDIRECT_HOSTS; do
+          "$ACTION_PATH/check-url.sh" "https://$host/${HEALTH_URL#*://*/}" "$HEALTH_URL"
+        done

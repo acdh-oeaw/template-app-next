@@ -11,7 +11,14 @@ export interface Deployment {
 		/** Only `traefik-proxy-protocol` forwards the addresses of clients, which rate limiting by address needs. */
 		className: "traefik" | "traefik-proxy-protocol";
 		/** `upstream` for domains whose tls is terminated before the cluster, by the computing center of the ÖAW. */
-		tls: { terminatedBy: "cluster"; certIssuer: "acdh-prod" | "letsencrypt-prod" } | { terminatedBy: "upstream" };
+		tls:
+			| {
+					terminatedBy: "cluster";
+					certIssuer: "acdh-prod" | "letsencrypt-prod";
+					/** Hosts that redirect to the host of the base url, like `www.example.at` for `https://example.at`. */
+					redirectHosts?: Array<string>;
+			  }
+			| { terminatedBy: "upstream" };
 	};
 	/** Variables that differ between deployments, and are not secret. Others are set in GitHub. */
 	env: DeployEnv;

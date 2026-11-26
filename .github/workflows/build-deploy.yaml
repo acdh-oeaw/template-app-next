@@ -54,3 +54,4 @@ jobs:
           kube-config: ${{ secrets.KUBE_CONFIG }}
           name: ${{ steps.env.outputs.name }}
           namespace: ${{ steps.env.outputs.namespace }}
+          redirect-hosts: ${{ steps.env.outputs.redirect-hosts }}

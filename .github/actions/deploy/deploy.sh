@@ -58,6 +58,72 @@ if [ -n "${CERT_ISSUER:-}" ]; then
   mv "$directory/ingress.yaml" "$manifests/ingress.yaml"
 fi
 
+if [ -n "${REDIRECT_HOSTS:-}" ]; then
+  if [ -z "${CERT_ISSUER:-}" ]; then
+    echo "::error::Redirect hosts need a cert issuer"
+    exit 1
+  fi
+
+  # a listener for http and https for each host, with a certificate from cert-manager. the class and ports are those of
+  # Traefik in the cluster.
+  jq --null-input --arg hosts "$REDIRECT_HOSTS" --arg host "$HOST" --arg issuer "$CERT_ISSUER" --arg name "$NAME" \
+    --arg managed_by "$MANAGED_BY" --arg service_id "$SERVICE_ID" '
+    ($hosts | split(" ") | map(select(. != ""))) as $hosts |
+    {
+      "app.kubernetes.io/name": "frontend",
+      "app.kubernetes.io/instance": $name,
+      "app.kubernetes.io/managed-by": $managed_by,
+      ID: $service_id
+    } as $labels |
+    [
+      $hosts[] | gsub("\\."; "-") as $id |
+      { name: "http-\($id)", hostname: ., port: 8000, protocol: "HTTP" },
+      {
+        name: "https-\($id)",
+        hostname: .,
+        port: 8443,
+        protocol: "HTTPS",
+        tls: { mode: "Terminate", certificateRefs: [{ kind: "Secret", name: "\($name)-\($id)-tls" }] }
+      } |
+      . + { allowedRoutes: { namespaces: { from: "Same" } } }
+    ] as $listeners |
+    {
+      apiVersion: "v1",
+      kind: "List",
+      items: [
+        {
+          apiVersion: "gateway.networking.k8s.io/v1",
+          kind: "Gateway",
+          metadata: {
+            name: "\($name)-redirects",
+            labels: $labels,
+            annotations: { "cert-manager.io/cluster-issuer": $issuer }
+          },
+          spec: { gatewayClassName: "traefik", listeners: $listeners }
+        },
+        {
+          apiVersion: "gateway.networking.k8s.io/v1",
+          kind: "HTTPRoute",
+          metadata: { name: "\($name)-redirects", labels: $labels },
+          spec: {
+            hostnames: $hosts,
+            parentRefs: [$listeners[] | { name: "\($name)-redirects", sectionName: .name }],
+            rules: [
+              {
+                filters: [
+                  {
+                    type: "RequestRedirect",
+                    requestRedirect: { scheme: "https", hostname: $host, statusCode: 301 }
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    }' > "$manifests/redirects.json"
+fi
+
 if grep --line-number --recursive --fixed-strings "\${" "$manifests"; then
   echo "::error::Unknown placeholder in kubernetes/"
   exit 1
@@ -106,7 +172,8 @@ prune() {
 
 # without persistent volume claims, because that deletes their data.
 applied="$(kubectl get --filename "$manifests" --output name)"
-kubectl get cronjobs,deployments,ingresses,services --selector "$selector" --output name | prune "${applied:?}"
+kubectl get cronjobs,deployments,ingresses,services,gateways.gateway.networking.k8s.io,httproutes.gateway.networking.k8s.io \
+  --selector "$selector" --output name | prune "${applied:?}"
 
 # secrets of revisions in the history are kept for rollbacks.
 used="$(

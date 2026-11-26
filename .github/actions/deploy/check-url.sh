@@ -5,17 +5,21 @@
 
 set -euo pipefail
 
-: "${URL:?}"
+# usage: check-url.sh <url> [<location>], where a location expects a permanent redirect to it, instead of 200.
+url="${1:?}"
+location="${2:-}"
+expected="${location:+301 $location}"
+expected="${expected:-200 }"
 
 # the first certificate can take some minutes.
 timeout="${TIMEOUT:-300}"
 interval="${INTERVAL:-5}"
 
 while true; do
-  # without `--location`, because a health check does not redirect.
-  if result="$(curl --silent --show-error --max-time 10 --output /dev/null --write-out '%{http_code}' "$URL" 2>&1)" &&
-    [ "$result" = "200" ]; then
-    echo "$URL responds"
+  # without `--location`, so that a redirect is reported instead of followed.
+  if result="$(curl --silent --show-error --max-time 10 --output /dev/null --write-out '%{http_code} %{redirect_url}' "$url" 2>&1)" &&
+    [ "$result" = "$expected" ]; then
+    echo "$url responds with ${expected% }"
     exit 0
   fi
 
@@ -26,5 +30,5 @@ while true; do
   sleep "$interval"
 done
 
-echo "::error::The deployment is ready, but $URL does not respond with 200: ${result//$'\n'/ }. It is not rolled back, because a rollback does not include the ingress."
+echo "::error::The deployment is ready, but $url does not respond with ${expected% }: ${result//$'\n'/ }. It is not rolled back, because a rollback does not include the ingress."
 exit 1
