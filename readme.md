@@ -468,6 +468,8 @@ are removed.
 - Run database migrations in an init container. When it fails, the deployment rolls back, but not the database, so
   migrations must be compatible with the previous version of the app
 - The image only contains the Next.js server. A script needs to be bundled with `bun build` in the `Dockerfile`
+- The root filesystem of the container is read-only. The app can write to `/tmp` and `.next/cache`, which are emptied
+  when the pod restarts
 
 To change what all deployments render, change the chart in
 [`.github/actions/deploy/chart/`](.github/actions/deploy/chart/), and its schema with it.
