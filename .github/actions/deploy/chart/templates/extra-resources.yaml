@@ -1,0 +1,9 @@
+{{- /* labels of the app are added, so that `deploy.sh` finds the resources. a resource can set its own `name` label. */}}
+{{- range .Values.extraResources }}
+{{- $resource := tpl (toYaml .) $ | fromYaml }}
+{{- $labels := include "app.labels" $ | fromYaml }}
+{{- $metadata := $resource.metadata }}
+{{- $_ := set $metadata "labels" (merge (omit $labels "app.kubernetes.io/name") (dig "labels" (dict) $metadata) $labels) }}
+---
+{{ toYaml $resource }}
+{{- end }}

@@ -45,13 +45,7 @@ jobs:
 
       - uses: ./.github/actions/deploy
         with:
-          base-url: ${{ steps.env.outputs.base-url }}
-          cert-issuer: ${{ steps.env.outputs.cert-issuer }}
           env-file: ${{ steps.env.outputs.runtime-env-file }}
-          health-url: ${{ steps.env.outputs.health-url }}
           image: ${{ steps.image.outputs.image }}
-          ingress-class: ${{ steps.env.outputs.ingress-class }}
           kube-config: ${{ secrets.KUBE_CONFIG }}
-          name: ${{ steps.env.outputs.name }}
-          namespace: ${{ steps.env.outputs.namespace }}
-          redirect-hosts: ${{ steps.env.outputs.redirect-hosts }}
+          values-file: ${{ steps.env.outputs.values-file }}

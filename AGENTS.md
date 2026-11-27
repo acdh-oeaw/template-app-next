@@ -29,10 +29,11 @@ Define containers for third-party services in local development, like a Typesens
 
 ## Deployment
 
-`.github/workflows/build-deploy.yaml` builds the image, and deploys the manifests in `kubernetes/` with `kubectl`. See `readme.md`.
+`.github/workflows/build-deploy.yaml` builds the image, and deploys it with `.github/actions/deploy`, which renders its Helm chart with `helm template` and applies it with `kubectl`, without a Helm release. See `readme.md`.
 
 - `bun run env:deploy` provides the variables in `lib/env/schema.ts`, so don't list them in the workflow. Set values that differ between deployments, and are not secret, in `configs/deployments.ts`, and others in GitHub. Set `phases` in the metadata of a server variable that is read while prerendering, like `v.metadata({ phases: ["build", "runtime"] })`. The image is public, so the build must not need secrets
-- Give each resource in `kubernetes/` the labels of the others, so that it is deleted when it is removed. Add new placeholders to `envsubst` in `.github/actions/deploy/deploy.sh`
+- `configs/deployments.ts` is the only configuration of each deployment, including the values of the chart. Add resources that only this app needs, like a cronjob, to `extraResources` there, not to the chart
+- The deploy action, with its chart, only depends on its inputs, so that it can move to a repository that ACDH apps share. Don't read files of the app in it. When adding a value to the chart, add it to `values.schema.json` and to the `Deployment` type, and test it in `configs/deployments.test.ts`
 
 ## Testing
 

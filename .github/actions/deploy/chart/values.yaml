@@ -1,0 +1,24 @@
+# required values are listed in `values.schema.json`. the app sets them in its values file, and `deploy.sh` sets
+# `image`, `env` and `managedBy`.
+
+replicas: 1
+
+resources:
+  requests:
+    cpu: 100m
+    memory: 256Mi
+  limits:
+    memory: 1Gi
+
+ingress:
+  annotations: {}
+
+# Traefik in the ACDH cluster.
+gateway:
+  className: traefik
+  ports:
+    http: 8000
+    https: 8443
+
+# other resources, like a cronjob. strings can use templates, like `{{ .Values.name }}`.
+extraResources: []

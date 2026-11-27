@@ -1,23 +1,17 @@
-# placeholders are replaced by `.github/actions/deploy/deploy.sh`.
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: ${NAME}
-  labels: &labels
-    app.kubernetes.io/name: frontend
-    app.kubernetes.io/instance: ${NAME}
-    app.kubernetes.io/managed-by: ${MANAGED_BY}
-    # redmine service id.
-    ID: "${SERVICE_ID}"
+  name: {{ .Values.name }}
+  labels:
+    {{- include "app.labels" . | nindent 4 }}
 spec:
-  replicas: 1
+  replicas: {{ .Values.replicas }}
   revisionHistoryLimit: 3
   # `kubectl rollout status` fails after this, which starts the rollback.
   progressDeadlineSeconds: 300
   selector:
     matchLabels:
-      app.kubernetes.io/name: frontend
-      app.kubernetes.io/instance: ${NAME}
+      {{- include "app.selectorLabels" . | nindent 6 }}
   strategy:
     type: RollingUpdate
     rollingUpdate:
@@ -25,7 +19,8 @@ spec:
       maxUnavailable: 0
   template:
     metadata:
-      labels: *labels
+      labels:
+        {{- include "app.labels" . | nindent 8 }}
     spec:
       automountServiceAccountToken: false
       securityContext:
@@ -39,13 +34,13 @@ spec:
           type: RuntimeDefault
       containers:
         - name: app
-          image: ${IMAGE}
+          image: {{ .Values.image }}
           ports:
             - name: http
               containerPort: 3000
           envFrom:
             - secretRef:
-                name: ${SECRET_NAME}
+                name: {{ include "app.envSecretName" . }}
           startupProbe:
             httpGet:
               path: /api/health/live
@@ -57,6 +52,7 @@ spec:
               path: /api/health/live
               port: http
             timeoutSeconds: 5
+          # `deploy.sh` also requests this path at the public url.
           readinessProbe:
             httpGet:
               path: /api/health/ready
@@ -72,26 +68,4 @@ spec:
             capabilities:
               drop: ["ALL"]
           resources:
-            requests:
-              cpu: 100m
-              memory: 256Mi
-            limits:
-              memory: 1Gi
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: ${NAME}
-  labels:
-    app.kubernetes.io/name: frontend
-    app.kubernetes.io/instance: ${NAME}
-    app.kubernetes.io/managed-by: ${MANAGED_BY}
-    ID: "${SERVICE_ID}"
-spec:
-  selector:
-    app.kubernetes.io/name: frontend
-    app.kubernetes.io/instance: ${NAME}
-  ports:
-    - name: http
-      port: 80
-      targetPort: http
+            {{- toYaml .Values.resources | nindent 12 }}

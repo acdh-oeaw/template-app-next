@@ -1,0 +1,43 @@
+{{- $tls := .Values.ingress.tls }}
+{{- $annotations := dict }}
+{{- if eq $tls.terminatedBy "cluster" }}
+{{- $annotations = dict
+  "acme.cert-manager.io/http01-ingress-ingressclassname" .Values.ingress.className
+  "cert-manager.io/cluster-issuer" $tls.certIssuer
+  "traefik.ingress.kubernetes.io/router.middlewares" "kube-system-redirect-https@kubernetescrd,kube-system-compress@kubernetescrd"
+}}
+{{- else }}
+{{- /* not `redirect-https`: the proxy before the cluster can send requests as http, which would redirect in a loop. */}}
+{{- $annotations = dict "traefik.ingress.kubernetes.io/router.middlewares" "kube-system-compress@kubernetescrd" }}
+{{- end }}
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: {{ .Values.name }}
+  labels:
+    {{- include "app.labels" . | nindent 4 }}
+  {{- /*
+  the class for http-01 challenges only has an effect when the certificate is created. after changing the class, delete
+  the certificate. @see https://github.com/acdh-oeaw/gl-autodevops-minimal-port/issues/7
+  */}}
+  annotations:
+    {{- merge (dict) .Values.ingress.annotations $annotations | toYaml | nindent 4 }}
+spec:
+  ingressClassName: {{ .Values.ingress.className }}
+  {{- if eq $tls.terminatedBy "cluster" }}
+  tls:
+    - hosts:
+        - {{ include "app.host" . }}
+      secretName: {{ .Values.name }}-tls
+  {{- end }}
+  rules:
+    - host: {{ include "app.host" . }}
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: {{ .Values.name }}
+                port:
+                  name: http

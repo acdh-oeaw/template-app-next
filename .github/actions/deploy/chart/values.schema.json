@@ -1,0 +1,143 @@
+{
+	"$schema": "http://json-schema.org/draft-07/schema#",
+	"type": "object",
+	"additionalProperties": false,
+	"required": ["name", "namespace", "serviceId", "baseUrl", "image", "env", "managedBy", "ingress"],
+	"properties": {
+		"name": {
+			"description": "Names and labels the resources. Short, because other names add suffixes to it.",
+			"type": "string",
+			"pattern": "^[a-z](?:[-a-z0-9]{0,38}[a-z0-9])?$"
+		},
+		"namespace": {
+			"description": "Must exist in the cluster.",
+			"type": "string",
+			"minLength": 1
+		},
+		"serviceId": {
+			"description": "Redmine service id.",
+			"type": "string",
+			"pattern": "^[0-9]+$"
+		},
+		"baseUrl": {
+			"description": "Public base url of the app. Its host is the host of the ingress.",
+			"type": "string",
+			"pattern": "^https://[^/]+"
+		},
+		"image": {
+			"description": "Image reference with a digest. Set by `deploy.sh`.",
+			"type": "string",
+			"minLength": 1
+		},
+		"env": {
+			"description": "Environment variables of the container, stored in a secret. Set by `deploy.sh`.",
+			"type": "object",
+			"additionalProperties": { "type": "string" }
+		},
+		"managedBy": {
+			"description": "Label by which `deploy.sh` finds the resources. Set by `deploy.sh`.",
+			"type": "string",
+			"minLength": 1
+		},
+		"replicas": {
+			"type": "integer",
+			"minimum": 0
+		},
+		"resources": {
+			"type": "object"
+		},
+		"ingress": {
+			"type": "object",
+			"additionalProperties": false,
+			"required": ["access", "className", "tls"],
+			"properties": {
+				"access": {
+					"description": "`restricted` when GitHub cannot reach the app, like behind a login, so `deploy.sh` does not check its url.",
+					"enum": ["public", "restricted"]
+				},
+				"className": {
+					"description": "Only `traefik-proxy-protocol` forwards the addresses of clients.",
+					"enum": ["traefik", "traefik-proxy-protocol"]
+				},
+				"annotations": {
+					"description": "Take precedence over the annotations of the chart.",
+					"type": "object",
+					"additionalProperties": { "type": "string" }
+				},
+				"tls": {
+					"oneOf": [
+						{
+							"type": "object",
+							"additionalProperties": false,
+							"required": ["terminatedBy", "certIssuer"],
+							"properties": {
+								"terminatedBy": { "const": "cluster" },
+								"certIssuer": {
+									"description": "`acdh-prod` for `oeaw.ac.at` domains, and `letsencrypt-prod` for others.",
+									"enum": ["acdh-prod", "letsencrypt-prod"]
+								},
+								"redirectHosts": {
+									"description": "Hosts that redirect to the host of the base url.",
+									"type": "array",
+									"uniqueItems": true,
+									"items": {
+										"type": "string",
+										"pattern": "^(?:[a-z0-9](?:[-a-z0-9]{0,61}[a-z0-9])?\\.)+[a-z]{2,63}$"
+									}
+								}
+							}
+						},
+						{
+							"description": "For domains whose tls is terminated before the cluster, by the computing center of the ÖAW.",
+							"type": "object",
+							"additionalProperties": false,
+							"required": ["terminatedBy"],
+							"properties": {
+								"terminatedBy": { "const": "upstream" }
+							}
+						}
+					]
+				}
+			}
+		},
+		"gateway": {
+			"type": "object",
+			"additionalProperties": false,
+			"required": ["className", "ports"],
+			"properties": {
+				"className": { "type": "string" },
+				"ports": {
+					"type": "object",
+					"additionalProperties": false,
+					"required": ["http", "https"],
+					"properties": {
+						"http": { "type": "integer" },
+						"https": { "type": "integer" }
+					}
+				}
+			}
+		},
+		"extraResources": {
+			"type": "array",
+			"items": {
+				"type": "object",
+				"required": ["apiVersion", "kind", "metadata"],
+				"properties": {
+					"apiVersion": { "type": "string" },
+					"kind": { "type": "string" },
+					"metadata": {
+						"type": "object",
+						"required": ["name"],
+						"properties": {
+							"name": { "type": "string" },
+							"labels": {
+								"type": "object",
+								"additionalProperties": { "type": "string" }
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+}

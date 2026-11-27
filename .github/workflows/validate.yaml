@@ -37,6 +37,11 @@ jobs:
 
       - uses: ./.github/actions/setup
 
+      # renders the chart of the deploy action in the tests, with the version that deploys.
+      - uses: azure/setup-helm@v4
+        with:
+          version: v4.3.0
+
       - parallel:
           - run: bun run format:check
           - run: bun run i18n:check

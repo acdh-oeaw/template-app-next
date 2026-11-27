@@ -3,150 +3,71 @@
 set -euo pipefail
 umask 077
 
-: "${BASE_URL:?}" "${ENV_FILE:?}" "${IMAGE:?}" "${INGRESS_CLASS:?}" "${KUBE_CONFIG:?}" "${NAME:?}" "${NAMESPACE:?}"
+: "${ENV_FILE:?}" "${IMAGE:?}" "${KUBE_CONFIG:?}" "${VALUES_FILE:?}"
+
+action_path="${BASH_SOURCE[0]%/*}"
+
+name="$(jq --raw-output --exit-status '.name' "$VALUES_FILE")"
+namespace="$(jq --raw-output --exit-status '.namespace' "$VALUES_FILE")"
+
+# only resources with this label are deleted when they are removed.
+managed_by="deploy-action"
+selector="app.kubernetes.io/instance=$name,app.kubernetes.io/managed-by=$managed_by"
 
 directory="$(mktemp --directory)"
 trap 'rm -rf -- "${directory:?}"' EXIT
 
 export KUBECONFIG="$directory/kubeconfig"
 base64 --decode <<< "$KUBE_CONFIG" > "$KUBECONFIG"
-kubectl config set-context --current --namespace "$NAMESPACE" > /dev/null
+kubectl config set-context --current --namespace "$namespace" > /dev/null
 
-HOST="${BASE_URL#*://}"
-HOST="${HOST%%/*}"
-SERVICE_ID="$(jq --raw-output --exit-status '.SERVICE_ID' "$ENV_FILE")"
+# in a file, not in arguments, which other processes can read.
+jq '{ env: . }' "$ENV_FILE" > "$directory/env.json"
 
-# only resources with this label are pruned.
-MANAGED_BY="deploy-action"
-
-# the name contains a hash of the content, so that changed values restart the pods, and a rollback restores the values.
-hash="$(jq --compact-output --sort-keys . "$ENV_FILE" | sha256sum | cut -c 1-10)"
-SECRET_NAME="$NAME-env-$hash"
-
-export CERT_ISSUER HOST IMAGE INGRESS_CLASS MANAGED_BY NAME SECRET_NAME SERVICE_ID
-
-selector="app.kubernetes.io/instance=$NAME,app.kubernetes.io/managed-by=$MANAGED_BY"
-
-jq --arg instance "$NAME" --arg managed_by "$MANAGED_BY" --arg name "$SECRET_NAME" '{
-  apiVersion: "v1",
-  kind: "Secret",
-  metadata: {
-    name: $name,
-    labels: { "app.kubernetes.io/instance": $instance, "app.kubernetes.io/managed-by": $managed_by }
-  },
-  type: "Opaque",
-  immutable: true,
-  data: map_values(@base64)
-}' "$ENV_FILE" > "$directory/secret.json"
-
-manifests="$directory/manifests"
-mkdir "$manifests"
-
-render() {
-  # shellcheck disable=SC2016
-  envsubst '$CERT_ISSUER $HOST $IMAGE $INGRESS_CLASS $MANAGED_BY $NAME $SECRET_NAME $SERVICE_ID' < "$1"
-}
-
-for file in kubernetes/*.yaml; do
-  render "$file" > "$manifests/${file##*/}"
-done
-
-if [ -n "${CERT_ISSUER:-}" ]; then
-  render kubernetes/patches/ingress-tls.yaml > "$directory/ingress-tls.yaml"
-  kubectl patch --local --type merge --filename "$manifests/ingress.yaml" --patch-file "$directory/ingress-tls.yaml" \
-    --output yaml > "$directory/ingress.yaml"
-  mv "$directory/ingress.yaml" "$manifests/ingress.yaml"
-fi
-
-if [ -n "${REDIRECT_HOSTS:-}" ]; then
-  if [ -z "${CERT_ISSUER:-}" ]; then
-    echo "::error::Redirect hosts need a cert issuer"
-    exit 1
-  fi
-
-  # a listener for http and https for each host, with a certificate from cert-manager. the class and ports are those of
-  # Traefik in the cluster.
-  jq --null-input --arg hosts "$REDIRECT_HOSTS" --arg host "$HOST" --arg issuer "$CERT_ISSUER" --arg name "$NAME" \
-    --arg managed_by "$MANAGED_BY" --arg service_id "$SERVICE_ID" '
-    ($hosts | split(" ") | map(select(. != ""))) as $hosts |
-    {
-      "app.kubernetes.io/name": "frontend",
-      "app.kubernetes.io/instance": $name,
-      "app.kubernetes.io/managed-by": $managed_by,
-      ID: $service_id
-    } as $labels |
-    [
-      $hosts[] | gsub("\\."; "-") as $id |
-      { name: "http-\($id)", hostname: ., port: 8000, protocol: "HTTP" },
-      {
-        name: "https-\($id)",
-        hostname: .,
-        port: 8443,
-        protocol: "HTTPS",
-        tls: { mode: "Terminate", certificateRefs: [{ kind: "Secret", name: "\($name)-\($id)-tls" }] }
-      } |
-      . + { allowedRoutes: { namespaces: { from: "Same" } } }
-    ] as $listeners |
-    {
-      apiVersion: "v1",
-      kind: "List",
-      items: [
-        {
-          apiVersion: "gateway.networking.k8s.io/v1",
-          kind: "Gateway",
-          metadata: {
-            name: "\($name)-redirects",
-            labels: $labels,
-            annotations: { "cert-manager.io/cluster-issuer": $issuer }
-          },
-          spec: { gatewayClassName: "traefik", listeners: $listeners }
-        },
-        {
-          apiVersion: "gateway.networking.k8s.io/v1",
-          kind: "HTTPRoute",
-          metadata: { name: "\($name)-redirects", labels: $labels },
-          spec: {
-            hostnames: $hosts,
-            parentRefs: [$listeners[] | { name: "\($name)-redirects", sectionName: .name }],
-            rules: [
-              {
-                filters: [
-                  {
-                    type: "RequestRedirect",
-                    requestRedirect: { scheme: "https", hostname: $host, statusCode: 301 }
-                  }
-                ]
-              }
-            ]
-          }
-        }
-      ]
-    }' > "$manifests/redirects.json"
-fi
-
-if grep --line-number --recursive --fixed-strings "\${" "$manifests"; then
-  echo "::error::Unknown placeholder in kubernetes/"
-  exit 1
-fi
+manifests="$directory/manifests.yaml"
+helm template "$name" "$action_path/chart" --namespace "$namespace" --values "$VALUES_FILE" \
+  --values "$directory/env.json" --set-string "image=$IMAGE,managedBy=$managed_by" > "$manifests"
 
 # server-side, because client-side apply stores the values of the secret in an annotation. conflicts are with changes
 # from outside of the repository, like a rollback.
 apply() {
-  kubectl apply --server-side --force-conflicts --field-manager "$MANAGED_BY" \
-    --filename "$directory/secret.json" --filename "$manifests" "$@"
+  kubectl apply --server-side --force-conflicts --field-manager "$managed_by" "$@"
 }
 
 # rejects all changes when the cluster does not accept one of them.
-apply --dry-run=server > /dev/null
+applied="$(apply --filename "$manifests" --dry-run=server --output name | sort --unique)"
+
+# the resources that deployments applied, so that those removed from the chart are deleted, of any kind. listing each
+# kind by label would need permissions for each, and fail for api groups that the cluster does not serve. without
+# secrets, which are deleted below, and persistent volume claims, because deleting them deletes their data.
+inventory="$name-inventory"
+
+write_inventory() {
+  jq --null-input --arg name "$inventory" --arg instance "$name" --arg managed_by "$managed_by" --arg resources "$1" '{
+    apiVersion: "v1",
+    kind: "ConfigMap",
+    metadata: {
+      name: $name,
+      labels: { "app.kubernetes.io/instance": $instance, "app.kubernetes.io/managed-by": $managed_by }
+    },
+    data: { resources: $resources }
+  }' | apply --filename - > /dev/null
+}
+
+tracked="$(grep --invert-match --extended-regexp '^(secret|persistentvolumeclaim)/' <<< "$applied" || true)"
+previous="$(kubectl get configmap "$inventory" --ignore-not-found --output 'jsonpath={.data.resources}')"
+
+# before applying, so that a failed deployment does not lose track of the resources it added.
+write_inventory "$(printf '%s\n%s\n' "$previous" "$tracked" | sed '/^$/d' | sort --unique)"
 
 previous_revision="$(
-  kubectl get deployment "$NAME" --ignore-not-found \
+  kubectl get deployment "$name" --ignore-not-found \
     --output 'jsonpath={.metadata.annotations.deployment\.kubernetes\.io/revision}'
 )"
 
-apply
+apply --filename "$manifests"
 
-if ! kubectl rollout status "deployment/$NAME" --timeout 360s; then
+if ! kubectl rollout status "deployment/$name" --timeout 360s; then
   echo "::group::Pods"
   kubectl describe pods --selector "$selector" || true
   kubectl logs --selector "$selector" --all-containers --ignore-errors --prefix --tail 100 || true
@@ -154,9 +75,9 @@ if ! kubectl rollout status "deployment/$NAME" --timeout 360s; then
 
   if [ -n "$previous_revision" ]; then
     echo "::error::Deployment failed, rolling back to revision $previous_revision"
-    kubectl rollout undo "deployment/$NAME" --to-revision "$previous_revision"
+    kubectl rollout undo "deployment/$name" --to-revision "$previous_revision"
     # not `rollout status`, which still sees the failure of the previous rollout.
-    kubectl wait "deployment/$NAME" --for condition=Available --timeout 360s
+    kubectl wait "deployment/$name" --for condition=Available --timeout 360s
   else
     echo "::error::First deployment failed, there is no revision to roll back to"
   fi
@@ -164,20 +85,29 @@ if ! kubectl rollout status "deployment/$NAME" --timeout 360s; then
   exit 1
 fi
 
-# deletes the resources on stdin, except for the ones to keep.
-prune() {
-  { grep --invert-match --line-regexp --fixed-strings "$1" || true; } |
-    xargs --no-run-if-empty kubectl delete
-}
-
-# without persistent volume claims, because that deletes their data.
-applied="$(kubectl get --filename "$manifests" --output name)"
-kubectl get cronjobs,deployments,ingresses,services,gateways.gateway.networking.k8s.io,httproutes.gateway.networking.k8s.io \
-  --selector "$selector" --output name | prune "${applied:?}"
+removed="$(comm -23 <(sed '/^$/d' <<< "$previous" | sort --unique) <(printf '%s\n' "$tracked"))"
+xargs --no-run-if-empty kubectl delete --ignore-not-found <<< "$removed"
+write_inventory "$tracked"
 
 # secrets of revisions in the history are kept for rollbacks.
 used="$(
   kubectl get cronjobs,jobs,replicasets --selector "$selector" --output json |
-    jq --raw-output '.. | objects | .secretRef?.name // empty | "secret/" + .'
+    jq --raw-output '.. | objects | (.secretRef?.name, .secretKeyRef?.name, .secret?.secretName) // empty | "secret/" + .'
 )"
-kubectl get secrets --selector "$selector" --output name | prune "${used:?}"
+kubectl get secrets --selector "$selector" --output name |
+  { grep --invert-match --line-regexp --fixed-strings --file <(printf '%s\n%s\n' "$used" "$applied") || true; } |
+  xargs --no-run-if-empty kubectl delete
+
+if [ "$(jq --raw-output '.ingress.access' "$VALUES_FILE")" = public ]; then
+  origin="$(jq --raw-output '.baseUrl | capture("^(?<origin>[a-z]+://[^/]+)").origin' "$VALUES_FILE")"
+  path="$(
+    kubectl get deployment "$name" \
+      --output 'jsonpath={.spec.template.spec.containers[0].readinessProbe.httpGet.path}'
+  )"
+
+  "$action_path/check-url.sh" "$origin$path"
+
+  for host in $(jq --raw-output '.ingress.tls.redirectHosts // [] | .[]' "$VALUES_FILE"); do
+    "$action_path/check-url.sh" "https://$host$path" "$origin$path"
+  done
+fi

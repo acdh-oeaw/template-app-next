@@ -2,8 +2,9 @@
 
 [fmt]
 config = "./configs/oxfmt.config.ts"
-# Generated, or served as they are. In the oxfmt config, patterns can only match files inside `configs/`.
-ignorePatterns = ["e2e/snapshots/", "public/"]
+# Generated, served as they are, or Helm templates, which are not yaml. In the oxfmt config, patterns can only match
+# files inside `configs/`.
+ignorePatterns = [".github/actions/deploy/chart/templates/", "e2e/snapshots/", "public/"]
 
 [lint]
 config = "./configs/oxlint.config.ts"

@@ -1,63 +1,36 @@
 name: Deploy
-description: Deploy an image with kubectl, roll back when it does not become ready, and check its public url.
+description: >-
+  Render the Helm chart, apply it with kubectl, roll back when the app does not become ready, delete removed resources,
+  and check the public url.
 
 inputs:
-  base-url:
-    description: Public base url of the app.
-    required: true
-  cert-issuer:
-    description: Name of the cert-manager cluster issuer. Leave it out when tls is terminated before the cluster.
-    default: ""
   env-file:
     description: Json file with the environment variables of the container.
     required: true
-  health-url:
-    description: Public url that responds with 200. Leave it out when GitHub cannot reach the app.
-    default: ""
+  helm-version:
+    description: Version of Helm, which only renders the chart.
+    default: v4.3.0
   image:
     description: Image reference with a digest.
-    required: true
-  ingress-class:
-    description: Name of the ingress class.
     required: true
   kube-config:
     description: Base64-encoded kubeconfig.
     required: true
-  name:
-    description: Name of the Kubernetes resources.
+  values-file:
+    description: Json file with the values of the chart, see `chart/values.schema.json`.
     required: true
-  namespace:
-    description: Kubernetes namespace.
-    required: true
-  redirect-hosts:
-    description: Space-separated hosts that redirect to the host of the base url. Needs a cert issuer.
-    default: ""
 
 runs:
   using: composite
   steps:
+    - uses: azure/setup-helm@v4
+      with:
+        version: ${{ inputs.helm-version }}
+
     - shell: bash
       env:
-        ACTION_PATH: ${{ github.action_path }}
-        BASE_URL: ${{ inputs.base-url }}
-        CERT_ISSUER: ${{ inputs.cert-issuer }}
         ENV_FILE: ${{ inputs.env-file }}
         IMAGE: ${{ inputs.image }}
-        INGRESS_CLASS: ${{ inputs.ingress-class }}
         KUBE_CONFIG: ${{ inputs.kube-config }}
-        NAME: ${{ inputs.name }}
-        NAMESPACE: ${{ inputs.namespace }}
-        REDIRECT_HOSTS: ${{ inputs.redirect-hosts }}
-      run: '"$ACTION_PATH/deploy.sh"'
-
-    - if: ${{ inputs.health-url != '' }}
-      shell: bash
-      env:
-        ACTION_PATH: ${{ github.action_path }}
-        HEALTH_URL: ${{ inputs.health-url }}
-        REDIRECT_HOSTS: ${{ inputs.redirect-hosts }}
-      run: |
-        "$ACTION_PATH/check-url.sh" "$HEALTH_URL"
-        for host in $REDIRECT_HOSTS; do
-          "$ACTION_PATH/check-url.sh" "https://$host/${HEALTH_URL#*://*/}" "$HEALTH_URL"
-        done
+        VALUES_FILE: ${{ inputs.values-file }}
+      run: '"$GITHUB_ACTION_PATH/deploy.sh"'

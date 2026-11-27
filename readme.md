@@ -339,23 +339,34 @@ gh workflow run build-deploy.yaml --ref main
    when one is missing, invalid, or defined more than once. Other variables and secrets are ignored. `phases` in the
    metadata of a variable sets whether the build, the container or both need it. The default is the build for public
    variables, and the container for server variables. A server variable that is read while prerendering needs
-   `["build", "runtime"]`, and one with `[]` cannot be configured.
+   `["build", "runtime"]`, and one with `[]` cannot be configured. It also writes the values of the chart, from the
+   deployment in `configs/deployments.ts`.
 2. [`.github/actions/build-image`](.github/actions/build-image/action.yaml) builds the image, and pushes it to the GitHub
    container registry. Kubernetes pulls without credentials, so the package must be public, and so is everything that
    the build reads. `bun run env:deploy` therefore rejects GitHub secrets that the build needs. The exception is
    `NEXT_SERVER_ACTIONS_ENCRYPTION_KEY`: Next.js stores a key in the build output anyway, also a generated one.
-3. [`.github/actions/deploy`](.github/actions/deploy/deploy.sh) applies the manifests in [`kubernetes/`](kubernetes/) with
-   `kubectl`, and waits until the new pods are ready. Then it deletes resources that are no longer in the manifests.
-   Otherwise it prints the logs of the pods, rolls the deployment back, and fails.
+3. [`.github/actions/deploy`](.github/actions/deploy/action.yaml) renders its Helm chart with `helm template`, applies it
+   with `kubectl`, and waits until the new pods are ready. Then it deletes resources that are no longer in the chart, and
+   requests the public url. Otherwise it prints the logs of the pods, rolls the deployment back, and fails.
 
-The variables of the container are stored in an immutable Kubernetes secret with a hash of its content in the name, so
-that changed values restart the pods, and a rollback also restores the previous values. A rollback only covers the
-deployment, not other resources, like the ingress or cronjobs.
+Helm only renders the chart: there is no Helm release, whose state can get stuck in `pending-upgrade` and block the next
+deployment. Without a release, `deploy.sh` keeps track of the resources it applied in a config map named
+`<name>-inventory`, and deletes those that are removed from the chart, of any kind. It never deletes persistent volume
+claims, which would delete their data.
 
-[`configs/deployments.ts`](configs/deployments.ts) sets the namespace, the base url, which determines the host of the
-ingress, and other variables that differ between deployments. Production has its own namespace, so that nothing that
-cleans up in the other one can affect it. Namespaces are not created by the workflow. `bun test` checks that deployments
-do not share a host or a name.
+The variables of the container are stored in an immutable secret with a hash of its content in the name, so that changed
+values restart the pods, and a rollback also restores the previous values. A rollback only covers the deployment, not
+other resources, like the ingress or cronjobs.
+
+[`configs/deployments.ts`](configs/deployments.ts) is the only place with configuration for each deployment: the values
+of the chart, like the namespace and the ingress, and the variables that differ between deployments, like the base url,
+which determines the host of the ingress. Production has its own namespace, so that nothing that cleans up in the other
+one can affect it. Namespaces are not created by the workflow. `bun test` renders the chart for each deployment, which
+checks the values against [`values.schema.json`](.github/actions/deploy/chart/values.schema.json), and checks that
+deployments do not share a host or a name.
+
+The deploy action only depends on its inputs, so that it can move to a repository that ACDH apps share: the chart,
+`deploy.sh` and `check-url.sh` are in its folder. The chart's defaults are those of the ACDH cluster.
 
 ### Set up a new app
 
@@ -394,20 +405,36 @@ do not share a host or a name.
 5. If the package in the GitHub container registry is private, the first deployment fails, because the image cannot be
    pulled. Make the package public, and run the workflow again.
 
+### Cluster
+
+The chart and `deploy.sh` expect these in the cluster:
+
+- Traefik, with the ingress classes `traefik` and `traefik-proxy-protocol`, the middlewares `compress` and
+  `redirect-https` in the `kube-system` namespace, and, for redirect hosts, the Gateway API with the gateway class
+  `traefik` and entrypoints on ports `8000` and `8443`
+- cert-manager, with the cluster issuers `acdh-prod` and `letsencrypt-prod`
+- A kubeconfig that can manage the resources of the chart in the namespace, and read and delete replica sets, jobs and
+  secrets
+
 ### Ingress
 
 `ingress` in [`configs/deployments.ts`](configs/deployments.ts) sets what differs between deployments:
 
-- `access`: after deploying, the workflow requests `/api/health/ready` at the base url for up to five minutes, and fails
-  unless it responds, like when a middleware does not exist. The deployment is not rolled back. Use `"restricted"` when
-  GitHub cannot reach the app, like behind a login
+- `access`: after deploying, the workflow requests the path of the readiness probe at the base url for up to five
+  minutes, and fails unless it responds, like when a middleware does not exist. The deployment is not rolled back. Use
+  `"restricted"` when GitHub cannot reach the app, like behind a login
 - `className`: `traefik-proxy-protocol` forwards the addresses of clients. With `traefik`, the app sees the address of a
   proxy instead, so all clients share one limit when rate limiting by address, like in the contact form
 - `tls`: with `terminatedBy: "cluster"`, cert-manager requests a certificate from `certIssuer`, which is `acdh-prod` for
-  `oeaw.ac.at` domains, and `letsencrypt-prod` for others. Use `terminatedBy: "upstream"` for the few domains whose tls is
-  terminated before the cluster, by the computing center of the ÖAW. The base url still starts with `https://`. Its proxy
-  can be an additional hop, so check which addresses the app receives in `x-forwarded-for`, and set `TRUSTED_PROXY_COUNT`
-  accordingly, before relying on rate limiting
+  `oeaw.ac.at` domains, and `letsencrypt-prod` for others, and Traefik redirects http to https. Use
+  `terminatedBy: "upstream"` for the few domains whose tls is terminated before the cluster, by the computing center of
+  the ÖAW, whose proxy must redirect to https. The base url still starts with `https://`. Its proxy can be an additional
+  hop, so check which addresses the app receives in `x-forwarded-for`, and set `TRUSTED_PROXY_COUNT` accordingly, before
+  relying on rate limiting
+- `annotations`: take precedence over those of the chart. The chart sets the middlewares of Traefik in
+  `traefik.ingress.kubernetes.io/router.middlewares`: `compress`, so compression is disabled in
+  [`next.config.ts`](next.config.ts), and `redirect-https` with `terminatedBy: "cluster"`. To add a middleware, set the
+  whole list, separated by commas
 
 ### Redirect hosts
 
@@ -423,25 +450,18 @@ ingress: {
 },
 ```
 
-The workflow creates a Gateway and an HTTPRoute of the Kubernetes Gateway API for them, named after the deployment, and
+The chart renders a Gateway and an HTTPRoute of the Kubernetes Gateway API for them, named after the deployment, and
 cert-manager requests a certificate for each host. With `terminatedBy: "upstream"`, the proxy before the cluster has to
 redirect. The url check after deploying also checks the redirects.
 
-Other annotations go in [`kubernetes/ingress.yaml`](kubernetes/ingress.yaml), or, when they only apply with
-`terminatedBy: "cluster"`, in [`kubernetes/patches/ingress-tls.yaml`](kubernetes/patches/ingress-tls.yaml). They use
-middlewares of Traefik in the `kube-system` namespace: `compress`, so compression is disabled in
-[`next.config.ts`](next.config.ts), and `redirect-https`, only with `terminatedBy: "cluster"`. With `"upstream"`, the
-proxy before the cluster must redirect to https. Separate several middlewares with a comma. The patch replaces the list
-of the ingress, so add a middleware to both.
-
 ### More resources
 
-Add resources to `kubernetes/`, like a cronjob, with the `app.kubernetes.io/instance` and
-`app.kubernetes.io/managed-by` labels of the other resources, also on the job template of a cronjob.
+Add resources, like a cronjob, to `extraResources` of a deployment in [`configs/deployments.ts`](configs/deployments.ts).
+Strings can use Helm templates, like `{{ .Values.name }}`. Resources get the labels of the app, and are deleted when they
+are removed.
 
-- Only deployments, services, ingresses and cronjobs are deleted when they are removed from `kubernetes/`. Delete others
-  by hand, like a persistent volume claim, which deletes its data
-- Pods of a cronjob need a different `app.kubernetes.io/name` than the app, because the service otherwise sends requests
+- The labels are added to the resource itself, not to the pods of a cronjob. Don't give those the
+  `app.kubernetes.io/name` and `app.kubernetes.io/instance` labels of the app, because the service would send requests
   to them
 - A deployment that mounts a `ReadWriteOnce` volume needs the `Recreate` strategy, because the new pod may not be able to
   mount the volume while the old pod runs
@@ -449,12 +469,20 @@ Add resources to `kubernetes/`, like a cronjob, with the `app.kubernetes.io/inst
   migrations must be compatible with the previous version of the app
 - The image only contains the Next.js server. A script needs to be bundled with `bun build` in the `Dockerfile`
 
+To change what all deployments render, change the chart in
+[`.github/actions/deploy/chart/`](.github/actions/deploy/chart/), and its schema with it.
+
 To remove a deployment, like the one for development:
 
 ```sh
-kubectl delete cronjobs,deployments,gateways,httproutes,ingresses,secrets,services --namespace template-app-next-development \
+kubectl delete configmaps,cronjobs,deployments,gateways,httproutes,ingresses,secrets,services \
+  --namespace template-app-next-development \
   --selector app.kubernetes.io/instance=frontend-development,app.kubernetes.io/managed-by=deploy-action
 ```
+
+This leaves the certificates of cert-manager, and their secrets.
+
+### Health checks
 
 The probes use `/api/health/live` and `/api/health/ready`, which respond with `200` while the server is up.
 Liveness failures restart the container, so the liveness endpoint only checks the process itself. Readiness failures

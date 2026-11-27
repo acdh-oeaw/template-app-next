@@ -4,7 +4,7 @@ import { parseArgs } from "node:util";
 
 import * as v from "valibot";
 
-import { type Deployment, deployments } from "#/configs/deployments.ts";
+import { type Deployment, deployments, getChartValues } from "#/configs/deployments.ts";
 import { type EnvValues, selectDeployEnv, serializeDotenv } from "#/lib/env/deploy.ts";
 import { EnvError } from "#/lib/env/parse.ts";
 
@@ -33,32 +33,31 @@ const environment = v.parse(
 const outDir = v.parse(v.string(), values["out-dir"]);
 
 const deployment: Deployment = deployments[environment];
-const { env: deploymentEnv, ingress, name, namespace } = deployment;
 
 try {
 	const env = selectDeployEnv([
-		{ name: "configs/deployments.ts", kind: "plain", values: deploymentEnv },
+		{ name: "configs/deployments.ts", kind: "plain", values: deployment.env },
 		{ name: "GitHub variable", kind: "plain", values: parseValues("DEPLOY_VARIABLES", process.env.DEPLOY_VARIABLES) },
 		{ name: "GitHub secret", kind: "secret", values: parseValues("DEPLOY_SECRETS", process.env.DEPLOY_SECRETS) },
 	]);
 
-	const files = { build: join(outDir, "build.env"), runtime: join(outDir, "runtime.json") };
+	const files = {
+		build: join(outDir, "build.env"),
+		runtime: join(outDir, "runtime.json"),
+		values: join(outDir, "values.json"),
+	};
 
 	await mkdir(outDir, { recursive: true });
 	await writeFile(files.build, serializeDotenv(env.build), { mode: 0o600 });
 	await writeFile(files.runtime, JSON.stringify(env.runtime), { mode: 0o600 });
+	/** `SERVICE_ID` is required by the schema. */
+	await writeFile(files.values, JSON.stringify(getChartValues(deployment, env.runtime.SERVICE_ID!)));
 
 	const outputs = {
-		"base-url": deploymentEnv.NEXT_PUBLIC_APP_BASE_URL,
+		"base-url": deployment.env.NEXT_PUBLIC_APP_BASE_URL,
 		"build-env-file": files.build,
-		"cert-issuer": ingress.tls.terminatedBy === "cluster" ? ingress.tls.certIssuer : "",
-		"health-url":
-			ingress.access === "public" ? new URL("/api/health/ready", deploymentEnv.NEXT_PUBLIC_APP_BASE_URL).href : "",
-		"ingress-class": ingress.className,
-		"redirect-hosts": ingress.tls.terminatedBy === "cluster" ? (ingress.tls.redirectHosts ?? []).join(" ") : "",
-		name,
-		namespace,
 		"runtime-env-file": files.runtime,
+		"values-file": files.values,
 	};
 
 	if (process.env.GITHUB_OUTPUT != null) {

@@ -42,7 +42,7 @@
       binds `0.0.0.0` and is not affected. Remove the comment in the `Dockerfile` once
       https://github.com/vercel/next.js/issues/94745 is fixed
 - [ ] Search: iterate on the Typesense skeleton in `services/search/` and `lib/typesense/`
-  - [ ] Index in deployments with a cronjob, in `kubernetes/`, with the script bundled in the `Dockerfile`, and
+  - [ ] Index in deployments with a cronjob, in `extraResources` of `configs/deployments.ts`, with the script bundled in the `Dockerfile`, and
         `TYPESENSE_INDEX_API_KEY` only for the cronjob. Until then, run `bun run search:index` by hand
   - [ ] Index the app's data instead of sample documents
   - [ ] Highlighting, facets and filters, as search params in `app/[locale]/search/search-params.ts`
@@ -81,7 +81,12 @@
   - [ ] Deploy to the ACDH cluster once, which the workflow has not done yet. Create the namespace for development, and
         uninstall the Helm release of the previous workflow first: the selector of its deployment cannot be changed, and
         its ingress claims the same host
-  - [ ] Extract `.github/actions/build-image` and `.github/actions/deploy` into a shared repository, once they are stable
+  - [ ] Extract `.github/actions/build-image` and `.github/actions/deploy` into a shared repository, once they are stable.
+        Move the tests of the chart from `configs/deployments.test.ts` with it, and generate the `Deployment` type from
+        `values.schema.json`
+  - [ ] Ask the cluster admins whether `KUBE_CONFIG` is limited to the namespaces of the app. Otherwise a compromised
+        workflow of any repository can reach every app until the next rotation. A service account for each app, or GitHub
+        OIDC tokens, would limit it
   - [ ] Preview deployments of pull requests, in the namespace of development, with a name like `frontend-pr-1`. Delete
         their resources by label when the pull request is closed, also volumes and Typesense collections, and their images
 - [ ] `test` script and test setup
