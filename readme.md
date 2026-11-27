@@ -371,7 +371,8 @@ The deploy action only depends on its inputs, so that it can move to a repositor
 ### Set up a new app
 
 1. Set the namespaces, base urls and ingress options in [`configs/deployments.ts`](configs/deployments.ts).
-2. Create both namespaces in Rancher.
+2. Create both namespaces in Rancher, and add "Service user for GitHub Actions" (`githubactions`) as a member of their
+   project. `KUBE_CONFIG` belongs to that user, so the workflow cannot deploy to a project without it.
 3. Create the GitHub environments, and only allow the branch that deploys to each, so that workflows on other branches
    cannot read its secrets:
 
