@@ -1,19 +1,12 @@
 import { describe, expect, test } from "bun:test";
 
-import { CollectionNotFoundError, type TypesenseClient } from "#/lib/typesense/client.ts";
+import { CollectionNotFoundError, type TypesenseSearchClient } from "#/lib/typesense/client.ts";
 import { searchDocuments } from "#/services/search/search-documents.ts";
 
 const collection = "test";
 
-function createFakeClient(search: TypesenseClient["search"]): TypesenseClient {
-	return {
-		createCollection: () => Promise.resolve(),
-		deleteCollection: () => Promise.resolve(),
-		listCollections: () => Promise.resolve([]),
-		importDocuments: () => Promise.resolve(),
-		setAlias: () => Promise.resolve(),
-		search,
-	};
+function createFakeClient(search: TypesenseSearchClient["search"]): TypesenseSearchClient {
+	return { search };
 }
 
 describe("searchDocuments", () => {

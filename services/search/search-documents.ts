@@ -1,4 +1,4 @@
-import { CollectionNotFoundError, type TypesenseClient } from "#/lib/typesense/client.ts";
+import { CollectionNotFoundError, type TypesenseSearchClient } from "#/lib/typesense/client.ts";
 import { documentSchema, type SearchDocument } from "#/services/search/collection.ts";
 
 const perPage = 20;
@@ -10,7 +10,7 @@ interface SearchDocumentsInput {
 }
 
 interface SearchDocumentsDependencies {
-	client: TypesenseClient;
+	client: TypesenseSearchClient;
 	/** Alias of the collection. */
 	collection: string;
 }

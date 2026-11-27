@@ -1,6 +1,6 @@
 import { describe, expect, test } from "bun:test";
 
-import type { TypesenseClient } from "#/lib/typesense/client.ts";
+import type { TypesenseIndexClient } from "#/lib/typesense/client.ts";
 import { indexDocuments } from "#/services/search/index-documents.ts";
 
 interface FakeServer {
@@ -8,7 +8,7 @@ interface FakeServer {
 	aliases: Map<string, string>;
 }
 
-function createFakeClient(server: FakeServer, overrides: Partial<TypesenseClient> = {}): TypesenseClient {
+function createFakeClient(server: FakeServer, overrides: Partial<TypesenseIndexClient> = {}): TypesenseIndexClient {
 	return {
 		createCollection: ({ name }) => {
 			server.collections.set(name, []);
@@ -27,7 +27,6 @@ function createFakeClient(server: FakeServer, overrides: Partial<TypesenseClient
 			server.aliases.set(alias, collection);
 			return Promise.resolve();
 		},
-		search: () => Promise.reject(new Error("Not implemented")),
 		...overrides,
 	};
 }

@@ -12,7 +12,7 @@ import { createPageMetadata } from "#/lib/metadata/create-page-metadata.ts";
 import { href } from "#/lib/navigation/href.ts";
 import { getPathname } from "#/lib/navigation/navigation.ts";
 import { encodeSearchParams, parseSearchParams } from "#/lib/navigation/search-params.ts";
-import { getTypesenseClient } from "#/lib/typesense/get-typesense-client.ts";
+import { getTypesenseSearchClient } from "#/lib/typesense/get-typesense-search-client.ts";
 import { searchDocuments } from "#/services/search/search-documents.ts";
 
 interface SearchPageProps extends PageProps<"/[locale]/search"> {}
@@ -72,7 +72,7 @@ async function SearchResults(props: Readonly<SearchResultsProps>): Promise<React
 	const t = await getTranslations();
 	const result = await searchDocuments(
 		{ query: q, page },
-		{ client: getTypesenseClient(), collection: env.TYPESENSE_COLLECTION },
+		{ client: getTypesenseSearchClient(), collection: env.TYPESENSE_COLLECTION },
 	);
 
 	switch (result.status) {

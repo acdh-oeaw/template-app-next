@@ -28,8 +28,20 @@ export interface SearchResponse<TDocument> {
 	hits: Array<{ document: TDocument }>;
 }
 
-/** Services depend on this interface rather than on `request()`, so that tests can pass a fake. */
-export interface TypesenseClient {
+/**
+ * Each interface needs the permissions of one api key, so that a client cannot call what its key is not allowed to.
+ * Services depend on them rather than on `request()`, so that tests can pass a fake.
+ */
+export interface TypesenseSearchClient {
+	/** Throws a `CollectionNotFoundError` when neither an alias nor a collection with the name exists. */
+	search: <TSchema extends v.GenericSchema>(
+		collection: string,
+		params: SearchParams,
+		documentSchema: TSchema,
+	) => Promise<SearchResponse<v.InferOutput<TSchema>>>;
+}
+
+export interface TypesenseIndexClient {
 	createCollection: (schema: CollectionSchema) => Promise<void>;
 	deleteCollection: (name: string) => Promise<void>;
 	/** Names of the collections that the api key has access to. */
@@ -37,12 +49,11 @@ export interface TypesenseClient {
 	importDocuments: (collection: string, documents: ReadonlyArray<{ id: string }>) => Promise<void>;
 	/** Creates the alias, or switches it to another collection. */
 	setAlias: (alias: string, collection: string) => Promise<void>;
-	/** Throws a `CollectionNotFoundError` when neither an alias nor a collection with the name exists. */
-	search: <TSchema extends v.GenericSchema>(
-		collection: string,
-		params: SearchParams,
-		documentSchema: TSchema,
-	) => Promise<SearchResponse<v.InferOutput<TSchema>>>;
+}
+
+interface ClientOptions {
+	url: string;
+	apiKey: string;
 }
 
 export class CollectionNotFoundError extends Error {
@@ -64,12 +75,16 @@ function isCollectionNotFound(error: unknown): boolean {
 	return error instanceof HttpError && error.status === 404 && error.body.includes("Collection not found");
 }
 
+/** The api key goes in a header, so that it does not end up in logs and error messages with the url. */
+function createHeaders(apiKey: string): Record<string, string> {
+	return { "x-typesense-api-key": apiKey };
+}
+
 /** @see {@link https://typesense.org/docs/latest/api/} */
-export function createTypesenseClient(options: { url: string; apiKey: string }): TypesenseClient {
+export function createTypesenseIndexClient(options: ClientOptions): TypesenseIndexClient {
 	const { url, apiKey } = options;
 
-	/** The api key goes in a header, so that it does not end up in logs and error messages with the url. */
-	const headers = { "x-typesense-api-key": apiKey };
+	const headers = createHeaders(apiKey);
 
 	return {
 		async createCollection(schema) {
@@ -131,7 +146,16 @@ export function createTypesenseClient(options: { url: string; apiKey: string }):
 				);
 			}
 		},
+	};
+}
 
+/** @see {@link https://typesense.org/docs/latest/api/} */
+export function createTypesenseSearchClient(options: ClientOptions): TypesenseSearchClient {
+	const { url, apiKey } = options;
+
+	const headers = createHeaders(apiKey);
+
+	return {
 		async search(collection, params, documentSchema) {
 			const endpoint = new URL(`/collections/${encodeURIComponent(collection)}/documents/search`, url);
 			endpoint.searchParams.set("q", params.q);

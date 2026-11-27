@@ -1,5 +1,5 @@
 import { createServerEnv } from "#/lib/env/parse.ts";
-import { createTypesenseClient } from "#/lib/typesense/client.ts";
+import { createTypesenseIndexClient } from "#/lib/typesense/client.ts";
 import type { SearchDocument } from "#/services/search/collection.ts";
 import { indexDocuments } from "#/services/search/index-documents.ts";
 
@@ -18,7 +18,7 @@ if (env.TYPESENSE_INDEX_API_KEY == null) {
 }
 
 await indexDocuments(documents, {
-	client: createTypesenseClient({ url: env.TYPESENSE_URL, apiKey: env.TYPESENSE_INDEX_API_KEY }),
+	client: createTypesenseIndexClient({ url: env.TYPESENSE_URL, apiKey: env.TYPESENSE_INDEX_API_KEY }),
 	collection: env.TYPESENSE_COLLECTION,
 	now: Date.now(),
 });

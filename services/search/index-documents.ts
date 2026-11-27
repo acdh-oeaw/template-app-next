@@ -1,8 +1,8 @@
-import type { TypesenseClient } from "#/lib/typesense/client.ts";
+import type { TypesenseIndexClient } from "#/lib/typesense/client.ts";
 import { collectionFields, type SearchDocument } from "#/services/search/collection.ts";
 
 interface IndexDocumentsDependencies {
-	client: TypesenseClient;
+	client: TypesenseIndexClient;
 	/** Alias of the collection. */
 	collection: string;
 	/** Timestamp in milliseconds. */
