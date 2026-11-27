@@ -410,7 +410,7 @@ The deploy action only depends on its inputs, so that it can move to a repositor
 
 The chart and `deploy.sh` expect these in the cluster:
 
-- Traefik, with the ingress classes `traefik` and `traefik-proxy-protocol`, the middlewares `compress` and
+- Traefik, with the ingress classes `traefik` and `traefik-proxy-protocol`, the middlewares `compress`, `hsts` and
   `redirect-https` in the `kube-system` namespace, and, for redirect hosts, the Gateway API with the gateway class
   `traefik` and entrypoints on ports `8000` and `8443`
 - cert-manager, with the cluster issuers `acdh-prod` and `letsencrypt-prod`
@@ -434,8 +434,9 @@ The chart and `deploy.sh` expect these in the cluster:
   relying on rate limiting
 - `annotations`: take precedence over those of the chart. The chart sets the middlewares of Traefik in
   `traefik.ingress.kubernetes.io/router.middlewares`: `compress`, so compression is disabled in
-  [`next.config.ts`](next.config.ts), and `redirect-https` with `terminatedBy: "cluster"`. To add a middleware, set the
-  whole list, separated by commas
+  [`next.config.ts`](next.config.ts), and `redirect-https` and `hsts` with `terminatedBy: "cluster"`, because with
+  `"upstream"` the proxy sets `strict-transport-security`. To add a middleware, set the whole list, separated by commas,
+  including `hsts`
 
 ### Redirect hosts
 
