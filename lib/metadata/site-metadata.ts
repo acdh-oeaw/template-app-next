@@ -9,6 +9,7 @@ const socialMediaKindSchema = v.picklist([
 	"facebook",
 	"flickr",
 	"github",
+	"gitlab",
 	"instagram",
 	"linkedin",
 	"mastodon",

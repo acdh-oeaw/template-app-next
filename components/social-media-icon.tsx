@@ -7,6 +7,7 @@ import bluesky from "#/assets/images/logos/bluesky.svg";
 import facebook from "#/assets/images/logos/facebook.svg";
 import flickr from "#/assets/images/logos/flickr.svg";
 import github from "#/assets/images/logos/github.svg";
+import gitlab from "#/assets/images/logos/gitlab.svg";
 import instagram from "#/assets/images/logos/instagram.svg";
 import linkedin from "#/assets/images/logos/linkedin.svg";
 import mastodon from "#/assets/images/logos/mastodon.svg";
@@ -22,6 +23,7 @@ const icons: Record<SocialMediaKind, StaticImageData> = {
 	facebook,
 	flickr,
 	github,
+	gitlab,
 	instagram,
 	linkedin,
 	mastodon,

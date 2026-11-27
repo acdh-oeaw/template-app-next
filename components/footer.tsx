@@ -24,6 +24,7 @@ export async function Footer(props: Readonly<FooterProps>): Promise<ReactNode> {
 		facebook: "Facebook",
 		flickr: "Flickr",
 		github: "GitHub",
+		gitlab: "GitLab",
 		instagram: "Instagram",
 		linkedin: "LinkedIn",
 		mastodon: "Mastodon",
