@@ -42,7 +42,8 @@ export const serverEnvSchema = v.object({
 			v.description(
 				"AES-GCM key to encrypt server function ids and closures, must be the same for all instances of the app. Stored in the build output by `next build`, and takes precedence over it when set at runtime.",
 			),
-			v.metadata({ dev: generate.base64(32), phases: ["build"] }),
+			/** Next.js stores a key in the build output, also a generated one, so the image always contains one. */
+			v.metadata({ dev: generate.base64(32), isSecretAllowedInBuild: true, phases: ["build"] }),
 		),
 	),
 	TRUSTED_PROXY_COUNT: v.optional(

@@ -18,19 +18,24 @@ export interface EnvAnnotations {
 	description?: string;
 	dev?: unknown;
 	phases?: ReadonlyArray<EnvPhase>;
+	/** The image is public, so `bun run env:deploy` rejects secrets for the build, unless the build output has one anyway. */
+	isSecretAllowedInBuild?: boolean;
 }
+
+type Metadata = Pick<EnvAnnotations, "dev" | "isSecretAllowedInBuild" | "phases">;
 
 export function getAnnotations(schema: v.GenericSchema): EnvAnnotations {
 	let current = schema as Schema;
 	let description = v.getDescription(current);
-	let { dev, phases } = v.getMetadata(current) as Pick<EnvAnnotations, "dev" | "phases">;
+	let { dev, isSecretAllowedInBuild, phases } = v.getMetadata(current) as Metadata;
 	let defaultValue = current.default;
 
 	while (current.wrapped != null) {
 		current = current.wrapped;
 		description ??= v.getDescription(current);
-		const metadata = v.getMetadata(current) as Pick<EnvAnnotations, "dev" | "phases">;
+		const metadata = v.getMetadata(current) as Metadata;
 		dev ??= metadata.dev;
+		isSecretAllowedInBuild ??= metadata.isSecretAllowedInBuild;
 		phases ??= metadata.phases;
 		defaultValue ??= current.default;
 	}
@@ -48,6 +53,7 @@ export function getAnnotations(schema: v.GenericSchema): EnvAnnotations {
 					: { kind: "static", value: defaultValue },
 		description,
 		dev,
+		isSecretAllowedInBuild,
 		phases,
 	};
 }

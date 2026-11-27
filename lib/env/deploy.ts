@@ -14,6 +14,7 @@ export type DeployEnv = Partial<Record<keyof PublicEnv | keyof ServerEnv, string
 export interface EnvSource {
 	/** Shown in error messages. */
 	name: string;
+	kind: "plain" | "secret";
 	values: Record<string, string | undefined>;
 }
 
@@ -33,7 +34,7 @@ export function selectDeployEnv(sources: ReadonlyArray<EnvSource>): Record<EnvPh
 
 	for (const { entries, defaultPhases } of schemas) {
 		for (const [key, entry] of Object.entries(entries)) {
-			const phases = getAnnotations(entry).phases ?? defaultPhases;
+			const { isSecretAllowedInBuild = false, phases = defaultPhases } = getAnnotations(entry);
 			const candidates = sources.filter(({ values }) => values[key] != null && values[key] !== "");
 			const value = candidates[0]?.values[key];
 
@@ -46,6 +47,11 @@ export function selectDeployEnv(sources: ReadonlyArray<EnvSource>): Record<EnvPh
 				if (value != null) {
 					errors.push(`× Not configurable for deployments\n  → at ${key}`);
 				}
+				continue;
+			}
+
+			if (candidates[0]?.kind === "secret" && phases.includes("build") && !isSecretAllowedInBuild) {
+				errors.push(`× Secret, but the build needs it, and the image is public\n  → at ${key}`);
 				continue;
 			}
 

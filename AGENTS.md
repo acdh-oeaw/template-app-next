@@ -31,7 +31,7 @@ Define containers for third-party services in local development, like a Typesens
 
 `.github/workflows/build-deploy.yaml` builds the image, and deploys the manifests in `kubernetes/` with `kubectl`. See `readme.md`.
 
-- `bun run env:deploy` provides the variables in `lib/env/schema.ts`, so don't list them in the workflow. Set values that differ between deployments, and are not secret, in `configs/deployments.ts`, and others in GitHub. Set `phases` in the metadata of a server variable that is read while prerendering, like `v.metadata({ phases: ["build", "runtime"] })`
+- `bun run env:deploy` provides the variables in `lib/env/schema.ts`, so don't list them in the workflow. Set values that differ between deployments, and are not secret, in `configs/deployments.ts`, and others in GitHub. Set `phases` in the metadata of a server variable that is read while prerendering, like `v.metadata({ phases: ["build", "runtime"] })`. The image is public, so the build must not need secrets
 - Give each resource in `kubernetes/` the labels of the others, so that it is deleted when it is removed. Add new placeholders to `envsubst` in `.github/actions/deploy/deploy.sh`
 
 ## Testing

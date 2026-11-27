@@ -341,7 +341,9 @@ gh workflow run build-deploy.yaml --ref main
    variables, and the container for server variables. A server variable that is read while prerendering needs
    `["build", "runtime"]`, and one with `[]` cannot be configured.
 2. [`.github/actions/build-image`](.github/actions/build-image/action.yaml) builds the image, and pushes it to the GitHub
-   container registry. Kubernetes pulls without credentials, so the package must be public.
+   container registry. Kubernetes pulls without credentials, so the package must be public, and so is everything that
+   the build reads. `bun run env:deploy` therefore rejects GitHub secrets that the build needs. The exception is
+   `NEXT_SERVER_ACTIONS_ENCRYPTION_KEY`: Next.js stores a key in the build output anyway, also a generated one.
 3. [`.github/actions/deploy`](.github/actions/deploy/deploy.sh) applies the manifests in [`kubernetes/`](kubernetes/) with
    `kubectl`, and waits until the new pods are ready. Then it deletes resources that are no longer in the manifests.
    Otherwise it prints the logs of the pods, rolls the deployment back, and fails.

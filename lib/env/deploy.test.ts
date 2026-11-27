@@ -25,8 +25,8 @@ function getRequiredValues(): Record<string, string> {
 const required = getRequiredValues();
 function select(variables: Record<string, string>, secrets: Record<string, string> = {}) {
 	return selectDeployEnv([
-		{ name: "GitHub variable", values: variables },
-		{ name: "GitHub secret", values: secrets },
+		{ name: "GitHub variable", kind: "plain", values: variables },
+		{ name: "GitHub secret", kind: "secret", values: secrets },
 	]);
 }
 
@@ -67,6 +67,12 @@ describe("selectDeployEnv", () => {
 
 	test("rejects values defined more than once", () => {
 		expect(() => select(required, { SERVICE_ID: "1" })).toThrow(/more than once: GitHub variable, GitHub secret/);
+	});
+
+	test("rejects secrets that the build needs", () => {
+		const { SERVICE_ID, ...variables } = required;
+
+		expect(() => select(variables, { SERVICE_ID: SERVICE_ID! })).toThrow(/image is public\n.*at SERVICE_ID/);
 	});
 
 	test("rejects values that deployments cannot configure", () => {

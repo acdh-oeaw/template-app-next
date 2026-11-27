@@ -37,9 +37,9 @@ const { env: deploymentEnv, ingress, name, namespace } = deployment;
 
 try {
 	const env = selectDeployEnv([
-		{ name: "configs/deployments.ts", values: deploymentEnv },
-		{ name: "GitHub variable", values: parseValues("DEPLOY_VARIABLES", process.env.DEPLOY_VARIABLES) },
-		{ name: "GitHub secret", values: parseValues("DEPLOY_SECRETS", process.env.DEPLOY_SECRETS) },
+		{ name: "configs/deployments.ts", kind: "plain", values: deploymentEnv },
+		{ name: "GitHub variable", kind: "plain", values: parseValues("DEPLOY_VARIABLES", process.env.DEPLOY_VARIABLES) },
+		{ name: "GitHub secret", kind: "secret", values: parseValues("DEPLOY_SECRETS", process.env.DEPLOY_SECRETS) },
 	]);
 
 	const files = { build: join(outDir, "build.env"), runtime: join(outDir, "runtime.json") };
