@@ -160,6 +160,19 @@ describe.skipIf(Bun.which("helm") == null && process.env.CI == null)("chart", ()
 		expect(() => render({ ...base, ingress: { ...base.ingress, tls } })).toThrow(/redirectHosts/);
 	});
 
+	test("merges resources with the defaults of the chart", () => {
+		const resources = { requests: { memory: "512Mi" }, limits: { cpu: "1" } };
+		const deployment = JSON.stringify(find(render({ ...base, resources }), "Deployment"));
+
+		expect(deployment).toContain(
+			'"resources":{"limits":{"cpu":"1","memory":"1Gi"},"requests":{"cpu":"100m","memory":"512Mi"}}',
+		);
+	});
+
+	test.each([{ requests: { memory: "512 MB" } }, { limits: { gpu: "1" } }])("rejects resources %j", (resources) => {
+		expect(() => render({ ...base, resources })).toThrow(/resources/);
+	});
+
 	test("rejects names that are too long for the names derived from them", () => {
 		expect(() => render({ ...base, name: "a".repeat(41) })).toThrow(/name/);
 	});

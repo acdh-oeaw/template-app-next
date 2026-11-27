@@ -3,6 +3,16 @@
 	"type": "object",
 	"additionalProperties": false,
 	"required": ["name", "namespace", "serviceId", "baseUrl", "image", "env", "managedBy", "ingress"],
+	"definitions": {
+		"resourceQuantities": {
+			"type": "object",
+			"additionalProperties": false,
+			"properties": {
+				"cpu": { "type": "string", "pattern": "^[0-9]+(?:\\.[0-9]+)?m?$" },
+				"memory": { "type": "string", "pattern": "^[0-9]+(?:Ki|Mi|Gi|Ti|k|M|G|T)?$" }
+			}
+		}
+	},
 	"properties": {
 		"name": {
 			"description": "Names and labels the resources. Short, because other names add suffixes to it.",
@@ -44,7 +54,13 @@
 			"minimum": 0
 		},
 		"resources": {
-			"type": "object"
+			"description": "Merged with the defaults of the chart.",
+			"type": "object",
+			"additionalProperties": false,
+			"properties": {
+				"requests": { "$ref": "#/definitions/resourceQuantities" },
+				"limits": { "$ref": "#/definitions/resourceQuantities" }
+			}
 		},
 		"ingress": {
 			"type": "object",
